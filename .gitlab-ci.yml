@@ -5,8 +5,6 @@ stages:
     
 test_branch:
     stage: test
-    only: 
-        - test
     script: echo proses berjalan
     
 development_branch:
