@@ -13,7 +13,8 @@ development_branch:
         - development
     script:
         - cd /var/www/html/globaltech-codeigniter
-        - git pull -f origin development
+        - git reset --hard
+        - git pull origin master
         
 production_branch:
     stage: production
@@ -21,4 +22,5 @@ production_branch:
         - production
     script:
         - cd /var/www/globaltech-codeigniter
-        - git pull -f origin production
+        - git reset --hard
+        - git pull origin development
