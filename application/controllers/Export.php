@@ -25,10 +25,12 @@ class Export extends MY_Controller {
 		$this->excelObject->setActiveSheetIndex(0);
 	}
 
+
 	public function excelWriteHeading($customnum = 1) {
 
 		foreach($this->excelCellsHeading as $cells) {
 			$this->excelObject->getActiveSheet()->SetCellValue($cells['cell'] . $customnum, $cells['label']);
+
 		}
 	}
 
@@ -51,7 +53,8 @@ class Export extends MY_Controller {
 	    $this->excelCellsHeading = [
 	      ['cell' => 'A', 'label' => 'No'],
 	      ['cell' => 'B', 'label' => 'Siswa'],
-		  ['cell' => 'C', 'label' => 'Jurusan'],
+
+		  ['cell' => 'C', 'label' => 'Kelas'],
 		  ['cell' => 'D', 'label' => 'Semester'],
 		  ['cell' => 'E', 'label' => 'Mata Kuliah'],
 		  ['cell' => 'F', 'label' => 'UTS'],
@@ -107,7 +110,7 @@ class Export extends MY_Controller {
 	    $this->excelCellsHeading = [
 	      ['cell' => 'A', 'label' => 'No'],
 	      ['cell' => 'B', 'label' => 'Kode'],
-	      ['cell' => 'C', 'label' => 'Jurusab'],
+	      ['cell' => 'C', 'label' => 'Kelas'],
 	    ];
 
 	    // Write heading excel use method on MY_Controller.php
@@ -125,7 +128,9 @@ class Export extends MY_Controller {
 	    }
 
 	    // Create Filename and output as .xlsx
-	    $this->excelFileName = "Data Jurusan - " . date('m-d-Y') . ".xlsx";
+
+	    $this->excelFileName = "Data Kelas - " . date('m-d-Y') . ".xlsx";
+
 	    $this->excelDisplayOutput();
 
 	    // Set No Column back to 1 for reuse
@@ -304,10 +309,11 @@ class Export extends MY_Controller {
 			['cell' => 'F', 'label' => 'Tanggal Lahir'],
 			['cell' => 'G', 'label' => 'Alamat'],
 			['cell' => 'H', 'label' => 'Pangkat'],
-			['cell' => 'I', 'label' => 'Angkatan'],
-			['cell' => 'J', 'label' => 'Tahun Angkatan Masuk'],
-			['cell' => 'K', 'label' => 'No Telpon'],
-			['cell' => 'J', 'label' => 'Email'],
+			// ['cell' => 'I', 'label' => 'Angkatan'],
+			['cell' => 'I', 'label' => 'Tahun Angkatan Masuk'],
+			['cell' => 'J', 'label' => 'No Telpon'],
+			['cell' => 'K', 'label' => 'Email'],
+
 		];
 
 		// Write heading excel use method on MY_Controller.php
@@ -323,10 +329,11 @@ class Export extends MY_Controller {
 			$this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, $data->tanggal_lahir);
 			$this->excelObject->getActiveSheet()->SetCellValue('G' . $this->excelDataStart, $data->alamat);
 			$this->excelObject->getActiveSheet()->SetCellValue('H' . $this->excelDataStart, $data->pangkat);
-			$this->excelObject->getActiveSheet()->SetCellValue('I' . $this->excelDataStart, $data->angkatan)
-			;
-			$this->excelObject->getActiveSheet()->SetCellValue('J' . $this->excelDataStart, $data->tahun_angkatan_masuk);
-			$this->excelObject->getActiveSheet()->SetCellValue('L' . $this->excelDataStart, $data->no_telpon);
+
+			// $this->excelObject->getActiveSheet()->SetCellValue('I' . $this->excelDataStart, $data->angkatan)
+			// ;
+			$this->excelObject->getActiveSheet()->SetCellValue('I' . $this->excelDataStart, $data->tahun_angkatan_masuk);
+			$this->excelObject->getActiveSheet()->SetCellValue('J' . $this->excelDataStart, $data->no_telpon);
 			$this->excelObject->getActiveSheet()->SetCellValue('K' . $this->excelDataStart, $data->email);
 			$this->excelDataStart++;
 		}
@@ -354,7 +361,7 @@ class Export extends MY_Controller {
 		$this->excelCellsHeading = [
 			['cell' => 'A', 'label' => 'No'],
 			['cell' => 'B', 'label' => 'Nama Pengajar'],
-			['cell' => 'C', 'label' => 'Kelas'],
+			['cell' => 'C', 'label' => 'Room'],
 			['cell' => 'D', 'label' => 'Mata Kuliah'],
 			['cell' => 'E', 'label' => 'Keterangan'],
 			['cell' => 'F', 'label' => 'Total Siswa'],
@@ -382,7 +389,7 @@ class Export extends MY_Controller {
 		}
 
 		// Create New File use method on MY_Controller.php
-		$this->excelFileName = "Data Kelas - " . date('m-d-Y') . ".xlsx";
+		$this->excelFileName = "Data Room - " . date('m-d-Y') . ".xlsx";
 		$this->excelDisplayOutput();
 
 		$this->excelColumnNo = 1;
@@ -788,9 +795,6 @@ class Export extends MY_Controller {
 		// Set No Column back to 1 for reuse
 		$this->excelColumnNo = 1;
 	}
-
-
-
 	/**
 	 * PDF Export Section
 	 */
@@ -804,9 +808,24 @@ class Export extends MY_Controller {
 		$result = [
 			'datas' => $this->m_kelas->rekaptulasi([])
 		];
-
 		$this->dpdf->setPaper('A4', 'landscape');
 		$this->dpdf->filename = 'Rekapitulasi.pdf';
 		$this->dpdf->view('rekaptulasi/rekap_pdf', $result);
 	}
+
+	public function pdf_hasil_ujian($encrypt_id) {
+		$this->load->library('dpdf');
+		$this->load->model('m_ikut_ujian');
+		$id = decrypt_url($encrypt_id);
+		$result = [
+			'datas' => $this->m_ikut_ujian->get_many_by(['id' => $id, 'status' => 'N'])
+		];
+
+		// print_r($result['datas']);exit;
+		$this->dpdf->setPaper('A4', 'landscape');
+		$this->dpdf->filename = 'Hasil Ujian.pdf';
+		$this->dpdf->view('ujian/hasil_ujian', $result);
+
+	}
+
 }

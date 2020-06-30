@@ -8,15 +8,26 @@
 							<div class="row align-items-center">
 								<div class="col-sm-12 col-md-6 col-lg-6">
 									<?php if($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') : ?>
+<<<<<<< HEAD
 		    							<a class="btn btn-primary btn-sm mt-3 mb-3" onclick="setSess(event, this)" href="#" data-mapel="<?= $mapel->id; ?>" data-href="<?= base_url('Materi/add') ?>"><i class="fas fa-plus ml-2 mr-2"></i> Tambah Materi</a>
 		    						 <!--    <a class="ml-3 btn btn-success btn-sm mt-3 mb-3 upload-sub-modul" href="<?= base_url('Materi/add') ?>"><i class="fas fa-upload ml-2 mr-2"></i> Upload Materi PDF </a> -->
+=======
+										<?php if(!is_null($mapel)) { ?>
+		    							<a class="btn btn-primary btn-sm mt-3 mb-3" onclick="setSess(event, this)" href="#" data-mapel="<?= $mapel->id; ?>" data-href="<?= base_url('Materi/add') ?>"><i class="fas fa-plus ml-2 mr-2"></i> Tambah Materi</a>
+		    						 <!--    <a class="ml-3 btn btn-success btn-sm mt-3 mb-3 upload-sub-modul" href="<?= base_url('Materi/add') ?>"><i class="fas fa-upload ml-2 mr-2"></i> Upload Materi PDF </a> -->
+										<?php } ?>
+>>>>>>> first push
 									<?php endif; ?>
 								</div>
 								<div class="col-sm-12 col-md-6 col-lg-6 text-right">
 									<?= $this->backButton; ?>
 								</div>
 							</div>
+<<<<<<< HEAD
 							
+=======
+						
+>>>>>>> first push
 							<!-- breadcrumb -->
 							<nav aria-label="breadcrumb">
 								<ol class="breadcrumb">
@@ -26,11 +37,19 @@
 										Home
 										</a>
 									</li>
+<<<<<<< HEAD
 									<?php if(isset($mapel->nama)) : ?>
 									<li class="breadcrumb-item active" aria-current="page">
 										<?= (empty($mapel->nama)) ? NULL : $mapel->nama; ?>
 									</li>
 									<?php endif; ?>	
+=======
+									<?php if(isset($mapel->nama)) { ?>
+									<li class="breadcrumb-item active" aria-current="page">
+										<?= (empty($mapel->nama)) ? NULL : $mapel->nama; ?>
+									</li>
+									<?php } ?>
+>>>>>>> first push
 								</ol>
 							</nav>
 						</header>
@@ -302,7 +321,11 @@
 			      <div style="width: 80px; height: 80px; position: absolute; opacity: 0; right: 0px; top: 0px; background:#000;">&nbsp;</div>
 			</div>`;
     	}
+<<<<<<< HEAD
     	else {
+=======
+    	else if(el.getAttribute('data-type-video') == 2) {
+>>>>>>> first push
     		video = `<div class="embed-responsive embed-responsive-16by9" style="position:relative;">
 
 			      <iframe  src="https://drive.google.com/file/d/${el.getAttribute('data-video')}/preview" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
@@ -310,6 +333,17 @@
 			      <div style="width: 80px; height: 80px; position: absolute; opacity: 0; right: 0px; top: 0px; background:#000;">&nbsp;</div>
 			</div>`;
     	}
+<<<<<<< HEAD
+=======
+    	else if(el.getAttribute('data-type-video') == 3) {
+    		video = `<div class="embed-responsive embed-responsive-16by9" style="position:relative;">
+
+			      <iframe  src="${el.getAttribute('data-video')}" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+
+			      <div style="width: 80px; height: 80px; position: absolute; opacity: 0; right: 0px; top: 0px; background:#000;">&nbsp;</div>
+			</div>`;
+    	}
+>>>>>>> first push
     	
     	// $('#upload-materi').modal('hide');
     	url = el.getAttribute('data-url');

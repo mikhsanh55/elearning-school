@@ -3,8 +3,13 @@
 	<thead>
 		<tr>
 			<th class="frist">No</th>
+<<<<<<< HEAD
 			<th>Kode Mata Kuliah</th>
 			<th>Mata Kuliah</th>
+=======
+			<th>Kode Mata Pelajaran</th>
+			<th>Mata Pelajaran</th>
+>>>>>>> first push
 			<th>SKS</th>
 			<th>Semester</th>
 			<th>Tahun Angkatan</th>

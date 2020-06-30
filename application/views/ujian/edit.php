@@ -85,11 +85,19 @@
 
 									<?php if ($edit->id_kelas == $rows->id): ?>
 
+<<<<<<< HEAD
 										<option value="<?=$rows->id;?>" selected><?=$rows->nama.' ( '.$rows->nama_guru.' - '.$rows->nama_mapel.' )';?></option>
 
 									<?php else: ?>
 
 										<option value="<?=$rows->id;?>"><?=$rows->nama.' ( '.$rows->nama_guru.' - '.$rows->nama_mapel.' )';?></option>
+=======
+										<option value="<?=$rows->id;?>" selected><?= $rows->jurusan; ?></option>
+
+									<?php else: ?>
+
+										<option value="<?=$rows->id;?>"><?= $rows->jurusan; ?></option>
+>>>>>>> first push
 
 
 									<?php endif ?>
@@ -105,6 +113,27 @@
 				</div>
 
 			</div>
+<<<<<<< HEAD
+=======
+			<div class="row">
+				<div class="col-md-6 col-sm-12 form-group">
+					<label for="">Mata Pelajaran</label>
+					<div class="rs-select2 js-select-simple select--no-search">
+						<select name="id_mapel" id="id_mapel" style="width: 100%;" required>
+							<option disabled="disabled" selected="selected">Pilih</option>
+							<?php foreach($mapel as $row) : ?>
+								<?php if($edit->id_mapel == $row->id) { ?>
+									<option value="<?= $row->id; ?>" selected><?= $row->nama; ?></option>
+								<?php } else { ?>
+									<option value="<?= $row->id; ?>"><?= $row->nama; ?></option>
+								<?php } ?>
+							<?php endforeach; ?>
+						</select>
+						<div class="select-dropdown"></div>
+					</div>
+				</div>
+			</div>
+>>>>>>> first push
 
 
 
@@ -192,7 +221,11 @@
 
 				<div class="col-md-6 form-group">
 
+<<<<<<< HEAD
 					<label for="tempat_lahir">Waktu Mulai:</label>
+=======
+					<label for="tempat_lahir">Waktu Selesai:</label>
+>>>>>>> first push
 
 					<input class="form-control" type="time" name="waktu_selesai" required value="<?=$time2;?>">
 

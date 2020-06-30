@@ -192,6 +192,9 @@ class Login extends MY_Controller
                         'login_at'  => date('Y-m-d H:i:s')
                     ]);
 
+
+        			$this->session->set_userdata($data);
+
         			$status = 1;
         			$keterangan = 'Login berhasil';
         			$detil_admin = $this->session->userdata;

@@ -7,7 +7,11 @@
 			<th>Nama</th>
 			<th>Username</th>
 			<th>
+<<<<<<< HEAD
 				<?= $this->nrp; ?>
+=======
+				NIS
+>>>>>>> first push
 			</th>
 			<th><?=$this->transTheme->instansi;?></th>
 			<th>Opsi</th>

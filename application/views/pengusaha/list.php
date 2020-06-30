@@ -148,7 +148,11 @@
 						<!--</tr>-->
 
 						<tr>
+<<<<<<< HEAD
 							<td style="width: 25%">Kelompok</td>
+=======
+							<td style="width: 25%">Kelas</td>
+>>>>>>> first push
 							<td style="width: 75%"><input type="text" class="form-control" name="kelompok" id="kelompok" required></td>
 						</tr>
 
@@ -162,11 +166,19 @@
 						</tr>
 
 						<tr>
+<<<<<<< HEAD
 							<td style="width: 25%">Pangkat</td>
 							<td style="width: 75%"><input type="text" class="form-control" name="pangkat" id="pangkat" required></td>
 						</tr>
 						<tr>
 							<td style="width: 25%"><?= $this->nrp; ?></td>
+=======
+							<td style="width: 25%">Agama</td>
+							<td style="width: 75%"><input type="text" class="form-control" name="pangkat" id="pangkat" required></td>
+						</tr>
+						<tr>
+							<td style="width: 25%">NIS</td>
+>>>>>>> first push
 							<td style="width: 75%"><input type="text" class="form-control" name="nrp" id="nrp" required></td>
 						</tr>
 
@@ -174,10 +186,17 @@
 							<td style="width: 25%">Tahun Angkatan Masuk</td>
 							<td style="width: 75%"><input type="text" maxlength = "10" class="form-control" name="tahun_angkatan_masuk" id="tahun_angkatan_masuk" required></td>
 						</tr>
+<<<<<<< HEAD
 						<tr>
 							<td style="width: 25%">Angkatan</td>
 							<td style="width: 75%"><input type="text" maxlength = "10" class="form-control" name="angkatan" id="angkatan" required></td>
 						</tr>
+=======
+						<!-- <tr>
+							<td style="width: 25%">Angkatan</td>
+							<td style="width: 75%"><input type="text" maxlength = "10" class="form-control" name="angkatan" id="angkatan" required></td>
+						</tr> -->
+>>>>>>> first push
 
 						<tr>
 							<td style="width: 25%">No.Telp/Hp</td>
@@ -196,7 +215,11 @@
 							<td style="width: 75%"><input type="text" class="form-control" name="nim" id="nim" required></td>
 						</tr>
 						<tr>
+<<<<<<< HEAD
 							<td style="width: 25%">NIK</td>
+=======
+							<td style="width: 25%">Jenis Kelamin</td>
+>>>>>>> first push
 							<td style="width: 75%"><input type="text" class="form-control" name="nik" id="nik" required></td>
 						</tr>
 						<tr>
@@ -227,7 +250,11 @@
 						</tr>
 
 						<tr>
+<<<<<<< HEAD
 							<td style="width: 25%">Jurusan</td>
+=======
+							<td style="width: 25%">Kelas</td>
+>>>>>>> first push
 							<td>
 								<select name="id_jurusan" id="id_jurusan" class="form-control" required>
 									<option value="">Pilih</option>
@@ -441,7 +468,11 @@
 							$("#instansi").val(response.data.instansi);
 							$("#id_jurusan").val(response.data.id_jurusan);
 							$("#tahun_angkatan_masuk").val(response.data.tahun_angkatan_masuk);
+<<<<<<< HEAD
 							$("#angkatan").val(response.data.angkatan)
+=======
+							// $("#angkatan").val(response.data.angkatan)
+>>>>>>> first push
 							$("#nama").focus();
 							if(response.data.photo != null){
 								$('#photo_before').val(response.data.photo);
@@ -476,7 +507,11 @@
 		$("#alamat").val('');
 		$("#id_jurusan").val('');
 		$("#tahun_angkatan_masuk").val('');
+<<<<<<< HEAD
 		$("#angkatan").val('');
+=======
+		// $("#angkatan").val('');
+>>>>>>> first push
 		$("#nama").focus();
 
 		$('#photo_before').val('');

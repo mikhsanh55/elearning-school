@@ -11,6 +11,7 @@
 		</tr>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows):
 			$count = $this->m_tugas_attach_siswa->count_by(array('id_tugas'=>$rows->id,'id_siswa'=>$this->akun->id));
+<<<<<<< HEAD
 			$get = $this->m_tugas_attach_siswa->get_first_row(['id_tugas'=>$rows->id,'id_siswa'=>$this->akun->id]);
 			if ($count > 0 && strtotime($get->create_at) <= strtotime($rows->end_date)) {
 				$status = '<button class="btn btn-success btn-sm kirim-tugas"  data-id_tugas="'.encrypt_url($rows->id).'"><i class="fa fa-check mr-2"></i>Selesai</button>';
@@ -20,6 +21,12 @@
 			}
 			else{
 				$status = '<button class="btn btn-danger btn-sm kirim-tugas" data-id_tugas="'.encrypt_url($rows->id).'"><i class="fa fa-times mr-2"></i> Kerjakan</button>';
+=======
+			if ($count > 0) {
+				$status = '<button class="btn btn-success btn-sm kirim-tugas" data-id_tugas="'.encrypt_url($rows->id).'"><i class="fa fa-check"></i>Sudah</button>';
+			}else{
+				$status = '<button class="btn btn-danger btn-sm kirim-tugas" data-id_tugas="'.encrypt_url($rows->id).'">Tugas</button>';
+>>>>>>> first push
 			}
 
 			if (!empty($rows->end_date) && $rows->end_date != '0000-00-00 00:00:00') {

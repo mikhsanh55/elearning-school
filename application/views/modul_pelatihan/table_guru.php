@@ -3,7 +3,11 @@
 	<thead>
 		<tr>
 			<th class="frist">No</th>
+<<<<<<< HEAD
 			<th>Nama Modul</th>
+=======
+			<th>Nama Mata Pelajaran</th>
+>>>>>>> first push
 			<th>Opsi</th>
 		</tr>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows):

@@ -14,7 +14,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | EXPLANATION OF VARIABLES
 | -------------------------------------------------------------------
 |
+<<<<<<< HEAD
 |	['dsn']      The full DSN string describe a connection to the database.
+=======
+|	['dsn']      The full DSN string describe a connection to the database. 
+>>>>>>> first push
 |	['hostname'] The hostname of your database server.
 |	['username'] The username used to connect to the database
 |	['password'] The password used to connect to the database
@@ -70,7 +74,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | The $query_builder variables lets you determine whether or not to load
 | the query builder class. 
 */
-$active_group = 'default';
+$active_group = 'local';
+
 $query_builder = TRUE;  
 
 $db['default'] = array(
@@ -79,6 +84,7 @@ $db['default'] = array(
 	'username' => 'globaltech_dev',
 	'password' => 'Globaltech_devadmin22-',
 	'database' => 'globaltech_dev',
+
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

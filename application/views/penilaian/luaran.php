@@ -158,12 +158,17 @@
 						</div>
 
 					</div>
+<<<<<<< HEAD
+=======
+					<br>
+>>>>>>> first push
 
 				</div>
 
 			</div>
 
 		</div>
+<<<<<<< HEAD
 		<div class="row">
 			<div class="col-md-12">
 				<section id="export" class="mb-4">
@@ -315,6 +320,86 @@
 			</section>
 		</div>
 		
+=======
+
+		<div class="row">
+			<div class="col-md-12">
+				<div id="content-view">
+					<table class="table table-striped table-hover">
+						<thead>
+							<tr width="10">
+								<th><i class="fas fa-circle"></i></th>
+								<th class="text-left">Sub Menu</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td width="10">
+									<i class="fas fa-print"></i>
+								</td>
+								<td>
+									
+										<a class="text-primary" href="<?= base_url('penilaian/output1'); ?>">
+											Rekapitulasi
+										</a>
+									
+								</td>
+							</tr>
+							<tr>
+								<td width="10">
+									<i class="fas fa-question-circle"></i>
+								</td>
+								<td>
+									
+										<a class="text-primary" href="<?= base_url('penilaian/output2'); ?>">
+											Sebaran Jawaban
+										</a>
+									
+								</td>
+							</tr>
+							<tr>
+								<td width="10">
+									<i class="fas fa-reply-all"></i>
+								</td>
+								<td>
+									
+										<a class="text-primary" href="<?= base_url('penilaian/output3'); ?>">
+											Deskriptif Jawaban
+										</a>
+									
+								</td>
+							</tr>
+							<tr>
+								<td width="10">
+									<i class="fas fa-line-chart"></i>
+								</td>
+								<td>
+									
+										<a class="text-primary" href="<?= base_url('ranking/chart'); ?>">
+											Grafik
+										</a>
+									
+								</td>
+							</tr>
+							<tr>
+								<td width="10">
+									<i class="fas fa-trophy"></i>
+								</td>
+								<td>
+									
+										<a class="text-primary" href="<?= base_url('ranking'); ?>">
+											Ranking
+										</a>
+									
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+		</div>
+>>>>>>> first push
 
 	</div>
 
@@ -322,6 +407,7 @@
 
 </div>
 
+<<<<<<< HEAD
 </div>
 
 <script>
@@ -639,3 +725,6 @@
 	});
 	})
 </script>
+=======
+</div>
+>>>>>>> first push

@@ -251,6 +251,55 @@ class Dtest extends MY_Controller {
 				$this->generate_page($data);
 
 			break;
+			
+			case 'admin_instansi':
+
+	
+
+				if (!empty($post['search'])) {
+
+					switch ($post['filter']) {
+
+						case 0:
+
+						$where["(lower(nama) like '%".strtolower($post['search'])."%' )"] = null;
+
+						break;
+
+						# code...
+
+						break;
+
+					}
+
+				}
+
+
+
+				$where['id_instansi'] = $this->akun->instansi;
+
+
+
+
+
+				$paginate = $this->m_mapel->paginate($pg, $where, $limit, $post);
+
+				$data['paginate'] = $paginate;
+
+				$data['paginate']['url']	= 'dtest/page_load';
+
+				$data['paginate']['search'] = 'lookup_key';
+
+				$data['page_start'] = $paginate['counts']['from_num'];
+
+
+
+				$this->load->view('modul_pelatihan/table', $data);
+
+				$this->generate_page($data);
+
+			break;
+
 
 
 

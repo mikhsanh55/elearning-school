@@ -113,6 +113,12 @@
 					<a class="btn btn-success btn-sm tombol-kanan" href="<?=base_url('ujian_real/add');?>"><i class="fa fa-user-plus"></i> &nbsp;Tambah</a>
 					<a href="javascript:void(0);" title="edit" id="edited" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> &nbsp;Edit</a>
 					<a href="javascript:void(0);" id="deleted" title="Hapus" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> &nbsp;Hapus</a>
+<<<<<<< HEAD
+=======
+					<a href="<?= base_url('export/pdf_hasil_ujian/') . encrypt_url($id_ujian); ?>" class="btn btn-sm btn-danger tombol-kanan" title="export to PDF" target="_blank">
+						<i class="fas fa-print"> &nbsp;Export PDF</i>
+					</a>
+>>>>>>> first push
 				<?php endif;?>
 
 		<!-- 		<a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url(); ?>upload/format_siswa.xlsx"><i class="fa fa-cloud-download" aria-hidden="true"></i> &nbsp;Download Format Import</a>

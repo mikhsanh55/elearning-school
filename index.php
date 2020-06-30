@@ -4,7 +4,7 @@ header("Expires: Thu, 19 Nov 1981 08:52:00 GMT");
 header("Cache-Control: no-store, no-cache, must-revalidate");
 
 /**
- * CodeIgniter Haid
+ * CodeIgniter
  *
  * An open source application development framework for PHP
  *

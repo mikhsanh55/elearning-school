@@ -63,7 +63,11 @@ input:checked + .slider:before {
 	<thead>
 		<tr>
 			<th class="frist">No</th>
+<<<<<<< HEAD
 			<th>Nama Peserta</th>
+=======
+			<th>Nama Siswa</th>
+>>>>>>> first push
 			<th>Opsi</th>
 		</tr>
 		<?php 

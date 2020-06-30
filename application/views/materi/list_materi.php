@@ -125,7 +125,11 @@
 
 
 
+<<<<<<< HEAD
                         <a href="#" class="m-2 btn btn-sm btn-success view-video" onclick="viewVideo(this, event)" data-type-video="<?= $materi->upload_manual; ?>" data-url="<?= $materi->path_video; ?>" data-title="<?= $materi->title; ?>" data-video="<?= $materi->video; ?>"> <i class="fas fa-check"></i> Video</a>
+=======
+                        <a href="#" class="m-2 btn btn-sm btn-success view-video" onclick="viewVideo(this, event)" data-type-video="<?= $materi->id_type_video; ?>" data-url="<?= $materi->path_video; ?>" data-title="<?= $materi->title; ?>" data-video="<?= $materi->video; ?>"> <i class="fas fa-check"></i> Video</a>
+>>>>>>> first push
 
                         <?php } else{ ?>
 
@@ -223,13 +227,19 @@
 
                     <?php endif; ?>
                 <?php } else if($this->log_lvl != 'siswa') { ?>    
+<<<<<<< HEAD
                     <?php if($this->log_lvl != 'admin' && $this->log_lvl != 'instansi') : ?>
+=======
+>>>>>>> first push
                     <a href="<?= base_url('Materi/diskusi') . '/'.$materi->id?>"  data-href="" class="m-2 btn btn-primary btn-sm">
 
                                 <i class="fas fa-comments" title="Edit materi"></i> Diskusi
 
                             </a>
+<<<<<<< HEAD
                     <?php endif; ?>
+=======
+>>>>>>> first push
 
                     <?php if($this->session->userdata('admin_level') == 'guru' || $this->session->userdata('admin_level') == 'admin' ) : ?>
 
@@ -277,7 +287,11 @@
 
 
 
+<<<<<<< HEAD
                         <a href="#" class="m-2 btn btn-sm btn-success view-video" onclick="viewVideo(this, event)" data-type-video="<?= $materi->upload_manual; ?>" data-url="<?= $materi->path_video; ?>" data-title="<?= $materi->title; ?>" data-video="<?= $materi->video; ?>"> <i class="fas fa-check"></i> Video</a>
+=======
+                        <a href="#" class="m-2 btn btn-sm btn-success view-video" onclick="viewVideo(this, event)" data-type-video="<?= $materi->id_type_video; ?>" data-url="<?= $materi->path_video; ?>" data-title="<?= $materi->title; ?>" data-video="<?= $materi->video; ?>"> <i class="fas fa-check"></i> Video</a>
+>>>>>>> first push
 
                         <?php } else{ ?>
 
@@ -393,7 +407,11 @@
 
     <tr>
 
+<<<<<<< HEAD
         <td class="text-center text-secondary" colspan="4">Materi belum ada :(</td>
+=======
+        <td class="text-center text-secondary">Materi belum ada :(</td>
+>>>>>>> first push
 
     </tr>
 

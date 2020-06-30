@@ -1105,7 +1105,11 @@ class Ujian_essay extends MY_Controller {
 
 
 			$id_ujian = decrypt_url($id_ujian);
+<<<<<<< HEAD
 
+=======
+			$jwb = [];
+>>>>>>> first push
 
 
 			if ($this->session->userdata('selesai_ujian') == 1) {

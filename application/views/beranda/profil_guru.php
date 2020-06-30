@@ -120,9 +120,15 @@
                             <br />
                             <i class="title-profile">Pangkat</i><?= (empty($this->akun->pangkat)) ? NULL : $this->akun->pangkat ;?>
                             <br />
+<<<<<<< HEAD
                             <i class="title-profile">NRP</i><?= (empty($this->akun->nrp)) ? NULL : $this->akun->nrp ;?>
                             <br />
                             <i class="title-profile">NIDN</i><?= (empty($this->akun->nidn)) ? NULL : $this->akun->nidn ;?>
+=======
+                            <i class="title-profile">NIP</i><?= (empty($this->akun->nrp)) ? NULL : $this->akun->nrp ;?>
+                            <br />
+                            <i class="title-profile">NUPTK</i><?= (empty($this->akun->nidn)) ? NULL : $this->akun->nidn ;?>
+>>>>>>> first push
                             <br />
                             <i class="title-profile">Jabatan</i><?= (empty($this->akun->jabatan_akademik)) ? NULL : $this->akun->jabatan_akademik ;?>
                             <br />

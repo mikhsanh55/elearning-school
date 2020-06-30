@@ -1,23 +1,26 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 date_default_timezone_set("Asia/Jakarta");
+
 include APPPATH.'third_party/PHPExcel/PHPExcel.php';
+
 class Import extends MY_Controller {
-	function __construct() {
-	    parent::__construct();
+    function __construct() {
+        parent::__construct();
         $this->load->model('m_siswa');
         $this->load->model('m_guru');
         $this->load->model('m_ujian');
+        $this->load->model('m_soal_ujian');
         
-	    $this->db->query("SET time_zone='+7:00'");
-	}
-	
-	public function cek_aktif() {
-		if ($this->session->userdata('admin_valid') == false && $this->session->userdata('admin_id') == "") {
-			redirect('adm/login');
-		} 
-	}
+        $this->db->query("SET time_zone='+7:00'");
+    }
+    
+    public function cek_aktif() {
+        if ($this->session->userdata('admin_valid') == false && $this->session->userdata('admin_id') == "") {
+            redirect('adm/login');
+        } 
+    }
 
-	public function siswa() {
+    public function siswa() {
 
         include APPPATH.'third_party/PHPExcel/PHPExcel.php';
 
@@ -75,7 +78,8 @@ class Import extends MY_Controller {
                             'alamat'  => $row['M'],
                             'instansi'  => $row['N'],
                             'id_jurusan'  => $row['O'],
-                            'tahun_ajaran'  => $row['P'],
+                            'tahun_angkatan_masuk'  => $row['P'],
+                            'photo' => $row['Q'],
                             'pembuatan_akun' => time(),
                             'verifikasi' => md5(time())
                         );
@@ -130,6 +134,7 @@ class Import extends MY_Controller {
             //upload success
             $this->session->set_flashdata('notif', '<div class="alert alert-success"><b>PROSES IMPORT BERHASIL!</b> Data berhasil diimport!</div>');
             //redirect halaman
+
              redirect(base_url('pengusaha/import'));
 
     }
@@ -235,7 +240,7 @@ class Import extends MY_Controller {
     }
 
 
-	public function guru() {
+    public function guru() {
 
         include APPPATH.'third_party/PHPExcel/PHPExcel.php';
 
@@ -336,7 +341,7 @@ class Import extends MY_Controller {
 
         }
 
-	}
+    }
 
     public function soal() {
         
@@ -387,8 +392,8 @@ class Import extends MY_Controller {
                         'opsi_b'    => '#####<p>'.$row['D'].'</p>',
                         'opsi_c'    => '#####<p>'.$row['E'].'</p>',
                         'opsi_d'    => '#####<p>'.$row['F'].'</p>',
-                        'opsi_e'    => '',
-                        'jawaban'   => $row['G'],
+                        'opsi_e'    => '#####<p>'.$row['G'].'</p>',
+                        'jawaban'   => $row['H'],
                         'tgl_input' => NOW(),
                         'jml_benar' => 0,
                         'jml_salah' => 0
@@ -460,16 +465,28 @@ class Import extends MY_Controller {
                         'opsi_b'    => '#####<p>'.$row['D'].'</p>',
                         'opsi_c'    => '#####<p>'.$row['E'].'</p>',
                         'opsi_d'    => '#####<p>'.$row['F'].'</p>',
-                        'opsi_e'    => '',
-                        'jawaban'   => $row['G'],
+
+                        'opsi_e'    => '#####<p>'.$row['G'].'</p>',
+                        'jawaban'   => $row['H'],
+
                         'tgl_input' => NOW(),
                         'jml_benar' => 0,
                         'jml_salah' => 0
                     );
                 }
             }
+            // print_r(count($data));exit;
 
             $this->db->insert_batch('m_soal_ujian', $data);
+
+            // Update jumlah soal di tb_ujian
+            $data_ujian = $this->m_ujian->get_by(['uji.id' => decrypt_url($id_ujian)] );
+            $jumlah_soal = count( $this->m_soal_ujian->get_many_by(['id_ujian' => decrypt_url($id_ujian)]) );
+            
+            $this->m_ujian->update([
+                'jumlah_soal' => $data_ujian->jumlah_soal + count($data)
+            ], ['id' => decrypt_url($id_ujian)]);
+
 
             //delete file from server
             unlink(realpath('./upload/temp/'.$data_upload['file_name']));
@@ -482,7 +499,6 @@ class Import extends MY_Controller {
         }
 
     }
-	
 }
 
 

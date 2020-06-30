@@ -5,7 +5,11 @@
 			<th class="frist"><input type="checkbox" name="checkall" id="checkall"></th>
 			<th class="frist">No</th>
 			<th class="frist">Kode</th>
+<<<<<<< HEAD
 			<th>Jurusan</th>
+=======
+			<th>Kelas</th>
+>>>>>>> first push
 			<?php if($this->log_lvl == 'admin'):?>
 				<th><?=$this->transTheme->instansi;?></th>
 			<?php endif;?>

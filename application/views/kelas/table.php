@@ -3,8 +3,13 @@
 		<tr>
 			<th class="frist"><input type="checkbox" name="checkall" id="checkall"></th>
 			<th class="frist">No</th>
+<<<<<<< HEAD
 			<th>Kelas</th>
 			<th>Mata Kuliah</th>
+=======
+			<th>Room</th>
+			<th>Mata Pelajaran</th>
+>>>>>>> first push
 			<th>Keterangan</th>
 			<th  class="frist">Total Siswa</th>
 			<th class="frist">Opsi</th>

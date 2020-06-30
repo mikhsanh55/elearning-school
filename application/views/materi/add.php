@@ -51,6 +51,7 @@
                         		
                         		<input type="radio" name="typeVideo" id="type-manual" data-type="manual">
                         	</div>
+<<<<<<< HEAD
                         	<div>
                         		<label for="type-gdrive">Google Drive</label>
                         		<input type="radio" name="typeVideo" id="type-gdrive" checked data-type="gdrive">
@@ -58,6 +59,20 @@
                         </div>        
                         <input type="text" class="form-control" placeholder="Masukan Id Video..." name="video" value="" autofocus>
                         <input type="file" name="video-manual" class="form-control d-none" value="">
+=======
+                        	<div class="mr-4">
+                        		<label for="type-gdrive">Google Drive</label>
+                        		<input type="radio" name="typeVideo" id="type-gdrive" checked data-type="gdrive">
+                        	</div>
+                        	<div>
+                        		<label for="type-youtube">Youtube Link</label>
+                        		<input type="radio" name="typeVideo" id="type-youtube" data-type="youtube">
+                        	</div>
+                        </div>        
+                        <input type="text" class="form-control" placeholder="Masukan Id Video Google Drive" name="video" value="" autofocus>
+                        <input type="file" name="video-manual" class="form-control d-none" value="">
+                        <input type="text" class="form-control d-none" placeholder="Masukan Link Video Youtube" name="videoYt">
+>>>>>>> first push
                         <!-- <input type="file" name="video" value=""> -->
                     </div>
                 </div>
@@ -105,17 +120,27 @@
         uploadOk = 0,
         mapel = sessionStorage.getItem('mapel') != null ? sessionStorage.getItem('mapel') : localStorage.getItem('mapel'),
         video = document.querySelector('input[type=text][name=video]'),
+<<<<<<< HEAD
+=======
+        videoYt = document.querySelector('input[type=text][name=videoYt]'),
+>>>>>>> first push
         videoManual = document.querySelector('input[type=file][name=video-manual]'),
         typeVideo = document.querySelectorAll('input[type=radio][name=typeVideo]'),
         uploadManual = false,
         /*fileVideo = '', fileVideoName = '', extVideo = '',*/
+<<<<<<< HEAD
         progressBar = $('#bar1'), progressPercent = $('#percent1');
+=======
+        progressBar = $('#bar1'), progressPercent = $('#percent1'),
+        uploadType = 'manual';
+>>>>>>> first push
 
         // Validasi file
         typeVideo.forEach(function(el) {
         	el.addEventListener('change', function() {
         		if(el.dataset.type == 'manual')	{
         			videoManual.classList.remove('d-none')
+<<<<<<< HEAD
         			video.classList.add('d-none')
         			uploadManual = true
         		}
@@ -124,6 +149,30 @@
         			videoManual.classList.add('d-none')
         			uploadManual = false
         		}
+=======
+
+        			video.classList.add('d-none')
+        			videoYt.classList.add('d-none')
+        			uploadManual = true
+        			uploadType = 'manual'
+        		}
+        		else if(el.dataset.type == 'gdrive') { // Google Drive
+        			video.classList.remove('d-none')
+        			
+        			videoManual.classList.add('d-none')
+					videoYt.classList.add('d-none')
+        			uploadManual = false
+        			uploadType = 'gdrive'
+        		}
+        		else if(el.dataset.type == 'youtube'){ // Youtube Link
+        			videoYt.classList.remove('d-none')
+
+        			videoManual.classList.add('d-none')
+        			video.classList.add('d-none')
+        			uploadManual = false
+        			uploadType = 'youtube'
+        		}	
+>>>>>>> first push
         	})
         	
         });
@@ -170,12 +219,32 @@
 			}	
 			// Store Data
 			let data = new FormData();
+<<<<<<< HEAD
 			if(uploadManual) {
 				data.append('video_manual', file);
 			}
 			else {
 				data.append('video', video.value);	
 			}
+=======
+			switch(uploadType) {
+				case 'manual':
+				data.append('video_manual', file)
+				data.append('id_type_video', 1)
+				break
+
+				case 'gdrive':
+				data.append('video-gdrive', video.value)
+				data.append('id_type_video', 2)
+				break
+
+				case 'youtube':
+				data.append('video-youtube', videoYt.value)
+				data.append('id_type_video', 3)
+				break
+			}
+
+>>>>>>> first push
 			data.append('title', title.val());
 			data.append('content', content);
 			data.append('mapel', mapel);

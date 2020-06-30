@@ -162,6 +162,7 @@
 							<td style="width: 75%"><input type="text" class="form-control" name="ta" id="ta" required></td>
 						</tr>
 						<tr>
+<<<<<<< HEAD
 							<td style="width: 25%">NIDN</td>
 							<td style="width: 75%"><input type="text" class="form-control" name="nidn" id="nidn" required></td>
 						</tr>
@@ -171,6 +172,17 @@
 						</tr>
 						<tr>
 							<td style="width: 25%">Nama Lengkap</td>
+=======
+							<td style="width: 25%">NUPTK</td>
+							<td style="width: 75%"><input type="text" class="form-control" name="nidn" id="nidn" required></td>
+						</tr>
+						<tr>
+							<td style="width: 25%">NIP</td>
+							<td style="width: 75%"><input type="text" class="form-control" name="nrp" id="nrp" required></td>
+						</tr>
+						<tr>
+							<td style="width: 25%">Nama Guru</td>
+>>>>>>> first push
 							<td style="width: 75%"><input type="text" class="form-control" name="nama" id="nama" required></td>
 						</tr>
 						<tr>
@@ -178,7 +190,11 @@
 							<td style="width: 75%"><input type="text" class="form-control" name="username" id="username" required></td>
 						</tr>
 						<tr>
+<<<<<<< HEAD
 							<td style="width: 25%">Pangkat</td>
+=======
+							<td style="width: 25%">NIK</td>
+>>>>>>> first push
 							<td style="width: 75%"><input type="text" class="form-control" name="pangkat" id="pangkat" required></td>
 						</tr>
 						<tr>

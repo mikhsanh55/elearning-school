@@ -96,6 +96,7 @@
                                         <ul class="acc-list">
                                            <?php foreach($this->menu as $row) : ?>
                                             <?php if ($this->active_menu == $row['id']){ ?>
+<<<<<<< HEAD
                                                 <?php if(isset($row['sub'])) { ?>
                                                     <li class="parent-menu">
                                                         <a href="#" class="parent-menu-link">
@@ -108,11 +109,37 @@
                                                                 <li>
 
                                                                     <a href="<?= base_url($submenu->link); ?>" class="text-secondary"><i class="<?= $submenu->icon; ?>"></i><?= $submenu->nama; ?></a></li>
+=======
+                                            
+                                                <?php if(isset($row['sub'])) { ?>
+                                                    <li class="parent-menu  ">
+                                                        <a href="#" class="parent-menu-link">
+                                                            <i class="<?= $row['icon'] ?>"></i><?= $row['nama_menu'] ?>
+                                                            <i class="fas fa-angle-right caret-sub-menu caret-90deg"></i> 
+                                                        </a>
+                                                        <ul class="sub-menu ml-4 ">
+                                                            
+                                                            
+                                                        <?php foreach($row['sub'] as $submenu) : ?>
+                                                            <?php if($submenu->id == $this->sub_menu->id) { ?>
+                                                                <li>
+                                                                    <a href="<?= base_url($submenu->link); ?>" class="active"><i class="<?= $submenu->icon; ?> "></i><?= $submenu->nama; ?></a>
+                                                                </li>
+                                                            <?php } else { ?>
+                                                                <li>
+                                                                    <a href="<?= base_url($submenu->link); ?>" class="text-secondary"><i class="<?= $submenu->icon; ?> "></i><?= $submenu->nama; ?></a>
+                                                                </li>
+                                                            <?php } ?>
+>>>>>>> first push
                                                         <?php endforeach; ?>
                                                         </ul>
                                                     </li>    
                                                 <?php }else { ?>
+<<<<<<< HEAD
                                                     <li>
+=======
+                                                    <li class="active">
+>>>>>>> first push
                                                         <a href="<?= base_url($row['link']); ?>">
                                                             <i class="<?= $row['icon'] ?>"></i><?= $row['nama_menu'] ?>
                                                         </a>

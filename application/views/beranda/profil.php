@@ -135,7 +135,11 @@
                                 <td><?= (empty($this->akun->pangkat)) ? NULL : $this->akun->pangkat ;?></td>
                             </tr>
                             <tr>
+<<<<<<< HEAD
                                 <th>NRP</th>
+=======
+                                <th>NISN</th>
+>>>>>>> first push
                                 <td>
                                     <?= (empty($this->akun->nrp)) ? NULL : $this->akun->nrp ;?>
                                 </td>
@@ -159,11 +163,19 @@
                                 </td>
                             </tr>
                             <tr>
+<<<<<<< HEAD
                                 <th>NIM</th>
                                 <td><?= (empty($this->akun->nim)) ? NULL : $this->akun->nim ;?></td>
                             </tr>
                             <tr>
                                 <th>NIK</th>
+=======
+                                <th>NIP</th>
+                                <td><?= (empty($this->akun->nim)) ? NULL : $this->akun->nim ;?></td>
+                            </tr>
+                            <tr>
+                                <th>Jenis Kelamin</th>
+>>>>>>> first push
                                 <td><?= (empty($this->akun->nik)) ? NULL : $this->akun->nik ;?></td>
                             </tr>
                             <tr>

@@ -33,7 +33,6 @@ class Beranda extends MY_Controller {
 				break;
 
 
-
 			case 'siswa':
 
 					$this->view_siswa();
@@ -55,10 +54,10 @@ class Beranda extends MY_Controller {
 					$this->view_admin();
 
 				break;
-
 			case 'admin_instansi':
 				$this->view_admin();	
 				break;
+
 				
 
 			default:
