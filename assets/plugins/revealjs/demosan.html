@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Contoh Slider</title>
+	<link rel="stylesheet" type="text/css" href="css/reveal.css">
+	<link rel="stylesheet" type="text/css" href="css/theme/white.css">
+</head>
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>Slide 2</section>
+			<section>
+				<section>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</section>
+				<section>Slide 3</section>
+			</section>
+			<section data-markdown>
+					- Item 1
+					- Item 2
+			</section>
+			<section data-autoslide="2000">
+	<p>After 2 seconds the first fragment will be shown.</p>
+	<p class="fragment" data-autoslide="10000">After 10 seconds the next fragment will be shown.</p>
+	<p class="fragment">Now, the fragment is displayed for 2 seconds before the next slide is shown.</p>
+</section>
+		</div>
+	</div>		
+	<script type="text/javascript" src="plugin/markdown/markdown.js"></script>
+	<script type="text/javascript" src="js/reveal.js"></script>
+	<script type="text/javascript">
+		Reveal.initialize({
+			controlsTutorial:true,
+			markdown: {
+				smartypants:true
+			},
+			slideNumber:true,
+			center:false,
+			transitionSpeed:'slow',
+			width: 1060,
+			height: 900,
+
+			// Factor of the display size that should remain empty around the content
+			margin: 0.1,
+
+			// Bounds for smallest/largest possible scale to apply to content
+			minScale: 0.2,
+			maxScale: 1.5
+		});
+	</script>
+</body>
+</html>
