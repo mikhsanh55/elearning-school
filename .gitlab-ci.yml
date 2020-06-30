@@ -12,7 +12,7 @@ development_branch:
     only: 
         - development
     script:
-        - cd /var/www/html/tnial-codeigniter
+        - cd /var/www/html/globaltech-codeigniter
         - git reset --hard
         - git pull origin development
         
@@ -21,6 +21,6 @@ production_branch:
     only: 
         - production
     script:
-        - cd /var/www/tnial-codeigniter
+        - cd /var/www/globaltech-codeigniter
         - git reset --hard
         - git pull origin production
