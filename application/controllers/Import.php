@@ -6,6 +6,7 @@ class Import extends MY_Controller {
         $this->load->model('m_siswa');
         $this->load->model('m_guru');
         $this->load->model('m_ujian');
+        $this->load->model('m_soal_ujian');
         
         $this->db->query("SET time_zone='+7:00'");
     }
@@ -288,8 +289,8 @@ class Import extends MY_Controller {
                         'opsi_b'    => '#####<p>'.$row['D'].'</p>',
                         'opsi_c'    => '#####<p>'.$row['E'].'</p>',
                         'opsi_d'    => '#####<p>'.$row['F'].'</p>',
-                        'opsi_e'    => '',
-                        'jawaban'   => $row['G'],
+                        'opsi_e'    => '#####<p>'.$row['G'].'</p>',
+                        'jawaban'   => $row['H'],
                         'tgl_input' => NOW(),
                         'jml_benar' => 0,
                         'jml_salah' => 0
@@ -361,16 +362,25 @@ class Import extends MY_Controller {
                         'opsi_b'    => '#####<p>'.$row['D'].'</p>',
                         'opsi_c'    => '#####<p>'.$row['E'].'</p>',
                         'opsi_d'    => '#####<p>'.$row['F'].'</p>',
-                        'opsi_e'    => '',
-                        'jawaban'   => $row['G'],
+                        'opsi_e'    => '#####<p>'.$row['G'].'</p>',
+                        'jawaban'   => $row['H'],
                         'tgl_input' => NOW(),
                         'jml_benar' => 0,
                         'jml_salah' => 0
                     );
                 }
             }
+            // print_r(count($data));exit;
 
             $this->db->insert_batch('m_soal_ujian', $data);
+
+            // Update jumlah soal di tb_ujian
+            $data_ujian = $this->m_ujian->get_by(['uji.id' => decrypt_url($id_ujian)] );
+            $jumlah_soal = count( $this->m_soal_ujian->get_many_by(['id_ujian' => decrypt_url($id_ujian)]) );
+            
+            $this->m_ujian->update([
+                'jumlah_soal' => $data_ujian->jumlah_soal + count($data)
+            ], ['id' => decrypt_url($id_ujian)]);
 
             //delete file from server
             unlink(realpath('./upload/temp/'.$data_upload['file_name']));

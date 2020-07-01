@@ -304,10 +304,18 @@
 			      <div style="width: 80px; height: 80px; position: absolute; opacity: 0; right: 0px; top: 0px; background:#000;">&nbsp;</div>
 			</div>`;
     	}
-    	else {
+    	else if(el.getAttribute('data-type-video') == 2) {
     		video = `<div class="embed-responsive embed-responsive-16by9" style="position:relative;">
 
 			      <iframe  src="https://drive.google.com/file/d/${el.getAttribute('data-video')}/preview" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+
+			      <div style="width: 80px; height: 80px; position: absolute; opacity: 0; right: 0px; top: 0px; background:#000;">&nbsp;</div>
+			</div>`;
+    	}
+    	else if(el.getAttribute('data-type-video') == 3) {
+    		video = `<div class="embed-responsive embed-responsive-16by9" style="position:relative;">
+
+			      <iframe  src="${el.getAttribute('data-video')}" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
 
 			      <div style="width: 80px; height: 80px; position: absolute; opacity: 0; right: 0px; top: 0px; background:#000;">&nbsp;</div>
 			</div>`;

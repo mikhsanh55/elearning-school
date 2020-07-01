@@ -289,7 +289,7 @@ class Materi extends MY_Controller
 
         $before_materi = $this->m_materi->get_by(['id' => $this->input->post('imateri')]);
 
-        if ($post['type_video'] == 'manual') {
+        if ($post['id_type_video'] == 1) {
 
             $update_video = false;
             $data         = [];
@@ -333,6 +333,7 @@ class Materi extends MY_Controller
             $data['content']       = $this->input->post('content');
             $data['upload_manual'] = 1;
             $data['req_add']       = 1;
+            $data['id_type_video'] = 1;
 
             if ($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') {
                 $data['is_verify'] = 1;
@@ -352,6 +353,10 @@ class Materi extends MY_Controller
                     }
                 }
 
+                $data_guru = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
+                        
+                $this->db->where('id', $this->session->admin_konid);
+                $this->db->update('m_guru', ['sum_upload_materi' => $data_guru->sum_upload_materi + 1]);
                 $d = [
                     'status' => true,
                     'msg'    => 'Materi berhasil diupload!',
@@ -361,7 +366,49 @@ class Materi extends MY_Controller
 
             }
 
-        } else {
+        } 
+        else if($post['id_type_video'] == 3) {
+
+            $expl = explode('?v=', $this->input->post('video-youtube'));
+            $v = 'https://www.youtube.com/embed/' . end($expl);
+            
+            $data = [
+                'id_mapel'   => $this->input->post('mapel'),
+                'id_trainer' => $this->akun->id,
+                'id_type_video' => 3,
+                'title'      => $this->input->post('title'),
+                'content'    => $this->input->post('content'),
+                'video'      => $v,
+                'path_video' => $this->input->post('video-youtube'),
+                'req_add'    => 1,
+                'is_verify'  => 1
+            ];
+
+            $this->db->where('id', $this->input->post('imateri'));
+            $update = $this->db->update('m_materi', $data);
+            if ($update) {
+                $data_guru = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
+                        
+                $this->db->where('id', $this->session->admin_konid);
+                $this->db->update('m_guru', ['sum_upload_materi' => $data_guru->sum_upload_materi + 1]);
+
+                $d = [
+                    'status' => true,
+                    'msg'    => 'Sub Modul berhasil diupdate!',
+                    'data'   => $this->input->post(),
+                ];
+                echo json_encode($d);
+                http_response_code(200);
+            } else {
+                $d = [
+                    'status' => false,
+                    'msg'    => 'Internal Server Error!',
+                ];
+                echo json_encode($d);
+                http_response_code(500);
+            }
+        }
+        else if($post['id_type_video'] == 2){
 
             $data = [
                 'id_mapel'      => $this->input->post('mapel'),
@@ -372,6 +419,7 @@ class Materi extends MY_Controller
                 'path_video'    => $this->input->post('video'),
                 'upload_manual' => 0,
                 'req_edit'      => 1,
+                'id_type_video' => 2
             ];
             if ($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') {
                 $data['is_verify'] = 1;
@@ -382,7 +430,10 @@ class Materi extends MY_Controller
             $this->db->where('id', $this->input->post('imateri'));
             $update = $this->db->update('m_materi', $data);
             if ($update) {
-
+                $data_guru = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
+                        
+                $this->db->where('id', $this->session->admin_konid);
+                $this->db->update('m_guru', ['sum_upload_materi' => $data_guru->sum_upload_materi + 1]);
                 $lokasi = $before_materi->path_video;
 
                 if (file_exists($lokasi)) {
@@ -470,6 +521,10 @@ class Materi extends MY_Controller
             }
 
             if ($update) {
+                $data_guru = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
+                        
+                $this->db->where('id', $this->session->admin_konid);
+                $this->db->update('m_guru', ['sum_upload_materi' => $data_guru->sum_upload_materi + 1]);
                 $d = [
                     'status' => true,
                     'msg'    => 'Sub Modul updated!',
@@ -497,6 +552,10 @@ class Materi extends MY_Controller
             $this->db->where('id', $this->input->post('imateri'));
             $update = $this->db->update('m_materi', $data);
             if ($update) {
+                $data_guru = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
+                        
+                $this->db->where('id', $this->session->admin_konid);
+                $this->db->update('m_guru', ['sum_upload_materi' => $data_guru->sum_upload_materi + 1]);
                 $d = [
                     'status' => true,
                     'msg'    => 'Sub Modul updated!',
@@ -845,13 +904,7 @@ class Materi extends MY_Controller
 
     public function insert($md5_id_mapel = NULL)
     {
-        // if($this->input->post('video') != '' && strpos($this->input->post('video'), "?v=")) {
-        //     $expl = explode('?v=', $this->input->post('video'));
-        //     $v = 'https://www.youtube.com/embed/' . end($expl);
-        // }
-        // else {
-        //     $v = $this->input->post('video');
-        // }
+       
 
         if (isset($_FILES['video_manual'])) {
 
@@ -882,6 +935,7 @@ class Materi extends MY_Controller
                 $data = [
                     'id_mapel'      => $this->input->post('mapel'),
                     'id_trainer'    => $this->akun->id,
+                    'id_type_video' => 1,
                     'title'         => $this->input->post('title'),
                     'content'       => $this->input->post('content'),
                     'video'         => base_url('assets/materi/video/') . $file_name,
@@ -898,6 +952,12 @@ class Materi extends MY_Controller
                 $insert = $this->db->insert('m_materi', $data);
 
                 if ($insert) {
+
+                    // Update jumlah upload guru
+                    if($this->log_lvl == 'guru') {
+                        $this->updateSumUploadMateri();
+                    }
+
                     $d = [
                         'status' => true,
                         'msg'    => 'Materi berhasil diupload!',
@@ -909,14 +969,48 @@ class Materi extends MY_Controller
 
             }
 
-        } else {
+        } else if($this->input->post('video-youtube') != NULL) {
+             
+            $expl = explode('?v=', $this->input->post('video-youtube'));
+            $v = 'https://www.youtube.com/embed/' . end($expl);
+            
             $data = [
                 'id_mapel'   => $this->input->post('mapel'),
                 'id_trainer' => $this->akun->id,
+                'id_type_video' => 3,
                 'title'      => $this->input->post('title'),
                 'content'    => $this->input->post('content'),
-                'video'      => $this->input->post('video'),
-                'path_video' => $this->input->post('video'),
+                'video'      => $v,
+                'path_video' => $this->input->post('video-youtube'),
+                'req_add'    => 1,
+                'is_verify'  => 1
+            ];
+
+            $insert = $this->db->insert('m_materi', $data);
+            if ($insert) {
+                $d = [
+                    'status' => true,
+                    'msg'    => 'Materi berhasil dibuat',
+                ];
+                echo json_encode($d);
+            } else {
+                $d = [
+                    'status' => false,
+                    'msg'    => 'Internal SErver Error!',
+                ];
+                echo json_encode($d);
+                http_response_code(500);
+            }
+        }
+        else {
+            $data = [
+                'id_mapel'   => $this->input->post('mapel'),
+                'id_trainer' => $this->akun->id,
+                'id_type_video' => 2,
+                'title'      => $this->input->post('title'),
+                'content'    => $this->input->post('content'),
+                'video'      => $this->input->post('video-gdrive'),
+                'path_video' => $this->input->post('video-gdrive'),
                 'req_add'    => 1,
             ];
             if ($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') {
@@ -1509,7 +1603,7 @@ class Materi extends MY_Controller
             }
 
             $komentar = $this->m_komen_materi->check_komen_all(array('km1.id' => $post['id_head']), array('km1.id_siswa', 'km2.id_siswa'));
-
+            $kirim_notif = '';
             $materi = $this->m_materi->get_by_join(array('mt.id' => $post['id_materi']));
             $data   = array();
 
@@ -1640,6 +1734,9 @@ class Materi extends MY_Controller
 
             $data   = array('komentar' => $komentar, 'notif' => $komentar);
             $result = true;
+            
+            // Update sum diskusi
+            $this->updateSumDiskusi();
         } else {
             $result = false;
             $data   = array();
@@ -1656,7 +1753,21 @@ class Materi extends MY_Controller
         $data['update_time'] = $this->update_time;
         $kirim               = $this->m_komen_materi->update($data, array('id' => $post['id']));
 
+        // Update sum diskusi
+        $this->updateSumDiskusi();
         echo json_encode(array('result' => true));
+    }
+
+    public function updateSumDiskusi() {
+        $data_update = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
+        $this->db->where('id', $this->session->admin_konid);
+        $this->db->update('m_guru', ['sum_diskusi' => $data_update->sum_diskusi + 1]);
+    }
+
+    public function updateSumUploadMateri() {
+        $data_guru = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
+        $this->db->where('id', $this->session->admin_konid);
+        $this->db->update('m_guru', ['sum_upload_materi' => $data_guru->sum_upload_materi + 1]);
     }
 
     public function delete_head_koment()

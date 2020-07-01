@@ -6,7 +6,7 @@ $uri4 = $this->uri->segment(4);
         <div class="row align-items-center mb-4">
             <div class="col-sm-12 col-md-6 col-lg-6">
                 <h2 class="panel-heading">Import Data Soal
-                    <?php echo $this->session->flashdata('notif') ?>
+                    
                 </h2>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-6 text-right">
@@ -17,6 +17,9 @@ $uri4 = $this->uri->segment(4);
     <div class="panel panel-info">
         
         <div class="panel-body">
+            <p class="mb-3">
+                <?php echo $this->session->flashdata('notif') ?>
+            </p>
             <form name="f_siswa" action="<?php echo $url_import;?>" id="f_siswa" enctype="multipart/form-data" method="post">
                 <input type="hidden" name="id" id="id" value="0">
                 <table class="table table-form">

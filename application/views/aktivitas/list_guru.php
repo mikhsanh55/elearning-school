@@ -58,8 +58,9 @@
 					<th class="text-center align-middle">NISN</th>
 					<th class="text-center align-middle">Lembaga</th>
 					<th class="text-center align-middle">Semester</th>
-					<th class="text-center align-middle">Aktif Login</th>
-
+					<th class="text-center align-middle">Jumlah Login</th>
+					<th class="text-center align-middle">Jumlah Upload Materi</th>
+					<th class="text-center align-middle">Jumlah Diskusi</th>
                </tr>
 
             </thead>

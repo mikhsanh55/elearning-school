@@ -51,13 +51,18 @@
                         		
                         		<input type="radio" name="typeVideo" id="type-manual" data-type="manual">
                         	</div>
-                        	<div>
+                        	<div class="mr-4">
                         		<label for="type-gdrive">Google Drive</label>
                         		<input type="radio" name="typeVideo" id="type-gdrive" checked data-type="gdrive">
                         	</div>
+                        	<div>
+                        		<label for="type-youtube">Youtube Link</label>
+                        		<input type="radio" name="typeVideo" id="type-youtube" data-type="youtube">
+                        	</div>
                         </div>        
-                        <input type="text" class="form-control" placeholder="Masukan Id Video..." name="video" value="" autofocus>
+                        <input type="text" class="form-control" placeholder="Masukan Id Video Google Drive" name="video" value="" autofocus>
                         <input type="file" name="video-manual" class="form-control d-none" value="">
+                        <input type="text" class="form-control d-none" placeholder="Masukan Link Video Youtube" name="videoYt">
                         <!-- <input type="file" name="video" value=""> -->
                     </div>
                 </div>
@@ -105,25 +110,41 @@
         uploadOk = 0,
         mapel = sessionStorage.getItem('mapel') != null ? sessionStorage.getItem('mapel') : localStorage.getItem('mapel'),
         video = document.querySelector('input[type=text][name=video]'),
+        videoYt = document.querySelector('input[type=text][name=videoYt]'),
         videoManual = document.querySelector('input[type=file][name=video-manual]'),
         typeVideo = document.querySelectorAll('input[type=radio][name=typeVideo]'),
         uploadManual = false,
         /*fileVideo = '', fileVideoName = '', extVideo = '',*/
-        progressBar = $('#bar1'), progressPercent = $('#percent1');
+        progressBar = $('#bar1'), progressPercent = $('#percent1'),
+        uploadType = 'manual';
 
         // Validasi file
         typeVideo.forEach(function(el) {
         	el.addEventListener('change', function() {
         		if(el.dataset.type == 'manual')	{
         			videoManual.classList.remove('d-none')
+
         			video.classList.add('d-none')
+        			videoYt.classList.add('d-none')
         			uploadManual = true
+        			uploadType = 'manual'
         		}
-        		else {
+        		else if(el.dataset.type == 'gdrive') { // Google Drive
         			video.classList.remove('d-none')
+        			
         			videoManual.classList.add('d-none')
+					videoYt.classList.add('d-none')
         			uploadManual = false
+        			uploadType = 'gdrive'
         		}
+        		else if(el.dataset.type == 'youtube'){ // Youtube Link
+        			videoYt.classList.remove('d-none')
+
+        			videoManual.classList.add('d-none')
+        			video.classList.add('d-none')
+        			uploadManual = false
+        			uploadType = 'youtube'
+        		}	
         	})
         	
         });
@@ -170,12 +191,23 @@
 			}	
 			// Store Data
 			let data = new FormData();
-			if(uploadManual) {
-				data.append('video_manual', file);
+			switch(uploadType) {
+				case 'manual':
+				data.append('video_manual', file)
+				data.append('id_type_video', 1)
+				break
+
+				case 'gdrive':
+				data.append('video-gdrive', video.value)
+				data.append('id_type_video', 2)
+				break
+
+				case 'youtube':
+				data.append('video-youtube', videoYt.value)
+				data.append('id_type_video', 3)
+				break
 			}
-			else {
-				data.append('video', video.value);	
-			}
+
 			data.append('title', title.val());
 			data.append('content', content);
 			data.append('mapel', mapel);

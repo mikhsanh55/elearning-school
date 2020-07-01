@@ -129,7 +129,7 @@ class Aktivitas extends MY_Controller {
 
         if($this->log_lvl == 'instansi') {
         	$where = [
-        		'guru.instansi' => 4,
+        		'guru.instansi' => $this->akun->instansi,
         		"guru.nama LIKE '%" . $search['value'] . "%'" => NULL
         	];
 
@@ -160,6 +160,8 @@ class Aktivitas extends MY_Controller {
             $data_ok[] = $d['semester'];
 
             $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-sm btn-primary ">' . $d['active_num'] . '</button></div>';
+            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-sm btn-primary ">' . $d['sum_upload_materi'] . '</button></div>';
+            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-sm btn-primary ">' . $d['sum_diskusi'] . '</button></div>';
 
             $data[] = $data_ok;
         }

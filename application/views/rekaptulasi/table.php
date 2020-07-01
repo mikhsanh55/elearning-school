@@ -10,6 +10,7 @@
 			<th colspan="4">Nilai</th>
 		</tr>
 		<tr>
+			<th>Ujian Harian</th>
 			<th>UTS</th>
 			<th>UAS</th>
 			<th>Tugas</th>
@@ -21,8 +22,17 @@
 	<?php $i= $page_start; foreach ($paginate['data'] as $rows): 
 		$uts = $this->m_ujian->get_nilai(['uji.type_ujian'=>'uts','uji.id_kelas'=>$rows->id_kelas,'id_user'=>$rows->id_peserta]);
 		$uts_essay = $this->m_ujian->get_essay(['uji.type_ujian'=>'uts','uji.id_kelas'=>$rows->id_kelas,'ikut.id_user'=>$rows->id_peserta]);
+
+		$ujian_harian = $this->m_ujian->get_essay(['uji.type_ujian'=>'harian','uji.id_kelas'=>$rows->id_kelas,'ikut.id_user'=>$rows->id_peserta]);
+		$ujian_harian_essay = $this->m_ujian->get_essay(['uji.type_ujian'=>'harian','uji.id_kelas'=>$rows->id_kelas,'ikut.id_user'=>$rows->id_peserta]);
+
 		$utsNilai = (isset($uts->nilai)) ? (int)$uts->nilai:0;
 		$utsNilaiEssay = (isset($uts_essay->nilai)) ? (int)$uts_essay->nilai:0;
+
+		$harianNilai = (isset($ujian_harian->nilai)) ? (int)$ujian_harian->nilai:0;
+		$harianNilaiEssay = (isset($ujian_harian_essay->nilai)) ? (int)$ujian_harian_essay->nilai:0;
+
+		// Check UTS
 		$check = $this->m_ujian->get_check(['uji.type_ujian'=>'uts','uji.id_kelas'=>$rows->id_kelas]);
 		
 		if($check > 0){
@@ -31,6 +41,18 @@
 			$total_uts = ($utsNilai + $utsNilaiEssay) / 2;
 		}
 		$total_uts = ($utsNilai + $utsNilaiEssay) / 2;
+
+		// Check Ulangan Harian
+		$check = $this->m_ujian->get_check(['uji.type_ujian'=>'harian','uji.id_kelas'=>$rows->id_kelas]);
+		
+		if($check > 0){
+			$total_harian = $harianNilai;
+		}else{
+			$total_harian = ($harianNilai + $harianNilaiEssay) / 2;
+		}
+		$total_harian = ($harianNilai + $harianNilaiEssay) / 2;
+
+		// Check UAS
 		$uas = $this->m_ujian->get_nilai(['uji.type_ujian'=>'uas','uji.id_kelas'=>$rows->id_kelas,'id_user'=>$rows->id_peserta]);
 		$uas = $this->m_ujian->get_essay(['uji.type_ujian'=>'uas','uji.id_kelas'=>$rows->id_kelas,'ikut.id_user'=>$rows->id_peserta]);
 
@@ -52,6 +74,7 @@
 					<td><?=$rows->jurusan;?></td>
 					<td><?=$rows->semester;?></td>
 					<td><?=$rows->mapel;?></td>
+					<td><?=(isset($total_harian)) ? (int)$total_harian:0;?></td>
 					<td><?=(isset($total_uts)) ? (int)$total_uts:0;?></td>
 					<td><?=(isset($uas->nilai)) ? (int)$uas->nilai:0;?></td>
 					<td><?=(isset($tugas->nilai)) ? (int)$tugas->nilai:0;?></td>
