@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 01, 2020 at 02:51 AM
+-- Generation Time: Jul 01, 2020 at 05:58 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.3.16
 
@@ -107,10 +107,10 @@ INSERT INTO `menu` (`id`, `nama_menu`, `urutan`, `link`, `link2`, `link3`, `link
 (30, 'Beranda', 1, 'beranda', NULL, NULL, '', 'fas fa-building mr-2'),
 (31, 'Tugas', 11, 'tugas_siswa', NULL, NULL, NULL, 'fas fa-building mr-2'),
 (32, 'Guru', 5, 'trainer', NULL, NULL, NULL, 'fas fa-building mr-2'),
-(33, 'Room', 7, 'kelas', NULL, NULL, NULL, 'fas fa-laptop mr-2'),
-(34, 'Room', 7, 'kelas/siswa', NULL, NULL, NULL, 'fas fa-laptop mr-2'),
+(33, 'Ruang Belajar', 7, 'kelas', NULL, NULL, NULL, 'fas fa-laptop mr-2'),
+(34, 'Ruang Belajar', 7, 'kelas/siswa', NULL, NULL, NULL, 'fas fa-laptop mr-2'),
 (35, 'Kelas', 3, 'jurusan', NULL, NULL, NULL, 'fas fa-building mr-2'),
-(36, 'Room', 3, 'Kelas/guru', NULL, NULL, NULL, 'fas fa-laptop mr-2'),
+(36, 'Ruang Belajar', 3, 'Kelas/guru', NULL, NULL, NULL, 'fas fa-laptop mr-2'),
 (37, 'Penilaian Guru', 11, 'penilaian', NULL, NULL, NULL, 'fas fa-building mr-2'),
 (40, 'Penilaian Guru', 14, 'penilaian', NULL, NULL, NULL, 'fas fa-building mr-2'),
 (41, 'Lembaga', 2, 'instansi', NULL, NULL, NULL, 'fas fa-building mr-2'),
@@ -2107,7 +2107,7 @@ CREATE TABLE `tb_ikut_ujian_essay` (
 --
 
 INSERT INTO `tb_ikut_ujian_essay` (`id`, `id_ujian`, `id_penggunaan`, `id_user`, `list_soal`, `jml_benar`, `nilai`, `nilai_bobot`, `tgl_mulai`, `tgl_selesai`, `status`, `jawaban_benar`, `banyak`, `status_siswa`) VALUES
-(1, 3, NULL, 526, '29,30', 0, '0.00', '0.00', '2020-06-21 22:49:51', '2020-06-21 23:22:03', 'N', '', 1, 'lulus'),
+(1, 3, NULL, 526, '29,30', 0, '0.00', '0.00', '2020-06-21 22:49:51', '2020-06-21 23:22:03', 'N', '', 1, 'remedial'),
 (2, 6, NULL, 556, '31', 0, '0.00', '0.00', '2020-06-26 17:03:39', '2020-06-26 17:03:52', 'N', '', 1, NULL),
 (3, 7, NULL, 603, '32', 0, '0.00', '0.00', '2020-06-27 10:21:29', '2020-06-27 10:22:45', 'N', '', 1, NULL),
 (4, 11, NULL, 603, '33', 0, '0.00', '0.00', '2020-06-29 14:25:55', '2020-06-29 14:26:12', 'N', '', 1, NULL),
@@ -2566,21 +2566,22 @@ CREATE TABLE `tb_setting_instansi` (
   `footer` varchar(255) DEFAULT NULL,
   `logo` text DEFAULT NULL,
   `id_instansi` bigint(20) DEFAULT NULL,
-  `video` text NOT NULL
+  `video` text NOT NULL,
+  `bobot` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `tb_setting_instansi`
 --
 
-INSERT INTO `tb_setting_instansi` (`id`, `jumlah_testing`, `judul`, `footer`, `logo`, `id_instansi`, `video`) VALUES
-(8, 2, 'E-LEARNING TNI AL - SESKOAL', 'E-LEARNING TNI AL - SESKOAL', '1591837596_logo_SESKOAL20200611080636.png', 1, '1591031827_video_TNI_AL20200602001707.mp4'),
-(9, 2, 'E-Learning Sekolah', 'E-Learning Sekolah', '1587386003_logo_Sekolah20200420193323.png', 3, ''),
-(10, 2, 'E-Learning Perguruan Tinggi', 'E-Learning Perguruan Tinggi', '1587386142_logo_Kampus20200420193542.png', 4, ''),
-(11, 0, 'AKADEMI ANGKATAN LAUT', 'E-LEARNING TNI AL - AKADEMI ANGKATAN LAUT', NULL, 9, ''),
-(12, 0, 'E-LEARNING SMAN 5 BANDUNG', 'E-LEARNING SMAN 5 BANDUNG', '1592190413_logo_SMAN_5_Bandung20200615100653.png', 10, ''),
-(13, 0, 'E-LEARNING SMAN 21 BANDUNG', 'E-LEARNING SMAN 21 BANDUNG', '1593069655_logo_SMAN_21_BANDUNG20200625142055.jpg', 11, ''),
-(14, 0, 'E-LEARNING SMAN 25 BANDUNG', 'E-LEARNING SMAN 25 BANDUNG', '1593069722_logo_SMAN_25_BANDUNG20200625142202.JPG', 12, '');
+INSERT INTO `tb_setting_instansi` (`id`, `jumlah_testing`, `judul`, `footer`, `logo`, `id_instansi`, `video`, `bobot`) VALUES
+(8, 2, 'E-LEARNING TNI AL - SESKOAL', 'E-LEARNING TNI AL - SESKOAL', '1591837596_logo_SESKOAL20200611080636.png', 1, '1591031827_video_TNI_AL20200602001707.mp4', 0),
+(9, 2, 'E-Learning Sekolah', 'E-Learning Sekolah', '1587386003_logo_Sekolah20200420193323.png', 3, '', 0),
+(10, 2, 'E-Learning Perguruan Tinggi', 'E-Learning Perguruan Tinggi', '1587386142_logo_Kampus20200420193542.png', 4, '', 0),
+(11, 0, 'AKADEMI ANGKATAN LAUT', 'E-LEARNING TNI AL - AKADEMI ANGKATAN LAUT', NULL, 9, '', 0),
+(12, 0, 'E-LEARNING SMAN 5 BANDUNG', 'E-LEARNING SMAN 5 BANDUNG', '1592190413_logo_SMAN_5_Bandung20200615100653.png', 10, '', 0),
+(13, 0, 'E-LEARNING SMAN 21 BANDUNG', 'E-LEARNING SMAN 21 BANDUNG', '1593069655_logo_SMAN_21_BANDUNG20200625142055.jpg', 11, '', 0),
+(14, 0, 'E-LEARNING SMAN 25 BANDUNG', 'E-LEARNING SMAN 25 BANDUNG', '1593069722_logo_SMAN_25_BANDUNG20200625142202.JPG', 12, '', 0);
 
 -- --------------------------------------------------------
 

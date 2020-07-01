@@ -24,7 +24,7 @@
 
             <div class="col-sm-12 col-md-6 col-lg-6">
 
-                <h2><?=(empty($edit->id)) ? 'Tambah' : 'Update' ;?> Room</h2>
+                <h2><?=(empty($edit->id)) ? 'Tambah' : 'Update' ;?> <?= $this->name; ?></h2>
 
 
 
@@ -84,7 +84,7 @@
 
 							<div class="col-md-3 form-group">
 
-								<label>Room</label>
+								<label><?= $this->name; ?></label>
 
 								<div class="label-isi" >
 

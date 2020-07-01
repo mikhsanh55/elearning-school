@@ -92,13 +92,15 @@ class Ujian_essay extends MY_Controller {
 
 		}
 
-		
+		$this->load->model('m_setting_instansi');
+		$bobot = $this->m_setting_instansi->get_by(['id_instansi' => $this->akun->instansi]);
 
 		$data = array(
 
 			'tipe_ujian' => $tipe_ujian, 
 
-			'kelas' => $kelas
+			'kelas' => $kelas,
+			'bobot' => $bobot
 
 		);
 

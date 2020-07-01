@@ -108,8 +108,8 @@ class Setting_client extends MY_Controller {
 		$data['footer'] = $post['footer'];
 		$data['jumlah_testing'] = $post['jumlah_testing'];
 		$data['id_instansi'] = $this->akun->instansi;
+			$data['bobot'] = $post['bobot'];	
 		
-
 		if (empty($post['id'])) {
 			$kirim = $this->m_setting_instansi->insert($data);
 			$sts = 1;

@@ -8,7 +8,7 @@
 
 			<th class="frist">No</th>
 
-			<th>Room</th>
+			<th><?= $this->name; ?></th>
 
 			<th>Mata Pelajaran</th>
 
