@@ -45,6 +45,29 @@ class Trainer extends MY_Controller {
 		);
 		$this->render_siswa('pengajar/daftar',$data);
 	}
+
+	public function reset_password() {
+		$id = $this->encryption->decrypt($this->input->post('encrypt_id'));
+		$data = [
+			'password' => $this->encryption->encrypt($this->input->post('password'))
+		];
+
+		$update = $this->m_admin->update($data, ['id' => $id]);
+
+		if($update) {
+			$this->sendAjaxResponse([
+				'status' => TRUE,
+				'msg' => 'Password berhasil direset!'
+			], 200);
+		}
+		else {
+			$this->sendAjaxResponse([
+				'status' => FALSE,
+				'msg' => 'Gagal Reset Password'
+			], 500);
+		}
+		
+	}
     
 	public function m_guru() {
 		$this->cek_aktif();
@@ -102,24 +125,16 @@ class Trainer extends MY_Controller {
 
 				}else{
 						$data = [
-							'tahun_akademik' => $post['ta'],
 							'nidn'  =>  $post['nidn'],
 							'nrp'  => $post['nrp'],
+							'id_mapel'	=> $post['mapel'],
 							'nama' => $post['nama'],
 							'username' => $post['username'],
-							'pangkat' => $post['pangkat'],
-							'jabatan_akademik' => $post['ja'],
-							'tempat_lahir' => $post['tempat'],
-							'tanggal_lahir' => $post['tanggal'],
-							'alamat'  => $post['alamat'],
 							'email'  => $post['email'],
 							'no_telpon'  => $post['telp'],
-							'status' => $post['status'],
-							'instansi' => $post['instansi'],
-							'pendidikan_umum_terakhir'  => $post['put'],
-							'pendidikan_militer_terakhir' => $post['pmt'],
-							'semester' => $post['semester']
+							'instansi' => $this->akun->instansi,
 						];  				
+
 						$this->db->where('id', $post['id']);
 						$this->db->update('m_guru', $data);
 
@@ -162,25 +177,28 @@ class Trainer extends MY_Controller {
 
 
 				$data = [
-					'tahun_akademik' => $post['ta'],
 					'nidn'  =>  $post['nidn'],
 					'nrp'  => $post['nrp'],
+					'id_mapel'	=> $post['mapel'],
 					'nama' => $post['nama'],
 					'username' => $post['username'],
-					'pangkat' => $post['pangkat'],
-					'jabatan_akademik' => $post['ja'],
-					'tempat_lahir' => $post['tempat'],
-					'tanggal_lahir' => $post['tanggal'],
-					'alamat'  => $post['alamat'],
 					'email'  => $post['email'],
 					'no_telpon'  => $post['telp'],
-					'status' => $post['status'],
-					'instansi' => $post['instansi'],
-					'pendidikan_umum_terakhir'  => $post['put'],
-					'pendidikan_militer_terakhir' => $post['pmt'],
-					'semester' => $post['semester']
+					'instansi' => $this->akun->instansi,
 				];  
 				$this->db->insert('m_guru', $data);
+
+				$inserted_id = $this->db->insert_id();
+
+                $data_admin = [
+                    'user_id'  => $post['username'],
+                    'username' => $post['email'],
+                    'password'  => $this->encryption->encrypt($post['username'],),
+                    'level'    => 'guru',
+                    'kon_id'   => $inserted_id
+                ];
+
+                $this->db->insert('m_admin', $data_admin);
 				$ket = "tambah";
 				$ret_arr['status'] 	= "ok";
 				$ret_arr['caption']	= $ket." sukses";
@@ -401,10 +419,14 @@ class Trainer extends MY_Controller {
 	}
 
 	public function data(){
+		$this->load->model('m_jurusan');
+		$this->load->model('m_mapel');
 		$instansi = ($this->log_lvl == 'admin') ? $this->m_instansi->get_all() : $this->m_instansi->get_by(array('id'=>$this->akun->instansi));
 		$data = array(
 			'instansi' => $instansi, 
-			'searchFilter' => array('Nama','Username','NIDN','NRP')
+			'searchFilter' => array('Nama','Username','NUPTK','NIP'),
+			'kelas'   => $this->m_jurusan->get_many_by(['id_instansi' => $this->akun->instansi]),
+			'mapel'		=> $this->m_mapel->get_many_by(['id_instansi' => $this->akun->instansi])
 		);
 		$this->render('pengajar/list',$data);
 	}
@@ -438,6 +460,9 @@ class Trainer extends MY_Controller {
 		}
 
 		$paginate = $this->m_guru->paginate($pg,$where,$limit);
+		foreach ($paginate['data'] as $key => $value) {
+			$value->password = $this->encryption->decrypt($value->password);
+		}
 		$data['paginate'] = $paginate;
 		$data['paginate']['url']	= 'trainer/page_load';
 		$data['paginate']['search'] = 'lookup_key';

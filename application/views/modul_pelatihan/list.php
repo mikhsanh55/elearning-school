@@ -147,18 +147,18 @@
 							<td style="width: 25%">Nama Mata Pelajaran</td>
 							<td style="width: 75%"><input type="text" class="form-control" name="nama" id="nama" required></td>
 						</tr>
-						<tr>
+						<!-- <tr>
 							<td style="width: 25%">SKS</td>
 							<td style="width: 75%"><input type="text" class="form-control only-number" name="sks" id="sks" maxlength="3" required></td>
-						</tr>
-						<tr>
+						</tr> -->
+						<!-- <tr>
 							<td style="width: 25%">Semester</td>
 							<td style="width: 75%"><input type="text" class="form-control only-number" name="semester" id="semester" maxlength="4" required></td>
 						</tr>
 						<tr>
 							<td style="width: 25%">Angkatan</td>
 							<td style="width: 75%"><input type="text" class="form-control only-number" name="angkatan" id="angkatan" maxlength="10" required></td>
-						</tr>
+						</tr> -->
 						<tr>
 							<td style="width: 25%"><?=$this->transTheme->instansi;?></td>
 							<td style="width: 75%">

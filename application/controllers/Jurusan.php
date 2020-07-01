@@ -18,7 +18,7 @@ class Jurusan extends MY_Controller
   {
     $data = array(
 			'instansi' => $this->m_jurusan->get_all(), 
-			'searchFilter' => array('Jurusan')
+			'searchFilter' => array('jurusan' => 'Kelas')
 		);
 		$this->render('jurusan/list',$data);
   }

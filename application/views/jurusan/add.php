@@ -38,7 +38,7 @@
 			
 			</div>
 			<div class="form-group">
-				<label for="jurusan">Kelas:</label>
+				<label for="jurusan">Kelas<span class="text-danger">*</span></label>
 				<input type="text" class="form-control" id="jurusan" placeholder="Masukan Jurusan" name="jurusan" required="" maxlength="150">
 			</div>
 

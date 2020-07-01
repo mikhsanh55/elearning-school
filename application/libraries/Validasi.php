@@ -120,102 +120,104 @@ Class Validasi extends CI_Model {
 		$this->load->model('m_guru');
 
 		$cek_email = 0;
+		if($email != '') :
 
-		switch ($type) {
+			switch ($type) {
 
-			case 'insert':
+				case 'insert':
 
-				$cek_email1 = $this->m_admin_lembaga->count_by(array('email'=>$email));
-				$cek_email2 = $this->m_akun_lembaga->count_by(array('email'=>$email));
-				$cek_email3 = $this->m_siswa->count_by(array('email'=>$email));
-				$cek_email4 = $this->m_guru->count_by(array('email'=>$email));
+					$cek_email1 = $this->m_admin_lembaga->count_by(array('email'=>$email));
+					$cek_email2 = $this->m_akun_lembaga->count_by(array('email'=>$email));
+					$cek_email3 = $this->m_siswa->count_by(array('email'=>$email));
+					$cek_email4 = $this->m_guru->count_by(array('email'=>$email));
 
-				$cek_email = $cek_email1 + $cek_email2 + $cek_email3 + $cek_email4; 
+					$cek_email = $cek_email1 + $cek_email2 + $cek_email3 + $cek_email4; 
+
+					break;
 
 				break;
 
-			break;
+				case 'update':
 
-			case 'update':
+				switch ($from) {
+					case 'admin_lembaga':
 
-			switch ($from) {
-				case 'admin_lembaga':
+					$cek_email1 = $this->m_admin_lembaga->get_by(array('email'=>$email));
+					$cek_email2 = $this->m_akun_lembaga->count_by(array('email'=>$email));
+					$cek_email3 = $this->m_siswa->count_by(array('email'=>$email));
+					$cek_email4 = $this->m_guru->count_by(array('email'=>$email));
 
-				$cek_email1 = $this->m_admin_lembaga->get_by(array('email'=>$email));
-				$cek_email2 = $this->m_akun_lembaga->count_by(array('email'=>$email));
-				$cek_email3 = $this->m_siswa->count_by(array('email'=>$email));
-				$cek_email4 = $this->m_guru->count_by(array('email'=>$email));
+					$cek_email = $cek_email2 + $cek_email3 + $cek_email4;
 
-				$cek_email = $cek_email2 + $cek_email3 + $cek_email4;
+					if (!empty($cek_email1) && $cek_email1->id != $id) {
+						$cek_email = 1;
+					}else if ($cek_email > 0){
+						$cek_email = 1;
+					}
 
-				if (!empty($cek_email1) && $cek_email1->id != $id) {
-					$cek_email = 1;
-				}else if ($cek_email > 0){
-					$cek_email = 1;
+					break;
+
+					case 'akun_lembaga':
+
+					$cek_email1 = $this->m_akun_lembaga->get_by(array('email'=>$email));
+					$cek_email2 = $this->m_admin_lembaga->count_by(array('email'=>$email));
+					$cek_email3 = $this->m_siswa->count_by(array('email'=>$email));
+					$cek_email4 = $this->m_guru->count_by(array('email'=>$email));
+
+					$cek_email = $cek_email2 + $cek_email3 + $cek_email4;
+
+					if (!empty($cek_email1) && $cek_email1->id != $id) {
+						$cek_email = 1;
+					}else if ($cek_email > 0){
+						$cek_email = 1;
+					}
+
+					break;
+
+
+					case 'siswa':
+
+					$cek_email1 = $this->m_siswa->get_by(array('email'=>$email));
+					$cek_email2 = $this->m_akun_lembaga->count_by(array('email'=>$email));
+					$cek_email3 = $this->m_admin_lembaga->count_by(array('email'=>$email));
+					$cek_email4 = $this->m_guru->count_by(array('email'=>$email));
+
+					$cek_email = $cek_email2 + $cek_email3 + $cek_email4;
+
+					if (!empty($cek_email1) && $cek_email1->id != $id) {
+						$cek_email = 1;
+					}else if ($cek_email > 0){
+						$cek_email = 1;
+					}
+
+					break;
+
+
+					case 'guru':
+
+					$cek_email1 = $this->m_guru->get_by(array('email'=>$email));
+					$cek_email2 = $this->m_akun_lembaga->count_by(array('email'=>$email));
+					$cek_email3 = $this->m_admin_lembaga->count_by(array('email'=>$email));
+					$cek_email4 = $this->m_siswa->count_by(array('email'=>$email));
+
+					$cek_email = $cek_email2 + $cek_email3 + $cek_email4;
+
+					if (!empty($cek_email1) && $cek_email1->id != $id) {
+						$cek_email = 1;
+					}else if ($cek_email > 0){
+						$cek_email = 1;
+					}
+
+					break;
+
 				}
 
 				break;
 
-				case 'akun_lembaga':
 
-				$cek_email1 = $this->m_akun_lembaga->get_by(array('email'=>$email));
-				$cek_email2 = $this->m_admin_lembaga->count_by(array('email'=>$email));
-				$cek_email3 = $this->m_siswa->count_by(array('email'=>$email));
-				$cek_email4 = $this->m_guru->count_by(array('email'=>$email));
-
-				$cek_email = $cek_email2 + $cek_email3 + $cek_email4;
-
-				if (!empty($cek_email1) && $cek_email1->id != $id) {
-					$cek_email = 1;
-				}else if ($cek_email > 0){
-					$cek_email = 1;
-				}
-
-				break;
-
-
-				case 'siswa':
-
-				$cek_email1 = $this->m_siswa->get_by(array('email'=>$email));
-				$cek_email2 = $this->m_akun_lembaga->count_by(array('email'=>$email));
-				$cek_email3 = $this->m_admin_lembaga->count_by(array('email'=>$email));
-				$cek_email4 = $this->m_guru->count_by(array('email'=>$email));
-
-				$cek_email = $cek_email2 + $cek_email3 + $cek_email4;
-
-				if (!empty($cek_email1) && $cek_email1->id != $id) {
-					$cek_email = 1;
-				}else if ($cek_email > 0){
-					$cek_email = 1;
-				}
-
-				break;
-
-
-				case 'guru':
-
-				$cek_email1 = $this->m_guru->get_by(array('email'=>$email));
-				$cek_email2 = $this->m_akun_lembaga->count_by(array('email'=>$email));
-				$cek_email3 = $this->m_admin_lembaga->count_by(array('email'=>$email));
-				$cek_email4 = $this->m_siswa->count_by(array('email'=>$email));
-
-				$cek_email = $cek_email2 + $cek_email3 + $cek_email4;
-
-				if (!empty($cek_email1) && $cek_email1->id != $id) {
-					$cek_email = 1;
-				}else if ($cek_email > 0){
-					$cek_email = 1;
-				}
-
-				break;
 
 			}
-
-			break;
-
-
-
-		}
+		endif;
 
 		return $cek_email;
 

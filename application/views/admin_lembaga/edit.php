@@ -24,27 +24,27 @@
 			</div>
 			<div class="form-group">
 				<input type="hidden" name="id" value="<?=$edit->id;?>">
-				<label for="nama">Nama:</label>
+				<label for="nama">Nama<span class="text-danger">*</span></label>
 				<input type="text" class="form-control" id="nama" placeholder="Masukan Nama" name="nama" required="" value="<?=$edit->nama;?>">
 			</div>
 			<div class="form-group">
-				<label for="username">Username:</label>
+				<label for="username">Username<span class="text-danger">*</span></label>
 				<input type="text" class="form-control" id="username" placeholder="Masukan Username" name="username" required="" value="<?=$edit->username;?>">
 				<span id="errors-username" class="errors"></span>
 			</div>
 			<div class="form-group">
-				<label for="email">Email:</label>
+				<label for="email">Email<span class="text-danger">*</span></label>
 				<input type="email" class="form-control" id="email" placeholder="Masukan Email" name="email" required="" value="<?=$edit->email;?>">
 				<span id="errors-email" class="errors"></span>
 			</div>
 		
 			<div class="form-group">
-				<label for="tempat_lahir">Tempat Lahir:</label>
+				<label for="tempat_lahir">Tempat Lahir<span class="text-danger">*</span></label>
 				<input type="text" class="form-control" id="tempat_lahir" placeholder="Masukan Tempat Lahir" name="tempat_lahir" value="<?=$edit->tempat_lahir;?>">
 			</div>
 			<div class="form-group">
-				<label for="tempat_lahir">Tanggal Lahir:</label>
-				<input class="form-control js-datepicker" type="text" name="tgl_lahir" value="<?=(!empty($edit->tanggal_lahir)) ? shortdate_indo($edit->tanggal_lahir) : NULL;?>">
+				<label for="tempat_lahir">Tanggal Lahir<span class="text-danger">*</span></label>
+				<input class="form-control js-datepicker" type="text" name="tgl_lahir" value="<?=(!empty($edit->tanggal_lahir)) ? shortdate_indo($edit->tanggal_lahir) : NULL;?>" required>
 			</div>
 			
 			<button type="submit" class="btn btn-primary">Simpan</button>
