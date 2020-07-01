@@ -11,7 +11,7 @@
 	<div class="inner-box">
 		<div class="row align-items-center">
             <div class="col-sm-12 col-md-6 col-lg-6">
-                <h2><?=(empty($edit->id)) ? 'Tambah' : 'Update' ;?> Room</h2>
+                <h2><?=(empty($edit->id)) ? 'Tambah' : 'Update' ;?> <?= $this->name; ?></h2>
 
             </div>
             <div class="col-sm-12 col-md-6 col-lg-6 text-right">
@@ -34,14 +34,14 @@
 								</div>
 							</div>
 							<div class="col-md-3 form-group">
-								<label>Modul Pelatihan</label>
+								<label>Mata Pelajaran</label>
 								<div class="label-isi" >
 									<?=$kelas->nama_mapel;?>
 									<div class="select-dropdown"></div>
 								</div>
 							</div>
 							<div class="col-md-3 form-group">
-								<label>Room</label>
+								<label><?= $this->name; ?></label>
 								<div class="label-isi" >
 									<?=$kelas->nama;?>
 									<div class="select-dropdown"></div>

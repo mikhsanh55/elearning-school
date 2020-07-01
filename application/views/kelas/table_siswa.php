@@ -3,7 +3,7 @@
 		<tr>
 			<th class="frist"><input type="checkbox" name="checkall" id="checkall"></th>
 			<th class="frist">No</th>
-			<th>Room</th>
+			<th><?= $this->name; ?></th>
 			<th>Mata Pelajaran</th>
 			<th>Keterangan</th>
 			<th class="frist">Opsi</th>

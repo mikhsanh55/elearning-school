@@ -1,5 +1,63 @@
 <style type="text/css">
+.kecil-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
 
+.kecil-switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.kecil-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.kecil-slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .kecil-slider {
+  background-color: #2196F3;
+}
+
+input:focus + .kecil-slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .kecil-slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.kecil-slider.round {
+  border-radius: 34px;
+}
+
+.kecil-slider.round:before {
+  border-radius: 50%;
+}
 	.success{
 
 		background: #c4ffbb;
@@ -215,6 +273,17 @@
 					</div>
 
 				</div>
+				<div class="form-group">
+					<label for="">Pengaturan Bobot Ujian</label>
+					<input type="hidden" name="bobot" id="bobot" value="<?= $setting->bobot == 1 ? 1 : 0; ?>">	
+					<div style="position: relative;">
+						<label class="kecil-switch">
+						  <input type="checkbox" id="switch" <?= $setting->bobot == 1 ? 'checked': '' ?>>
+						  <span class="kecil-slider round"></span>
+						</label>
+					</div>	
+				</div>
+				
 
 				<button type="submit" class="btn btn-default">Update</button>
 
@@ -233,6 +302,14 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){
+		$('#switch').change(function() {
+			if($(this).prop('checked') === true) {
+				$('#bobot').val(1)
+			}
+			else {
+				$('#bobot').val(0)
+			}
+		})
 		$('#lightslider').lightSlider({
             item:1,
             slideMargin:0,

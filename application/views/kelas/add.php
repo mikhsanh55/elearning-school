@@ -26,7 +26,7 @@
 
             <div class="col-sm-12 col-md-6 col-lg-6">
 
-                <h2><?=(empty($edit->id)) ? 'Tambah' : 'Update' ;?> Room</h2>
+                <h2><?=(empty($edit->id)) ? 'Tambah' : 'Update' ;?> <?= $this->name; ?></h2>
 
 
 
@@ -130,7 +130,7 @@
 
 			<div class="form-group">
 
-				<label for="nama">Nama Room:</label>
+				<label for="nama">Nama <?= $this->name; ?>:</label>
 
 				<input type="text" value="<?=(empty($edit->nama)) ? NULL : $edit->nama ;?>" class="form-control" id="nama" placeholder="Masukan Nama Room" name="nama" required="" maxlength="150">
 

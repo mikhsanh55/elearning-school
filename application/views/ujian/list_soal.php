@@ -103,7 +103,7 @@
 					</div>
 					<div class="row">
 						<div class="col-md-4 form-group">
-							<label>Modul Pelatihan</label>
+							<label>Mata Pelajaran</label>
 							<div class="label-isi" >
 								<?=$ujian->nama_mapel;?>
 								<div class="select-dropdown"></div>

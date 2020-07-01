@@ -653,14 +653,7 @@ class M_penilaian extends MY_Model {
 	 public function out1($page = 1, $where = array(), $limit = 10)
 
      {
-
-        
-
-
-
         $results = $this->get_output1($where);
-
-
 
         if(empty($results)){
 
@@ -669,9 +662,6 @@ class M_penilaian extends MY_Model {
             exit;
 
         };
-
-
-
                 $pasis = 0;
 
                 $nilai = 0;
@@ -743,32 +733,12 @@ class M_penilaian extends MY_Model {
 
 
                             $labels[$x] = $soal_ke;
-
-                           
-
                             $nilai = 0;
-
-    
-
-
-
                             $i++;
-
                             $x++;
-
-                                
-
                         }
-
-                        
-
                         $responden = $pasis;
-
-
-
                 }
-
-
 
                 $sub_total = [];
 
@@ -826,7 +796,7 @@ class M_penilaian extends MY_Model {
 
 
 
-            return $hasil;
+            return $results;
 
      }
 

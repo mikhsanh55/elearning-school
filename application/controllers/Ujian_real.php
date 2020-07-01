@@ -666,15 +666,12 @@ class Ujian_real extends MY_Controller {
 		
 
 		$a['id_ujian'] = decrypt_url($id_ujian);
-
-
-
-
-
-
-
 		$a['data_pc'] = $data;
 
+		// Check Bobot Soal
+		$this->load->model('m_setting_instansi');
+		$a['bobot'] = $this->m_setting_instansi->get_by(['id_instansi' => $this->akun->instansi]);
+		// print_r($a['bobot']);exit;
 
 
 		$this->render('ujian/add_soal',$a);
@@ -734,7 +731,6 @@ class Ujian_real extends MY_Controller {
 			// Insert Data Soal : Bobot, Soalnya, Jawaban, sama Id Ujian
 			$pdata = array(
 
-				"bobot"=>$p['bobot'],
 
 				"soal"=>$p['soal'],
 
@@ -743,6 +739,10 @@ class Ujian_real extends MY_Controller {
 				'id_ujian' => $p['id_ujian']
 
 			);
+
+			if($p['bobot'] != NULL) {
+				$pdata['bobot'] = $p['bobot'];
+			}
 
 
 
