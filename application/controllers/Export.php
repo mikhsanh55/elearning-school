@@ -25,12 +25,9 @@ class Export extends MY_Controller {
 		$this->excelObject->setActiveSheetIndex(0);
 	}
 
-
-	public function excelWriteHeading($customnum = 1) {
-
+	public function excelWriteHeading() {
 		foreach($this->excelCellsHeading as $cells) {
-			$this->excelObject->getActiveSheet()->SetCellValue($cells['cell'] . $customnum, $cells['label']);
-
+			$this->excelObject->getActiveSheet()->SetCellValue($cells['cell'] . '1', $cells['label']);
 		}
 	}
 
@@ -53,7 +50,6 @@ class Export extends MY_Controller {
 	    $this->excelCellsHeading = [
 	      ['cell' => 'A', 'label' => 'No'],
 	      ['cell' => 'B', 'label' => 'Siswa'],
-
 		  ['cell' => 'C', 'label' => 'Kelas'],
 		  ['cell' => 'D', 'label' => 'Semester'],
 		  ['cell' => 'E', 'label' => 'Mata Kuliah'],
@@ -128,9 +124,7 @@ class Export extends MY_Controller {
 	    }
 
 	    // Create Filename and output as .xlsx
-
 	    $this->excelFileName = "Data Kelas - " . date('m-d-Y') . ".xlsx";
-
 	    $this->excelDisplayOutput();
 
 	    // Set No Column back to 1 for reuse
@@ -313,7 +307,6 @@ class Export extends MY_Controller {
 			['cell' => 'I', 'label' => 'Tahun Angkatan Masuk'],
 			['cell' => 'J', 'label' => 'No Telpon'],
 			['cell' => 'K', 'label' => 'Email'],
-
 		];
 
 		// Write heading excel use method on MY_Controller.php
@@ -329,7 +322,6 @@ class Export extends MY_Controller {
 			$this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, $data->tanggal_lahir);
 			$this->excelObject->getActiveSheet()->SetCellValue('G' . $this->excelDataStart, $data->alamat);
 			$this->excelObject->getActiveSheet()->SetCellValue('H' . $this->excelDataStart, $data->pangkat);
-
 			// $this->excelObject->getActiveSheet()->SetCellValue('I' . $this->excelDataStart, $data->angkatan)
 			// ;
 			$this->excelObject->getActiveSheet()->SetCellValue('I' . $this->excelDataStart, $data->tahun_angkatan_masuk);
@@ -431,6 +423,11 @@ class Export extends MY_Controller {
 			$this->excelDataStart++;
 			$this->excelColumnNo++;
 
+			// Create New File use method on MY_Controller.php
+			$this->excelFileName = "Data Ujian - " . date('m-d-Y') . ".xlsx";
+			$this->excelDisplayOutput();
+
+			$this->excelColumnNo = 1;
 		}
 		// Create New File use method on MY_Controller.php
 		$this->excelFileName = "Data Ujian - " . date('m-d-Y') . ".xlsx";
@@ -439,305 +436,6 @@ class Export extends MY_Controller {
 		$this->excelColumnNo = 1;
 		
 	}
-
-	/* Data Luaran Semua Penilaian Pengajar */
-	public function penilaian_output1() {
-		$this->load->model('m_penilaian');
-		$this->cek_aktif(); // check login session
-	    if($this->session->userdata('admin_level') == 'siswa' || $this->session->userdata('admin_level') == 'guru') {
-	        redirect('penilaian');
-	    }
-	    
-	    // Get Data from Model Penilaian
-	    if ($this->log_lvl != 'admin') {
-			$where['kls.id_instansi'] = $this->akun->instansi;
-		}
-
-		$datas = [];
-		
-		$datas['output1'] = ['datas' => $this->m_penilaian->out1(1,$where,1000), 'tipe_output' => 1];	
-		$datas['output2'] = ['datas' => $this->m_penilaian->out2(1, $where, 1000), 'tipe_output' => 2];
-		$datas['output3'] = ['datas' => $this->m_penilaian->out3(1,$where,1000), 'tipe_output' => 3];
-
-		// Initialize excel object
-		$this->excelInitialize();
-
-		/* Write Outout 1*/
-		$this->excelCellsHeading = [
-			['cell' => 'A', 'label' => 'No'],
-			['cell' => 'B', 'label' => 'Dosen'],
-			['cell' => 'C', 'label' => 'Mata Kuliah'],
-			['cell' => 'D', 'label' => 'Responden'],
-			['cell' => 'E', 'label' => 'Q1'],
-			['cell' => 'F', 'label' => 'Q2'],
-			['cell' => 'G', 'label' => 'Q3'],
-			['cell' => 'H', 'label' => 'Q4'],
-			['cell' => 'I', 'label' => 'Q5'],
-			['cell' => 'J', 'label' => 'Q6'],
-			['cell' => 'K', 'label' => 'Q7'],
-			['cell' => 'L', 'label' => 'Q8'],
-			['cell' => 'M', 'label' => 'Q9'],
-			['cell' => 'N', 'label' => 'Total']
-		];
-
-		// Initialize excel object
-		$this->excelInitialize();
-
-		// Write heading excel use method on MY_Controller.php
-    	$this->excelWriteHeading();
-
-
-		$this->excelDataStart = 2;
-		// print_r($datas['output3']);exit;
-		for($i = 1;$i <=  $datas['output1']['datas']->responden; $i++)	{
-			$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, $this->excelColumnNo);
-			$this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $datas['output1']['datas']->nama_guru[$i]);
-			$this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $datas['output1']['datas']->nama_mapel[$i]);
-			$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $i);
-
-			$total = 0; $x = 0;
-			$alphabets = range('E', 'Z');
-			foreach($datas['output1']['datas']->jawaban[$i] as $index => $row) {
-				$total += $row['nilai'];
-				$sub_total[$i][$index] = $row['nilai'];
-
-				$this->excelObject->getActiveSheet()->SetCellValue($alphabets[$index-1] . $this->excelDataStart, $row['nilai']);
-				$x++;
-			}
-			$this->excelObject->getActiveSheet()->SetCellValue($alphabets[$x] . $this->excelDataStart, $total);
-			$this->excelDataStart++;
-			$this->excelColumnNo++;
-		}	
-		
-		// Create New File use method on MY_Controller.php
-		$this->excelFileName = "Data Penilaian - Output 1" . date('m-d-Y') . ".xlsx";
-		$this->excelDisplayOutput();
-
-		$this->excelColumnNo = 1;
-	}
-
-	public function penilaian_output2() {
-
-		$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, 'Data Sebaran Jawaban');
-
-		
-		$this->excelCellsHeading = [
-			['cell' => 'A', 'label' => 'No'],
-			['cell' => 'B', 'label' => 'Indikator'],
-			['cell' => 'C', 'label' => '5'],
-			['cell' => 'D', 'label' => '4'],
-			['cell' => 'E', 'label' => '3'],
-			['cell' => 'F', 'label' => '2'],
-			['cell' => 'G', 'label' => '1'],
-		];
-
-		// Write heading excel use method on MY_Controller.php
-    	$this->excelWriteHeading($this->excelDataStart+1);
-
-    	// Add break
-    	$this->excelDataStart += 2;
-
-    	$i = 0;
-    	foreach($datas['output2']['datas']['labels'] as $label) {
-    		$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, $this->excelColumnNo);
-    		$this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $label);
-    		$this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $datas['output2']['datas']['presentase'][$i]['A'] . '%');
-    		$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $datas['output2']['datas']['presentase'][$i]['B'] . '%');
-    		$this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $datas['output2']['datas']['presentase'][$i]['C'] . '%');
-    		$this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, $datas['output2']['datas']['presentase'][$i]['D'] . '%');
-    		$this->excelObject->getActiveSheet()->SetCellValue('G' . $this->excelDataStart, $datas['output2']['datas']['presentase'][$i]['E'] . '%');
-    		$i++;
-    		$this->excelDataStart++;
-			$this->excelColumnNo++;
-    	}
-
-		// Create New File use method on MY_Controller.php
-		$this->excelFileName = "Data Penilaian - Output 2" . date('m-d-Y') . ".xlsx";
-		$this->excelDisplayOutput();
-
-		$this->excelColumnNo = 1;	
-	}
-
-	public function penilaian_output3() {
-
-		$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, 'Data Deskriptif Jawaban');
-
-		$this->excelCellsHeading = [
-			['cell' => 'A', 'label' => 'NO'],
-			['cell' => 'B', 'label' => 'INDIKATOR'],
-			['cell' => 'C', 'label' => 'MIN'],
-			['cell' => 'D', 'label' => 'MAX'],
-			['cell' => 'E', 'label' => 'SIMPANGAN BAKU'],
-		];
-
-		// Write heading excel use method on MY_Controller.php
-    	$this->excelWriteHeading($this->excelDataStart+1);
-
-    	// Add break
-    	$this->excelDataStart += 2;
-
-    	$i = 0;
-    	foreach($datas['output3']['datas']['labels'] as $label) {
-    		$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, $this->excelColumnNo);
-    		$this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $label);
-    		$this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $datas['output3']['datas']['datas'][$i]['min']);
-    		$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $datas['output3']['datas']['datas'][$i]['max']);
-    		$this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $datas['output3']['datas']['deviasi'][$i]);
-    		$i++;
-    		$this->excelDataStart++;
-			$this->excelColumnNo++;
-    	}
-    	
-		// Create New File use method on MY_Controller.php
-		$this->excelFileName = "Data Penilaian - Output 3" . date('m-d-Y') . ".xlsx";
-		$this->excelDisplayOutput();
-
-		$this->excelColumnNo = 1;
-	}
-
-	public function penilaian() {
-		$this->load->model('m_penilaian');
-		$this->cek_aktif(); // check login session
-	    if($this->session->userdata('admin_level') == 'siswa' || $this->session->userdata('admin_level') == 'guru') {
-	        redirect('penilaian');
-	    }
-	    
-	    // Get Data from Model Penilaian
-	    if ($this->log_lvl != 'admin') {
-			$where['kls.id_instansi'] = $this->akun->instansi;
-		}
-
-		$datas = [];
-		
-		$datas['output1'] = ['datas' => $this->m_penilaian->out1(1,$where,1000), 'tipe_output' => 1];	
-		$datas['output2'] = ['datas' => $this->m_penilaian->out2(1, $where, 1000), 'tipe_output' => 2];
-		$datas['output3'] = ['datas' => $this->m_penilaian->out3(1,$where,1000), 'tipe_output' => 3];
-
-		// Initialize excel object
-		$this->excelInitialize();
-
-		/* Write Outout 1*/
-		$this->excelCellsHeading = [
-			['cell' => 'A', 'label' => 'No'],
-			['cell' => 'B', 'label' => 'Dosen'],
-			['cell' => 'C', 'label' => 'Mata Kuliah'],
-			['cell' => 'D', 'label' => 'Responden'],
-			['cell' => 'E', 'label' => 'Q1'],
-			['cell' => 'F', 'label' => 'Q2'],
-			['cell' => 'G', 'label' => 'Q3'],
-			['cell' => 'H', 'label' => 'Q4'],
-			['cell' => 'I', 'label' => 'Q5'],
-			['cell' => 'J', 'label' => 'Q6'],
-			['cell' => 'K', 'label' => 'Q7'],
-			['cell' => 'L', 'label' => 'Q8'],
-			['cell' => 'M', 'label' => 'Q9'],
-			['cell' => 'N', 'label' => 'Total']
-		];
-
-		// Initialize excel object
-		$this->excelInitialize();
-
-		// Write heading excel use method on MY_Controller.php
-    	$this->excelWriteHeading();
-
-
-		$this->excelDataStart = 2;
-		// print_r($datas['output3']);exit;
-		for($i = 1;$i <=  $datas['output1']['datas']->responden; $i++)	{
-			$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, $this->excelColumnNo);
-			$this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $datas['output1']['datas']->nama_guru[$i]);
-			$this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $datas['output1']['datas']->nama_mapel[$i]);
-			$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $i);
-
-			$total = 0; $x = 0;
-			$alphabets = range('E', 'Z');
-			foreach($datas['output1']['datas']->jawaban[$i] as $index => $row) {
-				$total += $row['nilai'];
-				$sub_total[$i][$index] = $row['nilai'];
-
-				$this->excelObject->getActiveSheet()->SetCellValue($alphabets[$index-1] . $this->excelDataStart, $row['nilai']);
-				$x++;
-			}
-			$this->excelObject->getActiveSheet()->SetCellValue($alphabets[$x] . $this->excelDataStart, $total);
-			$this->excelDataStart++;
-			$this->excelColumnNo++;
-		}	
-		$this->excelColumnNo = 1;
-
-		/* Write Output 2 */
-		$this->excelDataStart += 2;
-		$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, 'Data Sebaran Jawaban');
-
-		
-		$this->excelCellsHeading = [
-			['cell' => 'A', 'label' => 'No'],
-			['cell' => 'B', 'label' => 'Indikator'],
-			['cell' => 'C', 'label' => '5'],
-			['cell' => 'D', 'label' => '4'],
-			['cell' => 'E', 'label' => '3'],
-			['cell' => 'F', 'label' => '2'],
-			['cell' => 'G', 'label' => '1'],
-		];
-
-		// Write heading excel use method on MY_Controller.php
-    	$this->excelWriteHeading($this->excelDataStart+1);
-
-    	// Add break
-    	$this->excelDataStart += 2;
-
-    	$i = 0;
-    	foreach($datas['output2']['datas']['labels'] as $label) {
-    		$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, $this->excelColumnNo);
-    		$this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $label);
-    		$this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $datas['output2']['datas']['presentase'][$i]['A'] . '%');
-    		$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $datas['output2']['datas']['presentase'][$i]['B'] . '%');
-    		$this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $datas['output2']['datas']['presentase'][$i]['C'] . '%');
-    		$this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, $datas['output2']['datas']['presentase'][$i]['D'] . '%');
-    		$this->excelObject->getActiveSheet()->SetCellValue('G' . $this->excelDataStart, $datas['output2']['datas']['presentase'][$i]['E'] . '%');
-    		$i++;
-    		$this->excelDataStart++;
-			$this->excelColumnNo++;
-    	}
-
-    	$this->excelColumnNo = 1;
-    	/* Output 3 */
-    	$this->excelDataStart += 2;
-		$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, 'Data Deskriptif Jawaban');
-
-		$this->excelCellsHeading = [
-			['cell' => 'A', 'label' => 'NO'],
-			['cell' => 'B', 'label' => 'INDIKATOR'],
-			['cell' => 'C', 'label' => 'MIN'],
-			['cell' => 'D', 'label' => 'MAX'],
-			['cell' => 'E', 'label' => 'SIMPANGAN BAKU'],
-		];
-
-		// Write heading excel use method on MY_Controller.php
-    	$this->excelWriteHeading($this->excelDataStart+1);
-
-    	// Add break
-    	$this->excelDataStart += 2;
-
-    	$i = 0;
-    	foreach($datas['output3']['datas']['labels'] as $label) {
-    		$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, $this->excelColumnNo);
-    		$this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $label);
-    		$this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $datas['output3']['datas']['datas'][$i]['min']);
-    		$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $datas['output3']['datas']['datas'][$i]['max']);
-    		$this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $datas['output3']['datas']['deviasi'][$i]);
-    		$i++;
-    		$this->excelDataStart++;
-			$this->excelColumnNo++;
-    	}
-
-		// Create New File use method on MY_Controller.php
-		$this->excelFileName = "Data Penilaian - " . date('m-d-Y') . ".xlsx";
-		$this->excelDisplayOutput();
-
-		$this->excelColumnNo = 1;
-
-	}
-
 	public function jadwal() {
 		$this->load->model('m_jadwal');
 		if($this->log_lvl == 'siswa') {
@@ -795,9 +493,12 @@ class Export extends MY_Controller {
 		// Set No Column back to 1 for reuse
 		$this->excelColumnNo = 1;
 	}
+
 	/**
 	 * PDF Export Section
 	 */
+
+	
 
 	//  Rekapitulasi
 	public function pdf_rekapitulasi() {
@@ -808,6 +509,8 @@ class Export extends MY_Controller {
 		$result = [
 			'datas' => $this->m_kelas->rekaptulasi([])
 		];
+
+		$this->sendPdf('rekaptulasi/rekap_pdf', 'A4', 'landscape', 'Rekapitulasi.pdf');
 		$this->dpdf->setPaper('A4', 'landscape');
 		$this->dpdf->filename = 'Rekapitulasi.pdf';
 		$this->dpdf->view('rekaptulasi/rekap_pdf', $result);
@@ -828,4 +531,21 @@ class Export extends MY_Controller {
 
 	}
 
+	public function pdf_hasil_ujian_essay($encrypt_id) {
+		$id_ujian = decrypt_url($encrypt_id);
+
+		$this->load->library('dpdf');
+		$this->load->model('m_ikut_ujian_essay');
+		$this->load->model('m_ujian');
+		$this->load->model('m_siswa');
+
+		$result = [
+			'datas' => $this->m_ikut_ujian_essay->get_many_by(['id_ujian' => $id_ujian])
+		];
+
+		// print_r($result);
+		$this->dpdf->setPaper('A4', 'landscape');
+		$this->dpdf->filename = 'Hasil Ujian Essay.pdf';
+		$this->load->view('ujian_essay/pdf_list_hasil', $result);
+	}
 }

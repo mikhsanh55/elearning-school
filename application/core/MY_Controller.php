@@ -1,9 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-<<<<<<< HEAD
-// require 'vendor/autoload.php';
-=======
 require 'vendor/autoload.php';
->>>>>>> first push
 
 class MY_Controller extends CI_Controller
 {
@@ -196,23 +192,6 @@ class MY_Controller extends CI_Controller
 			$this->get_url .= '/' . $this->uri->segment(2);
 		}
 
-<<<<<<< HEAD
-		$sub_menu = $this->db->join('menu', 'sub.id_menu = menu.id', 'inner')
-			->where('sub.sub_menu', $this->get_url)
-			->get('tb_sub_menu sub')->row();
-		//echo $this->db->last_query();exit;
-		$this->active_menu = (!empty($sub_menu->id_menu)) ? $sub_menu->id_menu : NULL;
-	
-		$this->sub_menu = $sub_menu;
-
-		$this->page_title = (!empty($this->sub_menu->nama_menu)) ? $this->sub_menu->nama_menu : NULL;
-		
-		
-        // print_r($this->id_level);exit;
-	
-	}
-
-=======
 		$this->db->where(['link' => $this->get_url]);
 		$active_menu = $this->db->get('menu');
 
@@ -253,7 +232,6 @@ class MY_Controller extends CI_Controller
 		return FALSE;
 	}
 
->>>>>>> first push
 	function getClient()
 	{
 		header("Access-Control-Allow-Origin: *");
@@ -303,10 +281,7 @@ class MY_Controller extends CI_Controller
 	}
 
 	public function insertCalendar(
-<<<<<<< HEAD
-=======
 		$id_guru = NULL,
->>>>>>> first push
 		$id_kelas,
 		$ket,
 		$color,
@@ -381,13 +356,10 @@ class MY_Controller extends CI_Controller
 			'color'  	 	=> $color,
 		);
 
-<<<<<<< HEAD
-=======
 		if(!is_null($id_guru)) {
 			$data['id_guru'] = $id_guru;
 		}
 
->>>>>>> first push
 		$this->m_jadwal->insert($data);
 		echo json_encode(array('result' => true));
 	}

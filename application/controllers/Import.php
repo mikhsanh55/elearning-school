@@ -1,8 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 date_default_timezone_set("Asia/Jakarta");
-
-include APPPATH.'third_party/PHPExcel/PHPExcel.php';
-
 class Import extends MY_Controller {
     function __construct() {
         parent::__construct();
@@ -134,109 +131,8 @@ class Import extends MY_Controller {
             //upload success
             $this->session->set_flashdata('notif', '<div class="alert alert-success"><b>PROSES IMPORT BERHASIL!</b> Data berhasil diimport!</div>');
             //redirect halaman
+             redirect(base_url('pengusaha/import'));;
 
-             redirect(base_url('pengusaha/import'));
-
-    }
-
-    /*
-    * Untuk imporet soal penilaian
-    */
-    public function soal_penilaian() {
-        $this->load->model('m_dimensi');
-        $config['upload_path'] = realpath('./upload/temp');
-
-        $config['upload_path'] = realpath('./upload/temp');
-        $config['allowed_types'] = 'xlsx|xls|csv';
-        $config['max_size'] = '10000';
-        $config['encrypt_name'] = true;
-
-        $id_paket = decrypt_url($this->input->post('id_paket'));
-
-        $this->load->library('upload', $config);
-
-        if (!$this->upload->do_upload()) {
-
-            //upload gagal
-            $this->session->set_flashdata('notif', '<div class="alert alert-danger"><b>PROSES IMPORT GAGAL!</b> '.$this->upload->display_errors().'</div>');
-            //redirect halaman
-            redirect(base_url('penilaian/form_import_soal/') . $this->input->post('id_paket'));
-
-        } 
-        else {
-            $data_upload = $this->upload->data();
-
-            $excelreader     = new PHPExcel_Reader_Excel2007();
-            $loadexcel         = $excelreader->load('./upload/temp/'.$data_upload['file_name']); // Load file yang telah diupload ke folder excel
-            $sheet             = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
-
-            $data = array();
-            // print_r([
-            //     'count' => count($sheet),
-            //     'sheet' => $sheet
-            // ]);exit;
-            foreach($sheet as $index => $row) {
-                if($index > 1 && $row['D'] != '' && !is_null($row['D'])) {
-
-                    // Id Dimensi
-                    switch($row['J']) {
-                        case 1: // Materi
-                            $getid_dimensi = $this->m_dimensi->get_by(['nama' => 'Materi']);
-                        break;
-
-                        case 2: // Materi
-                            $getid_dimensi = $this->m_dimensi->get_by(['nama' => 'Aplikasi']);
-                        break;
-
-                        case 3: // Materi
-                            $getid_dimensi = $this->m_dimensi->get_by(['nama' => 'Motivator']);
-                        break;
-
-                        case 4: // Materi
-                            $getid_dimensi = $this->m_dimensi->get_by(['nama' => 'Personal']);
-                        break;
-
-                        case 5: // Materi
-                            $getid_dimensi = $this->m_dimensi->get_by(['nama' => 'Tugas & Ujian']);
-                        break;
-                    }
-                    $data[$index] = [
-                        'id_paket' => $id_paket,
-                        'bobot' => $row['B'],
-                        'soal' => $row['C'],
-                        'opsi_a' => '##### ' . $row['D'],
-                        'opsi_b' => '##### ' . $row['E'],
-                        'opsi_c' => '##### ' . $row['F'],
-                        'opsi_d' => '##### ' . $row['G'],
-                        'opsi_e' => '##### ' . $row['H'],
-                        'jawaban' => $row['I'],
-                        'id_dimensi' => $getid_dimensi->id,
-                        'tgl_input' => date('Y-m-d H:s:i')
-                    ];
-                }
-            } // end foreach
-
-            $this->db->trans_begin();
-
-            $this->db->insert_batch('m_soal_penilaian', $data);
-
-            if ($this->db->trans_status() === FALSE)
-            {
-                $this->db->trans_rollback();
-            }
-            else
-            {
-                $this->db->trans_commit();
-            }
-            
-            //delete file from server
-            unlink(realpath('./upload/temp/'.$data_upload['file_name']));
-
-            //upload success
-            $this->session->set_flashdata('notif', '<div class="alert alert-success"><b>PROSES IMPORT BERHASIL!</b> Data berhasil dimport!</div>');
-            //redirect halaman
-            redirect(base_url('penilaian/form_import_soal/') . $this->input->post('id_paket'));
-        }
     }
 
 
@@ -295,6 +191,7 @@ class Import extends MY_Controller {
                         'status'  => $row['N'],
                         'pendidikan_umum_terakhir' => $row['O'],
                         'pendidikan_militer_terakhir' => $row['P'],
+                        'semester' => $row['O'],
                         'instansi' => $this->akun->instansi
                     );
                 }
@@ -465,10 +362,8 @@ class Import extends MY_Controller {
                         'opsi_b'    => '#####<p>'.$row['D'].'</p>',
                         'opsi_c'    => '#####<p>'.$row['E'].'</p>',
                         'opsi_d'    => '#####<p>'.$row['F'].'</p>',
-
                         'opsi_e'    => '#####<p>'.$row['G'].'</p>',
                         'jawaban'   => $row['H'],
-
                         'tgl_input' => NOW(),
                         'jml_benar' => 0,
                         'jml_salah' => 0
@@ -487,7 +382,6 @@ class Import extends MY_Controller {
                 'jumlah_soal' => $data_ujian->jumlah_soal + count($data)
             ], ['id' => decrypt_url($id_ujian)]);
 
-
             //delete file from server
             unlink(realpath('./upload/temp/'.$data_upload['file_name']));
 
@@ -499,6 +393,7 @@ class Import extends MY_Controller {
         }
 
     }
+    
 }
 
 

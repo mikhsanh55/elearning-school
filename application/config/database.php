@@ -14,11 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | EXPLANATION OF VARIABLES
 | -------------------------------------------------------------------
 |
-<<<<<<< HEAD
-|	['dsn']      The full DSN string describe a connection to the database.
-=======
 |	['dsn']      The full DSN string describe a connection to the database. 
->>>>>>> first push
 |	['hostname'] The hostname of your database server.
 |	['username'] The username used to connect to the database
 |	['password'] The password used to connect to the database
@@ -75,16 +71,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | the query builder class. 
 */
 $active_group = 'local';
-
 $query_builder = TRUE;  
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'globaltech_dev',
-	'password' => 'Globaltech_devadmin22-',
-	'database' => 'globaltech_dev',
-
+	'hostname' => 'localhost', 
+	'username' => 'icommits_admin_elearning_net',
+	'password' => 'admin_elearning_net',
+	'database' => 'icommits_elearning_net',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -103,10 +97,10 @@ $db['default'] = array(
 
 $db['local'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
+	'hostname' => '127.0.0.1',
 	'username' => 'root',
-	'password' => 'dbicommits',
-	'database' => 'icommits_tnial',
+	'password' => '',
+	'database' => 'elearning',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

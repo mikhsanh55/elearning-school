@@ -119,11 +119,6 @@
 					<a class="btn btn-success btn-sm tombol-kanan" href="<?=$url_form;?>"><i class="fa fa-user-plus"></i> &nbsp;Tambah</a>
 					<a href="javascript:void(0);" title="edit" id="edited" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> &nbsp;Edit</a>
 					<a href="javascript:void(0);" id="deleted" title="Hapus" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> &nbsp;Hapus</a>
-<<<<<<< HEAD
-					<a href="<?= base_url('/upload/format_soal_penilaian.xlsx') ?>" class="btn btn-warning btn-sm"> &nbsp;Download Format Import</a>
-					<a href="<?= base_url('penilaian/form_import_soal/') . $encrypt_id_paket; ?>" class="btn btn-warning btn-sm">Import Soal</a>
-=======
->>>>>>> first push
 					<!-- <a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url(); ?>upload/format_soal_download-1.xlsx" ><i class="glyphicon glyphicon-download"></i> &nbsp;&nbsp;Download Format Import</a>
 					 <a class="btn btn-info btn-sm tombol-kanan" href="<?=$url_import;?>" ><i class="glyphicon glyphicon-upload"></i> &nbsp;&nbsp;Import Excel</a> -->
 

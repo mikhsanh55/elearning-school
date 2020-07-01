@@ -1105,11 +1105,7 @@ class Ujian_essay extends MY_Controller {
 
 
 			$id_ujian = decrypt_url($id_ujian);
-<<<<<<< HEAD
-
-=======
 			$jwb = [];
->>>>>>> first push
 
 
 			if ($this->session->userdata('selesai_ujian') == 1) {
@@ -2117,10 +2113,27 @@ class Ujian_essay extends MY_Controller {
 		echo json_encode(['send'=>$kirim]);
 
 	}
-	
 
+	public function update_status_siswa() {
+		$post = $this->input->post();
+		$status = $post['status'];
+		$id = $post['id'];
+		$update = $this->m_ikut_ujian_essay->update([
+			'status_siswa' => $status
+		], ['id' => $id]);
 
-
-
+		if($update) {
+			$this->sendAjaxResponse([
+				'status' => TRUE,
+				'msg'	 => 'Data berhasil diperbaharui'
+			], 200);
+		}
+		else {
+			$this->sendAjaxResponse([
+				'status' => FALSE,
+				'msg'	 => 'Data gagal diperbaharui'
+			], 500);	
+		}
+	}
 
 }

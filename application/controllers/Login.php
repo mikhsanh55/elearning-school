@@ -167,6 +167,14 @@ class Login extends MY_Controller
         				$det_user = $this->m_guru->get_by(array('id'=>$get_user->kon_id));
         				if (!empty($det_user)) {
         					$sess_nama_user = $det_user->nama;
+
+                            // Update Num Active
+                            $data_update = [
+                                'active_num' => $det_user->active_num + 1
+                            ];
+                            $this->db->where('id', $get_user->kon_id);
+                            $this->db->update('m_guru', $data_update);
+
         				}
         			} else {
         				$sess_nama_user = "Administrator";
@@ -182,15 +190,6 @@ class Login extends MY_Controller
         				'admin_valid' => true
         			);
 
-        			$this->session->set_userdata($data);
-
-                    // Update sum login
-                    date_default_timezone_set('Asia/Jakarta');
-                    $this->db->where(['id' => $get_user->id]);
-                    $this->db->update('m_admin', [
-                        'sum_login' => $get_user->sum_login + 1,
-                        'login_at'  => date('Y-m-d H:i:s')
-                    ]);
 
 
         			$this->session->set_userdata($data);

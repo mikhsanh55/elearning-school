@@ -85,19 +85,11 @@
 
 									<?php if ($edit->id_kelas == $rows->id): ?>
 
-<<<<<<< HEAD
-										<option value="<?=$rows->id;?>" selected><?=$rows->nama.' ( '.$rows->nama_guru.' - '.$rows->nama_mapel.' )';?></option>
-
-									<?php else: ?>
-
-										<option value="<?=$rows->id;?>"><?=$rows->nama.' ( '.$rows->nama_guru.' - '.$rows->nama_mapel.' )';?></option>
-=======
 										<option value="<?=$rows->id;?>" selected><?= $rows->jurusan; ?></option>
 
 									<?php else: ?>
 
 										<option value="<?=$rows->id;?>"><?= $rows->jurusan; ?></option>
->>>>>>> first push
 
 
 									<?php endif ?>
@@ -113,8 +105,6 @@
 				</div>
 
 			</div>
-<<<<<<< HEAD
-=======
 			<div class="row">
 				<div class="col-md-6 col-sm-12 form-group">
 					<label for="">Mata Pelajaran</label>
@@ -133,7 +123,6 @@
 					</div>
 				</div>
 			</div>
->>>>>>> first push
 
 
 
@@ -221,11 +210,7 @@
 
 				<div class="col-md-6 form-group">
 
-<<<<<<< HEAD
-					<label for="tempat_lahir">Waktu Mulai:</label>
-=======
 					<label for="tempat_lahir">Waktu Selesai:</label>
->>>>>>> first push
 
 					<input class="form-control" type="time" name="waktu_selesai" required value="<?=$time2;?>">
 

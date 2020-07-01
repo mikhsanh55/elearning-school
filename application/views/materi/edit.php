@@ -77,39 +77,11 @@
                             <div class="form-group d-flex">
                                 <div class="mr-4">
                                     <label for="type-manual">Upload Manual</label>
-<<<<<<< HEAD
-                                    <input type="radio" name="typeVideo" id="type-manual" <?php if($materi->upload_manual == 1): ?>
-=======
                                     <input type="radio" name="typeVideo" id="type-manual" <?php if($materi->id_type_video == 1): ?>
->>>>>>> first push
                                         checked
                                     <?php endif; ?>
                                      data-type="manual">
                                 </div>
-<<<<<<< HEAD
-                                <div>
-                                    <label for="type-gdrive">Google Drive</label>
-                                    <input type="radio" name="typeVideo" id="type-gdrive"  <?php if($materi->upload_manual == 0): ?>
-                                        checked
-                                    <?php endif; ?> data-type="gdrive">
-                                </div>
-                            </div>        
-                            <?php if($materi->upload_manual == 1) { ?>
-                                <input type="text" class="form-control d-none" placeholder="Masukan Id Video..." name="video" autofocus >
-                            <?php } else { ?>
-                                <input type="text" class="form-control" placeholder="Masukan Id Video..." name="video" autofocus value="<?= $materi->video; ?>">
-                                
-                            <?php } ?>
-                            
-                            <?php if($materi->upload_manual == 0) { ?>
-                                <input type="file" name="video-manual" class="form-control d-none" value="">
-                            <?php } else { ?>
-                                <input type="file" name="video-manual" class="form-control" >
-                                <div class="mt-4">
-                                    <iframe src="<?= $materi->video; ?>" frameborder="0" allowfullscreen></iframe>
-                                </div>
-                            <?php } ?>
-=======
                                 <div class="mr-4">
                                     <label for="type-gdrive">Google Drive</label>
                                     <input type="radio" name="typeVideo" id="type-gdrive"  <?php if($materi->id_type_video == 2): ?>
@@ -143,7 +115,6 @@
                                 <input type="text" class="form-control" placeholder="Masukan Link Video Youtube" name="videoYt" value="<?= $materi->path_video; ?>">
                             <?php } ?>
                             
->>>>>>> first push
                         </div>
                     </div>
                     <br><br>
@@ -191,34 +162,22 @@
         imateri = $('.imateri'),
         uploadOk = 0,
         video = document.querySelector('input[type=text][name=video]'),
-<<<<<<< HEAD
-        videoManual = document.querySelector('input[type=file][name=video-manual]'),
-        typeVideo = document.querySelectorAll('input[type=radio][name=typeVideo]'),
-        selectedType = document.querySelector('input[type=radio][name=typeVideo]:checked'),
-        uploadManual = false;
-=======
         videoYt = document.querySelector('input[type=text][name=videoYt]'),
         videoManual = document.querySelector('input[type=file][name=video-manual]'),
         typeVideo = document.querySelectorAll('input[type=radio][name=typeVideo]'),
         selectedType = document.querySelector('input[type=radio][name=typeVideo]:checked'),
         uploadManual = false, uploadType = 'manual';
->>>>>>> first push
 
         if(selectedType.dataset.type == 'manual') {
             console.log('Upload manual');
             type_video = 'manual';
             uploadManual = true;
-<<<<<<< HEAD
-=======
             uploadType = 1
->>>>>>> first push
         }
         else if(selectedType.dataset.type == 'gdrive') {
             console.log('G Drive')
             type_video = 'Gdrive';
             uploadManual = false;
-<<<<<<< HEAD
-=======
             uploadType = 2
         }
         else if(selectedType.dataset.type == 'youtube') {
@@ -226,7 +185,6 @@
             type_video = 'Gdrive';
             uploadManual = false;
             uploadType = 3
->>>>>>> first push
         }
         // Validasi file
         typeVideo.forEach(function(el) {
@@ -237,20 +195,6 @@
                 uploadManual = false
             }
             el.addEventListener('change', function() {
-<<<<<<< HEAD
-                if(el.dataset.type == 'manual') {
-                    videoManual.classList.remove('d-none')
-                    video.classList.add('d-none')
-                    uploadManual = true;
-                    type_video = 'manual';
-                }
-                else {
-                    video.classList.remove('d-none')
-                    videoManual.classList.add('d-none')
-                    uploadManual = false;
-                    type_video = 'Gdrive';
-                }
-=======
                if(el.dataset.type == 'manual')  {
                     videoManual.classList.remove('d-none')
 
@@ -275,7 +219,6 @@
                     uploadManual = false
                     uploadType = 'youtube'
                 }   
->>>>>>> first push
             })
             
         });
@@ -322,13 +265,6 @@
 
 			// Store Data
 			let data = new FormData();
-<<<<<<< HEAD
-            if(uploadManual == true) {
-                data.append('video_manual', file);
-            }
-            else {
-                data.append('video', video.value);  
-=======
             switch(uploadType) {
                 case 'manual':
                 data.append('video_manual', file)
@@ -344,18 +280,13 @@
                 data.append('video-youtube', videoYt.value)
                 data.append('id_type_video', 3)
                 break
->>>>>>> first push
             } 
                     
 			data.append('title', title.val());
 			data.append('content', content);
 			data.append('mapel', mapel.val());
             data.append('imateri', imateri.val());
-<<<<<<< HEAD
-            data.append('type_video', type_video);
-=======
             
->>>>>>> first push
 
 			let dataAjax = {};
 			$('#spin-icon').removeClass('hide');

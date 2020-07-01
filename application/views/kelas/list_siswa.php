@@ -81,11 +81,7 @@
 					<div class="panel panel-info">
 						<div class="panel-heading">
 							<div class="tombol-kanan">
-<<<<<<< HEAD
-								<h2><strong>Daftar Kelas</strong></h2>
-=======
 								<h2><strong>Daftar Room</strong></h2>
->>>>>>> first push
 							</div>
 						</div>
 					</div>

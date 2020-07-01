@@ -54,16 +54,6 @@
                   <th class="text-center align-middle">No</th>
 					<th class="text-center align-middle">Nama </th>
 					<th class="text-center align-middle">Username</th>
-<<<<<<< HEAD
-					<th class="text-center align-middle">NIDN</th>
-					<th class="text-center align-middle">NRP</th>
-					<th class="text-center align-middle">Lembaga</th>
-					<th class="text-center align-middle">Semester</th>
-					<th class="text-center align-middle">Jumlah Diskusi</th>
-					<th class="text-center align-middle">Aktif Login</th>
-					<th class="text-center align-middle">Terakhir Login</th>
-
-=======
 					<th class="text-center align-middle">NUPTK</th>
 					<th class="text-center align-middle">NISN</th>
 					<th class="text-center align-middle">Lembaga</th>
@@ -71,7 +61,6 @@
 					<th class="text-center align-middle">Jumlah Login</th>
 					<th class="text-center align-middle">Jumlah Upload Materi</th>
 					<th class="text-center align-middle">Jumlah Diskusi</th>
->>>>>>> first push
                </tr>
 
             </thead>

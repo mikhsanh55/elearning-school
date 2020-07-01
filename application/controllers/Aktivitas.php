@@ -122,9 +122,6 @@ class Aktivitas extends MY_Controller {
     }
 
     public function data_guru() {
-
-    	$this->load->model('m_komen_materi');
-
     	$start = $this->input->post('start');
         $length = $this->input->post('length');
         $draw = $this->input->post('draw');
@@ -132,11 +129,9 @@ class Aktivitas extends MY_Controller {
 
         if($this->log_lvl == 'instansi') {
         	$where = [
-
-        		'guru.instansi' => 4,
+        		'guru.instansi' => $this->akun->instansi,
         		"guru.nama LIKE '%" . $search['value'] . "%'" => NULL
         	];
-
 
         	$result = $this->db->select('guru.*, ins.instansi AS nama_instansi')
         						->from('m_guru guru')
@@ -154,9 +149,6 @@ class Aktivitas extends MY_Controller {
         $no = ($start+1);
         foreach ($result as $d) {
 
-        	$this->db->where(['id_trainer' => $d['id']]);
-        	$sum_komen = $this->db->get('tb_komen_materi')->num_rows();
-
             $data_ok = array();
 
             $data_ok[] = $no++;
@@ -167,11 +159,9 @@ class Aktivitas extends MY_Controller {
             $data_ok[] = $d['nama_instansi'];
             $data_ok[] = $d['semester'];
 
-
             $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-sm btn-primary ">' . $d['active_num'] . '</button></div>';
             $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-sm btn-primary ">' . $d['sum_upload_materi'] . '</button></div>';
             $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-sm btn-primary ">' . $d['sum_diskusi'] . '</button></div>';
-
 
             $data[] = $data_ok;
         }

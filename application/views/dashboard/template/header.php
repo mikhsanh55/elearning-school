@@ -23,13 +23,10 @@
   <!-- Chart JS -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <style type="text/css">
-<<<<<<< HEAD
-=======
     .active {
       background: black;
       color:#fff;
     }
->>>>>>> first push
     .fa-ban:hover { 
       cursor: not-allowed;
     }
@@ -81,12 +78,9 @@
     float: right;
     margin-top:5%;
   }
-<<<<<<< HEAD
-=======
   .caret-0deg {
     transform:rotate(0deg);
   }
->>>>>>> first push
   .caret-90deg {
     transform:rotate(90deg);
   }

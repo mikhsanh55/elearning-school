@@ -98,20 +98,6 @@
                                             <?php if ($this->active_menu == $row['id']){ ?>
                                             
                                                 <?php if(isset($row['sub'])) { ?>
-<<<<<<< HEAD
-                                                    <li class="parent-menu ">
-                                                        <a href="#" class="parent-menu-link active">
-                                                            <i class="<?= $row['icon'] ?>"></i><?= $row['nama_menu'] ?>
-                                                            <i class="fas fa-angle-right caret-sub-menu"></i> 
-                                                        </a>
-                                                        <ul class="sub-menu ml-4 d-none">
-                                                            
-                                                            
-                                                        <?php foreach($row['sub'] as $submenu) : ?>
-                                                                <li>
-
-                                                                    <a href="<?= base_url($submenu->link); ?>" class="text-secondary"><i class="<?= $submenu->icon; ?>"></i><?= $submenu->nama; ?></a></li>
-=======
                                                     <li class="parent-menu  ">
                                                         <a href="#" class="parent-menu-link">
                                                             <i class="<?= $row['icon'] ?>"></i><?= $row['nama_menu'] ?>
@@ -130,16 +116,11 @@
                                                                     <a href="<?= base_url($submenu->link); ?>" class="text-secondary"><i class="<?= $submenu->icon; ?> "></i><?= $submenu->nama; ?></a>
                                                                 </li>
                                                             <?php } ?>
->>>>>>> first push
                                                         <?php endforeach; ?>
                                                         </ul>
                                                     </li>    
                                                 <?php }else { ?>
-<<<<<<< HEAD
-                                                    <li>
-=======
                                                     <li class="active">
->>>>>>> first push
                                                         <a href="<?= base_url($row['link']); ?>">
                                                             <i class="<?= $row['icon'] ?>"></i><?= $row['nama_menu'] ?>
                                                         </a>

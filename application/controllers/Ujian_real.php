@@ -21,17 +21,11 @@ class Ujian_real extends MY_Controller {
         $this->load->model('m_guru');
 
         $this->load->model('m_soal_ujian');
-<<<<<<< HEAD
-
-		$this->load->model('m_ikut_ujian');
-		$this->load->model('m_ikut_ujian_essay');
-=======
         $this->load->model('m_soal_ujian_essay');
 
 		$this->load->model('m_ikut_ujian');
 		$this->load->model('m_ikut_ujian_essay');
 		$this->load->model('m_jurusan');
->>>>>>> first push
 		
 
 		$this->load->model('m_kelas');
@@ -81,10 +75,7 @@ class Ujian_real extends MY_Controller {
 			'ujian' => $this->m_ujian->get_by(['uji.id'=>decrypt_url($id_ujian)])
 
 		);
-<<<<<<< HEAD
-=======
 		// print_r($this->m_ujian->get_by(['uji.id'=>decrypt_url($id_ujian)]));exit;
->>>>>>> first push
 
 		$this->render('ujian/list_soal',$data);
 
@@ -96,27 +87,6 @@ class Ujian_real extends MY_Controller {
 
 
 
-<<<<<<< HEAD
-		$tipe_ujian = array('uts'=>'UTS','uas'=>'UAS');
-
-		
-
-		if ($this->log_lvl == 'guru') {
-
-			$kelas = $this->m_kelas->get_many_by(['id_trainer'=>$this->akun->id,'kls.id_instansi'=>$this->akun->instansi]);
-
-		} else if ($this->log_lvl == 'instansi' || $this->log_lvl == 'admin_instansi'){
-
-			$kelas = $this->m_kelas->get_many_by(['kls.id_instansi'=>$this->akun->instansi]);
-
-		} else {
-
-			$kelas = $this->m_kelas->get_all();
-
-		}
-
-		
-=======
 		$tipe_ujian = array('uts'=>'UTS','uas'=>'UAS', 'harian' => 'Ulangan Harian');
 
 		
@@ -138,18 +108,13 @@ class Ujian_real extends MY_Controller {
 		
 		$mapel = $this->m_mapel->get_many_by(['id_instansi' => $this->akun->instansi]);
 		// print_r($mapel);exit;
->>>>>>> first push
 
 		$data = array(
 
 			'tipe_ujian' => $tipe_ujian, 
 
-<<<<<<< HEAD
-			'kelas' => $kelas
-=======
 			'kelas' => $kelas,
 			'mapel' => $mapel
->>>>>>> first push
 
 		);
 
@@ -169,22 +134,6 @@ class Ujian_real extends MY_Controller {
 
 
 
-<<<<<<< HEAD
-		if ($this->log_lvl == 'guru') {
-
-			$kelas = $this->m_kelas->get_many_by(['id_trainer'=>$this->akun->id,'kls.id_instansi'=>$this->akun->instansi]);
-
-		} else if ($this->log_lvl == 'instansi' || $this->log_lvl == 'admin_instansi'){
-
-			$kelas = $this->m_kelas->get_many_by(['kls.id_instansi'=>$this->akun->instansi]);
-
-		} else {
-
-			$kelas = $this->m_kelas->get_all();
-
-		}
-
-=======
 		// if ($this->log_lvl == 'guru') {
 
 		// 	$kelas = $this->m_kelas->get_many_by(['id_trainer'=>$this->akun->id,'kls.id_instansi'=>$this->akun->instansi]);
@@ -201,7 +150,6 @@ class Ujian_real extends MY_Controller {
 		$kelas = $this->m_jurusan->get_many_by(['id_instansi' => $this->akun->instansi]);
 		
 		$mapel = $this->m_mapel->get_many_by(['id_instansi' => $this->akun->instansi]);
->>>>>>> first push
 
 
 		$id = decrypt_url($id);
@@ -211,10 +159,7 @@ class Ujian_real extends MY_Controller {
 			'tipe_ujian' => $tipe_ujian, 
 
 			'kelas' => $kelas,
-<<<<<<< HEAD
-=======
 			'mapel' => $mapel,
->>>>>>> first push
 
 			'edit' => $this->m_ujian->get_by(['uji.id'=>$id])
 
@@ -322,41 +267,6 @@ class Ujian_real extends MY_Controller {
 
 		$post = $this->input->post();
 
-<<<<<<< HEAD
-
-
-		if ($this->log_lvl == 'guru') {
-
-			$post['trainer'] = $this->akun->id;
-
-		}
-
-
-
-		$data = [
-
-			'id_kelas'		=> $post['id_kelas'],
-
-			'type_ujian'  	=> $post['type_ujian'],
-
-			'nama_ujian'  	=> $post['nama_ujian'],
-
-			'jumlah_soal'  	=> 0,
-
-			'waktu'  		=> $post['waktu_ujian'],
-
-			'nama_ujian'  	=> $post['nama_ujian'],
-
-			'jenis'  		=> 'set',
-
-			'tgl_mulai'		=> date_default($post['tgl_mulai']).' '.$post['waktu_mulai'],
-
-			'terlambat'		=> date_default($post['tgl_selesai']).' '.$post['waktu_selesai'],
-
-			'min_nilai'		=> $post['min_nilai']
-
-		];
-=======
 		$data = [
 
 			'id_kelas'		=> $post['id_kelas'],
@@ -381,7 +291,6 @@ class Ujian_real extends MY_Controller {
 			$data['id_guru'] = $this->akun->id;
 
 		}
->>>>>>> first push
 
 
 
@@ -419,11 +328,8 @@ class Ujian_real extends MY_Controller {
 
 			'id_kelas'		=> $post['id_kelas'],
 
-<<<<<<< HEAD
-=======
 			'id_mapel'		=> $post['id_mapel'],
 
->>>>>>> first push
 			'type_ujian'  	=> $post['type_ujian'],
 
 			'nama_ujian'  	=> $post['nama_ujian'],
@@ -444,13 +350,10 @@ class Ujian_real extends MY_Controller {
 
 		];
 
-<<<<<<< HEAD
-=======
 		if($post['type_ujian'] == 'uts') {
 			$data['izin'] = 1;
 		}
 
->>>>>>> first push
 
 
 		$kirim = $this->m_ujian->update($data,array('id'=>$post['id']));
@@ -520,26 +423,13 @@ class Ujian_real extends MY_Controller {
 		}
 
 
-<<<<<<< HEAD
-
-	
-
-
-
-		$where['kls.id_instansi'] = $this->akun->instansi;
-=======
 		$where['uji.id_instansi'] = $this->akun->instansi;
->>>>>>> first push
 
 
 
 		if ($this->log_lvl == 'guru') {
 
-<<<<<<< HEAD
-			$where['kls.id_trainer'] = $this->akun->id;
-=======
 			$where['uji.id_guru'] = $this->akun->id;
->>>>>>> first push
 
 		}
 
@@ -547,11 +437,7 @@ class Ujian_real extends MY_Controller {
 
 		if ($this->log_lvl == 'siswa') {
 
-<<<<<<< HEAD
-			$where['dekls.id_peserta'] = $this->akun->id;
-=======
 			$where['sis.id'] = $this->session->admin_konid;	
->>>>>>> first push
 
 			$paginate = $this->m_ujian->paginate_siswa($pg,$where,$limit);
 
@@ -562,11 +448,7 @@ class Ujian_real extends MY_Controller {
 		}
 
 
-<<<<<<< HEAD
-
-=======
 		// print_r($paginate);exit;
->>>>>>> first push
 	
 
 		$data['paginate'] = $paginate;
@@ -730,11 +612,7 @@ class Ujian_real extends MY_Controller {
 		$a['huruf_opsi'] = array("a","b","c","d","e");
 
 		$a['jml_opsi'] = $this->config->item('jml_opsi');
-<<<<<<< HEAD
-
-=======
 		// print_r($this->config);exit;
->>>>>>> first push
 
 
 		$a['opsij'] = array(""=>"Jawaban","A"=>"A","B"=>"B","C"=>"C","D"=>"D","E"=>"E");
@@ -803,12 +681,7 @@ class Ujian_real extends MY_Controller {
 
 	}
 
-<<<<<<< HEAD
-
-
-=======
 	// Method untuk menyimpan soal di add soal dan edit soal
->>>>>>> first push
 	function simpan_soal(){
 
 
@@ -857,11 +730,8 @@ class Ujian_real extends MY_Controller {
 
 			//ambil data post sementara
 
-<<<<<<< HEAD
-=======
 
 			// Insert Data Soal : Bobot, Soalnya, Jawaban, sama Id Ujian
->>>>>>> first push
 			$pdata = array(
 
 				"bobot"=>$p['bobot'],
@@ -1021,52 +891,11 @@ class Ujian_real extends MY_Controller {
 
 
 			
-<<<<<<< HEAD
-
-=======
 			// Masukan data opsinya a, b, ... e ke data soal yang tadi sudah di insert
->>>>>>> first push
 			$a['huruf_opsi'] = array("a","b","c","d","e");
 
 			$a['jml_opsi'] = $this->config->item('jml_opsi');
 
-<<<<<<< HEAD
-
-
-			for ($t = 0; $t < $a['jml_opsi']; $t++) {
-
-				$idx 	= "opsi_".$a['huruf_opsi'][$t];
-
-				$idx2 	= "gj".$a['huruf_opsi'][$t];
-
-
-
-
-
-				//jika file kosong
-
-				$pc_opsi_awal = explode("#####", $get_opsi_awal[$idx]);
-
-				$nama_file_opsi = empty($nama_file[$idx2]) ? $pc_opsi_awal[0] : $nama_file[$idx2];
-
-
-
-				$data_simpan[$idx] = $nama_file_opsi."#####".$p[$idx];
-
-			}
-
-
-
-		
-
-
-
-			$this->db->where("id", $__id_soal);
-
-			$this->db->update("m_soal_ujian", $data_simpan);
-
-
-=======
 			for ($t = 0; $t < $a['jml_opsi']; $t++) {
 				$idx 	= "opsi_".$a['huruf_opsi'][$t];
 
@@ -1088,7 +917,6 @@ class Ujian_real extends MY_Controller {
 			$this->m_ujian->update([
 				'jumlah_soal' => $data_ujian->jumlah_soal + $jumlah_soal
 			], ['id' => $p['id_ujian']]);
->>>>>>> first push
 
 			$teks_gagal = "";
 
@@ -1226,11 +1054,7 @@ class Ujian_real extends MY_Controller {
 
 				$nama_gambar = $this->m_soal_ujian->get_by(array('id'=>$id));
 
-<<<<<<< HEAD
-
-=======
 				$data_yang_dihapus = $this->m_soal_ujian->get_by(['id' => $id]);
->>>>>>> first push
 
 				$pc_opsi_a = explode("#####", $nama_gambar->opsi_a);
 
@@ -1245,8 +1069,6 @@ class Ujian_real extends MY_Controller {
 
 
 				$kirim = $this->m_soal_ujian->delete(array('id'=>$id));
-<<<<<<< HEAD
-=======
 				
 				// Update Jumlah Soal
 
@@ -1255,7 +1077,6 @@ class Ujian_real extends MY_Controller {
 	            $this->m_ujian->update([
 	                'jumlah_soal' => $data_ujian->jumlah_soal - 1
 	            ], ['id' =>$data_yang_dihapus->id_ujian]);
->>>>>>> first push
 
 				if($kirim){
 
@@ -1393,11 +1214,7 @@ class Ujian_real extends MY_Controller {
 
 			$a['du'] = $this->db->select("	
 
-<<<<<<< HEAD
-										a.id, a.tgl_mulai, a.terlambat,a.izin, 
-=======
 										a.id, a.tgl_mulai, a.terlambat,a.izin, a.id_mapel,
->>>>>>> first push
 
 										a.token, a.nama_ujian, a.jumlah_soal, a.waktu,
 
@@ -1417,34 +1234,19 @@ class Ujian_real extends MY_Controller {
 
 								->from('tb_ujian a')
 
-<<<<<<< HEAD
-								->join('tb_kelas kls','kls.id = a.id_kelas')
-
-								->join('m_guru b','kls.id_trainer = b.id')
-
-								->join(' m_mapel c','kls.id_mapel = c.id')
-=======
 								->join('tb_jurusan kls', 'kls.id = a.id_kelas', 'left')
 
 								->join('m_guru b','a.id_guru = b.id', 'left')
 
 								->join(' m_mapel c','a.id_mapel = c.id', 'left')
->>>>>>> first push
 
 								->where('a.id',decrypt_url($id_ujian))
 
 								->get()
 
 								->row_array();
-<<<<<<< HEAD
-
-
-
-
-=======
 			// print_r($a['du']);exit;
 			// print_r($this->m_ujian->get_by(['uji.id' => decrypt_url($id_ujian)]));exit;
->>>>>>> first push
 
 			$a['dp'] = $this->m_siswa->get_by(['id' =>$this->log_id]);
 
@@ -1454,10 +1256,7 @@ class Ujian_real extends MY_Controller {
 
 			if (!empty($a['du']) || !empty($a['dp'])) {
 
-<<<<<<< HEAD
-=======
 
->>>>>>> first push
 				$tgl_selesai = $a['du']['tgl_mulai'];
 
 			    //$tgl_selesai2 = strtotime($tgl_selesai);
@@ -1576,89 +1375,14 @@ class Ujian_real extends MY_Controller {
 
 
 
-<<<<<<< HEAD
-		
-
-			//sekalian validasi waktu sudah berlalu...
-=======
 			// print_r($this->total_ujian);exit;
 
 			// Jika Belum ujian
->>>>>>> first push
 
 			if ($cek_sdh_selesai <= $this->total_ujian) {
 
 				//ini jika ujian belum tercatat, belum ikut
 
-<<<<<<< HEAD
-				//ambil detil soal
-
-
-
-				$cek_detil_tes = $this->m_ujian->get_by(['uji.id'=>$id_ujian]);
-
-
-
-
-
-				$ikut_ujian = $this->m_ikut_ujian->get_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
-
-				$cek_sdh_ujian	= $this->m_ikut_ujian->count_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
-
-				
-
-				$acakan = $cek_detil_tes->jenis == "ORDER BY id ASC";
-
-
-
-				// $total_session = $this->db->where(array('id_guru'=>$cek_detil_tes->id_guru,'id_mapel'=>$cek_detil_tes->id_mapel))->get('tb_ujian')->result();
-
-				// $nox=1;
-
-				/*if (count($total_session) > 1) {
-
-					foreach ($total_session as $row) {
-
-						$datas[$row->id] = $nox;
-
-						$nox++;
-
-					}
-
-					$offset = 0;
-
-					$counts = $this->db->select('jumlah_soal')->limit($datas[$cek_detil_tes->id])->get('tb_ujian')->result();
-
-					print_r($counts);
-
-					foreach ($counts as $rows) {
-
-						$offset += $rows->jumlah_soal;
-
-					}
-
-				
-
-				}else{
-
-					$offset = 0;
-
-				}*/
-
-
-
-				$offset = 0;
-
-
-
-				
-
-
-
-				$to = $cek_detil_tes->jumlah_soal;
-
-				
-=======
 				$cek_detil_tes = $this->m_ujian->get_by(['uji.id'=>$id_ujian]);
 				$ikut_ujian = $this->m_ikut_ujian->get_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
 				// print_r($id_ujian);exit;
@@ -1672,22 +1396,11 @@ class Ujian_real extends MY_Controller {
 				
 				// print_r($cek_detil_tes);
 				// exit;
->>>>>>> first push
 
 				if ($cek_sdh_ujian <= $this->total_ujian)	{		
 
 					$soal_urut_ok = array();
 
-<<<<<<< HEAD
-					$a_soal			= $this->db->query("SELECT id, file, jawaban, tipe_file, soal, opsi_a, opsi_b, opsi_c, opsi_d, opsi_e FROM m_soal_ujian WHERE id_ujian = '".$cek_detil_tes->id."' ".$acakan." LIMIT ".$offset.", ".$to)->result();
-
-				
-
-					$q_soal	= $this->db->query("SELECT id, file, jawaban, tipe_file, soal, opsi_a, opsi_b, opsi_c, opsi_d, opsi_e, '' AS jawaban FROM m_soal_ujian WHERE id_ujian = '".$cek_detil_tes->id."' ".$acakan." LIMIT ".$offset.", ".$to)->result();
-
-
-
-=======
 					// Ambil soal berdasarkan Ujiannya masing-masing
 					$a_soal			= $this->db->query("SELECT id, file, jawaban, tipe_file, soal, opsi_a, opsi_b, opsi_c, opsi_d, opsi_e FROM m_soal_ujian WHERE id_ujian = '".$cek_detil_tes->id."' ".$acakan." LIMIT ".$offset.", ".$to)->result();
 
@@ -1705,7 +1418,6 @@ class Ujian_real extends MY_Controller {
 
 
 					// print_r($cek_detil_tes);exit;
->>>>>>> first push
 
 
 					
@@ -1843,11 +1555,7 @@ class Ujian_real extends MY_Controller {
 						);
 
 
-<<<<<<< HEAD
-
-=======
 						// print_r($insert_data);exit;
->>>>>>> first push
 						$this->m_ikut_ujian->insert($insert_data);
 
 						
@@ -1871,33 +1579,22 @@ class Ujian_real extends MY_Controller {
 												  ->get()
 
 												  ->row();
-<<<<<<< HEAD
-=======
 					// print_r($list_id_soal);exit;	
->>>>>>> first push
 
 
 
 					if($cek_ujian_pertama->total < 1) {
-<<<<<<< HEAD
-
-=======
 						$data = [
 							'id_ujian' => $id_ujian,
 							'id_user' => $this->akun->id,
 							'list_soal' => $list_id_soal
 						];
->>>>>>> first push
 						$this->db->query("INSERT INTO tb_ikut_ujian_pertama VALUES (null, '$id_ujian', NULL, '".$this->akun->id."', '$list_id_soal', '$list_jw_soal', 0, 0, 0, '$time_mulai', ADDTIME('$time_mulai', '$waktu_selesai'), 'N', '$list_jw_benar', 1)");
 
 					}
 
 					$detil_tes = $this->db->query("SELECT * FROM tb_ikut_ujian WHERE status = 'Y' AND id_ujian = '$id_ujian' AND id_user = '".$this->akun->id."'")->row();
-<<<<<<< HEAD
-
-=======
 					// print_r($detil_tes->list_jawaban);exit;	
->>>>>>> first push
 	
 
 	
@@ -1916,10 +1613,7 @@ class Ujian_real extends MY_Controller {
 
 
 
-<<<<<<< HEAD
-=======
 
->>>>>>> first push
 					$urut_soal 		= explode(",", $q_ambil_soal->list_jawaban);
 
 					
@@ -1947,26 +1641,10 @@ class Ujian_real extends MY_Controller {
 					$soal_urut_ok = $soal_urut_ok;
 
 				}
-<<<<<<< HEAD
-
-
-
-				
-
-
-
-				$pc_list_jawaban = explode(",", $detil_tes->list_jawaban);
-
-			
-
-				$arr_jawab = array();
-
-=======
 				$pc_list_jawaban = explode(",", $detil_tes->list_jawaban);
 
 				$arr_jawab = array();
 				// PENYEBAB UTAMA ERROR
->>>>>>> first push
 				foreach ($pc_list_jawaban as $v) {
 
 				  $pc_v = explode(":", $v);
@@ -2028,12 +1706,6 @@ class Ujian_real extends MY_Controller {
 				            $tampil_media_opsi = (is_file('./upload/file_ujian_soal/'.$pc_pilihan_opsi[0]) || $pc_pilihan_opsi[0] != "") ? tampil_media('./upload/file_ujian_soal/'.$pc_pilihan_opsi[0],'250px','auto') : '';
 
 					    	$pilihan_opsi = empty($pc_pilihan_opsi[1]) ? "-" : $pc_pilihan_opsi[1];
-<<<<<<< HEAD
-
-					    
-
-=======
->>>>>>> first push
 				            $html .= '<div class="funkyradio-success" onclick="return simpan_sementara_ujian();">
 
 				                <input type="radio" id="opsi_'.strtoupper($this->opsi[$j]).'_'.$d->id.'" name="opsi_'.$no.'" value="'.strtoupper($this->opsi[$j]).'" '.$checked.'> <label for="opsi_'.strtoupper($this->opsi[$j]).'_'.$d->id.'"><div class="huruf_opsi">'.$this->opsi[$j].'</div> <p>'.$pilihan_opsi.'</p><p>'.$tampil_media_opsi.'</p></label></div>';

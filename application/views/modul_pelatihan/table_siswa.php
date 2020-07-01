@@ -3,11 +3,7 @@
 	<thead>
 		<tr>
 			<th class="frist">No</th>
-<<<<<<< HEAD
-			<th>Nama Modul</th>
-=======
 			<th>Nama Mata Pelajaran</th>
->>>>>>> first push
 			<th><?=$this->transTheme->guru;?></th>
 			<th>Opsi</th>
 		</tr>

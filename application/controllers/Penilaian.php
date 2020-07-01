@@ -1,6 +1,5 @@
 <?php
 
-
  defined('BASEPATH') OR exit('No direct script access allowed');
 
 
@@ -935,8 +934,12 @@ class Penilaian extends MY_Controller {
 
 		}
 
-	
+		
+
 		$a['id_paket'] = decrypt_url($id_paket);
+
+
+
 
 
 
@@ -2660,7 +2663,15 @@ class Penilaian extends MY_Controller {
 			}
 
 			$html = '';
+
 			$no = 1;
+
+
+
+
+
+
+
 
 
 
@@ -2722,6 +2733,8 @@ class Penilaian extends MY_Controller {
 							<input type="radio" id="opsi_'.strtoupper($this->opsi[$j]).'_'.$d->id.'" name="opsi_'.$no.'" value="'.strtoupper($this->opsi[$j]).'"  '.$checked.' disabled> <label for="opsi_'.strtoupper($this->opsi[$j]).'_'.$d->id.'"><div class="huruf_opsi">'.$this->opsi[$j].'</div> <p>'.$pilihan_opsi.'</p><p>'.$tampil_media_opsi.'</p></label></div>';
 
 						}
+
+
 
 
 
@@ -3040,7 +3053,7 @@ class Penilaian extends MY_Controller {
 
 
 		$data = $this->m_penilaian->out1($pg,$where,$limit);
-
+		// print_r($data);exit;
 	
 
 		$this->load->view('penilaian/table_out1',$data);
@@ -3164,4 +3177,9 @@ class Penilaian extends MY_Controller {
 		$this->render('penilaian/luaran', $data);
 
 	}
+
+
+
+
+
 }

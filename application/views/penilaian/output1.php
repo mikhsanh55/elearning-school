@@ -236,11 +236,7 @@
 					<option value="100">100</option>
 
 				</select>
-<<<<<<< HEAD
-				<a href="<?= base_url('export/penilaian_output1') ?>" title="export" id="export" class="btn btn-primary btn-sm  ml-2">&nbsp;Export</a>
-=======
 				<a href="<?= base_url('penilaian/laporan') ?>" title="export" id="export" class="btn btn-primary btn-sm  ml-2">&nbsp;Export</a>
->>>>>>> first push
 				<div id="content-view"></div>
 
 			</div>

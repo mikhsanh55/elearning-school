@@ -10,15 +10,6 @@
 
 			<th class="frist">No</th>
 
-<<<<<<< HEAD
-			<th>Nama</th>
-
-			<th>Username</th>
-
-			<th>NIDN</th>
-
-			<th>NRP/NIP</th>
-=======
 			<th>Nama Guru</th>
 
 			<th>Username</th>
@@ -26,7 +17,6 @@
 			<th>NUPTK</th>
 
 			<th>NIP</th>
->>>>>>> first push
 			<th><?=$this->transTheme->instansi;?></th>
 			<th>Semester</th>
 			

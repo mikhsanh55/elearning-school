@@ -133,30 +133,18 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-<<<<<<< HEAD
-				<h4 id="myModalLabel">Data Modul</h4>
-=======
 				<h4 id="myModalLabel">Data Mata Pelajaran</h4>
->>>>>>> first push
 			</div>
 			<div class="modal-body">
 				<form name="f_mapel" id="f_mapel" onsubmit="return m_mapel_s();">
 					<input type="hidden" name="id" id="id" value="0">
 					<table class="table table-form">
 						<tr>
-<<<<<<< HEAD
-							<td style="width: 25%">Kode Mata Kuliah</td>
-							<td style="width: 75%"><input type="text" class="form-control" name="kd_mp" id="kd_mp" required></td>
-						</tr>
-						<tr>
-							<td style="width: 25%">Nama Mata Kuliah</td>
-=======
 							<td style="width: 25%">Kode Mata Pelajaran</td>
 							<td style="width: 75%"><input type="text" class="form-control" name="kd_mp" id="kd_mp" required></td>
 						</tr>
 						<tr>
 							<td style="width: 25%">Nama Mata Pelajaran</td>
->>>>>>> first push
 							<td style="width: 75%"><input type="text" class="form-control" name="nama" id="nama" required></td>
 						</tr>
 						<tr>
@@ -204,11 +192,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-<<<<<<< HEAD
-				<h4 id="myModalLabel">Data Modul</h4>
-=======
 				<h4 id="myModalLabel">Data Mata Pelajaran</h4>
->>>>>>> first push
 			</div>
 			<div class="modal-body">
 				<div id="content_modals"></div>
@@ -233,22 +217,14 @@
 					<table class="table table-form">
 						<tr>
 							<td><input type="radio" name="aksi_hapus_modul" value="1"> </td>
-<<<<<<< HEAD
-							<td>Hapus semua sub modul</td>
-=======
 							<td>Hapus semua Sub Mata Pelajaran</td>
->>>>>>> first push
 						</tr>
 						<!-- <tr>
 						    <td><input type="radio" value="0" name="aksi_hapus_modul"> </td>
 							<td>Pindahkan semua sub modul ke modul lain</td>
 						</tr> -->
 					</table>
-<<<<<<< HEAD
-					<p class="mt-2 mb-2 d-none" id="label-pindah-modul">Pindahkan sub modul ke :</p>
-=======
 					<p class="mt-2 mb-2 d-none" id="label-pindah-modul">Pindahkan sub mata pelajaran ke :</p>
->>>>>>> first push
 					<select name="id_pindah_modul" class="d-none" id="select-ganti-modul">
 					    
 					</select>

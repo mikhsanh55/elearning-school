@@ -31,7 +31,9 @@ class Jadwal extends MY_Controller {
 	{	
 
 		$data = array(
+
 			'searchFilter' => array('Trainer','Mata Pelajaran','Materi','keterangan'),
+
 		);
 
 		$this->render('jadwal/list',$data);
@@ -76,8 +78,11 @@ class Jadwal extends MY_Controller {
 		}
 
 		$data = array(
+
 			'kelas' => $kelas,
+
 			'warna'   => $warna
+
 		);
 
 		$this->render('jadwal/add',$data);
@@ -238,6 +243,7 @@ class Jadwal extends MY_Controller {
 	public function insert(){
 
 		$post = $this->input->post();
+
 		if($this->log_lvl == 'guru') {
 			$this->insertCalendar( 
 				$this->session->admin_konid,
@@ -264,6 +270,7 @@ class Jadwal extends MY_Controller {
 				$post['materi']
 			);	
 		}
+			
 
 	}
 
@@ -423,6 +430,7 @@ class Jadwal extends MY_Controller {
 	public function kalender() 
 
 	{
+
 		$this->page_title = 'Jadwal';
 
 		$uri3 = $this->uri->segment(3);

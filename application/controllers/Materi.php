@@ -288,6 +288,7 @@ class Materi extends MY_Controller
         $post = $this->input->post();
 
         $before_materi = $this->m_materi->get_by(['id' => $this->input->post('imateri')]);
+
         if ($post['id_type_video'] == 1) {
 
             $update_video = false;
@@ -351,11 +352,11 @@ class Materi extends MY_Controller
                         unlink($lokasi);
                     }
                 }
+
                 $data_guru = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
                         
                 $this->db->where('id', $this->session->admin_konid);
                 $this->db->update('m_guru', ['sum_upload_materi' => $data_guru->sum_upload_materi + 1]);
-
                 $d = [
                     'status' => true,
                     'msg'    => 'Materi berhasil diupload!',
@@ -364,6 +365,7 @@ class Materi extends MY_Controller
                 http_response_code(200);
 
             }
+
         } 
         else if($post['id_type_video'] == 3) {
 
@@ -408,7 +410,6 @@ class Materi extends MY_Controller
         }
         else if($post['id_type_video'] == 2){
 
-
             $data = [
                 'id_mapel'      => $this->input->post('mapel'),
                 'id_trainer'    => $this->akun->id,
@@ -419,7 +420,6 @@ class Materi extends MY_Controller
                 'upload_manual' => 0,
                 'req_edit'      => 1,
                 'id_type_video' => 2
-
             ];
             if ($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') {
                 $data['is_verify'] = 1;
@@ -556,7 +556,6 @@ class Materi extends MY_Controller
                         
                 $this->db->where('id', $this->session->admin_konid);
                 $this->db->update('m_guru', ['sum_upload_materi' => $data_guru->sum_upload_materi + 1]);
-
                 $d = [
                     'status' => true,
                     'msg'    => 'Sub Modul updated!',
@@ -958,6 +957,7 @@ class Materi extends MY_Controller
                     if($this->log_lvl == 'guru') {
                         $this->updateSumUploadMateri();
                     }
+
                     $d = [
                         'status' => true,
                         'msg'    => 'Materi berhasil diupload!',
@@ -1737,7 +1737,6 @@ class Materi extends MY_Controller
             
             // Update sum diskusi
             $this->updateSumDiskusi();
-
         } else {
             $result = false;
             $data   = array();
@@ -1753,6 +1752,7 @@ class Materi extends MY_Controller
         $data['update_date'] = $this->update_date;
         $data['update_time'] = $this->update_time;
         $kirim               = $this->m_komen_materi->update($data, array('id' => $post['id']));
+
         // Update sum diskusi
         $this->updateSumDiskusi();
         echo json_encode(array('result' => true));
