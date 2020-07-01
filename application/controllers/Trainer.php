@@ -438,7 +438,7 @@ class Trainer extends MY_Controller {
 		if (!empty($post['search'])) {
 			switch ($post['filter']) {
 				case 0:
-					$where["(lower(nama) like '%".strtolower($post['search'])."%' )"] = null;
+					$where["(lower(`guru`.`nama`) like '%".strtolower($post['search'])."%' )"] = null;
 					break;
 				case 1:
 					$where["(lower(username) like '%".strtolower($post['search'])."%' )"] = null;

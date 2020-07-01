@@ -254,7 +254,7 @@
 
 			type : 'post',
 
-			url  : 'kelas/update_kelas_all',
+			url  : "<?= base_url('kelas/update_kelas_all'); ?>",
 
 			data :{
 
@@ -269,7 +269,7 @@
 			success:function(response){
 
 				pageLoad(1,'kelas/page_load_murid');
-
+				window.location.reload()
 			}
 
 		})

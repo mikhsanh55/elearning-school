@@ -254,6 +254,10 @@ class Kelas extends MY_Controller
 
 		}
 
+		if(!empty($post['id_jurusan'])) {
+			$where['kls.id_jurusan'] = $post['id_jurusan'];
+		}
+
 
 
 		if($this->log_lvl == 'guru'){
@@ -716,14 +720,23 @@ class Kelas extends MY_Controller
 
 	}
 
-  
+  	public function riwayat_mengajar($id_jurusan) {
 
+  		if ($this->log_lvl == 'siswa') {
+	      redirect(base_url('kelas/siswa'));
+	    }else if($this->log_lvl == 'guru'){
+			redirect(base_url('kelas/guru'));
+		}
 
+  		$data = array(
 
+			'searchFilter' => array('Kelas','Modul Pelatihan'),
+			'id_jurusan' => $this->encryption->decrypt($id_jurusan)
 
+		);
 
-
-
+		$this->render('kelas/list',$data);
+  	}
 }
 
 

@@ -42,7 +42,7 @@
 
 				<td class="frist">
 
-					<a class="btn btn-success btn-sm mr-2" href="<?=base_url('Materi/lists').'/'.md5($rows->id_mapel);?>"><i class="glyphicon glyphicon-eye" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Materi</a>
+					<a class="btn btn-success btn-sm mr-2" href="<?=base_url('Materi/lists').'/'.md5($rows->id_mapel);?>">Materi</a>
 
 					<button class="btn btn-primary btn-sm rekrut" data-id="<?=$rows->id;?>" data-jurusan="<?=$rows->id_jurusan;?>">Siswa</button>
 

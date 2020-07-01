@@ -9,6 +9,7 @@
 			<?php if($this->log_lvl == 'admin'):?>
 				<th><?=$this->transTheme->instansi;?></th>
 			<?php endif;?>
+			<th>Opsi</th>
 		</tr>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows):
 
@@ -21,7 +22,10 @@
 				<?php if($this->log_lvl == 'admin'):?>
 					<td><?=$rows->nama_instansi;?></td>
 				<?php endif;?>
-				
+				<td class="text-center">
+					
+					<a href="<?= base_url('kelas/riwayat-mengajar/') . $this->encryption->encrypt($rows->id); ?>" class="btn btn-primary btn-sm">Riwayat Mengajar</a>
+				</td>
 			</tr>
 		<?php $i++;endforeach ?>
 	</thead>

@@ -18,7 +18,7 @@ class m_guru extends MY_Model
 
     public function count_by($where=array()){
         $get = $this->db->select('count(*) as hasil')
-                ->from($this->_table)
+                ->from('m_guru guru')
                 ->where($where)
                 ->order_by($this->order_by[0],$this->order_by[1])
                 ->get()
