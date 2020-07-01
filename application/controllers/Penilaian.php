@@ -3053,7 +3053,7 @@ class Penilaian extends MY_Controller {
 
 
 		$data = $this->m_penilaian->out1($pg,$where,$limit);
-
+		// print_r($data);exit;
 	
 
 		$this->load->view('penilaian/table_out1',$data);

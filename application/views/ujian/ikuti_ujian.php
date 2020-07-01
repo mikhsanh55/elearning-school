@@ -20,7 +20,7 @@
                     <td ><?php echo $dp->nama; ?></td>
                   </tr>
                   <tr>
-                    <td>Modul</td><td><?php echo $du['nmmapel']; ?></td>
+                    <td>Mata Pelajaran</td><td><?php echo $du['nmmapel']; ?></td>
                   </tr>
                   <tr>
                     <td>Trainer</td>
@@ -63,7 +63,7 @@
                 <div id="btn_mulai">Ujian akan mulai dalam 
                      <div id="akan_mulai"></div>
                 </div>
-                 <?php endif ?>
+                 <?php endif; ?>
 
                 <div class="btn btn-danger" id="waktu_" style="margin-top: 20px">
                   Sisa waktu mengikuti ujian <br>

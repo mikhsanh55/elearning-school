@@ -19,8 +19,7 @@
 			<th>Mulai</th>
 
 			<th>Selesai</th>
-
-			<th>Opsi</th>
+				<th>Opsi</th>
 
 		</tr>
 
@@ -79,12 +78,13 @@
 				<td><?=$date2.' '.$time2;?></td>
 
 				<td>
-
+					<?php if($this->session->admin_konid == $rows->id_guru && $rows->id_guru != NULL) : ?>
 					<span><a href="<?=base_url('jadwal/edit/'.md5($rows->id));?>" data-toggle="tooltip" data-id="<?=$rows->id;?>" title="Edit" class="btn btn-default btn-sm aktif_non"><i class="fas fa-edit"></i></a></span>
 
 					<span><a href="javascript:void(0);" data-toggle="tooltip" data-id="<?=$rows->id;?>" title="Edit" class="btn btn-default btn-sm aktif_non deleted"><i class="fas fa-trash-alt"></i></a></span>
-
+					<?php endif;?>
 				</td>	
+				
 
 			</tr>
 

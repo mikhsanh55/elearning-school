@@ -173,6 +173,15 @@
 						<input type="hidden" name="video_before" value="<?=(empty($setting->video)) ? NULL : $setting->video;?>">
 
 					</div>
+					<div class="form-group mt-4">
+						<!-- Default checked -->
+						<label for="">Pengaturan Ujian</label>
+						<div class="custom-control custom-switch">
+						  <label class="custom-control-label" for="customSwitch1">Bobot Ujian</label>
+						  <input type="checkbox" class="custom-control-input" id="customSwitch1" checked>
+						</div>
+
+					</div>
 
 				</div>
 

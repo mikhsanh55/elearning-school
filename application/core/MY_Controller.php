@@ -1,5 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-// require 'vendor/autoload.php';
+require 'vendor/autoload.php';
 
 class MY_Controller extends CI_Controller
 {
@@ -219,8 +219,7 @@ class MY_Controller extends CI_Controller
 
 		$this->page_title = (!empty($this->sub_menu->nama_menu)) ? $this->sub_menu->nama_menu : NULL;
 		
-		// print_r($this->active_menu);echo "<br>";
-  //       print_r($this->sub_menu);exit;
+		// print_r($this->session->admin_konid);exit;
 	
 	}
 
@@ -282,6 +281,7 @@ class MY_Controller extends CI_Controller
 	}
 
 	public function insertCalendar(
+		$id_guru = NULL,
 		$id_kelas,
 		$ket,
 		$color,
@@ -355,6 +355,10 @@ class MY_Controller extends CI_Controller
 			'end_date'   	=> $end_date . ' ' . $end_time,
 			'color'  	 	=> $color,
 		);
+
+		if(!is_null($id_guru)) {
+			$data['id_guru'] = $id_guru;
+		}
 
 		$this->m_jadwal->insert($data);
 		echo json_encode(array('result' => true));

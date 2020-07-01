@@ -70,15 +70,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | The $query_builder variables lets you determine whether or not to load
 | the query builder class. 
 */
-$active_group = 'default';
+$active_group = 'local';
 $query_builder = TRUE;  
 
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost', 
-	'username' => 'globaltech_dev',
-	'password' => 'Globaltech_devadmin22-',
-	'database' => 'globaltech_dev',
+	'username' => 'icommits_admin_elearning_net',
+	'password' => 'admin_elearning_net',
+	'database' => 'icommits_elearning_net',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -97,10 +97,10 @@ $db['default'] = array(
 
 $db['local'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
+	'hostname' => '127.0.0.1',
 	'username' => 'root',
-	'password' => 'dbicommits',
-	'database' => 'icommits_tnial',
+	'password' => '',
+	'database' => 'elearning',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

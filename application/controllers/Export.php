@@ -498,6 +498,8 @@ class Export extends MY_Controller {
 	 * PDF Export Section
 	 */
 
+	
+
 	//  Rekapitulasi
 	public function pdf_rekapitulasi() {
 		$this->load->library('dpdf');
@@ -508,8 +510,42 @@ class Export extends MY_Controller {
 			'datas' => $this->m_kelas->rekaptulasi([])
 		];
 
+		$this->sendPdf('rekaptulasi/rekap_pdf', 'A4', 'landscape', 'Rekapitulasi.pdf');
 		$this->dpdf->setPaper('A4', 'landscape');
 		$this->dpdf->filename = 'Rekapitulasi.pdf';
 		$this->dpdf->view('rekaptulasi/rekap_pdf', $result);
+	}
+
+	public function pdf_hasil_ujian($encrypt_id) {
+		$this->load->library('dpdf');
+		$this->load->model('m_ikut_ujian');
+		$id = decrypt_url($encrypt_id);
+		$result = [
+			'datas' => $this->m_ikut_ujian->get_many_by(['id' => $id, 'status' => 'N'])
+		];
+
+		// print_r($result['datas']);exit;
+		$this->dpdf->setPaper('A4', 'landscape');
+		$this->dpdf->filename = 'Hasil Ujian.pdf';
+		$this->dpdf->view('ujian/hasil_ujian', $result);
+
+	}
+
+	public function pdf_hasil_ujian_essay($encrypt_id) {
+		$id_ujian = decrypt_url($encrypt_id);
+
+		$this->load->library('dpdf');
+		$this->load->model('m_ikut_ujian_essay');
+		$this->load->model('m_ujian');
+		$this->load->model('m_siswa');
+
+		$result = [
+			'datas' => $this->m_ikut_ujian_essay->get_many_by(['id_ujian' => $id_ujian])
+		];
+
+		// print_r($result);
+		$this->dpdf->setPaper('A4', 'landscape');
+		$this->dpdf->filename = 'Hasil Ujian Essay.pdf';
+		$this->load->view('ujian_essay/pdf_list_hasil', $result);
 	}
 }

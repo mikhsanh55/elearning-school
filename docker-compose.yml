@@ -1,8 +1,0 @@
-version: '3.8'
-services:
-  web:
-    image: icommits/codeigniter:latest
-    ports:
-      - "8000:80"
-    volumes:
-      - '.:/var/www/tnial'

@@ -24,13 +24,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | 
 */
 date_default_timezone_set('Asia/Jakarta');
-
-$root = "https://".$_SERVER['HTTP_HOST'];
+$root=(isset($_SERVER['HTTPS']) ? "https://" : "http://").$_SERVER['HTTP_HOST'];
 $root .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
 $pc_root = explode("/", $root);
 $uri_js = count($pc_root) - 2;
 
-$config['jml_opsi']			= 4;			//isi dengan pilihan opsi jawaban, HARUS <= 5
+$config['jml_opsi']			= 5;			//isi dengan pilihan opsi jawaban, HARUS <= 5
 $config['uri_js']			= $uri_js;		
 $config['editor_style']		= "replace";	//pilihannya "inline" atau "replace";
 $config['tampil_nilai']		= TRUE; // jika Trainer boleh melihat hasil ujian, isikan TRUE, jika tidak FALSE, default TRUE

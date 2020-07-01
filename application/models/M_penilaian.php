@@ -796,7 +796,7 @@ class M_penilaian extends MY_Model {
 
                     for ($x=1; $x <= $responden; $x++){ 
 
-                         $total +=  $sub_total[$x][$i];
+                        $total +=  $sub_total[$x][$i];
 
                     }
 
@@ -805,12 +805,6 @@ class M_penilaian extends MY_Model {
                     $total = 0;
 
                 }
-
-              
-
-                
-
-           
 
             $hasil = (object) [
 

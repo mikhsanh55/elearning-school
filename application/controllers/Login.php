@@ -167,6 +167,14 @@ class Login extends MY_Controller
         				$det_user = $this->m_guru->get_by(array('id'=>$get_user->kon_id));
         				if (!empty($det_user)) {
         					$sess_nama_user = $det_user->nama;
+
+                            // Update Num Active
+                            $data_update = [
+                                'active_num' => $det_user->active_num + 1
+                            ];
+                            $this->db->where('id', $get_user->kon_id);
+                            $this->db->update('m_guru', $data_update);
+
         				}
         			} else {
         				$sess_nama_user = "Administrator";
@@ -181,6 +189,8 @@ class Login extends MY_Controller
         				'admin_nama' => $sess_nama_user,
         				'admin_valid' => true
         			);
+
+
 
         			$this->session->set_userdata($data);
 
