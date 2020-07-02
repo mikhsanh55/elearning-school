@@ -214,12 +214,13 @@
 				},
 				success:function(response){
 					if (response.result == true) {
-						alert('Hapus Berhasil');
+						// alert('Hapus Berhasil');
+						pageLoad(1,'jurusan/page_load');
 					}else{
 						alert('Hapus Gagal');
 					}
 
-					pageLoad(1,'jurusan/page_load');
+					
 				}
 			})
 

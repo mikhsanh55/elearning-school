@@ -19,9 +19,11 @@
 			</div>
 		</div>
 		<form id="form-jurusan" method="post">
-			<div class="form-group">
-				<label for="lembaga">Lembaga</label>
+			
+				
 				<?php if ($this->log_lvl == 'admin'): ?>
+					<div class="form-group">
+						<label for="lembaga">Lembaga</label>
 					<div class="rs-select2 js-select-simple select--no-search">
 						<select name="id_instansi" id="id_instansi" style="width: 30%;">
 							<option disabled="disabled" selected="selected">Pilih</option>
@@ -36,16 +38,21 @@
 						</select>
 						<div class="select-dropdown"></div>
 					</div>
+					</div>
 				<?php else: ?>
-					<input type="text" class="form-control" value="<?=$instansi->instansi;?>" readonly>
+					<input type="hidden" class="form-control" value="<?=$instansi->instansi;?>" readonly>
 				<?php endif ;?>
 				
 			
-			</div>
+			
 			<div class="form-group">
 				<input type="hidden" class="form-control" value="<?=$edit->id;?>" name="id" readonly>
 				<label for="jurusan">Jurusan<span class="text-danger">*</span></label>
 				<input type="text" class="form-control" value="<?=$edit->jurusan;?>" id="jurusan" placeholder="Masukan Jurusan" name="jurusan" required="" maxlength="150">
+			</div>
+			<div class="form-group">
+				<label for="kode">Kode Jurusan</label>
+				<input type="text" class="form-control" id="kode" placeholder="Ex : 0012" name="kode" value="<?= $edit->kode; ?>">
 			</div>
 
 			
@@ -73,10 +80,12 @@
 				data : $(this).serialize(),
 				success:function(response) {
 					if(response.result == true){
-						alert(response.info);
+						// alert(response.info);
 						window.location = '<?=base_url('jurusan');?>'
 					}else{
 						alert(response.info);
+						console.error(response)
+						return false
 					}
 				}
 			})

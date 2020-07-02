@@ -19,27 +19,33 @@
 			</div>
 		</div>
 		<form id="form-jurusan" method="post">
-			<div class="form-group">
+			
+			<?php if ($this->log_lvl == 'admin'): ?>
+				<div class="form-group">
 				<label for="lembaga">Lembaga</label>
-				<?php if ($this->log_lvl == 'admin'): ?>
-					<div class="rs-select2 js-select-simple select--no-search">
-						<select name="id_instansi" id="id_instansi" style="width: 30%;">
-							<option disabled="disabled" selected="selected">Pilih</option>
-							<?php foreach ($instansi as $rows): ?>
-								<option value="<?=$rows->id;?>"><?=$rows->instansi;?></option>
-							<?php endforeach ?>
-						</select>
-						<div class="select-dropdown"></div>
-					</div>
-				<?php else: ?>
-					<input type="text" class="form-control" value="<?=$instansi->instansi;?>" readonly>
-				<?php endif ;?>
+				<div class="rs-select2 js-select-simple select--no-search">
+					<select name="id_instansi" id="id_instansi" style="width: 30%;">
+						<option disabled="disabled" selected="selected">Pilih</option>
+						<?php foreach ($instansi as $rows): ?>
+							<option value="<?=$rows->id;?>"><?=$rows->instansi;?></option>
+						<?php endforeach ?>
+					</select>
+					<div class="select-dropdown"></div>
+				</div>
+				</div>
+			<?php else: ?>
+				<input type="hidden" class="form-control" value="<?=$instansi->instansi;?>" readonly>
+			<?php endif ;?>
 				
 			
+			
+			<div class="form-group">
+				<label for="jurusan">Nama Jurusan<span class="text-danger">*</span></label>
+				<input type="text" class="form-control" id="jurusan" placeholder="Ex : MIPA, IPS" name="jurusan" required="" maxlength="150">
 			</div>
 			<div class="form-group">
-				<label for="jurusan">Jurusan<span class="text-danger">*</span></label>
-				<input type="text" class="form-control" id="jurusan" placeholder="Masukan Jurusan" name="jurusan" required="" maxlength="150">
+				<label for="kode">Kode Jurusan</label>
+				<input type="text" class="form-control" id="kode" placeholder="Ex : 0012" name="kode">
 			</div>
 
 			
@@ -67,10 +73,12 @@
 				data : $(this).serialize(),
 				success:function(response) {
 					if(response.result == true){
-						alert(response.info);
+						// alert(response.info);
 						window.location = '<?=base_url('jurusan');?>'
 					}else{
 						alert(response.info);
+						console.error(response)
+						return false
 					}
 				}
 			})

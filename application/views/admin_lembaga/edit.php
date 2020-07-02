@@ -78,7 +78,7 @@
 					if(response.status == 0){
 
 						alert(response.message.info);
-				
+						console.error(response)
 						if (response.message.username !== undefined) {
 							$('#username').addClass('errors-input');
 							$('#errors-username').text(response.message.username);
@@ -94,9 +94,9 @@
 							$('#email').removeClass('errors-input');
 							$('#errors-email').text('');
 						}
-
+						return false
 					}else{
-						alert(response.message.info);
+						// alert(response.message.info);
 						window.location = '<?=base_url('adminlembaga');?>'
 					}
 				}

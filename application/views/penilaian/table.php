@@ -97,7 +97,7 @@
 					soal : $(this).data('soal'),
 				},
 				success:function(response){
-					alert(response.message);
+					// alert(response.message);
 					pageLoad(1,'penilaian/page_load');
 				}
 			})

@@ -347,12 +347,12 @@
 				},
 				success:function(response){
 					if (response.result == true) {
-						alert('Hapus Berhasil');
+						pageLoad(1,'trainer/page_load');
 					}else{
 						alert('Hapus Gagal');
 					}
 
-					pageLoad(1,'trainer/page_load');
+					
 				}
 			})
 

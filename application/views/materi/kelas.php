@@ -286,7 +286,7 @@
     		              res = JSON.parse(res);
     		              //  console.log(res);
     		              if(res.status == true) {
-    		                  alert(res.msg);
+    		                  // alert(res.msg);
     		                  window.location.reload();
     		              }
     		              else {

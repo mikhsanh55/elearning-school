@@ -461,7 +461,7 @@
 
 					if (response.result == true) {
 
-						alert('Hapus Berhasil');
+						pageLoad(1,'penilaian/page_load_out2');
 
 					}else{
 
@@ -559,7 +559,7 @@
 
 					if (response.status == 1) {
 
-						alert(response.message);
+						pageLoad(1,'penilaian/page_load_out2');
 
 					}else{
 
@@ -619,7 +619,7 @@
 
 					if (response.status == 1) {
 
-						alert(response.message);
+						pageLoad(1,'penilaian/page_load_out2');
 
 					}else{
 
@@ -681,7 +681,7 @@
 
 					if (response.status == 1) {
 
-						alert(response.message);
+						pageLoad(1,'penilaian/page_load_out2');
 
 					}else{
 

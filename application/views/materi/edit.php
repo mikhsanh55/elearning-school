@@ -322,7 +322,7 @@
 					res = JSON.parse(res);
 					$('.spin-icon').addClass('d-none');
 					if(res.status == true) {
-						alert(res.msg);
+						// alert(res.msg);
 						console.log(res);
 						window.location.href = sessionStorage.getItem('url') || localStorage.getItem('url');
 					}

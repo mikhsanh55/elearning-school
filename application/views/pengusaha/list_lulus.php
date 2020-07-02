@@ -196,7 +196,7 @@
 					graduated:$(this).data('graduated'),
 					deleted:1
 				},
-				success: res => alert(res.msg),
+				success: res => pageLoad(1,'pengusaha/page_load'),
 				error:function(e) {
 					console.error(e.responseText)
 					return false
@@ -230,7 +230,7 @@
 					graduated:1,
 					deleted:1
 				},
-				success: res => alert(res.msg),
+				success: res => pageLoad(1,'pengusaha/page_load'),
 				error:function(e) {
 					alert('Something wrong!')
 					console.error(e.responseText)

@@ -184,7 +184,7 @@
                             res = JSON.parse(res);
                             if(res.status == true) {
                                 $('#spin-icon').toggleClass('d-none');
-                                alert(res.msg);
+                                // alert(res.msg);
                                 // console.log(res);
                                 window.location.href = sessionStorage.getItem('url');
                             }

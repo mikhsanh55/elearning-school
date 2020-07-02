@@ -114,12 +114,12 @@
 				},
 				success:function(response){
 					if (response.result == true) {
-						alert('Hapus Berhasil');
+						pageLoad(1,'tugas_siswa/page_load');
 					}else{
 						alert('Hapus Gagal');
 					}
 
-					pageLoad(1,'tugas_siswa/page_load');
+					
 				}
 			})
 

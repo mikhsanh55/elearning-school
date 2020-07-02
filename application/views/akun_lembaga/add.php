@@ -99,8 +99,10 @@
 							$('#errors-email').text('');
 						}
 
+						return false
+
 					}else{
-						alert(response.message.info);
+						// alert(response.message.info);
 						window.location = '<?=base_url('akunlembaga');?>'
 					}
 				}

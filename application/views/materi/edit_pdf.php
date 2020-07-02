@@ -151,7 +151,7 @@
 				        xhr.upload.addEventListener("progress", function(e) {
 				            if(e.lengthComputable) {
 				                let percentComplete = e.loaded / e.total;
-				                console.log(percentComplete);
+				                // console.log(percentComplete);
 				                // console.log('e.total : ' . e.total);
 				                percentComplete = parseInt(percentComplete * 100);
 				                $('#progress-container').removeClass('d-none');
@@ -173,7 +173,7 @@
                             res = JSON.parse(res);
                             if(res.status == true) {
                                 $('#spin-icon').toggleClass('d-none');
-                                alert(res.msg);
+                                // alert(res.msg);
                                 // console.log(res);
                                 window.location.href = sessionStorage.getItem('url');
                             }
