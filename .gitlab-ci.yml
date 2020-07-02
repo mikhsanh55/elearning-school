@@ -6,6 +6,7 @@ stages:
 test_branch:
     stage: test
     script: echo proses berjalan
+    script: echo proses runner berjalan
     
 development_branch:
     stage: development
@@ -15,6 +16,10 @@ development_branch:
         - cd /var/www/html/globaltech-codeigniter
         - git reset --hard
         - git pull origin development
+        - sudo rm /var/www/html/globaltech-codeigniter/application/config/database.php
+        - sudo cp /var/www/html/globaltech-codeigniter/database/config1/database.php /var/www/html/globaltech-codeigniter/application/config/database.php
+        - sudo rm /var/www/html/globaltech-codeigniter/application/config/config.php
+        - sudo cp /var/www/html/globaltech-codeigniter/database/config1/config.php /var/www/html/globaltech-codeigniter/application/config/config.php
         
 production_branch:
     stage: production
@@ -24,3 +29,7 @@ production_branch:
         - cd /var/www/globaltech-codeigniter
         - git reset --hard
         - git pull origin production
+        - sudo rm /var/www/globaltech-codeigniter/application/config/database.php
+        - sudo cp /var/www/globaltech-codeigniter/database/config1/database1.php /var/www/globaltech-codeigniter/application/config/database.php
+        - sudo rm /var/www/globaltech-codeigniter/application/config/config.php
+        - sudo cp /var/www/globaltech-codeigniter/database/config1/config.php /var/www/globaltech-codeigniter/application/config/config.php
