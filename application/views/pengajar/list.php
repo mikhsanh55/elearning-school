@@ -139,45 +139,42 @@
 					<table class="table table-form w-100">
 					<input type="hidden" name="id" id="id" value="0">
 
-						<tr>
-							<td style="width: 25%"><?=$this->transTheme->instansi;?></td>
-							<td>
-								<?php if ($this->log_lvl == 'admin'): ?>
-									<select name="instansi" id="instansi" class="form-control">
-									<option value="">Pilih</option>
-								    <?php foreach($instansi as $rows) : ?>
-								        <option value="<?= $rows->id; ?>"><?= $rows->instansi; ?></option>
-								    <?php endforeach; ?>
-								</select>
-								<?php else: ?>
-									<input type="hidden" name="instansi" id="instansi" class="form-control" value="<?=$instansi->id;?>" readonly>
-									<input type="text" class="form-control" value="<?=$instansi->instansi;?>" readonly>
-								<?php endif ?>
-								
-							</td>
-						</tr>
+						
 
-						<tr>
+						<!-- <tr>
 							<td style="width: 25%">Tahun Akademik</td>
 							<td style="width: 75%"><input type="text" class="form-control" name="ta" id="ta" required></td>
-						</tr>
+						</tr> -->
 						<tr>
 							<td style="width: 25%">NUPTK</td>
-							<td style="width: 75%"><input type="text" class="form-control" name="nidn" id="nidn" required></td>
+							<td style="width: 75%"><input type="text" class="form-control" name="nidn" id="nidn" placeholder="contoh: 1283749209287387" ></td>
 						</tr>
 						<tr>
 							<td style="width: 25%">NIP</td>
-							<td style="width: 75%"><input type="text" class="form-control" name="nrp" id="nrp" required></td>
+							<td style="width: 75%"><input type="text" class="form-control" name="nrp" id="nrp" ></td>
 						</tr>
 						<tr>
-							<td style="width: 25%">Nama Guru</td>
+							<td style="width: 25%">Nama Guru<span class="text-danger">*</span></td>
 							<td style="width: 75%"><input type="text" class="form-control" name="nama" id="nama" required></td>
 						</tr>
 						<tr>
-							<td style="width: 25%">Username</td>
+							<td style="width: 25%">Username<span class="text-danger">*</span></td>
 							<td style="width: 75%"><input type="text" class="form-control" name="username" id="username" required></td>
 						</tr>
 						<tr>
+							<td style="width: 25%">Mata Pelajaran<span class="text-danger">*</span></td>
+							<td style="width: 75%">
+								<select name="mapel" id="mapel" required class="form-control">
+									<option value="0">Belum Ada</option>
+									<?php foreach($mapel as $row) : ?>
+										<option value="<?= $row->id; ?>"><?= ucwords($row->nama); ?></option>
+									<?php endforeach; ?>
+								</select>
+							</td>
+						</tr>
+						
+						
+						<!-- <tr>
 							<td style="width: 25%">NIK</td>
 							<td style="width: 75%"><input type="text" class="form-control" name="pangkat" id="pangkat" required></td>
 						</tr>
@@ -196,16 +193,16 @@
 						<tr>
 							<td style="width: 25%">Alamat</td>
 							<td style="width: 75%"><input type="text" class="form-control" name="alamat" id="alamat" required></td>
-						</tr>
+						</tr> -->
 						<tr>
 							<td style="width: 25%">Email</td>
-							<td style="width: 75%"><input type="text" class="form-control" name="email" id="email" required></td>
+							<td style="width: 75%"><input type="text" class="form-control" name="email" id="email" ></td>
 						</tr>
 						<tr>
-							<td style="width: 25%">No. Telpon</td>
+							<td style="width: 25%">No. Telpon<span class="text-danger">*</span></td>
 							<td style="width: 75%"><input type="text" class="form-control only-number" name="telp" id="telp" required></td>
 						</tr>
-						<tr>
+						<!-- <tr>
 							<td style="width: 25%">Status</td>
 							<td style="width: 75%"><input type="text" class="form-control" name="status" id="status" required></td>
 						</tr>
@@ -216,10 +213,27 @@
 						<tr>
 							<td style="width: 25%">Semester</td>
 							<td style="width: 75%"><input type="text" class="form-control" name="semester" id="semester" required></td>
-						</tr>
+						</tr> 
 						<tr>
 							<td style="width: 25%">Keterangan</td>
-							<td style="width: 75%"><input type="text" class="form-control" name="pmt" id="pmt" required></td>
+							<td style="width: 75%"><input type="text" class="form-control" name="pmt" id="pmt" ></td>
+						</tr>-->
+						<tr>
+							<td style="width: 25%"><?=$this->transTheme->instansi;?><span class="text-danger">*</span></td>
+							<td>
+								<?php if ($this->log_lvl == 'admin'): ?>
+									<select name="instansi" id="instansi" class="form-control">
+									<option value="">Pilih</option>
+								    <?php foreach($instansi as $rows) : ?>
+								        <option value="<?= $rows->id; ?>"><?= $rows->instansi; ?></option>
+								    <?php endforeach; ?>
+								</select>
+								<?php else: ?>
+									<input type="hidden" name="instansi" id="instansi" class="form-control" value="<?=$instansi->id;?>" readonly>
+									<input type="text" class="form-control" value="<?=$instansi->instansi;?>" readonly>
+								<?php endif ?>
+								
+							</td>
 						</tr>
 					</table>
 			</div>
@@ -350,6 +364,8 @@
 		
 	})
 
+	
+
 	$(document).on('click','#edited',function(){
 		var totalChecked = $('.checklist:checked').length;
 		var opsi = [];
@@ -386,6 +402,7 @@
 			 		$("#pmt").val(data.pendidikan_militer_terakhir);
 			 		$("#semester").val(data.semester);
 			 		$("#ta").focus();
+			 		$('#mapel').val(data.id_mapel)
 			 	}
 			 });
 		}

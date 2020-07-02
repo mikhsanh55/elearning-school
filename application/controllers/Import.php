@@ -7,6 +7,8 @@ class Import extends MY_Controller {
         $this->load->model('m_guru');
         $this->load->model('m_ujian');
         $this->load->model('m_soal_ujian');
+        $this->load->model('m_jurusan');
+        $this->load->model('m_mapel');
         
         $this->db->query("SET time_zone='+7:00'");
     }
@@ -54,62 +56,71 @@ class Import extends MY_Controller {
                 $last_id = 1;
             }
 
-        
+            $this->db->trans_begin();
             foreach($sheet as $index => $row){
 
 
                 if ($index != 1) {
-
-                        $data[$index] = array(
-                            'kelompok' => $row['B'],
-                            'nama'  => $row['C'],
-                            'username'  => $row['D'],
-                            'pangkat' => $row['E'],
-                            'nrp' => $row['F'],
-                            'no_telpon' => $row['G'],
-                            'tempat_lahir' => $row['H'],
-                            'tanggal_lahir' => date('Y-m-d', strtotime($row['I'])),
-                            'nim'  => $row['J'],
-                            'nik' => $row['K'],
-                            'email'  => $row['L'],
-                            'alamat'  => $row['M'],
-                            'instansi'  => $row['N'],
-                            'id_jurusan'  => $row['O'],
-                            'tahun_angkatan_masuk'  => $row['P'],
-                            'photo' => $row['Q'],
+                        $id_kelas = $this->m_jurusan->get_by(['jurusan' => $row['E'], 'id_instansi' => $this->akun->instansi]);
+                        $id_guru = $this->m_guru->get_by(['nama' => $row['F'], 'instansi' => $this->akun->instansi]);
+                        $jk = ($row['G'] == 'L' || $row['G'] == 'Laki-laki') ? 1 : 0;
+                        $data = array(
+                            'nama'  => $row['B'],
+                            'username'  => $row['C'],
+                            'nrp' => $row['D'], // NIS
+                            'id_jurusan' => !empty($id_kelas) ? $id_kelas->id : 0,
+                            'id_guru' => !empty($id_guru) ? $id_guru->id : 0, // Wali Kelas
+                            'no_telpon' => $row['J'],
+                            'nik' => $jk, // Jenis Kelamin
+                            'email'  => $row['H'],
+                            'alamat'  => $row['I'],
+                            'instansi'  => $this->akun->instansi,
                             'pembuatan_akun' => time(),
                             'verifikasi' => md5(time())
                         );
+
+                        $this->db->insert('m_siswa', $data);
+                        $inserted_id = $this->db->insert_id();
+
+                        $data_admin = [
+                            'user_id'  => $row['C'],
+                            'username' => $row['H'],
+                            'password'  => $this->encryption->encrypt($row['K']),
+                            'level'    => 'siswa',
+                            'kon_id'   => $inserted_id
+                        ];
+
+                        $this->db->insert('m_admin', $data_admin);
 
                     }
                 }
 
               
-               $this->db->trans_begin();
+               
 
-                $kirim = $this->db->insert_batch('m_siswa', $data);
+                // $kirim = $this->db->insert_batch('m_siswa', $data);
 
                
             
-                $siswa = $this->m_siswa->get_many_by(array('akun.id > '=>$last_id));
+                // $siswa = $this->m_siswa->get_many_by(array('akun.id > '=>$last_id));
         
-                $admin = array();
+                // $admin = array();
 
-                foreach ($siswa as $key => $rows) {
-                    $admin[$key] = array(
-                        'user_id'  => $rows->username,
-                        'username' => $rows->email,
-                        'password' => md5($rows->username),
-                        'level'    => 'siswa',
-                        'kon_id'   => $rows->id,
-                        'status'   => 0,
+                // foreach ($siswa as $key => $rows) {
+                //     $admin[$key] = array(
+                //         'user_id'  => $rows->username,
+                //         'username' => $rows->email,
+                //         'password' => md5($rows->username),
+                //         'level'    => 'siswa',
+                //         'kon_id'   => $rows->id,
+                //         'status'   => 0,
 
-                    );
-                }
+                //     );
+                // }
 
             
 
-                $this->db->insert_batch('m_admin', $admin);
+                // $this->db->insert_batch('m_admin', $admin);
 
 
                 if ($this->db->trans_status() === FALSE)
@@ -162,7 +173,7 @@ class Import extends MY_Controller {
             $loadexcel         = $excelreader->load('./upload/temp/'.$data_upload['file_name']); // Load file yang telah diupload ke folder excel
             $sheet             = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
 
-            $data = array();
+            $data = array(); $data_admin = [];
 
              $last_id = $this->db->order_by('id','desc')->limit(1)->get('m_guru')->row();
 
@@ -171,53 +182,59 @@ class Import extends MY_Controller {
             }else{
                 $last_id = 1;
             }
-
+             $this->db->trans_begin();
             foreach($sheet as $index => $row){
 
                 if($index > 1){
-                    $data[$index] = array(
-                        'tahun_akademik' => $row['B'],
-                        'nidn'  => $row['C'],
-                        'nrp'  => $row['D'],
-                        'nama' => $row['E'],
-                        'username' => $row['F'],
-                        'pangkat' => $row['G'],
-                        'jabatan_akademik' => $row['H'],
-                        'tempat_lahir' => $row['I'],
-                        'tanggal_lahir' => date('Y-m-d', strtotime($row['J'])),
-                        'alamat'  => $row['K'],
-                        'email'  => $row['L'],
-                        'no_telpon'  => $row['M'],
-                        'status'  => $row['N'],
-                        'pendidikan_umum_terakhir' => $row['O'],
-                        'pendidikan_militer_terakhir' => $row['P'],
-                        'semester' => $row['O'],
+                    $id_mapel = $this->m_mapel->get_by(['nama' => trim($row['I']), 'id_instansi' => $this->akun->instansi]);
+                    $data = array(
+                        'nidn'  => $row['B'],
+                        'nrp'  => $row['C'],
+                        'nama' => $row['D'],
+                        'username' => $row['E'],
+                        'email'  => $row['F'],
+                        'no_telpon'  => $row['G'],
+                        'id_mapel' => !empty($id_mapel) ? $id_mapel->id : 0,
                         'instansi' => $this->akun->instansi
                     );
+
+                    $this->db->insert('m_guru', $data);
+                    $inserted_id = $this->db->insert_id();
+
+                    $data_admin = [
+                        'user_id'  => $row['E'],
+                        'username' => $row['F'],
+                        'password'  => $this->encryption->encrypt($row['H']),
+                        'level'    => 'guru',
+                        'kon_id'   => $inserted_id
+                    ];
+
+                    $this->db->insert('m_admin', $data_admin);
                 }
             }
 
-            $this->db->trans_begin();
+           
 
-                $this->db->insert_batch('m_guru', $data);
-            
-                $siswa = $this->m_guru->get_many_by(array('id > '=>$last_id));
-            
-                $admin = array();
+            // $this->db->insert_batch('m_guru', $data);
+            // $this->db->insert_batch('m_admin', $data_admin);
+        
+            // $siswa = $this->m_guru->get_many_by(array('id > '=>$last_id));
+        
+            // $admin = array();
 
-                foreach ($siswa as $key => $rows) {
-                    $admin[$key] = array(
-                        'user_id'  => $rows->username,
-                        'username' => $rows->email,
-                        'password' => $this->encryption->encrypt($rows->username),
-                        'level'    => 'guru',
-                        'kon_id'   => $rows->id,
-                        'status'   => 0,
+            // foreach ($siswa as $key => $rows) {
+            //     $admin[$key] = array(
+            //         'user_id'  => $rows->username,
+            //         'username' => $rows->email,
+            //         'password'  => $this->encryption->encrypt($row['H']),
+            //         'level'    => 'guru',
+            //         'kon_id'   => $rows->id,
+            //         'status'   => 0,
 
-                    );
-                }
+            //     );
+            // }
 
-                $this->db->insert_batch('m_admin', $admin);
+            //     $this->db->insert_batch('m_admin', $admin);
 
                 if ($this->db->trans_status() === FALSE)
                 {

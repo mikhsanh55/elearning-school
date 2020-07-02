@@ -148,31 +148,38 @@
 						<!--</tr>-->
 
 						<tr>
-							<td style="width: 25%">Kelas</td>
-							<td style="width: 75%"><input type="text" class="form-control" name="kelompok" id="kelompok" required></td>
-						</tr>
-
-						<tr>
-							<td style="width: 25%">Nama Lengkap</td>
+							<td style="width: 25%">Nama Lengkap<span class="text-danger">*</span> </td>
 							<td style="width: 75%"><input type="text" class="form-control" name="nama" id="nama" required></td>
 						</tr>
 						<tr>
-							<td style="width: 25%">Username</td>
+							<td style="width: 25%">Username<span class="text-danger">*</span></td>
 							<td style="width: 75%"><input type="text" class="form-control" name="username" id="username" required></td>
 						</tr>
-
 						<tr>
-							<td style="width: 25%">Agama</td>
-							<td style="width: 75%"><input type="text" class="form-control" name="pangkat" id="pangkat" required></td>
-						</tr>
-						<tr>
-							<td style="width: 25%">NIS</td>
+							<td style="width: 25%">NIS<span class="text-danger">*</span></td>
 							<td style="width: 75%"><input type="text" class="form-control" name="nrp" id="nrp" required></td>
 						</tr>
-
 						<tr>
-							<td style="width: 25%">Tahun Angkatan Masuk</td>
-							<td style="width: 75%"><input type="text" maxlength = "10" class="form-control" name="tahun_angkatan_masuk" id="tahun_angkatan_masuk" required></td>
+							<td style="width: 25%">Kelas<span class="text-danger">*</span></td>
+							<td>
+								<select name="id_jurusan" id="id_jurusan" class="form-control" required>
+									<option value="0">Belum Ada</option>
+								    <?php foreach($jurusan as $rows) : ?>
+								        <option value="<?= $rows->id; ?>"><?= $rows->jurusan; ?></option>
+								    <?php endforeach; ?>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td style="width: 25%">Wali Kelas</td>
+							<td>
+								<select name="id_guru" id="id_guru" class="form-control">
+									<option value="0">Belum Ada</option>
+								    <?php foreach($guru as $rows) : ?>
+								        <option value="<?= $rows->id; ?>"><?= ucwords($rows->nama); ?></option>
+								    <?php endforeach; ?>
+								</select>
+							</td>
 						</tr>
 						<!-- <tr>
 							<td style="width: 25%">Angkatan</td>
@@ -181,35 +188,29 @@
 
 						<tr>
 							<td style="width: 25%">No.Telp/Hp</td>
-							<td style="width: 75%"><input type="text" class="form-control only-number" name="telp" id="telp" required></td>
-						</tr>
-						<tr>
-							<td style="width: 25%">Tempat Lahir</td>
-							<td style="width: 75%"><input type="text" class="form-control" name="tempat" id="tempat" required></td>
-						</tr>
-						<tr>
-							<td style="width: 25%">Tanggal Lahir</td>
-							<td style="width: 75%"><input type="date" class="form-control" name="tanggal" id="tanggal" required></td>
-						</tr>
-						<tr>
-							<td style="width: 25%">NIM</td>
-							<td style="width: 75%"><input type="text" class="form-control" name="nim" id="nim" required></td>
-						</tr>
-						<tr>
-							<td style="width: 25%">Jenis Kelamin</td>
-							<td style="width: 75%"><input type="text" class="form-control" name="nik" id="nik" required></td>
-						</tr>
-						<tr>
-							<td style="width: 25%">E-mail</td>
-							<td style="width: 75%"><input type="text" class="form-control" name="email" id="email" required></td>
-						</tr>
-						<tr>
-							<td style="width: 25%">Alamat</td>
-							<td style="width: 75%"><textarea type="text" class="form-control" name="alamat" id="alamat" required></textarea></td>
+							<td style="width: 75%"><input type="text" class="form-control only-number" name="telp" id="telp" ></td>
 						</tr>
 						
 						<tr>
-							<td style="width: 25%"><?=$this->transTheme->instansi;?></td>
+							<td style="width: 25%">Jenis Kelamin<span class="text-danger">*</span></td>
+							<td style="width: 75%">
+								<select name="nik" id="nik" class="form-control" required>
+									<option value="1" selected>Laki-Laki</option>
+									<option value="0">Perempuan</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td style="width: 25%">E-mail</td>
+							<td style="width: 75%"><input type="text" class="form-control" name="email" id="email" ></td>
+						</tr>
+						<tr>
+							<td style="width: 25%">Alamat</td>
+							<td style="width: 75%"><textarea type="text" class="form-control" name="alamat" id="alamat" ></textarea></td>
+						</tr>
+						
+						<tr>
+							<td style="width: 25%"><?=$this->transTheme->instansi;?><span class="text-danger">*</span></td>
 							<td>
 								<?php if ($this->log_lvl == 'admin'): ?>
 									<select name="instansi" id="instansi" class="form-control">
@@ -226,17 +227,7 @@
 							</td>
 						</tr>
 
-						<tr>
-							<td style="width: 25%">Kelas</td>
-							<td>
-								<select name="id_jurusan" id="id_jurusan" class="form-control" required>
-									<option value="">Pilih</option>
-								    <?php foreach($jurusan as $rows) : ?>
-								        <option value="<?= $rows->id; ?>"><?= $rows->jurusan; ?></option>
-								    <?php endforeach; ?>
-								</select>
-							</td>
-						</tr>
+						
 
 						</table>
 					</div>
@@ -443,6 +434,7 @@
 							$("#tahun_angkatan_masuk").val(response.data.tahun_angkatan_masuk);
 							// $("#angkatan").val(response.data.angkatan)
 							$("#nama").focus();
+							$('#id_guru').val(response.data.id_guru)
 							if(response.data.photo != null){
 								$('#photo_before').val(response.data.photo);
 								$('#photo-txt').html('<img src="<?=base_url('upload/siswa_photo/');?>'+ response.data.photo +'" width="auto" height="50">');

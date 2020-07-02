@@ -44,6 +44,28 @@ class Pengusaha extends MY_Controller {
 		} 
 	}
 
+	public function reset_password() {
+		$id = $this->encryption->decrypt($this->input->post('encrypt_id'));
+		$data = [
+			'password' => $this->encryption->encrypt($this->input->post('password'))
+		];
+		// print_r($this->encryption->decrypt($this->input->post('encrypt_id')));exit;
+		$update = $this->m_admin->update($data, ['id' => $id]);
+
+		if($update) {
+			$this->sendAjaxResponse([
+				'status' => TRUE,
+				'msg' => 'Password berhasil direset!'
+			], 200);
+		}
+		else {
+			$this->sendAjaxResponse([
+				'status' => FALSE,
+				'msg' => 'Gagal Reset Password'
+			], 500);
+		}
+	}
+
 
     public function get_provinsi() 
 	{
@@ -204,18 +226,13 @@ class Pengusaha extends MY_Controller {
 				}else {
 				    $data = [
 						'id_jurusan' => bersih($p, "id_jurusan"),
-					    'kelompok' => bersih($p, "kelompok"),
+						'id_guru' => bersih($p, "id_guru"),
 						'nama'  => bersih($p, "nama"),
 						'username'  => bersih($p, "username"),
-						'pangkat' => bersih($p, "pangkat"),
-						'tahun_angkatan_masuk' => bersih($p, "tahun_angkatan_masuk"),
-						// 'angkatan' => bersih($p, "angkatan"),
-					    'nrp' => bersih($p, "nrp"),
+					    'nrp' => bersih($p, "nrp"), // NIS
+
 						'no_telpon' => bersih($p, "telp"),
-						'tempat_lahir' => bersih($p, "tempat"),
-					    'tanggal_lahir' => bersih($p, "tanggal"),
-					    'nim'  => bersih($p, "nim"),
-					    'nik' => bersih($p, "nik"),
+					    'nik' => bersih($p, "nik"), // Jenis kelamin
 					    'email'  => bersih($p, "email"),
 					    'alamat'  => bersih($p, "alamat"),
 					    'instansi'  => bersih($p, "instansi"),
@@ -279,18 +296,13 @@ class Pengusaha extends MY_Controller {
 					$ket = "tambah";
 					$data = [
 						'id_jurusan' => bersih($p, "id_jurusan"),
-					    'kelompok' => bersih($p, "kelompok"),
+						'id_guru' => bersih($p, "id_guru"),
 						'nama'  => bersih($p, "nama"),
-						'tahun_angkatan_masuk' => bersih($p, "tahun_angkatan_masuk"),
-						// 'angkatan' => bersih($p, "angkatan"),
 						'username'  => bersih($p, "username"),
-					    'pangkat' => bersih($p, "pangkat"),
-					    'nrp' => bersih($p, "nrp"),
+					    'nrp' => bersih($p, "nrp"), // NIS
+
 						'no_telpon' => bersih($p, "telp"),
-						'tempat_lahir' => bersih($p, "tempat"),
-					    'tanggal_lahir' => bersih($p, "tanggal"),
-					    'nim'  => bersih($p, "nim"),
-					    'nik' => bersih($p, "nik"),
+					    'nik' => bersih($p, "nik"), // Jenis kelamin
 					    'email'  => bersih($p, "email"),
 					    'alamat'  => bersih($p, "alamat"),
 					    'instansi'  => bersih($p, "instansi"),
@@ -303,6 +315,17 @@ class Pengusaha extends MY_Controller {
 					}
 					
 					$this->db->insert('m_siswa', $data);
+					$inserted_id = $this->db->insert_id();
+
+                    $data_admin = [
+                        'user_id'  => bersih($p, "username"),
+                        'username' => bersih($p, "email"),
+                        'password'  => $this->encryption->encrypt(bersih($p, "username")),
+                        'level'    => 'siswa',
+                        'kon_id'   => $inserted_id
+                    ];
+
+                    $this->db->insert('m_admin', $data_admin);
 				// 	$this->db->query("INSERT INTO m_siswa VALUES (null, '".bersih($p,"nama")."', '".bersih($p,"nim")."', 
 				// 														'".bersih($p,"jenis")."',  '".bersih($p,"tanggal")."',
 				// 														'".bersih($p,"kelamin")."', '".bersih($p,"alamat")."', 
@@ -593,10 +616,13 @@ class Pengusaha extends MY_Controller {
 
 		$instansi = ($this->log_lvl == 'admin') ? $this->m_instansi->get_all() : $this->m_instansi->get_by(array('id'=>$this->akun->instansi));
 		$jurusan = ($this->log_lvl == 'admin') ? $this->m_jurusan->get_all() : $this->m_jurusan->get_many_by(array('id_instansi'=>$this->akun->instansi));
+		$guru = ($this->log_lvl == 'admin') ? $this->m_guru->get_all() : $this->m_guru->get_all(array('guru.instansi'=>$this->akun->instansi));
+		// print_r($guru);exit;
 		$data = array(
 			'instansi' => $instansi,
 			'jurusan' => $jurusan, 
-			'searchFilter' => array('Nama','Username','NRP')
+			'guru' => $guru,
+			'searchFilter' => array('Nama','Username','NIS')
 		);
 		$this->render('pengusaha/list',$data);
 	}
@@ -638,6 +664,9 @@ class Pengusaha extends MY_Controller {
 			}
 		}
 		$paginate = $this->m_siswa->paginate($pg,$where,$limit);
+		foreach ($paginate['data'] as $key => $value) {
+			$value->password = $this->encryption->decrypt($value->password);
+		}
 		$data['paginate'] = $paginate;
 		$data['paginate']['url']	= 'pengusaha/page_load';
 		$data['paginate']['search'] = 'lookup_key';

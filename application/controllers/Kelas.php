@@ -61,7 +61,6 @@ class Kelas extends MY_Controller
   }
 
 
-
   public function guru(){
 
     
@@ -76,7 +75,7 @@ class Kelas extends MY_Controller
 
 		$data = array(
 
-			'searchFilter' => array('Nama','Username','NRP','Kelompok')
+			'searchFilter' => array( 'Nama Kelas')
 
 		);
 
@@ -101,14 +100,22 @@ class Kelas extends MY_Controller
 
 
   public function add(){
+  		
+  		if($this->log_lvl == 'admin' || $this->log_lvl == 'admin_instansi' || $this->log_lvl == 'instansi') {
+  			$guru = $this->m_guru->get_many_by(['instansi'=>$this->akun->instansi]);
+  		}
+  		else if($this->log_lvl == 'guru') {
+  			$guru = $this->m_guru->get_many_by(['instansi'=>$this->akun->instansi, 'guru.id' => $this->session->admin_konid]);
+  		}
 
 		$data = array(
 
-			'guru'     => $this->m_guru->get_many_by(['instansi'=>$this->akun->instansi]),
+			'guru'     => $guru,
 
 			'jurusan' => $this->m_jurusan->get_many_by(['id_instansi'=>$this->akun->instansi])
 
 		);
+		
 
 		$this->render('kelas/add',$data);
 
@@ -252,6 +259,10 @@ class Kelas extends MY_Controller
 
 			}
 
+		}
+
+		if(!empty($post['id_jurusan'])) {
+			$where['kls.id_jurusan'] = $post['id_jurusan'];
 		}
 
 
@@ -716,14 +727,23 @@ class Kelas extends MY_Controller
 
 	}
 
-  
+  	public function riwayat_mengajar($id_jurusan) {
 
+  		if ($this->log_lvl == 'siswa') {
+	      redirect(base_url('kelas/siswa'));
+	    }else if($this->log_lvl == 'guru'){
+			redirect(base_url('kelas/guru'));
+		}
 
+  		$data = array(
 
+			'searchFilter' => array('Kelas','Modul Pelatihan'),
+			'id_jurusan' => urldecode($id_jurusan)
 
+		);
 
-
-
+		$this->render('kelas/list',$data);
+  	}
 }
 
 

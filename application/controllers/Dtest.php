@@ -326,7 +326,7 @@ class Dtest extends MY_Controller {
 
 		$data = [
 
-			'searchFilter' => ['Nama Kuliah'],
+			'searchFilter' => ['Mata Pelajaran'],
 
 			'instansi' => ($this->log_lvl == 'admin') ? $this->m_instansi->get_all() : $this->m_instansi->get_many_by(['id'=>$this->akun->instansi]) 
 
@@ -410,13 +410,8 @@ class Dtest extends MY_Controller {
 
 					'kd_mp' => $p->kd_mp,
 					'nama' => $p->nama,
-					'sks' => $p->sks,
-					'semester' => $p->semester,
-					'angkatan' => $p->angkatan,
 				    'id_instansi' => $p->instansi,
 				];
-
-
 
 				$this->m_mapel->update($data,array('id'=>bersih($p,"id")));
 
@@ -432,12 +427,7 @@ class Dtest extends MY_Controller {
 
 					'kd_mp' => $p->kd_mp,
 					'nama' => $p->nama,
-					'sks' => $p->sks,
-					'semester' => $p->semester,
-					'angkatan' => $p->angkatan,
 				    'id_instansi' => $p->instansi,
-				    'silabus' => 0
-
 				];
 
 				

@@ -51,12 +51,12 @@ class Export extends MY_Controller {
 	      ['cell' => 'A', 'label' => 'No'],
 	      ['cell' => 'B', 'label' => 'Siswa'],
 		  ['cell' => 'C', 'label' => 'Kelas'],
-		  ['cell' => 'D', 'label' => 'Semester'],
-		  ['cell' => 'E', 'label' => 'Mata Kuliah'],
-		  ['cell' => 'F', 'label' => 'UTS'],
-		  ['cell' => 'G', 'label' => 'UAS'],
-		  ['cell' => 'H', 'label' => 'Tugas'],
-		  ['cell' => 'I', 'label' => 'Keaktifan'],
+		  
+		  ['cell' => 'D', 'label' => 'Mata Pelajaran'],
+		  ['cell' => 'E', 'label' => 'UTS'],
+		  ['cell' => 'F', 'label' => 'UAS'],
+		  ['cell' => 'G', 'label' => 'Tugas'],
+		  ['cell' => 'H', 'label' => 'Keaktifan'],
 	    ];
 
 	    // Write heading excel use method on MY_Controller.php
@@ -75,12 +75,11 @@ class Export extends MY_Controller {
 			$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, $this->excelColumnNo);
 			$this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $rows->siswa);
 			$this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $rows->jurusan);
-			$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $rows->semester);
-			$this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $rows->mapel);
-			$this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, isset($uts->nilai) ? (int)$uts->nilai : 0 );
-			$this->excelObject->getActiveSheet()->SetCellValue('G' . $this->excelDataStart, isset($uas->nilai) ? (int)$uas->nilai : 0 );
-			$this->excelObject->getActiveSheet()->SetCellValue('H' . $this->excelDataStart, isset($tugas->nilai) ? (int)$tugas->nilai : 0 );
-			$this->excelObject->getActiveSheet()->SetCellValue('I' . $this->excelDataStart, 0);
+			$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $rows->mapel);
+			$this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, isset($uts->nilai) ? (int)$uts->nilai : 0 );
+			$this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, isset($uas->nilai) ? (int)$uas->nilai : 0 );
+			$this->excelObject->getActiveSheet()->SetCellValue('G' . $this->excelDataStart, isset($tugas->nilai) ? (int)$tugas->nilai : 0 );
+			$this->excelObject->getActiveSheet()->SetCellValue('H' . $this->excelDataStart, 0);
 
 			$this->excelDataStart++;
 	      	$this->excelColumnNo++;
@@ -181,11 +180,8 @@ class Export extends MY_Controller {
 
 		$this->excelCellsHeading = [
 			['cell' => 'A', 'label' => 'No'],
-			['cell' => 'B', 'label' => 'Kode Mata Kuliah'],
-			['cell' => 'C', 'label' => 'Mata Kuliah'],
-			['cell' => 'D', 'label' => 'SKS'],
-			['cell' => 'E', 'label' => 'Semester'],
-			['cell' => 'F', 'label' => 'Angkatan'],
+			['cell' => 'B', 'label' => 'Kode Mata Pelajaran'],
+			['cell' => 'C', 'label' => 'Mata Pelajaran']
 		];
 
 		// Write heading excel use method on MY_Controller.php
@@ -198,9 +194,6 @@ class Export extends MY_Controller {
 			$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, $this->excelColumnNo);
 			$this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $data->kd_mp);
 			$this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $data->nama);
-			$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $data->sks);
-			$this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $data->semester);
-			$this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, $data->angkatan);
 			$this->excelDataStart++;
 			$this->excelColumnNo++;
 		}
@@ -220,29 +213,21 @@ class Export extends MY_Controller {
 			$where['instansi'] = $this->akun->instansi;
 		}
 
-		$this->excelDatas = $this->m_guru->get_many_by($where);
- 		
+		$this->excelDatas = $this->m_guru->get_all($where);
+ 		// print_r($this->excelDatas);exit;
  		// Initialize excel object
 	    $this->excelInitialize();
 
 	    $this->excelCellsHeading = [
 	    	['cell' => 'A', 'label' => 'No'],
-	    	['cell' => 'B', 'label' => 'Nama'],
-	    	['cell' => 'C', 'label' => 'Tempat Lahir'],
-	    	['cell' => 'D', 'label' => 'Tanggal Lahir'],
-	    	['cell' => 'E', 'label' => 'Alamat'],
-	    	['cell' => 'F', 'label' => 'NIDN'],
-	    	['cell' => 'G', 'label' => 'NRP'],
-	    	['cell' => 'H', 'label' => 'Pangkat'],
-	    	['cell' => 'I', 'label' => 'Jabatan Akademik'],
-	    	['cell' => 'J', 'label' => 'Tahun Akademik'],
-	    	['cell' => 'K', 'label' => 'Pendidikan Umum Terakhir'],
-	    	['cell' => 'L', 'label' => 'Pendidikan Militer Terakhir'],
-	    	['cell' => 'M', 'label' => 'Semester'],
-	    	['cell' => 'N', 'label' => 'Status'],
-	    	['cell' => 'O', 'label' => 'No Telpon'],
-	    	['cell' => 'P', 'label' => 'Username'],
-	    	['cell' => 'Q', 'label' => 'Email']
+	    	['cell' => 'B', 'label' => 'NUPTK'],
+	    	['cell' => 'C', 'label' => 'NIP'],
+	    	['cell' => 'D', 'label' => 'Nama Guru'],
+	    	['cell' => 'E', 'label' => 'Username'],
+	    	['cell' => 'F', 'label' => 'Mata Pelajaran'],
+	    	['cell' => 'G', 'label' => 'Email'],
+	    	['cell' => 'H', 'label' => 'No Telpon'],
+	    	['cell' => 'I', 'label' => 'Password'],
 	    ];
 
 	    // Write heading excel use method on MY_Controller.php
@@ -252,23 +237,15 @@ class Export extends MY_Controller {
 
 	    foreach($this->excelDatas as $data) {
 	      $this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, $this->excelColumnNo);
-	      $this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $data->nama);
-	      $this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $data->tempat_lahir);
+	      $this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $data->nidn);
+	      $this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $data->nrp);
 
-	      $this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $data->tanggal_lahir);
-	      $this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $data->alamat);
-	      $this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, $data->nidn);
-	      $this->excelObject->getActiveSheet()->SetCellValue('G' . $this->excelDataStart, $data->nrp);
-	      $this->excelObject->getActiveSheet()->SetCellValue('H' . $this->excelDataStart, $data->pangkat);
-	      $this->excelObject->getActiveSheet()->SetCellValue('I' . $this->excelDataStart, $data->jabatan_akademik);
-	      $this->excelObject->getActiveSheet()->SetCellValue('J' . $this->excelDataStart, $data->tahun_akademik);
-	      $this->excelObject->getActiveSheet()->SetCellValue('K' . $this->excelDataStart, $data->pendidikan_umum_terakhir);
-	      $this->excelObject->getActiveSheet()->SetCellValue('L' . $this->excelDataStart, $data->pendidikan_militer_terakhir);
-	      $this->excelObject->getActiveSheet()->SetCellValue('M' . $this->excelDataStart, $data->semester);
-	      $this->excelObject->getActiveSheet()->SetCellValue('N' . $this->excelDataStart, $data->status);
-	      $this->excelObject->getActiveSheet()->SetCellValue('O' . $this->excelDataStart, $data->no_telpon);
-	      $this->excelObject->getActiveSheet()->SetCellValue('P' . $this->excelDataStart, $data->username);
-	      $this->excelObject->getActiveSheet()->SetCellValue('Q' . $this->excelDataStart, $data->email);
+	      $this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $data->nama);
+	      $this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $data->username);
+	      $this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, $data->nama_mapel == '' ? 'Belum Ada' : $data->nama_mapel);
+	      $this->excelObject->getActiveSheet()->SetCellValue('G' . $this->excelDataStart, $data->email);
+	      $this->excelObject->getActiveSheet()->SetCellValue('H' . $this->excelDataStart, $data->no_telpon);
+	      $this->excelObject->getActiveSheet()->SetCellValue('I' . $this->excelDataStart, $this->encryption->decrypt($data->password));
 
 	      $this->excelDataStart++;
 	      $this->excelColumnNo++;
@@ -295,18 +272,18 @@ class Export extends MY_Controller {
 		$this->excelDatas = $this->m_siswa->get_all($where);
 
 		$this->excelCellsHeading = [
-			['cell' => 'A', 'label' => 'Nama'],
-			['cell' => 'B', 'label' => 'NIK'],
-			['cell' => 'C', 'label' => 'NRP'],
-			['cell' => 'D', 'label' => 'NIM'],
-			['cell' => 'E', 'label' => 'Tempat Lahir'],
-			['cell' => 'F', 'label' => 'Tanggal Lahir'],
-			['cell' => 'G', 'label' => 'Alamat'],
-			['cell' => 'H', 'label' => 'Pangkat'],
+			['cell' => 'A', 'label' => 'No'],
+			['cell' => 'B', 'label' => 'Nama'],
+			['cell' => 'C', 'label' => 'Username'],
+			['cell' => 'D', 'label' => 'NIS'],
+			['cell' => 'E', 'label' => 'Kelas'],
+			['cell' => 'F', 'label' => 'Wali Kelas'],
+			['cell' => 'G', 'label' => 'Jenis Kelamin'],
+			['cell' => 'H', 'label' => 'Email'],
+			['cell' => 'I', 'label' => 'Alamat'],
 			// ['cell' => 'I', 'label' => 'Angkatan'],
-			['cell' => 'I', 'label' => 'Tahun Angkatan Masuk'],
 			['cell' => 'J', 'label' => 'No Telpon'],
-			['cell' => 'K', 'label' => 'Email'],
+			['cell' => 'K', 'label' => 'Password'],
 		];
 
 		// Write heading excel use method on MY_Controller.php
@@ -314,25 +291,24 @@ class Export extends MY_Controller {
 
 		$this->excelDataStart = 2;
 		foreach($this->excelDatas as $i => $data) {
-			$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, $data->nama);
-			$this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $data->nik);
-			$this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $data->nim);
+			$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, $this->excelColumnNo);
+			$this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $data->nama);
+			$this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $data->username);
 			$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $data->nrp);
-			$this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $data->tempat_lahir);
-			$this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, $data->tanggal_lahir);
-			$this->excelObject->getActiveSheet()->SetCellValue('G' . $this->excelDataStart, $data->alamat);
-			$this->excelObject->getActiveSheet()->SetCellValue('H' . $this->excelDataStart, $data->pangkat);
-			// $this->excelObject->getActiveSheet()->SetCellValue('I' . $this->excelDataStart, $data->angkatan)
-			// ;
-			$this->excelObject->getActiveSheet()->SetCellValue('I' . $this->excelDataStart, $data->tahun_angkatan_masuk);
+			$this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $data->nama_kelas);
+			$this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, $data->nama_guru);
+			$this->excelObject->getActiveSheet()->SetCellValue('H' . $this->excelDataStart, $data->email);
+			$this->excelObject->getActiveSheet()->SetCellValue('I' . $this->excelDataStart, $data->alamat);
 			$this->excelObject->getActiveSheet()->SetCellValue('J' . $this->excelDataStart, $data->no_telpon);
-			$this->excelObject->getActiveSheet()->SetCellValue('K' . $this->excelDataStart, $data->email);
+			$this->excelObject->getActiveSheet()->SetCellValue('K' . $this->excelDataStart, $this->encryption->decrypt($data->password));
 			$this->excelDataStart++;
+			$this->excelColumnNo++;
 		}
 
 		// Create New File use method on MY_Controller.php
 		$this->excelFileName = "Data Siswa - " . date('m-d-Y') . ".xlsx";
 		$this->excelDisplayOutput();
+		$this->excelColumnNo = 1;
 	}
 
 	// Data Kelas

@@ -74,14 +74,21 @@
 
 <div class="col-md-9 page-content">
 	<div class="inner-box">
-
+		<div class="row">
+			<div class="col-sm-12 col-md-6 col-lg-6">
+				<h2><strong> Daftar <?= $this->name; ?></strong></h2>	
+			</div>
+			<div class="col-sm-12 col-md-6 col-lg-6 text-right">
+				<a class="btn btn-light" href="<?= base_url('jurusan'); ?>">Kembali</a>
+			</div>
+		</div>
 		<div id="accordion" class="panel-group">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="panel panel-info">
 						<div class="panel-heading">
 							<div class="tombol-kanan">
-								<h2><strong> Daftar <?= $this->name; ?></strong></h2>
+								
 							</div>
 						</div>
 					</div>
@@ -185,7 +192,8 @@
 				pg    : pg,
 				limit : $('#limit').val(),
 				filter : $('#filter').val(),
-				search : $('#search').val()
+				search : $('#search').val(),
+				id_jurusan: '<?= $id_jurusan ?>'
 			},
 			success:function(response){
 				$('#content-view').html(response);

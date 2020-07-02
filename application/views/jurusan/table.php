@@ -5,10 +5,11 @@
 			<th class="frist"><input type="checkbox" name="checkall" id="checkall"></th>
 			<th class="frist">No</th>
 			<th class="frist">Kode</th>
-			<th>Kelas</th>
+			<th class="text-left">Kelas</th>
 			<?php if($this->log_lvl == 'admin'):?>
 				<th><?=$this->transTheme->instansi;?></th>
 			<?php endif;?>
+			<th style="width: 10%">Opsi</th>
 		</tr>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows):
 
@@ -21,7 +22,10 @@
 				<?php if($this->log_lvl == 'admin'):?>
 					<td><?=$rows->nama_instansi;?></td>
 				<?php endif;?>
-				
+				<td class="text-center">
+					
+					<a href="<?= base_url('kelas/riwayat-mengajar/') . urlencode($rows->id); ?>" class="btn btn-primary btn-sm">Riwayat Mengajar</a>
+				</td>
 			</tr>
 		<?php $i++;endforeach ?>
 	</thead>
