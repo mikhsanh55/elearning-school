@@ -8,9 +8,12 @@ class M_siswa extends MY_Model
 
 
      public function get_all($where=array()){
-    	$get = $this->db->select('akun.*, in.instansi AS nama_instansi')
+    	$get = $this->db->select('akun.*, in.instansi AS nama_instansi, kls.jurusan as nama_kelas, user.id as user_id, user.password, guru.nama AS nama_guru')
 				    	->from('m_siswa akun')
 				    	->join('tb_instansi in','in.id = akun.instansi','left')
+                        ->join('tb_jurusan kls', 'akun.id_jurusan = kls.id', 'left')
+                        ->join('m_guru guru', 'akun.id_guru = guru.id', 'left')
+                        ->join('m_admin user', 'akun.id = user.kon_id', 'left')
 				    	->where($where)
 				    	->get()
 				    	->result();

@@ -24,27 +24,27 @@
 				<input type="hidden" name="lembaga" id="lembaga" value="<?=$this->akun->instansi;?>">
 			</div>
 			<div class="form-group">
-				<label for="nama">Nama:</label>
+				<label for="nama">Nama<span class="text-danger">*</span></label>
 				<input type="text" class="form-control" id="nama" placeholder="Masukan Nama" name="nama" required="">
 			</div>
 			<div class="form-group">
-				<label for="username">Username:</label>
+				<label for="username">Username<span class="text-danger">*</span></label>
 				<input type="text" class="form-control" id="username" placeholder="Masukan Username" name="username" required="">
 				<span id="errors-username" class="errors"></span>
 			</div>
 			<div class="form-group">
-				<label for="email">Email:</label>
+				<label for="email">Email<span class="text-danger">*</span></label>
 				<input type="email" class="form-control" id="email" placeholder="Masukan Email" name="email" required="">
 				<span id="errors-email" class="errors"></span>
 			</div>
 		
 			<div class="form-group">
-				<label for="tempat_lahir">Tempat Lahir:</label>
+				<label for="tempat_lahir">Tempat Lahir<span class="text-danger">*</span></label>
 				<input type="text" class="form-control" id="tempat_lahir" placeholder="Masukan Tempat Lahir" name="tempat_lahir">
 			</div>
 			<div class="form-group">
-				<label for="tempat_lahir">Tanggal Lahir:</label>
-				<input class="form-control js-datepicker" type="text" name="tgl_lahir">
+				<label for="tempat_lahir">Tanggal Lahir<span class="text-danger">*</span></label>
+				<input class="form-control js-datepicker" type="text" name="tgl_lahir" required placeholder="2020-02-23">
 			</div>
 			
 			<button type="submit" class="btn btn-primary">Simpan</button>

@@ -4,9 +4,9 @@
 		<tr>
 			<th class="frist" rowspan="2">No</th>
 			<th rowspan="2"><?= $this->transTheme->siswa;?></th>
-			<th rowspan="2">Jurusan</th>
+			<th rowspan="2">Kelas</th>
 			<th rowspan="2">Semester</th>
-			<th rowspan="2">Mata Kuliah</th>
+			<th rowspan="2">Mata Pelajaran</th>
 			<th colspan="4">Nilai</th>
 		</tr>
 		<tr>

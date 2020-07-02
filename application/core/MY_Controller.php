@@ -1,5 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-// require 'vendor/autoload.php';
+require 'vendor/autoload.php';
 
 class MY_Controller extends CI_Controller
 {
@@ -200,14 +200,16 @@ class MY_Controller extends CI_Controller
 							->from('sub_menu')
 							->where(['link' => $this->get_url])->get()->row();
 		//echo $this->db->last_query();exit;
-		
+		// print_r($active_menu->row());
+		// print_r($this->menu);
+		// exit;
 	
 		$this->sub_menu = $sub_menu;
 
 		if($active_menu->num_rows() > 0) {
 			$this->active_menu = $active_menu->row()->id;
 			if($this->checkactivemenu() == FALSE) {
-				$this->active_menu = $sub_menu->id_menu;
+				$this->active_menu = !empty($this->get_url) ? $this->get_url : $sub_menu->id_menu;
 				$this->sub_menu = $sub_menu;
 			}
 		}

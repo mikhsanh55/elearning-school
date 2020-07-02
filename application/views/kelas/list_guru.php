@@ -74,14 +74,21 @@
 
 <div class="col-md-9 page-content">
 	<div class="inner-box">
-
+		<div class="row">
+			<div class="col-sm-12 col-md-6 col-lg-6">
+				<h2><strong> Daftar <?= $this->name; ?></strong></h2>	
+			</div>
+			<div class="col-sm-12 col-md-6 col-lg-6 text-right">
+				<a class="btn btn-light" href="<?= base_url('jurusan'); ?>">Kembali</a>
+			</div>
+		</div>
 		<div id="accordion" class="panel-group">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="panel panel-info">
 						<div class="panel-heading">
 							<div class="tombol-kanan">
-								<h2><strong>Daftar <?= $this->name; ?></strong></h2>
+								
 							</div>
 						</div>
 					</div>
@@ -111,7 +118,9 @@
 					<option value="50">50</option>
 					<option value="100">100</option>
 				</select>
-	
+				<a class="btn btn-success btn-sm tombol-kanan" href="<?=base_url('kelas/add');?>"><i class="fa fa-user-plus"></i> &nbsp;Tambah</a>
+				<a href="javascript:void(0);" title="edit" id="edited" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> &nbsp;Edit</a>
+				<a href="javascript:void(0);" id="deleted" title="Hapus" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> &nbsp;Hapus</a>
 			
 				<div id="content-view"></div>
 			</div>
@@ -254,7 +263,7 @@
 		
 		$.ajax({
 			type : 'post',
-			url  : '<?php echo base_url() ?>' + 'kelas/daftar_murid2' + '/' + 1,
+			url  : '<?php echo base_url() ?>' + 'kelas/daftar_murid' + '/' + 1,
 			data : {
 				id : $(this).data('id'),
 				id_jurusan : $(this).data('jurusan')

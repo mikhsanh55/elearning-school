@@ -44,7 +44,7 @@
 			</div>
 			<div class="form-group">
 				<input type="hidden" class="form-control" value="<?=$edit->id;?>" name="id" readonly>
-				<label for="jurusan">Kelas:</label>
+				<label for="jurusan">Kelas<span class="text-danger">*</span></label>
 				<input type="text" class="form-control" value="<?=$edit->jurusan;?>" id="jurusan" placeholder="Masukan Kelas" name="jurusan" required="" maxlength="150">
 			</div>
 

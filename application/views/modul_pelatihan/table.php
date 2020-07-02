@@ -5,9 +5,6 @@
 			<th class="frist">No</th>
 			<th>Kode Mata Pelajaran</th>
 			<th>Mata Pelajaran</th>
-			<th>SKS</th>
-			<th>Semester</th>
-			<th>Tahun Angkatan</th>
 			<!-- <th><?=$this->transTheme->instansi;?></th> -->
 			<th>Opsi</th>
 		</tr>
@@ -18,9 +15,6 @@
 				<td align="center" class="frist"><?=$i;?></td>
 				<td><?=$rows->kd_mp;?></td>
 				<td><?=$rows->nama;?></td>
-				<td><?=$rows->sks;?></td>
-				<td><?=$rows->semester;?></td>
-				<td><?=$rows->angkatan;?></td>
 		
 				<td class="frist">
 

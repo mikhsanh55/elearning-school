@@ -18,7 +18,7 @@ class Jurusan extends MY_Controller
   {
     $data = array(
 			'instansi' => $this->m_jurusan->get_all(), 
-			'searchFilter' => array('Jurusan')
+			'searchFilter' => array('jurusan' => 'Kelas')
 		);
 		$this->render('jurusan/list',$data);
   }
@@ -39,9 +39,18 @@ class Jurusan extends MY_Controller
     }
     if ($this->log_lvl != 'admin') {
       $where['id_instansi'] = $this->akun->instansi;
+      // if($this->log_lvl == 'guru') {
+      //   $where['']
+      // }
+      // if($this->log_lvl == 'siswa') {
+      //   $where['']
+      // }
     }
 
 		$paginate = $this->m_jurusan->paginate($pg,$where,$limit);
+    foreach($paginate['data'] as $row) {
+      $row->encrypt_id = $this->encryption->encrypt($row->id);
+    }
 		$data['paginate'] = $paginate;
 		$data['paginate']['url']	= 'jurusan/page_load';
 		$data['paginate']['search'] = 'lookup_key';
@@ -176,6 +185,12 @@ class Jurusan extends MY_Controller
     $this->excelColumnNo = 1;
   }
 
+  public function siswa() {
+    $data = array(
+      'searchFilter' => array('jurusan' => 'Kelas')
+    );
+    $this->render('jurusan/list',$data);
+  }
 }
 
 

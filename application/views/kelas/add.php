@@ -53,7 +53,7 @@
 				<label for="mapel"><?=$this->transTheme->guru;?></label>
 
 				<div class="rs-select2 js-select-simple select--no-search">
-
+					<?php if($this->log_lvl == 'admin' || $this->log_lvl == 'instansi' || $this->log_lvl == 'admin_instansi') { ?>
 					<select name="id_trainer" id="id_trainer" style="width: 70%;" required>
 
 						<option disabled="disabled" value="null" selected="selected">Pilih</option>
@@ -68,9 +68,20 @@
 
 						<?php endforeach ?>
 
+
 					</select>
 
 					<div class="select-dropdown"></div>
+					<?php } else if($this->log_lvl == 'guru') { ?>
+						<select name="id_trainer" id="id_trainer" style="width: 70%;" required value="<?= $this->session->admin_konid; ?>">
+
+						<option value="<?= $this->session->admin_konid ?>" selected="selected"><?= $this->session->admin_nama; ?></option>
+
+
+
+					</select>	
+						<div class="select-dropdown"></div>
+					<?php } ?>
 
 				</div>
 
@@ -79,7 +90,7 @@
 			<div class="form-group col-md-6">
 
 				<label for="mapel">Mata Pelajaran</label>
-
+				<?php if($this->log_lvl == 'admin' || $this->log_lvl == 'instansi' || $this->log_lvl == 'admin_instansi') { ?>
 				<div class="rs-select2 js-select-simple select--no-search">
 
 					<select name="mapel" id="mapel" style="width: 70%;" required>
@@ -91,6 +102,23 @@
 					<div class="select-dropdown"></div>
 
 				</div>
+				<?php } else if($this->log_lvl == 'guru') { ?>
+					<?php 
+						$user = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
+						$mapel = $this->m_mapel->get_by(['id' => $user->id_mapel]);
+					?>
+					<div class="rs-select2 js-select-simple select--no-search">
+
+						<select name="mapel" id="mapel" style="width: 70%;" required>
+
+							<option disabled="disabled" value="<?= $mapel->id; ?>" selected="selected"><?= $mapel->nama; ?></option>
+
+						</select>
+
+						<div class="select-dropdown"></div>
+
+					</div>
+				<?php } ?>
 
 			</div>
 
@@ -190,7 +218,7 @@
 
 					data : {
 
-						id_trainer : $('#id_trainer').val(),
+						id_trainer : $('#id_trainer')[0].value,
 
 						id_mapel : '<?=(empty($edit->id_mapel)) ? NULL : $edit->id_mapel ;?>'
 
@@ -205,8 +233,6 @@
 				})
 
 		}
-
-
 
 		get_mapel();
 
@@ -228,7 +254,7 @@
 
         //  Validation		
 
-		if($('#id_trainer').val() == null) {
+		if($('#id_trainer')[0].value == null) {
 
 		    error.push('Harap pilih Pengajar!');
 
@@ -236,7 +262,7 @@
 
 		
 
-		if($('#mapel').val() == null) {
+		if($('#mapel')[0].value == null) {
 
 		    error.push('Harap pilih mata pelajaran!');
 
@@ -244,7 +270,7 @@
 
 		
 
-		if( $('#id_jurusan').val() == null) {
+		if( $('#id_jurusan')[0].value == null) {
 
 		    error.push('Harap pilih jurusan!');
 
