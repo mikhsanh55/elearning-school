@@ -5,7 +5,7 @@
 			<th class="frist"><input type="checkbox" name="checkall" id="checkall"></th>
 			<th class="frist">No</th>
 			<th class="frist">Kode</th>
-			<th class="text-left">Kelas</th>
+			<th class="text-left">Jurusan</th>
 			<?php if($this->log_lvl == 'admin'):?>
 				<th><?=$this->transTheme->instansi;?></th>
 			<?php endif;?>

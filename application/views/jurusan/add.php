@@ -12,7 +12,7 @@
 	<div class="inner-box">
 		<div class="row">
 			<div class="col-sm-12 col-md-6 col-lg-6">
-				<h2>Tambah Kelas</h2>		
+				<h2>Tambah Jurusan</h2>		
 			</div>
 			<div class="col-sm-12 col-md-6 col-lg-6 text-right">
 				<button class="btn btn-light" onclick="back_page('jurusan', false)">Kembali</button>
@@ -38,7 +38,7 @@
 			
 			</div>
 			<div class="form-group">
-				<label for="jurusan">Kelas<span class="text-danger">*</span></label>
+				<label for="jurusan">Jurusan<span class="text-danger">*</span></label>
 				<input type="text" class="form-control" id="jurusan" placeholder="Masukan Jurusan" name="jurusan" required="" maxlength="150">
 			</div>
 

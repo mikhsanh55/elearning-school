@@ -67,18 +67,46 @@ class Adminlembaga extends MY_Controller {
 			$data = array(
 				'nama' 			=> $post['nama'],
 				'username' 		=> $post['username'],
-				'tempat_lahir' 	=> $post['tempat_lahir'],
-				'tanggal_lahir' => $post['tgl_lahir'],
+				// 'tempat_lahir' 	=> $post['tempat_lahir'],
+				// 'tanggal_lahir' => $post['tgl_lahir'],
 				'email' 		=> $post['email'],
+				'no_telpon'		=> $post['no_telpon'],
 				'instansi' 		=> $post['lembaga'],
 				'pembuatan_akun' => time(),
 				'verifikasi' 	 => md5(time()) 
 			);
 
 			$kirim = $this->m_admin_lembaga->insert($data);
+			$inserted_id = $this->db->insert_id();
+
+			$check_login = $this->m_admin->get_many_by(['kon_id' => $inserted_id]);
+			$kon_ids = [];
+			if(count($check_login) > 0) {
+				foreach($check_login as $data) {
+					$kon_ids[] = $data->kon_id;
+				}
+			}
+
 			if ($kirim) {
-				$status = 1;
-				$errors_txt['info'] = 'Berhasil Menyimpan Data';
+				
+				$this->db->where_in('kon_id',$kon_ids)->delete('m_admin');
+				$data_admin = [
+					'user_id' => $post['username'],
+					'username' => $post['email'],
+					'kon_id' => $inserted_id,
+					'level'  => 'instansi'
+				];
+				$insert = $this->m_admin->insert($data_admin);
+				if($insert) {
+					$status = 1;
+					$errors_txt['info'] = 'Berhasil Menyimpan Data';	
+				}
+				else {
+					$status = 0;
+					$errors_txt['info'] = 'Gagal Membuat Akses Login ! Hubungi Admin atau Tim Support';
+					$errors++;
+				}
+				
 			}else{
 				$status = 0;
 				$errors_txt['info'] = 'Gagal Menyimpan ! Hubungi Admin atau Tim Support';
@@ -141,9 +169,10 @@ class Adminlembaga extends MY_Controller {
 			$data = array(
 				'nama' 			=> $post['nama'],
 				'username' 		=> $post['username'],
-				'tempat_lahir' 	=> $post['tempat_lahir'],
-				'tanggal_lahir' => $post['tgl_lahir'],
+				// 'tempat_lahir' 	=> $post['tempat_lahir'],
+				// 'tanggal_lahir' => $post['tgl_lahir'],
 				'email' 		=> $post['email'],
+				'no_telpon'		=> $post['no_telpon'],
 				'instansi' 		=> $post['lembaga'],
 				'pembuatan_akun' => time(),
 				'verifikasi' 	 => md5(time()) 
@@ -299,10 +328,14 @@ class Adminlembaga extends MY_Controller {
 			}
 		}
 		if($this->log_lvl != 'admin'){
-			$where['in.id'] = $this->akun->instansi;
+			$where['akun.instansi'] = $this->akun->instansi;
 		}
 
-		$paginate = $this->m_admin_lembaga->paginate($pg,$where,$limit);
+
+		$paginate = $this->m_admin_lembaga->paginate2($pg,$where,$limit);
+		foreach ($paginate['data'] as $key => $value) {
+			$value->password = $this->encryption->decrypt($value->password);
+		}
 		$data['paginate'] = $paginate;
 		$data['paginate']['url']	= 'adminlembaga/page_load';
 		$data['paginate']['search'] = 'lookup_key';
@@ -323,7 +356,7 @@ class Adminlembaga extends MY_Controller {
 
 		$kirim = $this->db->where_in('id',$where)->delete('tb_admin_lembaga');
 
-		$kirim = $this->db->where_in('kon_id',$where)->where_in('level','admin_instansi')->delete('m_admin');
+		$kirim = $this->db->where_in('kon_id',$where)->delete('m_admin');
 
 		if ($this->db->trans_status() === FALSE)
 		{

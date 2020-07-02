@@ -142,11 +142,9 @@ class Export extends MY_Controller {
 
 		$this->excelCellsHeading = [
 			['cell' => 'A', 'label' => 'Nama'],
-			['cell' => 'B', 'label' => 'Tempat Lahir'],
-			['cell' => 'C', 'label' => 'Tanggal Lahir'],
-			['cell' => 'D', 'label' => 'Lembaga'],
-			['cell' => 'E', 'label' => 'No Telpon'],
-			['cell' => 'F', 'label' => 'Email']
+			['cell' => 'B', 'label' => 'Username'],
+			['cell' => 'C', 'label' => 'No Telpon'],
+			['cell' => 'D', 'label' => 'Email']
 		];
 
 		// Write heading excel use method on MY_Controller.php
@@ -157,16 +155,14 @@ class Export extends MY_Controller {
 
 		foreach($this->excelDatas as $key => $data) {
 			$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, $data->nama);
-			$this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $data->tempat_lahir);
-			$this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $data->tanggal_lahir);
-			$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $data->nama_instansi);
-			$this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $data->no_telpon);
-			$this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, $data->email);
+			$this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $data->username);
+			$this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $data->no_telpon);
+			$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $data->email);
 			$this->excelDataStart++;
 		}
 
 		// Create New File use method on MY_Controller.php
-		$this->excelFileName = "Data Admin Lembaga - " . date('m-d-Y') . ".xlsx";
+		$this->excelFileName = "Data Admin User - " . date('m-d-Y') . ".xlsx";
 		$this->excelDisplayOutput();
 
 	}

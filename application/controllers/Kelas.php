@@ -8,7 +8,7 @@ class Kelas extends MY_Controller
 
 {
 
-  public $name = 'Ruang Belajar';  
+  public $name = 'Kelas';  
 
   public function __construct()
 

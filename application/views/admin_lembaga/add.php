@@ -12,7 +12,7 @@
 	<div class="inner-box">
 		<div class="row">
 			<div class="col-sm-12 col-md-6 col-lg-6">
-				<h2>Tambah Admin <?=$this->akun->ins;?></h2>		
+				<h2>Tambah Admin User</h2>		
 			</div>
 			<div class="col-sm-12 col-md-6 col-lg-6 text-right">
 				<button class="btn btn-light" onclick="back_page('adminlembaga', true)">Kembali</button>
@@ -25,27 +25,29 @@
 			</div>
 			<div class="form-group">
 				<label for="nama">Nama<span class="text-danger">*</span></label>
-				<input type="text" class="form-control" id="nama" placeholder="Masukan Nama" name="nama" required="">
+				<input type="text" class="form-control" id="nama" placeholder="Masukan Nama Lengkap" name="nama" required="">
 			</div>
 			<div class="form-group">
 				<label for="username">Username<span class="text-danger">*</span></label>
-				<input type="text" class="form-control" id="username" placeholder="Masukan Username" name="username" required="">
+				<input type="text" class="form-control" id="username" placeholder="Ex : myuser123" name="username" required="">
 				<span id="errors-username" class="errors"></span>
 			</div>
 			<div class="form-group">
-				<label for="email">Email<span class="text-danger">*</span></label>
-				<input type="email" class="form-control" id="email" placeholder="Masukan Email" name="email" required="">
+				<label for="tempat_lahir">No Telpon<span class="text-danger">*</span></label>
+				<input type="text" class="form-control" id="no_telpon" placeholder="Ex : 085266352212" name="no_telpon" required>
+				<span id="errors-no_telpon" class="errors"></span>
+			</div>
+			<div class="form-group">
+				<label for="email">Email</label>
+				<input type="email" class="form-control" id="email" placeholder="Ex : example@gmail.com" name="email" >
 				<span id="errors-email" class="errors"></span>
 			</div>
 		
-			<div class="form-group">
-				<label for="tempat_lahir">Tempat Lahir<span class="text-danger">*</span></label>
-				<input type="text" class="form-control" id="tempat_lahir" placeholder="Masukan Tempat Lahir" name="tempat_lahir">
-			</div>
-			<div class="form-group">
+			
+			<!-- <div class="form-group">
 				<label for="tempat_lahir">Tanggal Lahir<span class="text-danger">*</span></label>
 				<input class="form-control js-datepicker" type="text" name="tgl_lahir" required placeholder="2020-02-23">
-			</div>
+			</div> -->
 			
 			<button type="submit" class="btn btn-primary">Simpan</button>
 			<button type="button" class="btn btn-danger" onclick="back_page('adminlembaga')">Kembali</button>

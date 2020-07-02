@@ -42,9 +42,10 @@ class Jurusan extends MY_Controller
       // if($this->log_lvl == 'guru') {
       //   $where['']
       // }
-      // if($this->log_lvl == 'siswa') {
-      //   $where['']
-      // }
+      if($this->log_lvl == 'siswa') {
+        $data = $this->m_siswa->get_by(['id' => $this->session->admin_konid]);
+        $where['jurus.id'] = $data->id_jurusan;
+      }
     }
 
 		$paginate = $this->m_jurusan->paginate($pg,$where,$limit);

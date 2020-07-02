@@ -12,7 +12,7 @@
 	<div class="inner-box">
 		<div class="row">
 			<div class="col-sm-12 col-md-6 col-lg-6">
-				<h2>Edit Kelas</h2>		
+				<h2>Edit Jurusan</h2>		
 			</div>
 			<div class="col-sm-12 col-md-6 col-lg-6 text-right">
 				<button class="btn btn-light" onclick="back_page('jurusan', false)">Kembali</button>
@@ -44,8 +44,8 @@
 			</div>
 			<div class="form-group">
 				<input type="hidden" class="form-control" value="<?=$edit->id;?>" name="id" readonly>
-				<label for="jurusan">Kelas<span class="text-danger">*</span></label>
-				<input type="text" class="form-control" value="<?=$edit->jurusan;?>" id="jurusan" placeholder="Masukan Kelas" name="jurusan" required="" maxlength="150">
+				<label for="jurusan">Jurusan<span class="text-danger">*</span></label>
+				<input type="text" class="form-control" value="<?=$edit->jurusan;?>" id="jurusan" placeholder="Masukan Jurusan" name="jurusan" required="" maxlength="150">
 			</div>
 
 			

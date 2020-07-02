@@ -316,7 +316,15 @@ class Pengusaha extends MY_Controller {
 					
 					$this->db->insert('m_siswa', $data);
 					$inserted_id = $this->db->insert_id();
+					$check_login = $this->m_admin->get_many_by(['kon_id' => $inserted_id]);
+					$kon_ids = [];
+					if(count($check_login) > 0) {
+						foreach($check_login as $data) {
+							$kon_ids[] = $data->kon_id;
+						}
+					}
 
+					$this->db->where_in('kon_id',$kon_ids)->delete('m_admin');
                     $data_admin = [
                         'user_id'  => bersih($p, "username"),
                         'username' => bersih($p, "email"),
