@@ -227,12 +227,12 @@
 				},
 				success:function(response){
 					if (response.result == true) {
-						alert('Hapus Berhasil');
+						pageLoad(1,'tugas/page_load_list_tugas');
 					}else{
 						alert('Hapus Gagal');
 					}
 
-					pageLoad(1,'tugas/page_load_list_tugas');
+					
 				}
 			})
 

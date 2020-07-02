@@ -57,7 +57,7 @@
 
                   <th class="text-center align-middle">NIP</th>
 
-                  <th class="text-center align-middle">Kelompok</th>
+                  <th class="text-center align-middle">Kelas</th>
 
                   <th class="text-center align-middle">Aktif Login</th>
 

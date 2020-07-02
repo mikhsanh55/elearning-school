@@ -240,7 +240,7 @@
 
 					}else{
 
-						alert(response.message);
+						// alert(response.message);
 
 						window.location = '<?=base_url('penilaian');?>'
 

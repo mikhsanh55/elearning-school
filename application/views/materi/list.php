@@ -7,7 +7,7 @@
 						<header><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 							<div class="row align-items-center">
 								<div class="col-sm-12 col-md-6 col-lg-6">
-									<?php if($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') : ?>
+									<?php if($this->log_lvl != 'siswa' ) : ?>
 										<?php if(!is_null($mapel)) { ?>
 		    							<a class="btn btn-primary btn-sm mt-3 mb-3" onclick="setSess(event, this)" href="#" data-mapel="<?= $mapel->id; ?>" data-href="<?= base_url('Materi/add') ?>"><i class="fas fa-plus ml-2 mr-2"></i> Tambah Materi</a>
 		    						 <!--    <a class="ml-3 btn btn-success btn-sm mt-3 mb-3 upload-sub-modul" href="<?= base_url('Materi/add') ?>"><i class="fas fa-upload ml-2 mr-2"></i> Upload Materi PDF </a> -->
@@ -225,7 +225,7 @@
     		              res = JSON.parse(res);
     		              //  console.log(res);
     		              if(res.status == true) {
-    		                  alert(res.msg);
+    		                  // alert(res.msg);
     		                  window.location.reload();
     		              }
     		              else {
@@ -344,7 +344,7 @@
     	        dataType : 'json',
     	        success:function(res) {
     	           window.location.href = res.url
-    	           console.log(res)
+    	           // console.log(res)
     	        },
     	        error:function(e) {
     	            console.error(e);

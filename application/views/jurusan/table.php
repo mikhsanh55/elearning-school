@@ -17,7 +17,7 @@
 			<tr>
 				<td><input type="checkbox" name="checklist[]" class="checklist" data-id= "<?=encrypt_url($rows->id);?>" value="<?=$rows->id;?>"></td>
 				<td align="center" class="frist"><?=$i;?></td>
-				<td><?=$rows->id;?></td>
+				<td><?=$rows->kode;?></td>
 				<td><?=$rows->jurusan;?></td>
 				<?php if($this->log_lvl == 'admin'):?>
 					<td><?=$rows->nama_instansi;?></td>

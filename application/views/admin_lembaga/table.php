@@ -33,7 +33,7 @@
 				<td align="center" class="frist"><?=$i;?></td>
 				<td><?=$rows->nama;?></td>
 				<td><?=$rows->username;?></td>
-				<td><?= $rows->user_id; ?></td>
+				<td><?= $rows->no_telpon; ?></td>
 				<td>
 					<div class="password-input">
 						<input type="password" value="<?= $rows->password; ?>" data-id="<?= $this->encryption->encrypt($rows->user_id); ?>" class="form-control password-reset">

@@ -491,7 +491,7 @@
 
 					if (response.result == true) {
 
-						alert('Hapus Berhasil');
+						pageLoad(1,'penilaian/page_load');
 
 					}else{
 
@@ -589,7 +589,7 @@
 
 					if (response.status == 1) {
 
-						alert(response.message);
+						pageLoad(1,'penilaian/page_load');
 
 					}else{
 
@@ -599,7 +599,7 @@
 
 
 
-					pageLoad(1,'penilaian/page_load');
+					
 
 				}
 
@@ -649,7 +649,7 @@
 
 					if (response.status == 1) {
 
-						alert(response.message);
+						pageLoad(1,'penilaian/page_load');
 
 					}else{
 
@@ -659,7 +659,7 @@
 
 
 
-					pageLoad(1,'penilaian/page_load');
+					
 
 				}
 
@@ -711,7 +711,7 @@
 
 					if (response.status == 1) {
 
-						alert(response.message);
+						pageLoad(1,'penilaian/page_load');
 
 					}else{
 
@@ -721,7 +721,7 @@
 
 
 
-					pageLoad(1,'penilaian/page_load');
+					
 
 				}
 

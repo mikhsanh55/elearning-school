@@ -67,7 +67,7 @@
 				data : $(this).serialize(),
 				success:function(response) {
 					if(response.result == true){
-						alert(response.info);
+						// alert(response.info);
 						window.location = '<?=base_url('jurusan');?>'
 					}else{
 						alert(response.info);

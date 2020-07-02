@@ -224,12 +224,12 @@
 				},
 				success:function(response){
 					if (response.result == true) {
-						alert('Hapus Berhasil');
+						pageLoad(1,'kelas/page_load_siswa');
 					}else{
 						alert('Hapus Gagal');
 					}
 
-					pageLoad(1,'kelas/page_load_siswa');
+					
 				}
 			})
 

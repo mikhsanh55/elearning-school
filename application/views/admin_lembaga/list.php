@@ -315,12 +315,13 @@
 				},
 				success:function(response){
 					if (response.result == true) {
-						alert('Hapus Berhasil');
+						// alert('Hapus Berhasil');
+						pageLoad(1,'adminlembaga/page_load');
 					}else{
 						alert('Hapus Gagal');
 					}
 
-					pageLoad(1,'adminlembaga/page_load');
+					// pageLoad(1,'adminlembaga/page_load');
 				}
 			})
 
@@ -364,12 +365,13 @@
 				},
 				success:function(response){
 					if (response.status == 1) {
-						alert(response.message);
+						// alert(response.message);
+						pageLoad(1,'adminlembaga/page_load');
 					}else{
 						alert(response.message);
 					}
 
-					pageLoad(1,'adminlembaga/page_load');
+					
 				}
 			})
 

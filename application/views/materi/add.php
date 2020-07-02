@@ -242,8 +242,8 @@
 					processData:false,
 					success:function(res) {
 						res = JSON.parse(res);
-						alert(res.msg);
-						console.log(res);
+						// alert(res.msg);
+						// console.log(res);
 						$('.spin-icon').toggleClass('d-none');
 						window.location.href = sessionStorage.getItem('url') || localStorage.getItem('url');
 					},
@@ -291,7 +291,7 @@
 						res = JSON.parse(res);
 						$('.spin-icon').addClass('d-none');
 						if(res.status == true) {
-							alert(res.msg);
+							// alert(res.msg);
 							window.location.href = sessionStorage.getItem('url') || localStorage.getItem('url');
 						}
 						else {

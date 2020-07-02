@@ -213,7 +213,7 @@
 			data: $(this).serialize(),
 			dataType: 'json',
 			success:function(response){
-				alert(response.info);
+				// alert(response.info);
 				pageLoad(1,'penilaian/page_load_paket');
 				$("#form_m").modal('hide');
 				$(this).trigger("reset");
@@ -258,12 +258,12 @@
 				},
 				success:function(response){
 					if (response.result == true) {
-						alert('Hapus Berhasil');
+						pageLoad(1,'penilaian/page_load_paket');
 					}else{
 						alert('Hapus Gagal');
 					}
 
-					pageLoad(1,'penilaian/page_load_paket');
+					
 				}
 			})
 

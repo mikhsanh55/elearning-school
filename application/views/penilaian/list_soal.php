@@ -239,7 +239,7 @@
 				},
 				success:function(response){
 					if (response.result == true) {
-						alert('Hapus Berhasil');
+						pageLoad(1,'penilaian/page_load_soal');
 					}else{
 						alert('Hapus Gagal');
 					}
@@ -288,7 +288,7 @@
 				},
 				success:function(response){
 					if (response.status == 1) {
-						alert(response.message);
+						pageLoad(1,'penilaian/page_load_soal');
 					}else{
 						alert(response.message);
 					}
@@ -318,7 +318,7 @@
 				},
 				success:function(response){
 					if (response.status == 1) {
-						alert(response.message);
+						pageLoad(1,'penilaian/page_load_soal');
 					}else{
 						alert(response.message);
 					}
@@ -349,7 +349,7 @@
 				},
 				success:function(response){
 					if (response.status == 1) {
-						alert(response.message);
+						pageLoad(1,'penilaian/page_load_soal');
 					}else{
 						alert(response.message);
 					}
