@@ -324,7 +324,9 @@ class Pengusaha extends MY_Controller {
 						}
 					}
 
-					$this->db->where_in('kon_id',$kon_ids)->delete('m_admin');
+					if(count($kon_ids) > 0) {
+						$this->db->where_in('kon_id',$kon_ids)->delete('m_admin');	
+					}
                     $data_admin = [
                         'user_id'  => bersih($p, "username"),
                         'username' => bersih($p, "email"),

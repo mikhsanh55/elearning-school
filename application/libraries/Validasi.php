@@ -18,7 +18,7 @@ Class Validasi extends CI_Model {
 				$cek_username1 = $this->m_admin_lembaga->count_by(array('akun.username'=>$username));
 				$cek_username2 = $this->m_akun_lembaga->count_by(array('akun.username'=>$username));
 				$cek_username3 = $this->m_siswa->count_by(array('username'=>$username));
-				$cek_username4 = $this->m_guru->count_by(array('username'=>$username));
+				$cek_username4 = $this->m_guru->count_by(array('guru.username'=>$username));
 
 				$cek_username = $cek_username1 + $cek_username2 + $cek_username3 + $cek_username4; 
 
@@ -33,14 +33,15 @@ Class Validasi extends CI_Model {
 			switch ($from) {
 				case 'admin_lembaga':
 
-				$cek_username1 = $this->m_admin_lembaga->get_by(array('username'=>$username));
-				$cek_username2 = $this->m_akun_lembaga->count_by(array('username'=>$username));
+				$cek_username1 = $this->m_admin_lembaga->count_by(array('akun.username'=>$username));
+				$cek_username2 = $this->m_akun_lembaga->count_by(array('akun.username'=>$username));
 				$cek_username3 = $this->m_siswa->count_by(array('username'=>$username));
-				$cek_username4 = $this->m_guru->count_by(array('username'=>$username));
+				$cek_username4 = $this->m_guru->count_by(array('guru.username'=>$username));
+				$data = $this->m_admin_lembaga->get_by(['username' => $username]);
 
 				$cek_username = $cek_username2 + $cek_username3 + $cek_username4;
 
-				if (!empty($cek_username1) && $cek_username1->id != $id) {
+				if (!empty($cek_username1) && $data->id != $id) {
 					$cek_username = 1;
 				}else if ($cek_username > 0){
 					$cek_username = 1;
@@ -52,13 +53,14 @@ Class Validasi extends CI_Model {
 				case 'akun_lembaga':
 
 				$cek_username1 = $this->m_akun_lembaga->get_by(array('username'=>$username));
-				$cek_username2 = $this->m_admin_lembaga->count_by(array('username'=>$username));
+				$cek_username2 = $this->m_admin_lembaga->count_by(array('akun.username'=>$username));
 				$cek_username3 = $this->m_siswa->count_by(array('username'=>$username));
-				$cek_username4 = $this->m_guru->count_by(array('username'=>$username));
+				$cek_username4 = $this->m_guru->count_by(array('guru.username'=>$username));
+				$data = $this->m_akun_lembaga->get_by(['username' => $username]);
 
 				$cek_username = $cek_username2 + $cek_username3 + $cek_username4;
 
-				if (!empty($cek_username1) && $cek_username1->id != $id) {
+				if (!empty($cek_username1) && $data->id != $id) {
 					$cek_username = 1;
 				}else if ($cek_username > 0){
 					$cek_username = 1;
@@ -69,13 +71,14 @@ Class Validasi extends CI_Model {
 				case 'siswa':
 
 				$cek_username1 = $this->m_siswa->get_by(array('username'=>$username));
-				$cek_username2 = $this->m_akun_lembaga->count_by(array('username'=>$username));
-				$cek_username3 = $this->m_admin_lembaga->count_by(array('username'=>$username));
-				$cek_username4 = $this->m_guru->count_by(array('username'=>$username));
+				$cek_username2 = $this->m_akun_lembaga->count_by(array('akun.username'=>$username));
+				$cek_username3 = $this->m_admin_lembaga->count_by(array('akun.username'=>$username));
+				$cek_username4 = $this->m_guru->count_by(array('guru.username'=>$username));
+				$data = $this->m_siswa_lembaga->get_by(['username' => $username]);
 
 				$cek_username = $cek_username2 + $cek_username3 + $cek_username4;
 
-				if (!empty($cek_username1) && $cek_username1->id != $id) {
+				if (!empty($cek_username1) && $data->id != $id) {
 					$cek_username = 1;
 				}else if ($cek_username > 0){
 					$cek_username = 1;
@@ -86,13 +89,14 @@ Class Validasi extends CI_Model {
 				case 'guru':
 
 				$cek_username1 = $this->m_guru->get_by(array('username'=>$username));
-				$cek_username2 = $this->m_akun_lembaga->count_by(array('username'=>$username));
-				$cek_username3 = $this->m_admin_lembaga->count_by(array('username'=>$username));
+				$cek_username2 = $this->m_akun_lembaga->count_by(array('akun.username'=>$username));
+				$cek_username3 = $this->m_admin_lembaga->count_by(array('akun.username'=>$username));
 				$cek_username4 = $this->m_siswa->count_by(array('username'=>$username));
+				$data = $this->m_guru_lembaga->get_by(['username' => $username]);
 
 				$cek_username = $cek_username2 + $cek_username3 + $cek_username4;
 
-				if (!empty($cek_username1) && $cek_username1->id != $id) {
+				if (!empty($cek_username1) && $data->id != $id) {
 					$cek_username = 1;
 				}else if ($cek_username > 0){
 					$cek_username = 1;

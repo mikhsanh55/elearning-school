@@ -218,23 +218,24 @@
 							<td style="width: 25%">Keterangan</td>
 							<td style="width: 75%"><input type="text" class="form-control" name="pmt" id="pmt" ></td>
 						</tr>-->
-						<tr>
+						<!-- <tr>
 							<td style="width: 25%"><?=$this->transTheme->instansi;?><span class="text-danger">*</span></td>
-							<td>
+							<td> -->
 								<?php if ($this->log_lvl == 'admin'): ?>
-									<select name="instansi" id="instansi" class="form-control">
+									<input type="hidden" name="instansi" id="instansi" value="<?= $this->akun->instansi; ?>">
+									<!-- <select name="instansi" id="instansi" class="form-control">
 									<option value="">Pilih</option>
 								    <?php foreach($instansi as $rows) : ?>
 								        <option value="<?= $rows->id; ?>"><?= $rows->instansi; ?></option>
 								    <?php endforeach; ?>
-								</select>
+								</select> -->
 								<?php else: ?>
 									<input type="hidden" name="instansi" id="instansi" class="form-control" value="<?=$instansi->id;?>" readonly>
-									<input type="text" class="form-control" value="<?=$instansi->instansi;?>" readonly>
+									<!-- <input type="text" class="form-control" value="<?=$instansi->instansi;?>" readonly> -->
 								<?php endif ?>
 								
-							</td>
-						</tr>
+							<!-- </td>
+						</tr> -->
 					</table>
 			</div>
 			<div class="modal-footer">
