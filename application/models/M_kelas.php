@@ -64,9 +64,7 @@ class M_kelas extends MY_Model {
 							ins.instansi,
 							sis.nama as nama_siswa,
 							sis.email as email_siswa,
-							gr.email as email_guru,
-							gr.id_instansi as guru_instansi,
-							gr.id_jurusan as guru_kelas
+							gr.email as email_guru
 						')
 		->from('tb_kelas kls')
 		->join('m_guru gr','gr.id=kls.id_trainer','left')

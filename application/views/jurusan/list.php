@@ -116,7 +116,9 @@
 				<a href="javascript:void(0);" title="edit" id="edited" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> &nbsp;Edit</a>
 				<a href="javascript:void(0);" id="deleted" title="Hapus" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> &nbsp;Hapus</a>
 			<?php endif; ?>
+			<?php if($this->log_lvl == 'guru') : ?>
 				<a href="<?= base_url('export/jurusan') ?>" title="Export data to excel" class="btn btn-success btn-sm"><i class="fas fa-file-excel-o"></i> &nbsp;Export</a>
+			<?php endif; ?>
 
 		<!-- 		<a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url(); ?>upload/format_siswa.xlsx"><i class="fa fa-cloud-download" aria-hidden="true"></i> &nbsp;Download Format Import</a>
 				<a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url(); ?>pengusaha/import"><i class="fa fa-cloud-upload" aria-hidden="true"></i> &nbsp;Import</a> -->

@@ -61,7 +61,6 @@ class Kelas extends MY_Controller
   }
 
 
-
   public function guru(){
 
     

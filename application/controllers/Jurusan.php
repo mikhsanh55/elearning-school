@@ -42,6 +42,9 @@ class Jurusan extends MY_Controller
       // if($this->log_lvl == 'guru') {
       //   $where['']
       // }
+      // if($this->log_lvl == 'siswa') {
+      //   $where['']
+      // }
     }
 
 		$paginate = $this->m_jurusan->paginate($pg,$where,$limit);
@@ -182,6 +185,12 @@ class Jurusan extends MY_Controller
     $this->excelColumnNo = 1;
   }
 
+  public function siswa() {
+    $data = array(
+      'searchFilter' => array('jurusan' => 'Kelas')
+    );
+    $this->render('jurusan/list',$data);
+  }
 }
 
 
