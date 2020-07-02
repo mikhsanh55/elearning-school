@@ -391,7 +391,7 @@
 
     <tr>
 
-        <td class="text-center text-secondary">Materi belum ada :(</td>
+        <td colspan="4" class="text-center text-secondary">Materi belum ada :(</td>
 
     </tr>
 

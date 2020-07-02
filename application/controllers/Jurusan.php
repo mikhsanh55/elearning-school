@@ -39,9 +39,15 @@ class Jurusan extends MY_Controller
     }
     if ($this->log_lvl != 'admin') {
       $where['id_instansi'] = $this->akun->instansi;
+      // if($this->log_lvl == 'guru') {
+      //   $where['']
+      // }
     }
 
 		$paginate = $this->m_jurusan->paginate($pg,$where,$limit);
+    foreach($paginate['data'] as $row) {
+      $row->encrypt_id = $this->encryption->encrypt($row->id);
+    }
 		$data['paginate'] = $paginate;
 		$data['paginate']['url']	= 'jurusan/page_load';
 		$data['paginate']['search'] = 'lookup_key';

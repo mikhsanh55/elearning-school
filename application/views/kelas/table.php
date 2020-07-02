@@ -24,10 +24,10 @@
 				<td><?=$rows->keterangan;?></td>
 				<td><?=$jml_siswa;?></td>
 				<td class="frist">
-					<button class="btn btn-primary btn-sm rekrut" data-id="<?=$rows->id;?>" data-jurusan="<?=$rows->id_jurusan;?>">Pilih siswa</button>
+					<button class="btn btn-primary btn-sm rekrut" data-id="<?=$rows->id;?>" data-jurusan="<?=$rows->id_jurusan;?>">Pilih Siswa</button>
 					<?php if($jml_siswa > 0) : ?>
 						<a href="<?= base_url('jadwal/add'); ?>" class="btn btn-primary btn-sm buat-jadwal">Buat Jadwal</a>
-						<a class="btn btn-success btn-sm mr-2" href="<?=base_url('Materi/lists').'/'.md5($rows->id_mapel);?>"><i class="glyphicon glyphicon-eye" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Materi</a>
+						<a class="btn btn-success btn-sm mr-2" href="<?=base_url('Materi/lists').'/'.md5($rows->id_mapel);?>">Mulai Mengajar</a>
 					<?php endif; ?>
 				</td>	
 			</tr>
