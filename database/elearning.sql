@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 02, 2020 at 04:22 AM
+-- Generation Time: Jul 03, 2020 at 04:14 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.3.16
 
@@ -87,7 +87,7 @@ INSERT INTO `menu` (`id`, `nama_menu`, `urutan`, `link`, `link2`, `link3`, `link
 (1, 'Beranda', 1, 'beranda', NULL, NULL, '', 'fas fa-home mr-2'),
 (2, 'Siswa', 6, 'pengusaha/data', NULL, NULL, '', 'fas fa-user-tie mr-2'),
 (3, 'Guru', 5, 'trainer/data', NULL, NULL, '', 'fas fa-user-ninja mr-2'),
-(4, 'Kurikulum', 4, 'dtest/data_mapel', 'Materi/lists', 'ujian', 'dtest/chats', 'fas fa-book-reader mr-2'),
+(4, 'Mata Pelajaran', 4, 'dtest/data_mapel', 'Materi/lists', 'ujian', 'dtest/chats', 'fas fa-book-reader mr-2'),
 (6, 'Tes Kemampuan', 12, 'soal/data', 'soal/m_soal', 'soal/m_ujian', '', 'fas fa-pen-alt mr-2'),
 (7, 'Hasil Tes', 13, 'hasil/h_ujian', NULL, NULL, '', 'fas fa-paste mr-2'),
 (9, 'Verifikasi Modul', NULL, 'materi/get_list_not_verify', NULL, NULL, '', 'fas fa-calendar-check mr-2'),
@@ -96,19 +96,19 @@ INSERT INTO `menu` (`id`, `nama_menu`, `urutan`, `link`, `link2`, `link3`, `link
 (16, 'Laporan', 15, 'laporan/', 'laporan/modul', 'laporan/ujian', 'laporan/akses', 'fas fa-file mr-2'),
 (19, 'Lembaga', 15, 'instansi', NULL, NULL, NULL, 'fas fa-building mr-2'),
 (20, 'Pengaturan', 16, 'setting', NULL, NULL, NULL, 'fas fa-cogs mr-2'),
-(22, 'Jadwal ', 8, 'jadwal', NULL, NULL, NULL, 'far fa-bell	 mr-2'),
-(23, 'Jadwal ', 2, 'jadwal/kalender', NULL, NULL, NULL, 'far fa-bell	 mr-2'),
+(22, 'Jadwal ', 8, 'jadwal', NULL, NULL, NULL, 'far fa-calendar-alt mr-2'),
+(23, 'Jadwal ', 2, 'jadwal/kalender', NULL, NULL, NULL, 'far fa-calendar-alt mr-2'),
 (24, 'Akun Lembaga', 3, 'akunlembaga', NULL, NULL, NULL, 'fas fa-user-tie mr-2'),
-(25, 'Tugas', 8, 'tugas', NULL, NULL, NULL, 'fas fa-user-tie mr-2'),
+(25, 'Tugas', 8, 'tugas', NULL, NULL, NULL, 'fas fa-tasks mr-2'),
 (26, 'Tugas', 8, 'tugas/daftar_tugas', '', NULL, NULL, 'fas fa-tasks mr-2'),
 (27, 'Ujian', 8, 'ujian_real', 'ujian/uts', 'ujian/uts', NULL, 'fas fa-chalkboard mr-2'),
 (28, 'Pengaturan', 20, 'setting_client', NULL, NULL, NULL, 'fas fa-cogs mr-2'),
-(29, 'Admin Lembaga', 2, 'adminlembaga', NULL, NULL, NULL, 'fas fa-user-tie mr-2'),
+(29, 'User Management', 2, 'adminlembaga', NULL, NULL, 'fas fa-users mr-2', 'fas fa-users mr-2'),
 (30, 'Beranda', 1, 'beranda', NULL, NULL, '', 'fas fa-building mr-2'),
-(31, 'Tugas', 11, 'tugas_siswa', NULL, NULL, NULL, 'fas fa-building mr-2'),
+(31, 'Tugas', 11, 'tugas_siswa', NULL, NULL, NULL, 'fas fa-tasks mr-2'),
 (32, 'Guru', 5, 'trainer', NULL, NULL, NULL, 'fas fa-building mr-2'),
-(33, 'Ruang Belajar', 7, 'kelas', NULL, NULL, NULL, 'fas fa-laptop mr-2'),
-(34, 'Ruang Belajar', 7, 'kelas/siswa', NULL, NULL, NULL, 'fas fa-laptop mr-2'),
+(33, 'Kelas', 7, 'kelas', NULL, NULL, NULL, 'fas fa-laptop mr-2'),
+(34, 'Kelas', 7, 'kelas/siswa', NULL, NULL, NULL, 'fas fa-laptop mr-2'),
 (36, 'Ruang Belajar', 3, 'Kelas/guru', NULL, NULL, NULL, 'fas fa-laptop mr-2'),
 (37, 'Penilaian Guru', 11, 'penilaian', NULL, NULL, NULL, 'fas fa-building mr-2'),
 (40, 'Penilaian Guru', 14, 'penilaian', NULL, NULL, NULL, 'fas fa-building mr-2'),
@@ -118,7 +118,7 @@ INSERT INTO `menu` (`id`, `nama_menu`, `urutan`, `link`, `link2`, `link3`, `link
 (46, 'Luaran EDOPM', 12, 'penilaian/luaran', NULL, NULL, NULL, 'fas fa-print mr-2'),
 (47, 'Aktivitas Pengguna', 14, 'aktivitas', NULL, NULL, NULL, 'far fa-handshake mr-2'),
 (49, 'Nilai Siswa', 5, 'rekaptulasi', NULL, NULL, NULL, 'fas fa-check mr-2'),
-(50, 'Kelas', 3, 'jurusan', NULL, NULL, NULL, 'fas fa-chalkboard-teacher mr-2');
+(50, 'Jurusan', 3, 'jurusan', NULL, NULL, NULL, 'fas fa-chalkboard-teacher mr-2');
 
 -- --------------------------------------------------------
 
@@ -150,10 +150,9 @@ INSERT INTO `m_admin` (`id`, `user_id`, `username`, `password`, `level`, `kon_id
 (543, 'WKWKWK', 'WKWKWKCOBA@GMAIL.COM', '2f09510dc280af449f3e631411429d1bde1435074eda3d80ab566feadec8314d06854153990cfc5f9ce8a0c0843541de7502eb1e3cdc70f8f079ffc621bed834Ap+Unn6n2fFSuTFJco8uZYXTSgi3Bc0NyderglpPo9s=', 'instansi', 535, 0, '0000-00-00 00:00:00'),
 (544, 'JKYCAKEP', 'kiyongkiyut@yahoo.com', '86c69113e0d4bc517887e5bbbeadb49e6d15cd7be0f0633af57f507032695f89a603155646a226fbebf26322cc5e400df1204d703658fd6d1ec5b83950b7a8af/Bsaq5NQYHMTMJPHgGvoLG5dPSOV/tPKYlvaPDJ0enw=', 'siswa', 529, 0, '0000-00-00 00:00:00'),
 (565, 'dwi', 'dwi@gmail.com', '2f09510dc280af449f3e631411429d1bde1435074eda3d80ab566feadec8314d06854153990cfc5f9ce8a0c0843541de7502eb1e3cdc70f8f079ffc621bed834Ap+Unn6n2fFSuTFJco8uZYXTSgi3Bc0NyderglpPo9s=', 'guru', 22, 0, '0000-00-00 00:00:00'),
-(570, 'indriawan22', 'iwan@gmail.com', 'a67762881c821196c0520bffe49f7d9a7ff3f9884939f6fabee5463032e9da4b58784bf94d0319c8d7f3791b65e8152874e6501e2165e062f85eec4f521e621fc+/ZPXoBOVrJoD6lMPhJPNRqBV8rCLVfu4GDb2UZXEM=', 'admin_instansi', 537, 0, '0000-00-00 00:00:00'),
 (571, 'icommits', 'icommis@gmail.com', '2f09510dc280af449f3e631411429d1bde1435074eda3d80ab566feadec8314d06854153990cfc5f9ce8a0c0843541de7502eb1e3cdc70f8f079ffc621bed834Ap+Unn6n2fFSuTFJco8uZYXTSgi3Bc0NyderglpPo9s=', 'admin', 1, 0, '0000-00-00 00:00:00'),
 (572, 'stafftu', 'smktu@gmail.com', '836381bea6ab9f0f529798f2857ef9af99b01640ed5bf0d18c79133e92e8d24db526177e8de44636f3a0ed8416bef9f70e85971497b3f684678148e55221da15TmnBOd3Tfc855UjoOB3kHQKBl2XPZkim/maPNMFlRmw=', 'instansi', 536, 0, '0000-00-00 00:00:00'),
-(573, 'akademik', 'akademik@gmail.com', '925ee499a15ad0bd8192e07946cf2a9ba0216de4f410242a175fe9303e2dc4ea7e4848338cc2dfd8a3f7e91c31835712cccbcc09a3e550da25b81a554542869bx6MePo85IXqJWwIaVnorOonn1QI3m7KfySmgvxq+ZXo=', 'instansi', 537, 0, '0000-00-00 00:00:00'),
+(573, 'akademik', 'akademik@gmail.com', 'a07c0865b44161d38bcb6031533f346365dcdef4c852b4526122611d05aed6e67c61bb47b208188d06d78f9b7d69ce90beaf9fd18871f77e9cdbbc072398cb81zShXNnlhSaUNIUl5sd4wSautbgNZhJLTGY93TrNmD50=', 'instansi', 537, 0, '0000-00-00 00:00:00'),
 (574, 'ridwan', 'ridwan@gmail.com', '0ce35427f2eeb1636c415fa4ef73ffb42be4ffe5a85ca344964122887f27ae83453be8fe2d67c45ffb53156ffd7a58bec8e1668907596259f01a8d9f3436c87bwISopA/NpUBkkpCZIcVTBI2REif6vrmi+2U+gbsscOQ=', 'siswa', 531, 0, '0000-00-00 00:00:00'),
 (575, 'kamil', 'kamil@gmal.com', 'd2d0ebd0bc445fd10bdf99c0f6b15e20fb14fac4a30a27bb91e4718c8e4db3109b7094bc32248c253a8eed809d00d0a7deeb0b88a3e9d778935304f0d2d9d5e3b+fvIDqLRzKA/p+2mFZ6V6bbqFQOKtPl9nu8ojOwvr0=', 'siswa', 532, 0, '0000-00-00 00:00:00'),
 (576, 'guru1', 'guru1@gmail.com', '480253d89c33a851dcb2cad7f846f709ec40b98ca84737f0f7dbdaba4de6068960815ffe3cce91010a3ca6225519e1d589dfbd4599e9a07f17ec85c987611641TphIk1VGZY8xQeD/ER9zlcDq45TbEsxhvGvWs4T4Fwk=', 'guru', 23, 0, '0000-00-00 00:00:00'),
@@ -165,15 +164,9 @@ INSERT INTO `m_admin` (`id`, `user_id`, `username`, `password`, `level`, `kon_id
 (587, 'ujanglagi', 'ujanglagi@gmail.com', '1f1421855e7ad58c3d09ac1accb601de201c96517e9d384bd8f20c86e77d281e1c4ee3521579dff6e229f9e95df00eddef536b4f0fe15e3246ec941889c5a48aaaKYLLWy9e/F8svFSqgMIEPLcMDakF1Dybli01w/Rgg=', 'guru', 30, 0, '0000-00-00 00:00:00'),
 (588, 'saepudin', 'sapeudinnn@gmail.com', '2eb659bd8ceda9adb549d99e36f54910973050f9656388157fcb0c53a7955109e143f5233fcebf736c8143c29c0d1acad4a79bcbc3d7221ae431fef089e77b85o6MCA3JJJMBO04EKe3dl2puFUonzabf98UbUsJk5qm4=', 'siswa', 536, 0, '0000-00-00 00:00:00'),
 (589, 'asep', 'asep@yahoo.com', 'dc855efb0dc7476760afaa1b281665f1', 'siswa', 537, 0, '0000-00-00 00:00:00'),
-(597, 'melmela', 'melmela3093@gmail.com', '0087523892b9a2b323b98a745984c43569ed0cb6b712d7de730a5bd1c9892b62506a8a2e67bca95323c7a225bbc7f1b0221d7911909bead3c00249ff14f597c2zv/u7Cri307YgkjNuCSbN+baZjVW/Pe/IZaOvGTkZvg=', 'siswa', 541, 0, '0000-00-00 00:00:00'),
 (599, 'alel', 'alel@gmail.com', '9bc3e46da9871a8ad992e201a1dc3bc99f612bc7606617cb643e1ee166717537825fedb104c8104651b857dd721579fc7c9f67efaf929836b7260713b5cf347cckQpSFtmZoI3pO5UcB3mlrOHe9t7/papvDiVEMboRrY=', 'instansi', 540, 0, '0000-00-00 00:00:00'),
 (602, 'aldilla', 'dwisurdiana88@gmail.co.id', 'd22ce6aa7c7f2d57c68c36964799e773d2f2f6e6c2ff05bcadf63c8a9c8bbef1f846d776e3b1dc7412b88bc31bdf7204a49430a1d02f64832ea55d76aa10f811S+41boZrb23OhvFXwp89K+QBFZWLrmIf84Kcer+WBp0=', 'guru', 38, 0, '0000-00-00 00:00:00'),
 (603, 'febri', 'aldilla@tnial.mil.id', '08400173cde40917ae4edadd240b4e8c334db625bbe732a9163b580fc4cc9c2a8a5b05d4acb1abee215ad33938216576e276d397c5609317c110f8c00b75539avWjouRzfmWQvLdWgxgyArZ8wA7VMjq5pSuvSrjDsSKs=', 'siswa', 543, 0, '0000-00-00 00:00:00'),
-(604, 'jazai', 'jazai@mars.ilegal', '2f09510dc280af449f3e631411429d1bde1435074eda3d80ab566feadec8314d06854153990cfc5f9ce8a0c0843541de7502eb1e3cdc70f8f079ffc621bed834Ap+Unn6n2fFSuTFJco8uZYXTSgi3Bc0NyderglpPo9s=', 'siswa', 544, 0, '0000-00-00 00:00:00'),
-(607, 'siswatesting123', 'siswatesting123@gmail.com', 'cfd89e62250f8aacc73383e0a4d0b120', 'siswa', 545, 0, '0000-00-00 00:00:00'),
-(608, 'siswatesting456', 'siswatesting456@gmail.com', '0f3254c66fdd4fb39fc619f0db59ee1c', 'siswa', 546, 0, '0000-00-00 00:00:00'),
-(609, 'siswatesting789', 'siswatesting789@gmail.com', '6c3a8bc17131593ccd59e97d118dcae2', 'siswa', 547, 0, '0000-00-00 00:00:00'),
-(610, 'adminaal', 'aal@tni.mil.id', '4ed8a676794d8346d88e3814c264e79f5fe6236e4810046d68b9d675d19009bab888cc6dcfd99a56d19c95bad5c4707f13b05a49a012ebfcb505e6205ce9b7d7PS5s9+PcAZ97VqzGF1RIYXf0wkn17chPxTyvsB8Xe3o=', 'instansi', 541, 0, '0000-00-00 00:00:00'),
 (611, 'ari', 'ari_aal@yahoo.com', '77523aedbb1c811cae0c5ecb42d1eb593079f75c03f77513d3bd41c2482878dd9482925bf68049f5890074eeae3bb81d7005e1863df9966b19f0338f95c84f7dbcGP2dOXDXQ8AEiJxZXpqah2Hb0rkQSTrGradZtLO9E=', 'guru', 41, 0, '0000-00-00 00:00:00'),
 (612, 'adminsman5bdg', 'sman5bdg@gmail.com', '25705549425442d49744c1c71b584fb2108ab0b35bcf5f4a342adf84c394d8f72b303ce2479d1f3d7c0fd39d281807812741d82c23648c133753cbf0846b1d20o3RgvemFOhO+RCkJs2dlM+RaAzXaHPkS8/kf7NOUnyM=', 'instansi', 542, 0, '0000-00-00 00:00:00'),
 (613, 'admin1', 'admin1@gmail.com', '8f296019ac412f93bec40b1f47b70c217b102e9052b7025aa552cf63db97d5e3975608d8edbacbea714f588360fb9519b7c3b7f49b882e3ac4f9c325057a9d9atvozIY6BckSVDt5MXi40GNWfmdGKWF+v0JO8Mno197s=', 'admin_instansi', 538, 0, '0000-00-00 00:00:00'),
@@ -181,7 +174,6 @@ INSERT INTO `m_admin` (`id`, `user_id`, `username`, `password`, `level`, `kon_id
 (615, 'gurusejarah', 'gurusejarah@gmail.com', 'a675f2804e7a19c57e81398f53b480e286783003777f69b2447fbcdb3a6aed441a45248fbd2ac39ea5d1fb76863d333afd1394735fd343628ef1fe49834fdbfbHU8szNy5820b1Nzi5C7ZqSnIN7pIgaSaDZGuMPKUB5c=', 'guru', 51, 0, '0000-00-00 00:00:00'),
 (616, 'gurusosiologi', 'gurusosiologi@gmail.com', 'c7c88328dc581c60a375ea4f3a8f65e803ac46775dd1c68af17daf602b891f9b25fa4727b255e4093c6bb6ad88130c2b80ca5cb08465a180b2b6f3063364ee5chlNBvlBIxx/Vdj8x7Ju5feRQW8ekBkvit9Eevg1+9cg=', 'guru', 50, 0, '0000-00-00 00:00:00'),
 (617, 'gurugeografi', 'gurugeografi@gmail.com', '81f8eec7df26ac4a7c57f71d292c2eb676507dcc56defb183ffcdaa56c332bd1caa6c12dafb9b3aa3427bb559e3c8c45b6b0a7c92549218ec46eafe3f6810afan7lcdU/rQTegKjul70o89XVhUsGjFJAXetQSN6I6XXg=', 'guru', 49, 0, '0000-00-00 00:00:00'),
-(618, 'siswa41', 'siswa41@gmail.com', '0c81d3ce45cffa89dc8d1b766043d5c5a97c245310c7a12daaa5430a89c00a9cb399fd953c8b57f35968b14fc7fcc465db4fa074e0d353276ab1e0e010fade30kIJEbtrVjObl4LEUyJgsccL5UtwhfcQU5damOu2mMqs=', 'siswa', 550, 0, '0000-00-00 00:00:00'),
 (619, 'siswa42', 'siswa42@gmail.com', '32502c5408787bea117a1a3e7646fb4f4dcc84a2ec24dbab408a677bc4ed22aff75bf16ac16677b5a7cbcfd40337e807deddefa87c593cb92f32eb9d285d64b6jIVaz6y+/LyNMmmSxQIXroLd5Iix5PzHyierJPHrUCE=', 'siswa', 551, 0, '0000-00-00 00:00:00'),
 (621, 'gurubiologi', 'gurubiologi@gmail.com', '323640c376239bbedb0944fbf2464a4644a4a5536a06263ea8b60d9f8e4d6d9f7f9d020b4ff2fc7710fb164278713fa702ec8aa418b0c2cea978428b73c724c9PcGhREt0OwI7T9t/o5hwruyAkd5PQxuMDKDBKuqEFXM=', 'guru', 46, 0, '0000-00-00 00:00:00'),
 (622, 'gurubahasainggris', 'gurubahasainggris@gmail.com', '8e07d5960968597ac5067b8288452cb64a55ce87c92d998fc54b55820f135700f13eb221348cf9820f654b65ee824871cd103e0aa06a533309ff0e91bd06f480r5nv+XaIn1JAuMoQfEVGAFmBps5nZmoko85crry+OkxUHll608QOBslcJ1M1XeMA', 'guru', 48, 0, '0000-00-00 00:00:00'),
@@ -192,7 +184,6 @@ INSERT INTO `m_admin` (`id`, `user_id`, `username`, `password`, `level`, `kon_id
 (627, 'siswa43', 'siswa43@gmail.com', '2543f3ff302d5211f3460d3f5fb68163597606e3758ad9acff9f23773e33e4b0e0171a8daae35da7a2ebb9e26bf3aa5cf8bc55dab23b8e8c56f825ee6818d866UHorrW02aBcP9x6xrILIYunvM6xJuMCh79aHtcZaoT0=', 'siswa', 553, 0, '0000-00-00 00:00:00'),
 (628, 'siswa44', 'siswa44@gmail.com', '62333b75e00342ff3f78a847e6bbc933d16961307683d7abcf35d2a133759014c55729482ac0e9c39f278d835b379a98c24e7e20c45257c3d4fc1a87ecc29db60WsLxoRMEem88EptBxL2YiQHcB2PHsr9+SVJx8qVkPk=', 'siswa', 554, 0, '0000-00-00 00:00:00'),
 (629, 'adminsman21bdg', 'adminsman21bdg@gmail.com', 'de2db89d495f1c73923ec919d6e6e1ae55734a40fd615cd8380845463706d4b07552fd2e8253a9bafff4e530f8b9b377dd9f21c0aba85ba0fa5c3c04567904bdtWTi4pdJ9vTn8+ad+euwdesr/pGAHz8vy/zm3ukKL6Y=', 'instansi', 543, 0, '0000-00-00 00:00:00'),
-(630, 'adminsman25bdg', 'adminsman25bdg@gmail.com', '21b06183c21acdf1c95225a2fba57d871351caa4eb4459436e09100801c0c5072e8502ec30019ce057bb979222ed6abde72297a851ac6db19c2bc68a61ea16e7OOpCAT0iD4cUKH06eKwnlqDkJ4yJ06yuS7lKvpOUNiA=', 'instansi', 544, 0, '0000-00-00 00:00:00'),
 (631, 'sman21_guru_bsun', 'sman21_guru_bsun@gmail.com', '76e2b271635354defa486402a4cd148f355c9055418984206c6e58b1df4d44b68fa4814486a5196b8c04fcbdc492c988e3d905f7895718ee3c69a85fd4082d646CYf+HQDtlwhQosItw6amGfmHcRKk2i/1rksGs5Zq0ux2lFFO8LdBBo0XudvXHpW', 'guru', 63, 0, '0000-00-00 00:00:00'),
 (632, 'sman21_guru_bingg', 'sman21_guru_bingg@gmail.com', '925bc0b917c35a7f2e4166dec810916d140aa82b1cfe53be87298b07493d664425463a6d9580bbc149682af505c423967e6370c994da95b201a99816d9cedecaiLrkTK1QjaasEpFAm1K/vvVprUpUe9eLPYDkUrLl7XL0E7xlep/jBdqSwvH+XLSR', 'guru', 62, 0, '0000-00-00 00:00:00'),
 (633, 'sman21_guru_bindo', 'sman21_guru_bindo@gmail.com', '81147b25be2e731d5f4d82a2e8c5225279e7ea26989e3bc4234c33c7181449cccd335ecb090505a69d55ad225316e3342ca7c2079d14f8dcef46488110db0df6Cp/aEC3hcqHRy5gQo+0rDvoCnZt4ng0NwFv2Vf/JWpACoa0bc+dHLryIxmA+tvSQ', 'guru', 61, 0, '0000-00-00 00:00:00'),
@@ -270,7 +261,12 @@ INSERT INTO `m_admin` (`id`, `user_id`, `username`, `password`, `level`, `kon_id
 (705, 'barabursa', 'barabursa@gmial.com', 'f0fb515ea349e5e3a4bdd8b60404c27398bb1ee6d038ffc11b5bb78b2652c202a5d14cc9c92c8a7263bd0a4755d7755a7d7f974bf10b890f1f66e51917071a6felsSN5tvgjauyp8IgOBikxDWs0pkY/2fcG1zZbsz4hU=', 'siswa', 603, 0, '0000-00-00 00:00:00'),
 (711, 'sengklekman', 'Sengklekman@ga.com', 'c65878abeead1f0cf19d0293f53b69f8f2fdb55c7195fc5e2b35357c2e678cc7002434074e61ef8938617847daa4921ec88fcf999d2dd2613e657b40fdce81a48SwxTJOtV8OBCjXegOiNIDBzNt/pVQZeClrYqHvysuw=', 'guru', 85, 0, '0000-00-00 00:00:00'),
 (712, 'hasanjr11', '', '6b73ffcceaf02dc28475312b3074d24cfb3c6f448fe81feb30648cdc7ec6ba53c8690fc6217e24af403aaaa2488eae5976ef61200d196e15397d4c164ee5484bCuGS2Dn08N/lci2rKg41bWlgdYT89s8DL3sWlWxKkzIAfmIEcuN5u1/CYwUc/1N1', 'siswa', 605, 0, '0000-00-00 00:00:00'),
-(713, 'yoyo', '-', 'baa28659672677342c1e03e8a0515e16c76977a1180d92dd1de9649caca871139290c33732995a0d823de82f535b6605a1ee8ba481356e04aa3b59f29cfb3eafajOHFbCe2ZTWUrE0MSX7yODo5T8U2bzymQ7X2HmtYoM=', 'siswa', 606, 0, '0000-00-00 00:00:00');
+(713, 'yoyo', '-', 'baa28659672677342c1e03e8a0515e16c76977a1180d92dd1de9649caca871139290c33732995a0d823de82f535b6605a1ee8ba481356e04aa3b59f29cfb3eafajOHFbCe2ZTWUrE0MSX7yODo5T8U2bzymQ7X2HmtYoM=', 'siswa', 606, 0, '0000-00-00 00:00:00'),
+(716, 'rezha12322', '', '', 'instansi', 546, 0, '0000-00-00 00:00:00'),
+(717, 'naninani', '', '', 'instansi', 547, 0, '0000-00-00 00:00:00'),
+(718, 'username', '', '332ab37704b7eafde9637918c4309c712eb72ca84ef717ff31d3f0922aa7be3b7092f9a5d14083a36f230348d0d7274fd1e505eae0514a25fc0091adfb9c703e7dHJBMsl5/dzyCY/iSxAe/63lYvNKXOUPohvwQx5ju8=', 'instansi', 550, 0, '0000-00-00 00:00:00'),
+(719, 'tanos', '', 'ef3add9cc0456d8f72747cd7360ad98823446b3c9e36dabd9fee81d94578981bb4e968a01c4ddeb0fa5b0f85619cb0743c00a1f5e3cd3df2287474c1ba3193beVddGV1uEDqjPZa6aWPX3o8QgugcSCWfLQV9Uo0Do4ws=', 'guru', 88, 0, '0000-00-00 00:00:00'),
+(720, 'coronaaaaa', '', '971e97b2c0d5fa6159008e274da3f5feca859db55d68c679e81ac4f6b5f04fc59b356ced93098a3b8afacefa86ca3f3e20122105483a847ffff676c7549ec688FTRjUUFFmgEUzhc4x7QPWEqQZmI/nqLOhE1tijnBZJM=', 'siswa', 607, 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -359,7 +355,8 @@ INSERT INTO `m_guru` (`id`, `id_mapel`, `tahun_akademik`, `username`, `nidn`, `n
 (77, 0, '2020', 'sman25_guru_bingg', 'PTK200619010', 'P200619NIP010', 12, 'Guru B. Inggris', '32000101010', 'Guru B. Inggris', 'Bandung', '1990-03-03', 'Bandung', 'sman25_guru_bingg@gmail.com', '821312321', 'ASN', 'S1 Pendidikan Bahasa Inggris', '2013', 0, 0, 0, 0),
 (78, 0, '2020', 'sman25_guru_bsun', 'PTK200619011', 'P200619NIP011', 12, 'Guru B. Sunda', '32000101011', 'Guru B. Sunda', 'Bandung', '1990-03-03', 'Bandung', 'sman25_guru_bsun@gmail.com', '821312322', 'ASN', 'S1 Pendidikan Bahasa Sunda', '2013', 0, 0, 0, 0),
 (79, 59, '', 'ibugays', '23801283081', '', 1, 'Ibu Gays', '', '', '', '', '', '', '089627352261', '', '', '', 1, 0, 0, 0),
-(85, 59, '', 'sengklekman', '10101010', '202020', 1, 'Sengklekman', '', '', '', '', '', 'Sengklekman@ga.com', '86754633342', '', '', '', 1, 3, 0, 0);
+(85, 59, '', 'sengklekman', '10101010', '202020', 1, 'Sengklekman', '', '', '', '', '', 'Sengklekman@ga.com', '86754633342', '', '', '', 1, 5, 0, 0),
+(88, 59, '', 'tanos', '23801283081', '', 1, 'Tanos', '', '', '', '', '', '', '86754633342', '', '', '', 1, 0, 0, 0);
 
 --
 -- Triggers `m_guru`
@@ -1463,11 +1460,11 @@ CREATE TABLE `m_siswa` (
 --
 
 INSERT INTO `m_siswa` (`id`, `photo`, `kelompok`, `nama`, `username`, `pangkat`, `nrp`, `no_telpon`, `tempat_lahir`, `tanggal_lahir`, `nim`, `tahun_angkatan_masuk`, `angkatan`, `nik`, `email`, `alamat`, `id_jurusan`, `id_guru`, `instansi`, `pembuatan_akun`, `verifikasi`, `active_num`, `active_video`, `active_read`, `deleted`, `is_graduated`) VALUES
-(526, NULL, 'AL', 'Aji Rohimat', 'rohimat', '-', '23452345', '087634285', 'Bandung', '1997-10-01', '78678578', '2020', '2020', '456456', 'rezharanmark@gmail.com', 'Bandung', 4, 0, 1, '1591803694', '7fcc56e19c066f37edb5e04d6a9a4bf7', 175, 5, 2, 0, 1),
+(526, NULL, 'AL', 'Aji Rohimat', 'rohimat', '-', '23452345', '087634285', 'Bandung', '1997-10-01', '78678578', '2020', '2020', '456456', 'rezharanmark@gmail.com', 'Bandung', 4, 0, 1, '1591803694', '7fcc56e19c066f37edb5e04d6a9a4bf7', 178, 5, 2, 0, 1),
 (529, NULL, 'AL', 'JANG KI YONG', 'JKYCAKEP', 'INTEL', '3570256987', '08571287456', 'KOREA', '1987-02-11', '6729462819936', NULL, '', '2748273894727485', 'kiyongkiyut@yahoo.com', 'endon', 15, 0, 2, '1586108703', '231586b344c2084b63466980d909b528', 3, 0, 0, 0, 1),
 (531, NULL, 'XII TKJ 3', 'Ridwan', 'ridwan', 'Siswa', '1600123', '099', 'Bandung', '2002-01-01', '08', NULL, '', '01', 'ridwan@gmail.com', 'Bandung', 15, 0, 3, '1587385185', '6b1ae604c8fc82684ee2339f19b3482e', 0, 0, 0, 0, 0),
 (532, NULL, 'MIPA', 'Kamil', 'kamil', 'Mahasiswa', '081', '081', 'Bandung', '2000-01-01', '08', NULL, '', '0812', 'kamil@gmal.com', 'Bandung', 15, 0, 4, '1587385241', '31e9282d73542f85716ac3e52da9ee28', 1, 0, 0, 0, 0),
-(536, '01-06-2020-1591013958-visa.png', 'Dikreegg22', 'Saepudin', 'saepudin', 'gak tau', '87126318276', '08276482763', 'Bandung', '2020-05-31', '35467890', '2020', '', '1', 'sapeudinnn@gmail.com', 'Bandunggg', 6, 0, 1, '1593629461', '2e3c0233f085d6b989d2a22ce0077cb0', 1, 0, 0, 0, 0),
+(536, '01-06-2020-1591013958-visa.png', 'Dikreegg22', 'Saepudin', 'saepudin', 'gak tau', '87126318276', '08276482763', 'Bandung', '2020-05-31', '35467890', '2020', '', '1', 'sapeudinnn@gmail.com', 'Bandunggg', 6, 0, 1, '1593730637', '13f24f78baf5ba308905fb9db3d6ced7', 1, 0, 0, 0, 0),
 (537, NULL, 'Dikregss', 'Asep', 'asep', '-', '45321', '5345', 'Bdg', '1992-06-22', '6453245', '2020', '', '34564356', 'asep@yahoo.com', 'Banudng', 6, 0, 1, '1591014386', 'a4ccdc2bb450febf7c22c2b1dd293581', 0, 0, 0, 0, 0),
 (541, NULL, 'bunga', 'melati putih', 'melmela', 'smartgals', '0875490', '08127893457', 'denpasar', '1993-05-30', '83651869', '2018', '', '0876123409872367', 'melmela3093@gmail.com', 'bdg ajah', 4, 0, 1, '1591117390', 'd56faef47f7fee21dbbc1b41d37d0c97', 14, 3, 1, 0, 0),
 (543, NULL, '-', 'Deni Febriyanto', 'febri', '-', '19452/P', '0828182918291', 'Bandung', '2020-06-04', '78678578', '2020', '', '456456', 'aldilla@tnial.mil.id', '-', 9, 0, 1, '1591156731', 'd604a942d47c44a9f7a1532e2895bdaf', 1, 0, 0, 0, 0),
@@ -1530,7 +1527,8 @@ INSERT INTO `m_siswa` (`id`, `photo`, `kelompok`, `nama`, `username`, `pangkat`,
 (602, NULL, 'XII IPS', 'IMAS', 'imassman25bdg', 'ISLAM', '1231231024', '8213130024', 'BANDUNG', '2004-01-01', '8213130024', '2020', '', 'P', 'imassman25bdg@gmail.com', 'BANDUNG', 18, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
 (603, NULL, 'Jambu', 'Bara Bursa', 'barabursa', 'Islam', '213198', '08531231234214', 'Sumedang', '2000-02-22', '12839139281', '2020', '2020', 'Laki', 'barabursa@gmial.com', 'Bandung', 7, 0, 1, '1593213833', '54ad8eb1e0fc56dfe11119b1b2a3a793', 22, 0, 0, 0, 0),
 (605, NULL, '', 'RS Hasan Sadikin', 'hasanjr11', '', '02930192', '', '', '', '', NULL, '', '1', '', '', 19, 0, 1, '1593630595', 'affdf899c3c242f1287554c9a5a2d167', 0, 0, 0, 0, 0),
-(606, NULL, '', 'Yoyo', 'yoyo', '', '128301', '89233643321', '', '', '', NULL, '', '1', '-', '-', 0, 0, 1, '1593631849', '1c096d81f43a39d51651fc510320aabc', 0, 0, 0, 0, 0);
+(606, NULL, '', 'Yoyo', 'yoyo', '', '128301', '89233643321', '', '', '', NULL, '', '1', '-', '-', 0, 0, 1, '1593631849', '1c096d81f43a39d51651fc510320aabc', 0, 0, 0, 0, 0),
+(607, NULL, '', 'Banner Corona 122', 'coronaaaaa', '', '02930192', '', '', '', '', NULL, '', '1', '', '', 19, 85, 1, '1593730681', 'dcfc9973dbf825b484dfc90cd17d09b8', 0, 0, 0, 0, 0);
 
 --
 -- Triggers `m_siswa`
@@ -1731,7 +1729,6 @@ INSERT INTO `rule_users` (`id`, `id_menu`, `id_level`) VALUES
 (38, 24, 1),
 (39, 1, 4),
 (40, 2, 4),
-(41, 19, 4),
 (42, 3, 4),
 (43, 25, 2),
 (45, 26, 3),
@@ -1758,7 +1755,8 @@ INSERT INTO `rule_users` (`id`, `id_menu`, `id_level`) VALUES
 (150, 49, 3),
 (151, 49, 2),
 (153, 50, 4),
-(154, 50, 2);
+(154, 50, 2),
+(155, 25, 4);
 
 -- --------------------------------------------------------
 
@@ -1816,8 +1814,12 @@ CREATE TABLE `tb_admin_lembaga` (
 --
 
 INSERT INTO `tb_admin_lembaga` (`id`, `nama`, `username`, `no_telpon`, `tempat_lahir`, `tanggal_lahir`, `email`, `instansi`, `pembuatan_akun`, `verifikasi`, `deleted`) VALUES
-(537, 'iwan', 'indriawan22', '', 'bandung', '2020-04-08', 'iwan@gmail.com', 1, '1591117878', 'a3989f9969e4dd46e7e0bc54962c3284', 1),
-(538, 'Bapak Agus', 'admin1', '', 'Bandung', '2020-06-01', 'admin1@gmail.com', 10, '1592182911', 'cf94e018c3523c4dff8e01aeb58a2a5c', 0);
+(538, 'Bapak Agus', 'admin1', '089725365546', 'Bandung', '2020-06-01', 'admin1@gmail.com', 10, '1592182911', 'cf94e018c3523c4dff8e01aeb58a2a5c', 0),
+(546, 'Ibu Gays', 'rezha12322', '089672611523', NULL, NULL, '', 1, '1593731038', 'b9524f7c5f7b7a8b84e563fe43c60dcc', 0),
+(547, 'nani nani', 'naninani', '089672611281', NULL, NULL, '', 1, '1593684003', '2e69b624fc08467f0e7156f3dc59c966', 0),
+(548, 'Nama', 'username', '089672611523', NULL, NULL, '', 1, '1593700305', '64690cb22d715e3c3bdb4753b6a1388b', 0),
+(549, 'Nama', 'username', '089672611523', NULL, NULL, '', 1, '1593700307', 'cf4a76da3636c7548c0dfae33e4e239c', 0),
+(550, 'Nama', 'username', '089672611523', NULL, NULL, '', 1, '1593700420', 'decd6d04869e589f27596fdbdbe4c84e', 0);
 
 --
 -- Triggers `tb_admin_lembaga`
@@ -2290,7 +2292,7 @@ INSERT INTO `tb_jawaban_essay` (`id`, `id_ujian`, `id_user`, `id_ikut_essay`, `i
 CREATE TABLE `tb_jurusan` (
   `id` bigint(20) NOT NULL,
   `id_instansi` bigint(20) DEFAULT NULL,
-  `kode` int(11) NOT NULL DEFAULT 0,
+  `kode` varchar(10) NOT NULL DEFAULT '0',
   `jurusan` varchar(150) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
@@ -2299,18 +2301,19 @@ CREATE TABLE `tb_jurusan` (
 --
 
 INSERT INTO `tb_jurusan` (`id`, `id_instansi`, `kode`, `jurusan`) VALUES
-(4, 1, 0, 'XI MIPA 1'),
-(6, 1, 0, 'Dikreg999'),
-(7, 1, 0, 'Dikreg 57'),
-(8, 1, 0, 'Dikreg 2020'),
-(9, 1, 0, 'Strategi Operasi Laut'),
-(10, 10, 0, 'IPA'),
-(11, 10, 0, 'IPS'),
-(15, 11, 0, 'MIPA'),
-(16, 11, 0, 'IPS'),
-(17, 12, 0, 'IPA'),
-(18, 12, 0, 'IPS'),
-(19, 1, 0, 'MIPA');
+(4, 1, '0', 'XI MIPA 1'),
+(6, 1, '0', 'Bahasa'),
+(7, 1, '0', 'IPS'),
+(8, 1, '0', 'Computer Science'),
+(9, 1, '0', 'Strategi Operasi Laut'),
+(10, 10, '0', 'IPA'),
+(11, 10, '0', 'IPS'),
+(15, 11, '0', 'MIPA'),
+(16, 11, '0', 'IPS'),
+(17, 12, '0', 'IPA'),
+(18, 12, '0', 'IPS'),
+(19, 1, '0', 'X MIPA 1'),
+(21, 1, '009', 'Bahasa Mandarin');
 
 -- --------------------------------------------------------
 
@@ -2348,7 +2351,6 @@ INSERT INTO `tb_kelas` (`id`, `nama`, `keterangan`, `id_trainer`, `id_mapel`, `i
 (45, 'Belajar Psikologi', 'Sangat penting buat pengembangan diri!', 1, 59, 1, 7),
 (46, 'Red Room', 'You know what Red Room mean right?', 1, 59, 1, 6),
 (47, 'Bahas Psikologi youtuber', 'Shaip', 85, 59, 1, 4),
-(48, 'Dasar-dasar Hynoterapi', 'Bahas aja sebentar da', NULL, 59, 1, 4),
 (49, 'Dasar-dasar Hynoterapi', 'Bahas aja sebentar da', NULL, 59, 1, 4),
 (50, 'Dasar-dasar Hynoterapi', 'Bahas aja sebentar da', NULL, 59, 1, 4),
 (51, 'Dasar-dasar Hynoterapi', 'Bahas sebentar', 85, 59, 1, 4);
@@ -2670,7 +2672,8 @@ INSERT INTO `tb_tugas` (`id`, `keterangan`, `id_kelas`, `end_date`) VALUES
 (26, 'test', 1, '2020-06-16 20:00:00'),
 (27, 'Tugas Harian', 38, '2020-06-17 08:12:00'),
 (28, 'Kerjakan tugas Integral', 40, '2020-06-27 03:44:00'),
-(29, 'Kerjakan hanya 1 jam', 45, '2020-06-28 02:00:00');
+(29, 'Kerjakan hanya 1 jam', 45, '2020-06-28 02:00:00'),
+(30, 'Harus selesai hari ini', 51, '2020-07-03 14:00:00');
 
 -- --------------------------------------------------------
 
@@ -2699,7 +2702,8 @@ INSERT INTO `tb_tugas_attachment` (`id`, `id_tugas`, `file`, `format`) VALUES
 (8, 26, 'tugas-14-06-2020-1592133674-0.pdf', '.pdf'),
 (9, 27, 'tugas-15-06-2020-1592190930-0.png', '.png'),
 (10, 28, 'tugas-26-06-2020-1593164756-0.xlsx', '.xlsx'),
-(11, 29, 'tugas-27-06-2020-1593228308-0.pdf', '.pdf');
+(11, 29, 'tugas-27-06-2020-1593228308-0.pdf', '.pdf'),
+(12, 30, 'tugas-02-07-2020-1593699146-0.xlsx', '.xlsx');
 
 -- --------------------------------------------------------
 
@@ -3330,8 +3334,7 @@ ALTER TABLE `menu`
 -- Indexes for table `m_admin`
 --
 ALTER TABLE `m_admin`
-  ADD PRIMARY KEY (`id`) USING BTREE,
-  ADD KEY `kon_id` (`kon_id`) USING BTREE;
+  ADD PRIMARY KEY (`id`) USING BTREE;
 
 --
 -- Indexes for table `m_guru`
@@ -3685,13 +3688,13 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT for table `m_admin`
 --
 ALTER TABLE `m_admin`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=714;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=721;
 
 --
 -- AUTO_INCREMENT for table `m_guru`
 --
 ALTER TABLE `m_guru`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT for table `m_laporan`
@@ -3721,7 +3724,7 @@ ALTER TABLE `m_materi_video`
 -- AUTO_INCREMENT for table `m_siswa`
 --
 ALTER TABLE `m_siswa`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=607;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=608;
 
 --
 -- AUTO_INCREMENT for table `m_soal`
@@ -3751,7 +3754,7 @@ ALTER TABLE `m_soal_ujian_essay`
 -- AUTO_INCREMENT for table `rule_users`
 --
 ALTER TABLE `rule_users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=155;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
 
 --
 -- AUTO_INCREMENT for table `sub_menu`
@@ -3763,7 +3766,7 @@ ALTER TABLE `sub_menu`
 -- AUTO_INCREMENT for table `tb_admin_lembaga`
 --
 ALTER TABLE `tb_admin_lembaga`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=540;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=551;
 
 --
 -- AUTO_INCREMENT for table `tb_akun_lembaga`
@@ -3847,7 +3850,7 @@ ALTER TABLE `tb_jawaban_essay`
 -- AUTO_INCREMENT for table `tb_jurusan`
 --
 ALTER TABLE `tb_jurusan`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `tb_kelas`
@@ -3919,13 +3922,13 @@ ALTER TABLE `tb_sub_menu`
 -- AUTO_INCREMENT for table `tb_tugas`
 --
 ALTER TABLE `tb_tugas`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `tb_tugas_attachment`
 --
 ALTER TABLE `tb_tugas_attachment`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `tb_tugas_attachment_siswa`

@@ -205,7 +205,7 @@ class Trainer extends MY_Controller {
                 $data_admin = [
                     'user_id'  => $post['username'],
                     'username' => $post['email'],
-                    'password'  => $this->encryption->encrypt($post['username'],),
+                    'password'  => $this->encryption->encrypt($post['username']),
                     'level'    => 'guru',
                     'kon_id'   => $inserted_id
                 ];
