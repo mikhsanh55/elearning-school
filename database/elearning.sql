@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 05, 2020 at 02:39 PM
+-- Generation Time: Jul 05, 2020 at 09:19 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.3.16
 
@@ -361,7 +361,7 @@ INSERT INTO `m_guru` (`id`, `id_mapel`, `tahun_akademik`, `username`, `nidn`, `n
 (85, 59, '', 'sengklekman', '10101010', '202020', 1, 'Sengklekman', '', '', '', '', '', 'Sengklekman@ga.com', '86754633342', '', '', '', 1, 11, 0, 0),
 (88, 59, '', 'tanos', '23801283081', '', 1, 'Tanos', '', '', '', '', '', '', '86754633342', '', '', '', 1, 0, 0, 0),
 (89, 60, '', 'vivisusanti', '1234343', '', 1, 'Vivi Susanti', '', '', '', '', '', '', '081220970900', '', '', '', 1, 2, 0, 0),
-(91, 0, '', 'gurukarsa', '23801283081', '', 1, 'guru karsa', '', '', '', '', '', '', '081220970901', '', '', '', 1, 1, 0, 0);
+(91, 0, '', 'gurukarsa', '23801283081', '', 1, 'guru karsa', '', '', '', '', '', '', '081220970901', '', '', '', 1, 6, 0, 0);
 
 --
 -- Triggers `m_guru`
@@ -1346,7 +1346,8 @@ INSERT INTO `m_mapel` (`id`, `kd_mp`, `id_instansi`, `nama`, `silabus`, `path_si
 (82, 'K1', 11, 'Kimia', 0, NULL, 3, 1, '2020'),
 (83, 'S1', 11, 'Sejarah Indonesia', 0, NULL, 2, 1, '2020'),
 (84, 'IPA001', 12, 'Matematika (IPA) Kelas 10', 0, NULL, 3, 1, '2020'),
-(85, 'IPS001', 12, 'Matematika (IPS) Kelas 10', 0, NULL, 3, 1, '2020');
+(85, 'IPS001', 12, 'Matematika (IPS) Kelas 10', 0, NULL, 3, 1, '2020'),
+(92, 'A0012', 1, 'Kewirausahaan', 0, NULL, NULL, NULL, NULL);
 
 --
 -- Triggers `m_mapel`
@@ -1448,8 +1449,8 @@ CREATE TABLE `m_siswa` (
   `nik` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `alamat` text NOT NULL,
-  `id_jurusan` bigint(20) DEFAULT NULL COMMENT 'Alias dari Nama Kelas',
-  `kelas` int(11) DEFAULT NULL,
+  `id_jurusan` bigint(20) DEFAULT NULL COMMENT 'GAK KEPAKE\r\n',
+  `kelas` int(11) DEFAULT NULL COMMENT 'GAK KEPAKE',
   `instansi` int(20) NOT NULL,
   `pembuatan_akun` varchar(100) NOT NULL,
   `verifikasi` varchar(150) NOT NULL,
@@ -1534,7 +1535,7 @@ INSERT INTO `m_siswa` (`id`, `photo`, `kelompok`, `nama`, `username`, `pangkat`,
 (605, NULL, '', 'RS Hasan Sadikin', 'hasanjr11', '', '02930192', '', '', '', '', NULL, '', '1', '', '', 19, NULL, 1, '1593630595', 'affdf899c3c242f1287554c9a5a2d167', 0, 0, 0, 0, 0),
 (606, NULL, '', 'Yoyo', 'yoyo', '', '128301', '89233643321', '', '', '', NULL, '', '1', '-', '-', 0, NULL, 1, '1593631849', '1c096d81f43a39d51651fc510320aabc', 0, 0, 0, 0, 0),
 (607, NULL, '', 'Banner Corona 122', 'coronaaaaa', '', '02930192', '', '', '', '', NULL, '', '1', '', '', 19, NULL, 1, '1593730681', 'dcfc9973dbf825b484dfc90cd17d09b8', 0, 0, 0, 0, 0),
-(608, NULL, '', 'Arif X MIPA 1ge', 'arifmipa1', '', '02930192', '', '', '', '', NULL, '', '1', '', '', NULL, NULL, 1, '1593935615', '050f982fbea278cabc584d45117a3639', 1, 0, 0, 0, 0);
+(608, NULL, '', 'Arif X MIPA 1ge', 'arifmipa1', '', '02930192', '', '', '', '', NULL, '', '1', '', '', NULL, NULL, 1, '1593935615', '050f982fbea278cabc584d45117a3639', 3, 0, 0, 0, 0);
 
 --
 -- Triggers `m_siswa`
@@ -1921,7 +1922,14 @@ CREATE TABLE `tb_detail_kelas` (
 --
 
 INSERT INTO `tb_detail_kelas` (`id`, `id_peserta`, `id_kelas`) VALUES
-(164, 608, 56);
+(164, 608, 56),
+(166, 526, 60),
+(167, 532, 60),
+(168, 529, 60),
+(169, 531, 60),
+(170, 536, 60),
+(171, 543, 60),
+(173, 532, 56);
 
 -- --------------------------------------------------------
 
@@ -1945,7 +1953,11 @@ INSERT INTO `tb_detail_kelas_mapel` (`id`, `id_kelas`, `id_mapel`, `id_guru`) VA
 (2, 56, 60, 89),
 (3, 57, 60, 89),
 (4, 57, 63, 88),
-(5, 57, 67, 70);
+(5, 57, 67, 70),
+(6, 56, 55, 91),
+(7, 56, 60, 91),
+(8, 59, 59, 91),
+(9, 59, 55, 91);
 
 -- --------------------------------------------------------
 
@@ -2337,7 +2349,9 @@ CREATE TABLE `tb_kelas` (
 INSERT INTO `tb_kelas` (`id`, `nama`, `keterangan`, `id_trainer`, `id_mapel`, `id_guru`, `id_instansi`, `id_jurusan`) VALUES
 (56, 'X MIPA 1', 'X MIPA 1 yah', 64, '59,60', '88,89', 1, NULL),
 (57, 'XI MIPA 2', '', 32, '60,63,67', '89,88,70', 1, NULL),
-(58, 'XI IPS 1', '', 28, '68,69,71,74', '3,4,1,5', 1, NULL);
+(58, 'XI IPS 1', '', 28, '68,69,71,74', '3,4,1,5', 1, NULL),
+(59, 'X IPS 2', '', 41, '63,65,66', '', 1, NULL),
+(60, 'XI Bahasa 1', 'Kelas Bahasa 1', 30, NULL, '', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -3693,7 +3707,7 @@ ALTER TABLE `m_laporan`
 -- AUTO_INCREMENT for table `m_mapel`
 --
 ALTER TABLE `m_mapel`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
 -- AUTO_INCREMENT for table `m_materi`
@@ -3771,13 +3785,13 @@ ALTER TABLE `tb_block_materi`
 -- AUTO_INCREMENT for table `tb_detail_kelas`
 --
 ALTER TABLE `tb_detail_kelas`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=165;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=176;
 
 --
 -- AUTO_INCREMENT for table `tb_detail_kelas_mapel`
 --
 ALTER TABLE `tb_detail_kelas_mapel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tb_detail_mapel`
@@ -3855,7 +3869,7 @@ ALTER TABLE `tb_jurusan`
 -- AUTO_INCREMENT for table `tb_kelas`
 --
 ALTER TABLE `tb_kelas`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `tb_komen_materi`
