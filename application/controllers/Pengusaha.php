@@ -16,6 +16,7 @@ class Pengusaha extends MY_Controller {
         $this->load->model('m_siswa');
 		$this->load->model('m_admin');
 		$this->load->model('m_jurusan');
+		$this->load->model('m_kelas');
 		$instansi = $this->m_instansi->get_by(['id' => $this->akun->instansi]);
 		if($instansi != NULL) {
 			if($instansi->instansi === 'SESKOAL' || 'STT AL') {
@@ -225,8 +226,6 @@ class Pengusaha extends MY_Controller {
 					exit();
 				}else {
 				    $data = [
-						'id_jurusan' => bersih($p, "id_jurusan"),
-						'id_guru' => bersih($p, "id_guru"),
 						'nama'  => bersih($p, "nama"),
 						'username'  => bersih($p, "username"),
 					    'nrp' => bersih($p, "nrp"), // NIS
@@ -235,7 +234,7 @@ class Pengusaha extends MY_Controller {
 					    'nik' => bersih($p, "nik"), // Jenis kelamin
 					    'email'  => bersih($p, "email"),
 					    'alamat'  => bersih($p, "alamat"),
-					    'instansi'  => bersih($p, "instansi"),
+					    'instansi'  => empty($this->akun->instansi) ? 1 : $this->akun->instansi,
 					    'pembuatan_akun' => time(),
 					    'verifikasi' => md5(time())
 					];
@@ -295,8 +294,6 @@ class Pengusaha extends MY_Controller {
 				}else {
 					$ket = "tambah";
 					$data = [
-						'id_jurusan' => bersih($p, "id_jurusan"),
-						'id_guru' => bersih($p, "id_guru"),
 						'nama'  => bersih($p, "nama"),
 						'username'  => bersih($p, "username"),
 					    'nrp' => bersih($p, "nrp"), // NIS
@@ -305,7 +302,7 @@ class Pengusaha extends MY_Controller {
 					    'nik' => bersih($p, "nik"), // Jenis kelamin
 					    'email'  => bersih($p, "email"),
 					    'alamat'  => bersih($p, "alamat"),
-					    'instansi'  => bersih($p, "instansi"),
+					    'instansi'  => empty($this->akun->instansi) ? 1 : $this->akun->instansi,
 					    'pembuatan_akun' => time(),
 					    'verifikasi' => md5(time())
 					];  
@@ -316,6 +313,13 @@ class Pengusaha extends MY_Controller {
 					
 					$this->db->insert('m_siswa', $data);
 					$inserted_id = $this->db->insert_id();
+
+					// Detail Kelas
+					$detail_kelas = [
+						'id_peserta' => $inserted_id,
+						'id_kelas' => $p->id_kelas
+					];
+					$this->db->insert('tb_detail_kelas', $detail_kelas);
 					$check_login = $this->m_admin->get_many_by(['kon_id' => $inserted_id]);
 					$kon_ids = [];
 					if(count($check_login) > 0) {
@@ -625,12 +629,13 @@ class Pengusaha extends MY_Controller {
 	public function data(){
 
 		$instansi = ($this->log_lvl == 'admin') ? $this->m_instansi->get_all() : $this->m_instansi->get_by(array('id'=>$this->akun->instansi));
-		$jurusan = ($this->log_lvl == 'admin') ? $this->m_jurusan->get_all() : $this->m_jurusan->get_many_by(array('id_instansi'=>$this->akun->instansi));
+		// $jurusan = ($this->log_lvl == 'admin') ? $this->m_jurusan->get_all() : $this->m_jurusan->get_many_by(array('id_instansi'=>$this->akun->instansi));
 		$guru = ($this->log_lvl == 'admin') ? $this->m_guru->get_all() : $this->m_guru->get_all(array('guru.instansi'=>$this->akun->instansi));
+		$kelas = $this->m_kelas->get_all();
 		// print_r($guru);exit;
 		$data = array(
 			'instansi' => $instansi,
-			'jurusan' => $jurusan, 
+			'kelas' => $kelas, 
 			'guru' => $guru,
 			'searchFilter' => array('Nama','Username','NIS')
 		);
@@ -646,9 +651,9 @@ class Pengusaha extends MY_Controller {
 		$limit = $post['limit'];
 		$where = [];
 
-		if ($this->log_lvl != 'admin') {
-			$where["akun.instansi"] = $this->akun->instansi;
-		}
+		// if ($this->log_lvl != 'admin') {
+		// 	$where["akun.instansi"] = $this->akun->instansi;
+		// }
 		if(isset($post['graduated'])) {
 			$where["akun.is_graduated"] = 1;	
 		}
@@ -757,7 +762,7 @@ class Pengusaha extends MY_Controller {
 	}
 
 	public function detail_siswa($id=0){
-		$siswa = $this->m_siswa->get_by(array('id'=>$id));
+		$siswa = $this->m_siswa->get_kelas_by(array('akun.id'=>$id));
 		$data = array('data' => $siswa, );
 		echo json_encode($data);
 		exit;

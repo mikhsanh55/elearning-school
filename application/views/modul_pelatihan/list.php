@@ -138,6 +138,7 @@
 			<div class="modal-body">
 				<form name="f_mapel" id="f_mapel" onsubmit="return m_mapel_s();">
 					<input type="hidden" name="id" id="id" value="0">
+					<input type="hidden" name="instansi" value="<?= empty($this->akun->instansi) ? 1 : $this->akun->instansi; ?>" />
 					<table class="table table-form">
 						<tr>
 							<td style="width: 25%">Kode Mata Pelajaran</td>
@@ -159,7 +160,8 @@
 							<td style="width: 25%">Angkatan</td>
 							<td style="width: 75%"><input type="text" class="form-control only-number" name="angkatan" id="angkatan" maxlength="10" required></td>
 						</tr> -->
-						<tr>
+						<!-- <tr>
+
 							<td style="width: 25%"><?=$this->transTheme->instansi;?></td>
 							<td style="width: 75%">
 								<div class="rs-select2 js-select-simple select--no-search">
@@ -177,7 +179,7 @@
 									<div class="select-dropdown"></div>
 								</div>
 							</td>
-						</tr>
+						</tr> -->
 					</table>
 			</div>
 			<div class="modal-footer">

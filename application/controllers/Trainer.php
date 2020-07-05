@@ -98,7 +98,34 @@ class Trainer extends MY_Controller {
 		*/
 
 		if ($uri3 == "det") {
-			$a = $this->db->query("SELECT * FROM m_guru WHERE id = '$uri4'")->row();
+			$a['data'] = $this->db->query("SELECT * FROM m_guru WHERE id = '$uri4'")->row();
+			$a['mapel'] = $this->m_guru->get_join_many_by(['dmapel.id_guru' => $uri4]);
+			$mapels = $this->m_mapel->get_all();
+
+			$count = 0;$i = 0;
+			$html = '';
+
+			foreach($mapels as $x => $mapel) {
+				$html .= '<div>';
+				if($count < count($a['mapel'])) {
+					
+
+					if($mapel->id == $a['mapel'][$i]->idmapel) {
+						$count++;
+						$i++;
+
+						$html .= '<input type="checkbox" name="mapel[]" checked value="'.$mapel->id.'" /> <span class="ml-1">'.$mapel->nama.'</span>';
+					}
+					else {
+						$html .= '<input type="checkbox" name="mapel[]" value="'.$mapel->id.'" /> <span class="ml-1">'.$mapel->nama.'</span>';	
+					}
+				}
+				else {
+					$html .= '<input type="checkbox" name="mapel[]" value="'.$mapel->id.'" /> <span class="ml-1">'.$mapel->nama.'</span>';	
+				}
+				$html .= '</div>';
+			}
+			$a['opsi'] = $html;
 			j($a);
 			exit();
 		} else if ($uri3 == "simpan") {
@@ -156,7 +183,6 @@ class Trainer extends MY_Controller {
 
 		}else if($post['id'] == 0){
 
-
 			$cek_username = $this->validasi->check_username($post['username'],'insert');
 			$cek_email 	  = $this->validasi->check_email($post['email'],'insert');
 
@@ -179,7 +205,6 @@ class Trainer extends MY_Controller {
 				$data = [
 					'nidn'  =>  $post['nidn'],
 					'nrp'  => $post['nrp'],
-					'id_mapel'	=> $post['mapel'],
 					'nama' => $post['nama'],
 					'username' => $post['username'],
 					'email'  => $post['email'],
@@ -189,6 +214,14 @@ class Trainer extends MY_Controller {
 				$this->db->insert('m_guru', $data);
 
 				$inserted_id = $this->db->insert_id();
+				for($i = 0;$i < count($post['mapel']);$i++) {
+					$data_detail_mapel = [
+						'id_mapel' => $post['mapel'][$i],
+						'id_guru' => $inserted_id
+					];
+					$this->db->insert('tb_detail_mapel', $data_detail_mapel);
+				}
+
 				$check_login = $this->m_admin->get_many_by(['kon_id' => $inserted_id]);
 				$kon_ids = [];
 				if(count($check_login) > 0) {
@@ -467,9 +500,9 @@ class Trainer extends MY_Controller {
 			}
 		}
 
-		if ($this->log_lvl != 'admin') {
-			$where['instansi'] = $this->akun->instansi;
-		}
+		// if ($this->log_lvl != 'admin') {
+		// 	$where['instansi'] = $this->akun->instansi;
+		// }
 
 		$paginate = $this->m_guru->paginate($pg,$where,$limit);
 		foreach ($paginate['data'] as $key => $value) {
@@ -531,6 +564,18 @@ class Trainer extends MY_Controller {
 
 	public function import(){
 		$this->render('pengajar/guru_import');
+	}
+
+	public function get_mapel() {
+		$post = $this->input->post();
+
+		$result = [
+			'status' => TRUE,
+			'data' => $this->m_guru->get_join_many_by(['dmapel.id_guru' => $post['id']])
+		];
+
+		$this->sendAjaxResponse($result, 200);
+
 	}
 
 }

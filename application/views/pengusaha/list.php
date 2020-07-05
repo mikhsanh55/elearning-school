@@ -162,15 +162,15 @@
 						<tr>
 							<td style="width: 25%">Kelas<span class="text-danger">*</span></td>
 							<td>
-								<select name="id_jurusan" id="id_jurusan" class="form-control" required>
+								<select name="id_kelas" id="id_kelas" class="form-control" required>
 									<option value="0">Belum Ada</option>
-								    <?php foreach($jurusan as $rows) : ?>
-								        <option value="<?= $rows->id; ?>"><?= $rows->jurusan; ?></option>
+								    <?php foreach($kelas as $rows) : ?>
+								        <option value="<?= $rows->id; ?>"><?= $rows->nama; ?></option>
 								    <?php endforeach; ?>
 								</select>
 							</td>
 						</tr>
-						<tr>
+						<!-- <tr>
 							<td style="width: 25%">Wali Kelas</td>
 							<td>
 								<select name="id_guru" id="id_guru" class="form-control">
@@ -180,7 +180,7 @@
 								    <?php endforeach; ?>
 								</select>
 							</td>
-						</tr>
+						</tr> -->
 						<!-- <tr>
 							<td style="width: 25%">Angkatan</td>
 							<td style="width: 75%"><input type="text" maxlength = "10" class="form-control" name="angkatan" id="angkatan" required></td>
@@ -209,24 +209,7 @@
 							<td style="width: 75%"><textarea type="text" class="form-control" name="alamat" id="alamat" ></textarea></td>
 						</tr>
 						
-						<!-- <tr>
-							<td style="width: 25%"><?=$this->transTheme->instansi;?><span class="text-danger">*</span></td>
-							<td> -->
-								<?php if ($this->log_lvl == 'admin'): ?>
-									<input type="hidden" name="instansi" id="instansi" value="<?= $this->akun->instansi; ?>">
-									<!-- <select name="instansi" id="instansi" class="form-control">
-									<option value="">Pilih</option>
-								    <?php foreach($instansi as $rows) : ?>
-								        <option value="<?= $rows->id; ?>"><?= $rows->instansi; ?></option>
-								    <?php endforeach; ?>
-								</select> -->
-								<?php else: ?>
-									<input type="hidden" name="instansi" id="instansi" class="form-control" value="<?=$instansi->id;?>" readonly>
-									<!-- <input type="text" class="form-control" value="<?=$instansi->instansi;?>" readonly> -->
-								<?php endif ?>
-							<!-- 	
-							</td>
-						</tr> -->
+						
 
 						
 
@@ -431,11 +414,10 @@
 							$("#email").val(response.data.email);
 							$("#alamat").val(response.data.alamat);
 							$("#instansi").val(response.data.instansi);
-							$("#id_jurusan").val(response.data.id_jurusan);
+							$("#id_kelas").val(response.data.id_kelas);
 							$("#tahun_angkatan_masuk").val(response.data.tahun_angkatan_masuk);
 							// $("#angkatan").val(response.data.angkatan)
 							$("#nama").focus();
-							$('#id_guru').val(response.data.id_guru)
 							if(response.data.photo != null){
 								$('#photo_before').val(response.data.photo);
 								$('#photo-txt').html('<img src="<?=base_url('upload/siswa_photo/');?>'+ response.data.photo +'" width="auto" height="50">');
@@ -467,7 +449,7 @@
 		$("#nik").val('');
 		$("#email").val('');
 		$("#alamat").val('');
-		$("#id_jurusan").val('');
+		$("#id_kelas").val('');
 		$("#tahun_angkatan_masuk").val('');
 		// $("#angkatan").val('');
 		$("#nama").focus();

@@ -33,7 +33,7 @@
 
 			<th>NUPTK / NIP</th>
 
-			<th>Mata Pelajaran</th>
+			<!-- <th>Mata Pelajaran</th> -->
 
 			<th>Opsi</th>
 
@@ -71,14 +71,10 @@
 				</td>
 
 				<td><?= ($rows->nidn != '' || !empty($rows->nidn) ) ? $rows->nidn : $rows->nrp ;?></td>
-				<td class="text-center">
+				<!-- <td class="text-center">
 					<?= $rows->nama_mapel == '' ? 'Belum Ada' : $rows->nama_mapel; ?>
-				</td>
+				</td> -->
 				<td class="frist">
-
-
-
-
 
 					<?php
 
@@ -87,8 +83,8 @@
 						echo '<div class="btn-group">
 
 						<a href="#" onclick="return m_guru_matkul('.$rows->id.');" class="btn btn-primary btn-sm mr-2"><i class="glyphicon glyphicon-th-list" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Materi</a>
-
-
+						<button class="btn btn-sm btn-primary" data-id="'.$rows->id.'" onclick="displayMapel(this)">Mata Pelajaran</button>
+						</div>
 
 						';
 
@@ -130,7 +126,9 @@
 
 </table>
 <script>
+	
 	var encrypt_id, password
+
 	$('.mata-kau').on('click', function() {
 		encrypt_id = $(this).data('id')
 		console.log(encrypt_id)

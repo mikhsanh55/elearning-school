@@ -1,6 +1,10 @@
 
 
 <style type="text/css">
+	.text-capitalize {
+		text-transform: capitalize;
+	}
+
 	h1{
 		font-family: sans-serif;
 	}
@@ -139,7 +143,26 @@
 </div>
 </div>
 
-<div class="modal fade" id="rekrut_murid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<!-- Modal -->
+<div class="modal fade" id="listSiswaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-target=".bd-example-modal-sm">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Daftar Siswa</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="daftar-siswa"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="modal fade" id="rekrut_murid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog modal-lg" style="max-width:80%;" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -155,10 +178,81 @@
 	
 		</div>
 	</div>
-</div>
+</div> -->
 <!--/.row-box End-->
 <script src="<?= base_url(); ?>assets/js/jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
+	let html;
+	function displaySiswa(self) {
+		html = ''
+		$('#listSiswaModal .modal-title').text('Daftar Siswa')
+		$(self).prop('disabled', true).text('Loading...')
+		$.ajax({
+			type: 'POST',
+			url  : '<?php echo base_url() ?>' + 'kelas/daftar_murid' + '/' + 1,
+			data : {
+				id : $(self).data('id'),
+				id_kelas : $(self).data('id'),
+			},
+			success: function(res) {
+				$(self).prop('disabled', false).text('Lihat Siswa')
+				$('#daftar-siswa').html(res)		
+			}			
+		}).done(() => $('#listSiswaModal').modal('show'))
+	}
+
+	function displayMapel(self) {
+		html = ''
+		
+		$(self).prop('disabled', true).text('Loading...')
+		$.ajax({
+			type: 'POST',
+			url: "<?= base_url('kelas/data_mapel') ?>",
+			data: {
+				id_kelas: $(self).data('id'),
+			},
+			dataType: 'JSON',
+			success: function(res) {
+				$(self).prop('disabled', false).text('Lihat Mapel')
+				$('#listSiswaModal .modal-title').text('Daftar Mata Pelajaran Kelas ')
+				html += `<table id="mapel-table" class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th class="text-left">No</th>
+							<th>Mata Pelajaran</th>
+							<th>Guru Mata Pelajaran</th>
+						</tr>
+					</thead>
+					<tbody>
+				`
+				if(res.result.length > 0) {
+					$('#listSiswaModal .modal-title').text('Daftar Mata Pelajaran Kelas ' + res.result[0].nama)
+					res.result.forEach((item, i) => {
+						html += `<tr>
+							<td>${++i}</td>
+							<td>${item.nama_mapel}</td>
+							<td class="text-capitalize">${item.nama_guru}</td>
+						`
+					})	
+				}
+				else {
+					html += `<tr>
+						<td colspan="3" class="text-center">Data Kosong</td>
+					</tr>
+					`
+				}
+				
+				html += `</tbody>
+				</table>`
+				$('#listSiswaModal .modal-body #daftar-siswa').html(html)
+
+			}
+		}).done(() => {
+			// $('#mapel-table').DataTable()
+			$('#listSiswaModal').modal('show')
+		})
+	}
+
 	$(document).ready(function(){
 		pageLoad(1,'kelas/page_load');
 
@@ -192,8 +286,7 @@
 				pg    : pg,
 				limit : $('#limit').val(),
 				filter : $('#filter').val(),
-				search : $('#search').val(),
-				id_jurusan: '<?= $id_jurusan ?>'
+				search : $('#search').val()
 			},
 			success:function(response){
 				$('#content-view').html(response);

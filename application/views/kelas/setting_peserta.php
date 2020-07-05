@@ -54,9 +54,9 @@
 
 							<div class="row">
 
-							<div class="col-md-3 form-group">
+							<div class="col-md-4 form-group">
 
-								<label><?=$this->transTheme->guru;?></label>
+								<label>Wali Kelas</label>
 
 								<div class="label-isi" >
 
@@ -68,7 +68,7 @@
 
 							</div>
 
-							<div class="col-md-3 form-group">
+							<div class="col-md-4 form-group">
 
 								<label>Mata Pelajaran</label>
 
@@ -82,7 +82,7 @@
 
 							</div>
 
-							<div class="col-md-3 form-group">
+							<div class="col-md-4 form-group">
 
 								<label><?= $this->name; ?></label>
 
@@ -96,19 +96,7 @@
 
 							</div>
 
-							<div class="col-md-3 form-group">
-
-								<label>Kelas</label>
-
-								<div class="label-isi" >
-
-									<?=$kelas->jurusan;?>
-
-									<div class="select-dropdown"></div>
-
-								</div>
-
-							</div>
+							
 
 
 
@@ -156,9 +144,9 @@
 
 				</select>
 
-				<button class="btn btn-sm btn-primary" id="aktifkan_semua">Aktifkan Semua</button>
+				<!-- <button class="btn btn-sm btn-primary" id="aktifkan_semua">Aktifkan Semua</button>
 
-				<button class="btn btn-sm btn-danger"  id="nonaktifkan_semua">NonAktifkan Semua</button>
+				<button class="btn btn-sm btn-danger"  id="nonaktifkan_semua">NonAktifkan Semua</button> -->
 
 				<div id="content-table"></div>
 
@@ -260,8 +248,6 @@
 
 				id_kelas : '<?=$kelas->id;?>',
 
-				id_jurusan : '<?=$id_jurusan;?>',
-
 				aksi : aksi
 
 			},
@@ -295,8 +281,6 @@
 				search : $('#search-murid').val(),
 
 				id_kelas : '<?=$kelas->id;?>',
-
-				id_jurusan : '<?=$id_jurusan;?>'
 
 			},
 

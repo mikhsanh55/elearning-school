@@ -4,62 +4,50 @@
 
 		<tr>
 
-			<th class="frist"><input type="checkbox" name="checkall" id="checkall"></th>
-
 			<th class="frist">No</th>
 
-			<th><?= $this->name; ?></th>
+			<th class="text-left">Daftar Kelas</th>
 
-			<th>Mata Pelajaran</th>
-
-			<th>Keterangan</th>
-
-			<th  class="frist">Total Siswa</th>
+			<th class="text-left">Wali Kelas</th>
 
 			<th class="frist">Opsi</th>
 
 		</tr>
-
-		<?php $i= $page_start; foreach ($paginate['data'] as $rows):
-
-			$jml_siswa = $this->m_detail_kelas->count_by(['id_kelas'=>$rows->id]);
-
-		?>
-
-			<tr>
-
-				<td><input type="checkbox" name="checklist[]" class="checklist" data-id= "<?=encrypt_url($rows->id);?>" value="<?=$rows->id;?>"></td>
-
-				<td align="center" class="frist"><?=$i;?></td>
-
-				<td><?=$rows->nama;?></td>
-
-				<td><?=$rows->nama_mapel;?></td>
-
-				<td><?=$rows->keterangan;?></td>
-
-				<td><?=$jml_siswa;?></td>
-
-				<td class="frist">
-					<?php if($jml_siswa > 0) : ?>
-						<a href="<?= base_url('jadwal/add'); ?>" class="btn btn-primary btn-sm buat-jadwal">Buat Jadwal</a>
-						<a class="btn btn-success btn-sm mr-2" href="<?=base_url('Materi/lists').'/'.md5($rows->id_mapel);?>">Mulai Mengajar</a>
-					<?php endif; ?>
-					
-
-					<button class="btn btn-primary btn-sm rekrut" data-id="<?=$rows->id;?>" data-jurusan="<?=$rows->id_jurusan;?>">Lihat Siswa</button>
-
-				</td>	
-
-			</tr>
-
-		<?php $i++;endforeach ?>
-
 	</thead>
 
-<tbody>
+	<tbody>
+		<?php $i = 1;foreach($paginate['data'] as $rows) : 
+			$mapel = $this->m_mapel->get_by(['id' => $rows->id_mapel]);
+		?>
+			<tr>
+				<td><?= $i++; ?></td>
+				<td><?= $rows->nama; ?></td>
+				<td><?= $rows->nama_guru; ?></td>
+				<td>
+					<button class="btn btn-primary btn-sm rekrut mb-2" data-id="<?= $rows->id; ?>" onclick="displaySiswa(this)">Lihat Siswa</button>
 
-</tbody>
+				  	<?php 
+				  		$mapels = $this->m_detail_kelas_mapel->get_all(['dklsmapel.id_kelas' => $rows->id]);
+				  		if(count($mapels) > 0) {
+				  	?>
+						<div class="dropdown show">
+						  <a class="btn btn-primary btn-block  btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width:80%;text-align: left;">
+						    Mulai Kelas
+						  </a>
+						  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="width: 80%;">
+						  <?php foreach($mapels as $m) : ?>
+						  	<a href="<?= base_url('Materi/lists/') . md5($m->id_mapel); ?>" class="dropdown-item"><?= $m->nama_mapel ?></a>
+						  <?php endforeach; ?>	  	
+						  </div>
+						</div>
+					<?php } else { ?>
+						<button class="btn btn-sm btn-primary" disabled>Mulai Kelas</button>
+					<?php } ?>
+				</td>
+			</tr>
+		<?php endforeach;?>
+		
+	</tbody>
 
 </table>
 

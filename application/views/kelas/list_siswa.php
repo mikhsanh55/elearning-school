@@ -76,7 +76,7 @@
 	<div class="inner-box">
 		<div class="row">
 			<div class="col-sm-12 col-md-6 col-lg-6">
-				<h2><strong> Daftar <?= $this->name; ?></strong></h2>	
+				<h2><strong> Daftar Jam Kelas <?= $nama_kelas; ?></strong></h2>	
 			</div>
 			<div class="col-sm-12 col-md-6 col-lg-6 text-right">
 				<a class="btn btn-light" href="<?= base_url('jurusan'); ?>">Kembali</a>
@@ -180,7 +180,8 @@
 				pg    : pg,
 				limit : $('#limit').val(),
 				filter : $('#filter').val(),
-				search : $('#search').val()
+				search : $('#search').val(),
+				id_kelas : "<?= $id_kelas ?>"
 			},
 			success:function(response){
 				$('#content-view').html(response);

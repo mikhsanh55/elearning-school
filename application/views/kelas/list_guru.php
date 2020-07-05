@@ -118,10 +118,6 @@
 					<option value="50">50</option>
 					<option value="100">100</option>
 				</select>
-				<a class="btn btn-success btn-sm tombol-kanan" href="<?=base_url('kelas/add');?>"><i class="fa fa-user-plus"></i> &nbsp;Tambah</a>
-				<a href="javascript:void(0);" title="edit" id="edited" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> &nbsp;Edit</a>
-				<a href="javascript:void(0);" id="deleted" title="Hapus" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> &nbsp;Hapus</a>
-			
 				<div id="content-view"></div>
 			</div>
 		</div>
@@ -129,8 +125,26 @@
 
 </div>
 </div>
-
-<div class="modal fade" id="rekrut_murid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<!-- Modal -->
+<div class="modal fade" id="listSiswaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-target=".bd-example-modal-sm">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Daftar Siswa</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="daftar-siswa"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="modal fade" id="rekrut_murid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog modal-lg" style="max-width:80%;" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -146,19 +160,38 @@
 	
 		</div>
 	</div>
-</div>
+</div> -->
 <!--/.row-box End-->
 <script src="<?= base_url(); ?>assets/js/jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
+	let html;
+	function displaySiswa(self) {
+		html = ''
+		$('#listSiswaModal .modal-title').text('Daftar Siswa')
+		$(self).prop('disabled', true).text('Loading...')
+		$.ajax({
+			type: 'POST',
+			url  : '<?php echo base_url() ?>' + 'kelas/daftar_murid' + '/' + 1,
+			data : {
+				id : $(self).data('id'),
+				id_kelas : $(self).data('id'),
+			},
+			success: function(res) {
+				$(self).prop('disabled', false).text('Lihat Siswa')
+				$('#daftar-siswa').html(res)		
+			}			
+		}).done(() => $('#listSiswaModal').modal('show'))
+	}
+
 	$(document).ready(function(){
-		pageLoad(1,'kelas/page_load');
+		pageLoad(1,'kelas/page_load_guru');
 
 		$('#limit').change(function(){
-			pageLoad(1,'kelas/page_load');
+			pageLoad(1,'kelas/page_load_guru');
 		});
 
 		$('#search').keyup(delay(function (e) {
-			pageLoad(1,'kelas/page_load');
+			pageLoad(1,'kelas/page_load_guru');
 		}, 500));
 
 		function delay(callback, ms) {
@@ -227,7 +260,7 @@
 				},
 				success:function(response){
 					if (response.result == true) {
-						pageLoad(1,'kelas/page_load');
+						pageLoad(1,'kelas/page_load_guru');
 					}else{
 						alert('Hapus Gagal');
 					}

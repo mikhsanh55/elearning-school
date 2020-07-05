@@ -74,7 +74,7 @@ Class Validasi extends CI_Model {
 				$cek_username2 = $this->m_akun_lembaga->count_by(array('akun.username'=>$username));
 				$cek_username3 = $this->m_admin_lembaga->count_by(array('akun.username'=>$username));
 				$cek_username4 = $this->m_guru->count_by(array('guru.username'=>$username));
-				$data = $this->m_siswa_lembaga->get_by(['username' => $username]);
+				$data = $this->m_siswa->get_by(['username' => $username]);
 
 				$cek_username = $cek_username2 + $cek_username3 + $cek_username4;
 

@@ -50,11 +50,11 @@
 
 			<div class="form-group col-md-6">
 
-				<label for="mapel"><?=$this->transTheme->guru;?></label>
+				<label for="mapel">Wali Kelas</label>
 
-				<div class="rs-select2 js-select-simple select--no-search">
-					<?php if($this->log_lvl == 'admin' || $this->log_lvl == 'instansi' || $this->log_lvl == 'admin_instansi') { ?>
-					<select name="id_trainer" id="id_trainer" style="width: 70%;" required>
+				
+
+					<select name="id_trainer" id="id_trainer" style="width: 70%;" required class="form-control">
 
 						<option disabled="disabled" value="null" selected="selected">Pilih</option>
 
@@ -71,86 +71,54 @@
 
 					</select>
 
-					<div class="select-dropdown"></div>
-					<?php } else if($this->log_lvl == 'guru') { ?>
-						<select name="id_trainer" id="id_trainer" style="width: 70%;" required value="<?= $this->session->admin_konid; ?>">
-
-						<option value="<?= $this->session->admin_konid ?>" selected="selected"><?= $this->session->admin_nama; ?></option>
-
-
-
-					</select>	
-						<div class="select-dropdown"></div>
-					<?php } ?>
-
-				</div>
 
 			</div>
 
 			<div class="form-group col-md-6">
 
 				<label for="mapel">Mata Pelajaran</label>
-				<?php if($this->log_lvl == 'admin' || $this->log_lvl == 'instansi' || $this->log_lvl == 'admin_instansi') { ?>
-				<div class="rs-select2 js-select-simple select--no-search">
+				
+				<div class="dropdown show">
+				  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width:80%;text-align: left;">
+				    Pilih Mata Pelajaran
+				  </a>
 
-					<select name="mapel" id="mapel" style="width: 70%;" required>
-
-						<option disabled="disabled" value="null" selected="selected">Pilih</option>
-
-					</select>
-
-					<div class="select-dropdown"></div>
-
-				</div>
-				<?php } else if($this->log_lvl == 'guru') { ?>
-					<?php 
-						$user = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
-						$mapel = $this->m_mapel->get_by(['id' => $user->id_mapel]);
-					?>
-					<div class="rs-select2 js-select-simple select--no-search">
-
-						<select name="mapel" id="mapel" style="width: 70%;" required>
-
-							<option disabled="disabled" value="<?= $mapel->id; ?>" selected="selected"><?= $mapel->nama; ?></option>
-
-						</select>
-
-						<div class="select-dropdown"></div>
-
-					</div>
-				<?php } ?>
-
-			</div>
-
-			</div>
-
-			<div class="row">
-
-			<div class="form-group col-md-6">
-
-				<label for="mapel">Kelas</label>
-
-				<div class="rs-select2 js-select-simple select--no-search">
-
-					<select name="id_jurusan" id="id_jurusan" style="width: 70%;" required>
-
-						<option disabled="disabled" value="null" selected="selected">Pilih</option>
-
+				  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="width: 80%;">
+				  	<?php 
+				  	if(!empty($edit)) {
+				  	$id_mapel = explode(',', $edit->id_mapel);
+				  	$count = 0;$i = 0;
+				  	foreach($mapel as $x => $m) : 
+				  		if($count < count($id_mapel)) {
+				  	?>
+						
+					    <div style="cursor: pointer;">
+					    	<?php if($m->id == $id_mapel[$i] ) { $count++;$i++;?>
+					    	<input type="checkbox" name="mapel[]" value="<?= $m->id; ?>"
+					    		checked
+					    	><?= $m->nama; ?>
+					    	<?php } else { ?>
+					    		<input type="checkbox" name="mapel[]" value="<?= $m->id; ?>" ><?= $m->nama; ?>
+					    	<?php } ?>
+					    </div>
 						<?php 
+						} else { ?>
+							<div style="cursor: pointer;">
+						    	<input type="checkbox" name="mapel[]" value="<?= $m->id; ?>"><?= $m->nama; ?>
+						    </div>
+						<?php } 
+					endforeach;
+					} else { 
+						foreach($mapel as $x => $m) :?>
 
-						$id_jurusan = (empty($edit->id_jurusan)) ? NULL : $edit->id_jurusan;
-
-						foreach ($jurusan as $rows): ?>
-
-							<option value="<?=$rows->id;?>" <?=($id_jurusan == $rows->id) ? 'selected' : '';?> ><?=$rows->jurusan;?></option>
-
-						<?php endforeach ?>
-
-					</select>
-
-					<div class="select-dropdown"></div>
-
+						<div style="cursor: pointer;">
+					    	<input type="checkbox" name="mapel[]" value="<?= $m->id; ?>"><?= $m->nama; ?>
+					    </div>		
+				    <?php endforeach;
+				     } ?>
+				  </div>
 				</div>
+				
 
 			</div>
 
@@ -260,24 +228,6 @@
 
 		}
 
-		
-
-		if($('#mapel')[0].value == null) {
-
-		    error.push('Harap pilih mata pelajaran!');
-
-		}
-
-		
-
-		if( $('#id_jurusan')[0].value == null) {
-
-		    error.push('Harap pilih jurusan!');
-
-		}
-
-
-
 		if (id == '') {
 
 			var link = '<?=base_url('kelas/insert');?>';
@@ -287,8 +237,6 @@
 			var link = '<?=base_url('kelas/update');?>';
 
 		}
-
-		
 
 		console.warn(error)
 
@@ -306,7 +254,7 @@
 
 				success:function(response) {
 
-					alert(response.message);
+					// alert(response.message);
 
 					if(response.result == true){
 

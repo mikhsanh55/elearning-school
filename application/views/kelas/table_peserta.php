@@ -64,23 +64,26 @@ input:checked + .slider:before {
 		<tr>
 			<th class="frist">No</th>
 			<th>Nama Siswa</th>
-			<th>Opsi</th>
+			<!-- <th>Opsi</th> -->
 		</tr>
 		<?php 
+			if(count($paginate['data']) > 0) {
 			$i= $page_start; foreach ($paginate['data'] as $rows):
-			$check_kelas = $this->m_detail_kelas->count_by(['id_peserta'=>$rows->id,'id_kelas'=>$id_kelas]);
+			// $check_kelas = $this->m_detail_kelas->count_by(['id_peserta'=>$rows->id,'id_kelas'=>$id_kelas]);
 		?>
 			<tr>
 				<td align="center" class="frist"><?=$i;?></td>
-				<td><?=$rows->nama;?></td>
-				<td class="frist">
+				<td><?=$rows->nama;?> </td>
+				<!-- <td class="frist">
 					<label class="switch" data-toggle="tooltip">
 						<input type="checkbox" class="aktivasi"  data-peserta="<?=$rows->id;?>" <?=($check_kelas > 0) ? 'checked' : NULL ?>>
 						<span class="slider round"></span>
 					</label>
-				</td>
+				</td> -->
 			</tr>
-		<?php $i++;endforeach ?>
+		<?php $i++;endforeach; } else { ?>
+			<tr colspan="2" class="text-center">Data Kosong</tr>
+		<?php } ?>
 	</thead>
 <tbody>
 </tbody>

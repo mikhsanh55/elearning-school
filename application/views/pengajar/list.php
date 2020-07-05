@@ -126,7 +126,27 @@
 
 </div>
 </div>
-
+<!-- Mapel Modal -->
+<div class="modal fade" id="modalMapel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Mata Pelajaran</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="list-mapel">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal CRUD -->
 <div class="modal fade" id="m_siswa_modif" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog modal-sm" style="max-width: 600px;" role="document">
 		<div class="modal-content">
@@ -164,36 +184,30 @@
 						<tr>
 							<td style="width: 25%">Mata Pelajaran<span class="text-danger">*</span></td>
 							<td style="width: 75%">
-								<select name="mapel" id="mapel" required class="form-control">
+								<div class="dropdown show">
+								  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width:100%;text-align: left;">
+								    Pilih Mata Pelajaran
+								  </a>
+									<div class="dropdown-menu" aria-labelledby="dropdownMenuLink" id="mapel-list-input">
+										<?php foreach($mapel as $row) : ?>
+											<div>
+											<input type="checkbox" name="mapel[]" value="<?= $row->id; ?>"
+									    	> <span class="ml-1"><?= $row->nama; ?></span>
+									    	</div>
+										<?php endforeach; ?>
+									</div>
+								</div>
+								<!-- <select name="mapel" id="mapel" required class="form-control">
 									<option value="0">Belum Ada</option>
 									<?php foreach($mapel as $row) : ?>
 										<option value="<?= $row->id; ?>"><?= ucwords($row->nama); ?></option>
 									<?php endforeach; ?>
-								</select>
+								</select> -->
 							</td>
 						</tr>
 						
 						
-						<!-- <tr>
-							<td style="width: 25%">NIK</td>
-							<td style="width: 75%"><input type="text" class="form-control" name="pangkat" id="pangkat" required></td>
-						</tr>
-						<tr>
-							<td style="width: 25%">Jabatan Akademik</td>
-							<td style="width: 75%"><input type="text" class="form-control" name="ja" id="ja" required></td>
-						</tr>
-						<tr>
-							<td style="width: 25%">Tempat_lahir</td>
-							<td style="width: 75%"><input type="text" class="form-control" name="tempat" id="tempat" required></td>
-						</tr>
-						<tr>
-							<td style="width: 25%">Tanggal Lahir</td>
-							<td style="width: 75%"><input type="date" class="form-control" name="tanggal" id="tanggal" required></td>
-						</tr>
-						<tr>
-							<td style="width: 25%">Alamat</td>
-							<td style="width: 75%"><input type="text" class="form-control" name="alamat" id="alamat" required></td>
-						</tr> -->
+						
 						<tr>
 							<td style="width: 25%">Email</td>
 							<td style="width: 75%"><input type="text" class="form-control" name="email" id="email" ></td>
@@ -202,40 +216,7 @@
 							<td style="width: 25%">No. Telpon<span class="text-danger">*</span></td>
 							<td style="width: 75%"><input type="text" class="form-control only-number" name="telp" id="telp" required></td>
 						</tr>
-						<!-- <tr>
-							<td style="width: 25%">Status</td>
-							<td style="width: 75%"><input type="text" class="form-control" name="status" id="status" required></td>
-						</tr>
-						<tr>
-							<td style="width: 25%">Pendidikan Umum Terakhir</td>
-							<td style="width: 75%"><input type="text" class="form-control" name="put" id="put" required></td>
-						</tr>
-						<tr>
-							<td style="width: 25%">Semester</td>
-							<td style="width: 75%"><input type="text" class="form-control" name="semester" id="semester" required></td>
-						</tr> 
-						<tr>
-							<td style="width: 25%">Keterangan</td>
-							<td style="width: 75%"><input type="text" class="form-control" name="pmt" id="pmt" ></td>
-						</tr>-->
-						<!-- <tr>
-							<td style="width: 25%"><?=$this->transTheme->instansi;?><span class="text-danger">*</span></td>
-							<td> -->
-								<?php if ($this->log_lvl == 'admin'): ?>
-									<input type="hidden" name="instansi" id="instansi" value="<?= $this->akun->instansi; ?>">
-									<!-- <select name="instansi" id="instansi" class="form-control">
-									<option value="">Pilih</option>
-								    <?php foreach($instansi as $rows) : ?>
-								        <option value="<?= $rows->id; ?>"><?= $rows->instansi; ?></option>
-								    <?php endforeach; ?>
-								</select> -->
-								<?php else: ?>
-									<input type="hidden" name="instansi" id="instansi" class="form-control" value="<?=$instansi->id;?>" readonly>
-									<!-- <input type="text" class="form-control" value="<?=$instansi->instansi;?>" readonly> -->
-								<?php endif ?>
-								
-							<!-- </td>
-						</tr> -->
+						
 					</table>
 			</div>
 			<div class="modal-footer">
@@ -249,6 +230,36 @@
 <!--/.row-box End-->
 <script src="<?= base_url(); ?>assets/js/jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
+	let html;
+	function displayMapel(self) {
+		html = ''
+		$(self).prop('disabled', true).text('Loading...')
+		$.ajax({
+			type: 'post',
+			url: '<?= base_url('trainer/get_mapel') ?>',
+			data: {
+				id: $(self).data('id')
+			},
+			dataType: 'JSON',
+			success: function(res) {
+				$(self).prop('disabled', false).text('Mata Pelajaran')
+				html += `
+					<ul class="list-group">
+				`
+				if(res.data.length > 0) {
+					res.data.forEach((item, i) => {
+						html += `<li class="list-group-item">${item.nama_mapel}</li>`
+					})
+				}
+				else {
+					html += `<li class="list-group-item text-center">Data Kosong</li>`
+				}
+
+				html += `</ul>`
+				$('#list-mapel').html(html)
+			}
+		}).done(() => $('#modalMapel').modal('show'))
+	}
 	$(document).ready(function(){
 		pageLoad(1,'trainer/page_load');
 
@@ -368,6 +379,7 @@
 	
 
 	$(document).on('click','#edited',function(){
+		html = ''
 		var totalChecked = $('.checklist:checked').length;
 		var opsi = [];
 
@@ -383,27 +395,29 @@
 			 $.ajax({
 			 	type: "GET",
 			 	url: base_url+"trainer/m_guru/det/"+id,
-			 	success: function(data) {
-			 		$("#id").val(data.id);
-			 		$("#ta").val(data.tahun_akademik);
-			 		$("#nidn").val(data.nidn);
-			 		$("#username").val(data.username);
-			 		$("#nrp").val(data.nrp);
-			 		$("#nama").val(data.nama);
-			 		$("#pangkat").val(data.pangkat);
-			 		$("#ja").val(data.jabatan_akademik);
-			 		$("#tempat").val(data.tempat_lahir);
-			 		$("#tanggal").val(data.tanggal_lahir);
-			 		$("#alamat").val(data.alamat);
-			 		$("#email").val(data.email);
-			 		$("#telp").val(data.no_telpon);
-			 		$("#status").val(data.status);
-			 		$("#instansi").val(data.instansi);
-			 		$("#put").val(data.pendidikan_umum_terakhir);
-			 		$("#pmt").val(data.pendidikan_militer_terakhir);
-			 		$("#semester").val(data.semester);
+			 	success: function(res) {
+			 		$("#id").val(res.data.id);
+			 		$("#ta").val(res.data.tahun_akademik);
+			 		$("#nidn").val(res.data.nidn);
+			 		$("#username").val(res.data.username);
+			 		$("#nrp").val(res.data.nrp);
+			 		$("#nama").val(res.data.nama);
+			 		$("#pangkat").val(res.data.pangkat);
+			 		$("#ja").val(res.data.jabatan_akademik);
+			 		$("#tempat").val(res.data.tempat_lahir);
+			 		$("#tanggal").val(res.data.tanggal_lahir);
+			 		$("#alamat").val(res.data.alamat);
+			 		$("#email").val(res.data.email);
+			 		$("#telp").val(res.data.no_telpon);
+			 		$("#status").val(res.data.status);
+			 		$("#instansi").val(res.data.instansi);
+			 		$("#put").val(res.data.pendidikan_umum_terakhir);
+			 		$("#pmt").val(res.data.pendidikan_militer_terakhir);
+			 		$("#semester").val(res.data.semester);
 			 		$("#ta").focus();
-			 		$('#mapel').val(data.id_mapel)
+			 		$('#mapel-list-input').html(res.opsi)
+				 		
+			 		
 			 	}
 			 });
 		}

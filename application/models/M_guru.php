@@ -51,10 +51,11 @@ class m_guru extends MY_Model
     }
 
     public function get_all($where = array()) {
-        $get = $this->db->select('guru.*, user.password, user.id as user_id, mapel.nama as nama_mapel')
+        $get = $this->db->select('guru.*, user.password, user.id as user_id')
                     ->from('m_guru guru')
                     ->join('m_admin user', 'user.kon_id = guru.id', 'left')
-                    ->join('m_mapel mapel', 'guru.id_mapel = mapel.id', 'left')
+                    // ->join('tb_detail_mapel dmapel', 'dmapel.id_guru = guru.id', 'right')
+                    // ->join('m_mapel mapel', 'dmapel.id_mapel = mapel.id', 'inner')
                     ->where($where)
                     ->get()
                     ->result();
@@ -73,6 +74,7 @@ class m_guru extends MY_Model
         // get counts (e.g. for pagination)
         $count_results = count($results);
         $count_total = $this->count_by($where);
+        // $count_total = count($results);
         $total_pages = ceil($count_total / $limit);
         $counts = array(
             'from_num'      => ($count_results==0) ? 0 : $offset + 1,
@@ -86,5 +88,26 @@ class m_guru extends MY_Model
         return array('data' => $results, 'counts' => $counts);
     }
 
+    public function get_join_many_by($where = []) {
+        $get = $this->db->select('guru.*, mapel.nama AS nama_mapel, mapel.id AS idmapel')
+                        ->from('m_guru guru')
+                        ->join('tb_detail_mapel dmapel', 'guru.id = dmapel.id_guru', 'inner')
+                        ->join('m_mapel mapel', 'mapel.id = dmapel.id_mapel', 'inner')
+                        ->where($where)
+                        ->get()
+                        ->result();
+        return $get;
+    }
+
+    public function get_join_by($where = []) {
+        $get = $this->db->select('guru.*, mapel.nama AS nama_mapel')
+                        ->from('m_guru guru')
+                        ->join('tb_detail_mapel dmapel', 'guru.id = dmapel.id_guru', 'inner')
+                        ->join('m_mapel mapel', 'mapel.id = dmapel.id_mapel', 'inner')
+                        ->where($where)
+                        ->get()
+                        ->result();
+        return $get;
+    }
 }
 

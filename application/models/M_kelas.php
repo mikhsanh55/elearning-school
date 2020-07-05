@@ -10,12 +10,10 @@ class M_kelas extends MY_Model {
 		parent::__construct();
 		
 	}
-
 	public function get_all($where=array()){
 		$get = $this->db->select('
 							kls.*,
 							gr.nama as nama_guru,
-							mp.nama as nama_mapel,
 							ins.instansi
 						')
 		->from('tb_kelas kls')
@@ -49,6 +47,14 @@ class M_kelas extends MY_Model {
 		->result();
 
 		return $get;
+	}
+
+	public function count_guru($where = []) {
+		return count($this->get_all($where));
+	}
+
+	public function count_siswa($where = []) {
+		return count($this->get_data_mapel($where));
 	}
 
 	public function count_rekap($where=array()){
@@ -124,7 +130,10 @@ class M_kelas extends MY_Model {
 		return count($this->get_all_siswa($where));
 	}
 
-
+	// Nanti dirubah karena field id_mapel di m_guru akan jadi array
+	// public function get_all_mapel($where) {
+	// 	$kelas = $this->get_by($)
+	// }
 	
 	public function paginate_siswa($page = 1, $where = array(), $limit = 10)
     {
@@ -132,11 +141,10 @@ class M_kelas extends MY_Model {
         $where = array_merge($where, $this->where);
         $offset = ($page<=1) ? 0 : ($page-1)*$limit;
         $this->db->limit($limit, $offset);
-        $results = $this->get_all_siswa($where);
-        //echo  $this->db->last_query(); exit;
-        // get counts (e.g. for pagination)
+        $results = $this->get_data_mapel($where);
+        
         $count_results = count($results);
-        $count_total = $this->count_by_siswa($where);
+        $count_total = $this->count_siswa($where);
         $total_pages = ceil($count_total / $limit);
         $counts = array(
             'from_num'      => ($count_results==0) ? 0 : $offset + 1,
@@ -162,6 +170,67 @@ class M_kelas extends MY_Model {
         // get counts (e.g. for pagination)
         $count_results = count($results);
         $count_total = $this->count_rekap($where);
+        $total_pages = ceil($count_total / $limit);
+        $counts = array(
+            'from_num'      => ($count_results==0) ? 0 : $offset + 1,
+            'to_num'        => ($count_results==0) ? 0 : $offset + $count_results,
+            'total_num'     => $count_total,
+            'curr_page'     => $page,
+            'total_pages'   => ($count_results==0) ? 1 : $total_pages,
+            'limit'         => $limit,
+        );
+
+        return array('data' => $results, 'counts' => $counts);
+    }
+
+    public function get_data_mapel($where = array()) {
+    	
+    	// $kelas = $this->get_by($where);
+    	// if(!empty($kelas)) {
+    	// 	$id_mapel = explode(',', $kelas->id_mapel);
+    	// 	$result = $this->db->select('*')
+    	// 					->from('m_mapel')
+    	// 					->where_in('id', $id_mapel)
+    	// 					->get()
+    	// 					->result();	
+    	// }
+    	// else {
+    	// 	$result = [];
+    	// }
+    	$result = $this->db->select('kls.id, kls.nama, mapel.nama AS nama_mapel, guru.nama AS nama_guru, dkmapel.*')
+    						->from('tb_kelas kls')
+    						->join('tb_detail_kelas_mapel dkmapel', 'kls.id = dkmapel.id_kelas','inner')
+    						->join('m_mapel mapel', 'dkmapel.id_mapel = mapel.id', 'left')
+    						->join('m_guru guru', 'dkmapel.id_guru = guru.id', 'left')
+    						->where($where)
+    						->get()
+    						->result();
+    	
+    	return $result;
+    }
+
+    public function get_kelas_by($where = []) {
+    	$result = $this->db->select('kls.id, kls.nama, mapel.nama AS nama_mapel, guru.nama AS nama_guru')
+    						->from('tb_kelas kls')
+    						->join('tb_detail_kelas_mapel dkmapel', 'kls.id = dkmapel.id_kelas','inner')
+    						->join('m_mapel mapel', 'dkmapel.id_mapel = mapel.id', 'left')
+    						->join('m_guru guru', 'dkmapel.id_guru = guru.id', 'left')
+    						->where($where)
+    						->get()
+    						->result();
+
+    	return $data;
+    }
+
+    public function paginate_guru($page = 1, $limit = 10, $where = []) {
+    	$where = array_merge($where, $this->where);
+        $offset = ($page<=1) ? 0 : ($page-1)*$limit;
+        $this->db->limit($limit, $offset);
+        $results = $this->get_all($where);
+        //echo  $this->db->last_query(); exit;
+        // get counts (e.g. for pagination)
+        $count_results = count($results);
+        $count_total = $this->count_guru($where);
         $total_pages = ceil($count_total / $limit);
         $counts = array(
             'from_num'      => ($count_results==0) ? 0 : $offset + 1,

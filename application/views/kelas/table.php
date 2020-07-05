@@ -4,14 +4,12 @@
 			<th class="frist"><input type="checkbox" name="checkall" id="checkall"></th>
 			<th class="frist">No</th>
 			<th>Kelas</th>
-			<th><?= $this->name; ?></th>
-			<th>Mata Pelajaran</th>
-			
-			<th>Keterangan</th>
-			<th  class="frist">Total Siswa</th>
+			<th>Wali Kelas</th>
 			<th class="frist">Opsi</th>
 		</tr>
-		<?php $i= $page_start; foreach ($paginate['data'] as $rows):
+		
+
+		<!-- <?php $i= $page_start; foreach ($paginate['data'] as $rows):
 			$jml_siswa = $this->m_detail_kelas->count_by(['id_kelas'=>$rows->id]);
 			$nama_kelas = $this->m_jurusan->get_by(['id' => $rows->id_jurusan]);
 		?>
@@ -31,10 +29,28 @@
 					<?php endif; ?>
 				</td>	
 			</tr>
-		<?php $i++;endforeach ?>
+		<?php $i++;endforeach ?> -->
 	</thead>
-<tbody>
-</tbody>
+	<tbody>
+		<?php $i = 1;foreach($paginate['data'] as $rows) : ?>
+			<tr>
+				<td>
+					<input type="checkbox" name="checklist[]" class="checklist" data-id= "<?=encrypt_url($rows->id);?>" value="<?=$rows->id;?>">
+				</td>
+				<td><?= $i; ?></td>
+				<td>
+					<?= $rows->nama; ?>
+				</td>
+				<td>
+					<?= $rows->nama_guru; ?>
+				</td>
+				<td>
+					<button class="btn btn-primary btn-sm mb-2" data-id="<?= $rows->id; ?>" onclick="displaySiswa(this)">Lihat Siswa</button>
+					<button class="btn btn-primary btn-sm  mb-2" data-id="<?= $rows->id; ?>" onclick="displayMapel(this)">Lihat Mapel</button>
+				</td>
+			</tr>
+		<?php $i++;endforeach; ?>
+	</tbody>
 </table>
 
 

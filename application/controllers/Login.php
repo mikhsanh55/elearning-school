@@ -85,17 +85,18 @@ class Login extends MY_Controller
         			if ($get_user->level == "siswa") {
         				$siswa = $this->m_siswa->get_by(array('id'=>$get_user->kon_id));
         				$instansi = $this->m_instansi->get_by(array('id'=>$siswa->instansi));
-        				if (empty($instansi)) {
-        					$_log['log']['status']			= "0";
-        					$_log['log']['keterangan']		= "Maaf, akun anda tidak terdaftar pada instansi mana pun, silahkan hubungi admin";
-        					$_log['log']['detil_admin']		= null;
-        					j($_log);exit;
-        				}else if ($instansi->deleted == 1) {
-        					$_log['log']['status']			= "0";
-        					$_log['log']['keterangan']		= "Maaf, instansi anda di nonakifkan silahkan hubungi admin";
-        					$_log['log']['detil_admin']		= null;
-        					j($_log);exit;
-        				}else if($siswa->deleted == 1){
+        				// if (empty($instansi)) {
+        				// 	$_log['log']['status']			= "0";
+        				// 	$_log['log']['keterangan']		= "Maaf, akun anda tidak terdaftar pada instansi mana pun, silahkan hubungi admin";
+        				// 	$_log['log']['detil_admin']		= null;
+        				// 	j($_log);exit;
+        				// }else if ($instansi->deleted == 1) {
+        				// 	$_log['log']['status']			= "0";
+        				// 	$_log['log']['keterangan']		= "Maaf, instansi anda di nonakifkan silahkan hubungi admin";
+        				// 	$_log['log']['detil_admin']		= null;
+        				// 	j($_log);exit;
+        				// }else
+                         if($siswa->deleted == 1){
         					$_log['log']['status']			= "0";
         					$_log['log']['keterangan']		= "Maaf, akun anda di nonakifkan, silahkan hubungi admin";
         					$_log['log']['detil_admin']		= null;

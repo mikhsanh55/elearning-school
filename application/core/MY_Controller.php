@@ -221,7 +221,7 @@ class MY_Controller extends CI_Controller
 
 		$this->page_title = (!empty($this->sub_menu->nama_menu)) ? $this->sub_menu->nama_menu : NULL;
 		
-		// print_r($this->akun);exit;
+		// print_r($this->session->userdata());exit;
 	
 	}
 

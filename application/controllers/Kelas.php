@@ -16,6 +16,8 @@ class Kelas extends MY_Controller
 
     parent::__construct();
 
+    $this->load->model('m_detail_kelas_mapel');
+
 	$this->load->model('m_instansi');
 
 	$this->load->model('m_guru');
@@ -48,11 +50,13 @@ class Kelas extends MY_Controller
 
 	}
 
-
+	$data = $this->m_kelas->get_all();
+	// print_r($data);exit;
 
 		$data = array(
 
-			'searchFilter' => array('Kelas','Modul Pelatihan')
+			'searchFilter' => array('Kelas','Mata Pelajaran'),
+
 
 		);
 
@@ -86,10 +90,14 @@ class Kelas extends MY_Controller
   
 
   public function siswa(){
-
+  		$siswa = $this->m_detail_kelas->get_by(['id_peserta' => $this->session->admin_konid]);
+  		$kelas = $this->m_kelas->get_by(['kls.id' => $siswa->id_kelas]);
+  		// print_r($kelas);exit;
 		$data = array(
 
-			'searchFilter' => array('Nama','Modul Pelatihan')
+			'searchFilter' => array('Nama','Modul Pelatihan'),
+			'id_kelas' => $siswa->id_kelas,
+			'nama_kelas' => $kelas->nama
 
 		);
 
@@ -109,14 +117,11 @@ class Kelas extends MY_Controller
   		}
 
 		$data = array(
-
-			'guru'     => $guru,
-
-			'jurusan' => $this->m_jurusan->get_many_by(['id_instansi'=>$this->akun->instansi])
-
+			'guru' => $this->m_guru->get_all(),
+			'mapel' => $this->m_mapel->get_all()
 		);
 		
-
+		// print_r($data['mapel']);exit;
 		$this->render('kelas/add',$data);
 
   }
@@ -127,9 +132,8 @@ class Kelas extends MY_Controller
 
 		$data = array(
 
-			'guru'     => $this->m_guru->get_many_by(['instansi'=>$this->akun->instansi]),
-
-			'jurusan' => $this->m_jurusan->get_many_by(['id_instansi'=>$this->akun->instansi]),
+			'guru' => $this->m_guru->get_all(),
+			'mapel' => $this->m_mapel->get_all(),
 
 			'edit'     => $this->m_kelas->get_by(['kls.id'=>decrypt_url($id)]) 
 
@@ -155,13 +159,11 @@ class Kelas extends MY_Controller
 
       'keterangan'  => $post['keterangan'],
 
-      'id_trainer'  => $post['id_trainer'],
+      'id_trainer'  => $post['id_trainer'], // Wali Kelas
 
-      'id_mapel'    => $post['mapel'],
+      'id_mapel'    => implode(',', $post['mapel']),
 
 	  'id_instansi' => $this->akun->instansi,
-
-	  'id_jurusan'  => $post['id_jurusan'],
 
     ];
 
@@ -193,19 +195,17 @@ class Kelas extends MY_Controller
 
     $data = [
 
-      'nama'        => $post['nama'],
+       'nama'        => $post['nama'],
 
       'keterangan'  => $post['keterangan'],
 
-	  'id_trainer'  => $post['id_trainer'],
+      'id_trainer'  => $post['id_trainer'], // Wali Kelas
 
-      'id_mapel'    => $post['mapel'],
+      'id_mapel'    => implode(',', $post['mapel']),
 
 	  'id_instansi' => $this->akun->instansi,
 
-	  'id_mapel'    => $post['mapel'],
-
-	  'id_jurusan'  => $post['id_jurusan'],
+	  // 'id_jurusan'  => $post['id_jurusan'],
 
     ];
 
@@ -225,7 +225,24 @@ class Kelas extends MY_Controller
 
   }
 
+  public function page_load_guru($pg = 1) {
+  	$post = $this->input->post();
+  	$limit = $post['limit'];
+  	$where = [];
+  	$paginate = $this->m_kelas->paginate_guru(1, $limit, $where);
+  	// print_r($paginate);exit;
+  	$data['paginate'] = $paginate;
 
+	$data['paginate']['url']	= 'kelas/page_load_guru/1';
+
+	$data['paginate']['search'] = 'lookup_key';
+
+	$data['page_start'] = $paginate['counts']['from_num'];
+
+	$this->load->view('kelas/table_guru', $data);
+	$this->generate_page($data);
+
+  }
 
   public function page_load($pg = 1){
 
@@ -272,7 +289,6 @@ class Kelas extends MY_Controller
 			$where['kls.id_trainer'] = $this->akun->id;
 
 		}
-
 
 
 		if($this->log_lvl != 'admin'){
@@ -323,23 +339,7 @@ class Kelas extends MY_Controller
 
 		$where = [];
 
-
-
-		if($this->log_lvl != 'admin'){
-
-			$where['kls.id_instansi'] = $this->akun->instansi;
-
-		}
-
-
-
-		if($this->log_lvl == 'siswa'){
-
-			$where['dekls.id_peserta'] = $this->akun->id;
-
-		}
-
-
+		$where['kls.id'] = $post['id_kelas'];
 
 		if (!empty($post['search'])) {
 
@@ -353,7 +353,7 @@ class Kelas extends MY_Controller
 
 				case 1:
 
-					$where["(lower(mp.nama) like '%".strtolower($post['search'])."%' )"] = null;
+					$where["(lower(mapel.nama) like '%".strtolower($post['search'])."%' )"] = null;
 
 					break;
 
@@ -368,10 +368,10 @@ class Kelas extends MY_Controller
 		}
 
 		$paginate = $this->m_kelas->paginate_siswa($pg,$where,$limit);
-
+		// print_r($paginate);exit;
 		$data['paginate'] = $paginate;
 
-		$data['paginate']['url']	= 'kelas/page_load';
+		$data['paginate']['url']	= 'kelas/page_load_siswa/1';
 
 		$data['paginate']['search'] = 'lookup_key';
 
@@ -399,7 +399,7 @@ class Kelas extends MY_Controller
 
 			'kelas' 		=> $this->m_kelas->get_by(['kls.id'=>$post['id']]),
 
-			'id_jurusan' 	=> $post['id_jurusan']
+			'id_kelas' 	=> $post['id_kelas']
 
 		);
 
@@ -439,11 +439,10 @@ class Kelas extends MY_Controller
 
 		$where = [];
 
-		
 
-		$where["akun.instansi"] = $this->akun->instansi;
+		// $where["akun.instansi"] = $this->akun->instansi;
 
-		$where["akun.id_jurusan"] = $post['id_jurusan'];
+		$where["dkls.id_kelas"] = $post['id_kelas'];
 
 
 
@@ -743,6 +742,32 @@ class Kelas extends MY_Controller
 		);
 
 		$this->render('kelas/list',$data);
+  	}
+
+  	// Display Data Mapel per Kelas
+  	public function data_mapel() {
+  		$post = $this->input->post();
+  		$where = [];
+
+  		$where['dkmapel.id_kelas'] = $post['id_kelas'];
+  		$data = [
+  			'result' => $this->m_kelas->get_data_mapel($where)
+  		];
+
+  		// foreach($data['result'] as $i => $d) {
+  		// 	$guru = $this->m_guru->get_by(['id_mapel' => $d->id]);
+  		// 	// if(count($guru) > 0) {
+  				
+  		// 	if(!empty($guru)) {
+  		// 		$data['result'][$i]->nama_guru = $guru->nama;	
+  		// 	}
+  		// 	else {
+  		// 		$data['result'][$i]->nama_guru = 'Kosong';	
+  		// 	}
+  		// }
+  		// exit;
+
+  		$this->sendAjaxResponse($data, 200);
   	}
 }
 

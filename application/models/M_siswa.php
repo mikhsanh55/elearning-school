@@ -8,11 +8,11 @@ class M_siswa extends MY_Model
 
 
      public function get_all($where=array()){
-    	$get = $this->db->select('akun.*, in.instansi AS nama_instansi, kls.jurusan as nama_kelas, user.id as user_id, user.password, guru.nama AS nama_guru')
+    	$get = $this->db->select('akun.*, in.instansi AS nama_instansi, kls.nama as nama_kelas, user.id as user_id, user.password')
 				    	->from('m_siswa akun')
 				    	->join('tb_instansi in','in.id = akun.instansi','left')
-                        ->join('tb_jurusan kls', 'akun.id_jurusan = kls.id', 'left')
-                        ->join('m_guru guru', 'akun.id_guru = guru.id', 'left')
+                        ->join('tb_detail_kelas dkls', 'dkls.id_peserta = akun.id', 'inner')
+                        ->join('tb_kelas kls', 'dkls.id_kelas = kls.id', 'left')
                         ->join('m_admin user', 'akun.id = user.kon_id', 'left')
 				    	->where($where)
 				    	->get()
@@ -40,7 +40,8 @@ class M_siswa extends MY_Model
         //echo  $this->db->last_query(); exit;
         // get counts (e.g. for pagination)
         $count_results = count($results);
-        $count_total = $this->count_by_cs($where);
+        // $count_total = $this->count_by_cs($where);
+        $count_total =count($results);
         $total_pages = ceil($count_total / $limit);
         $counts = array(
             'from_num'      => ($count_results==0) ? 0 : $offset + 1,
@@ -102,6 +103,14 @@ class M_siswa extends MY_Model
         return array('data' => $results, 'counts' => $counts);
     }
 
-
+    public function get_kelas_by($where = []) {
+        $get = $this->db->select('akun.*, dkls.id_kelas')
+                        ->from('m_siswa akun')
+                        ->join('tb_detail_kelas dkls', 'akun.id = dkls.id_peserta', 'inner')
+                        ->where($where)
+                        ->get()
+                        ->row();
+        return $get;
+    }
 
 }

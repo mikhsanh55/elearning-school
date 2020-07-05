@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 03, 2020 at 06:36 AM
+-- Generation Time: Jul 05, 2020 at 02:39 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.3.16
 
@@ -118,7 +118,7 @@ INSERT INTO `menu` (`id`, `nama_menu`, `urutan`, `link`, `link2`, `link3`, `link
 (46, 'Luaran EDOPM', 12, 'penilaian/luaran', NULL, NULL, NULL, 'fas fa-print mr-2'),
 (47, 'Aktivitas Pengguna', 14, 'aktivitas', NULL, NULL, NULL, 'far fa-handshake mr-2'),
 (49, 'Nilai Siswa', 5, 'rekaptulasi', NULL, NULL, NULL, 'fas fa-check mr-2'),
-(50, 'Jurusan', 3, 'jurusan', NULL, NULL, NULL, 'fas fa-chalkboard-teacher mr-2');
+(50, 'Kelas', 3, 'kelas/guru', NULL, NULL, NULL, 'fas fa-chalkboard-teacher mr-2');
 
 -- --------------------------------------------------------
 
@@ -266,7 +266,10 @@ INSERT INTO `m_admin` (`id`, `user_id`, `username`, `password`, `level`, `kon_id
 (717, 'naninani', '', '', 'instansi', 547, 0, '0000-00-00 00:00:00'),
 (718, 'username', '', '332ab37704b7eafde9637918c4309c712eb72ca84ef717ff31d3f0922aa7be3b7092f9a5d14083a36f230348d0d7274fd1e505eae0514a25fc0091adfb9c703e7dHJBMsl5/dzyCY/iSxAe/63lYvNKXOUPohvwQx5ju8=', 'instansi', 550, 0, '0000-00-00 00:00:00'),
 (719, 'tanos', '', 'ef3add9cc0456d8f72747cd7360ad98823446b3c9e36dabd9fee81d94578981bb4e968a01c4ddeb0fa5b0f85619cb0743c00a1f5e3cd3df2287474c1ba3193beVddGV1uEDqjPZa6aWPX3o8QgugcSCWfLQV9Uo0Do4ws=', 'guru', 88, 0, '0000-00-00 00:00:00'),
-(720, 'coronaaaaa', '', '971e97b2c0d5fa6159008e274da3f5feca859db55d68c679e81ac4f6b5f04fc59b356ced93098a3b8afacefa86ca3f3e20122105483a847ffff676c7549ec688FTRjUUFFmgEUzhc4x7QPWEqQZmI/nqLOhE1tijnBZJM=', 'siswa', 607, 0, '0000-00-00 00:00:00');
+(720, 'coronaaaaa', '', '971e97b2c0d5fa6159008e274da3f5feca859db55d68c679e81ac4f6b5f04fc59b356ced93098a3b8afacefa86ca3f3e20122105483a847ffff676c7549ec688FTRjUUFFmgEUzhc4x7QPWEqQZmI/nqLOhE1tijnBZJM=', 'siswa', 607, 0, '0000-00-00 00:00:00'),
+(721, 'vivisusanti', '', '9d4184bc6e88acf2cb44c01a75f681af3ba26032ece4ded07e58b1e48b3990c816ac656448781dc731870a96fbd901ef2e165f2b117be8ae1cefde594cc3ed05+mEdF5z6ZKBBFKO5TfsCFVGi4wuGcjsSaXXonvYZ8y0=', 'guru', 89, 0, '0000-00-00 00:00:00'),
+(722, 'arifmipa1', '', 'eada96bad52cec3ab3896efcb31b8d2835ca1eae98c363daba2e2938b1ae38c58a1dd3f8caf3efda85ed8572ba48320432d720d15a9f732b1a6b52573bc7ea37Ri1EuVpWIKfu4eQizec3L49GgnQDXKjmviUBh9YYhLc=', 'siswa', 608, 0, '0000-00-00 00:00:00'),
+(724, 'gurukarsa', '', 'f07900801280e14d459d0f684a63f4a07ba43318b16cac09700a063f007cc5d76cc2582dddcfb0f77c8a5dc62e81498d2f233c593e4546d11f8ee4d2e73a17f45S6ClfBdBNmw8nQpa8IXZkynbmIgp6EwrWUj7AB/Sk8=', 'guru', 91, 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -276,7 +279,7 @@ INSERT INTO `m_admin` (`id`, `user_id`, `username`, `password`, `level`, `kon_id
 
 CREATE TABLE `m_guru` (
   `id` int(6) NOT NULL,
-  `id_mapel` int(11) NOT NULL,
+  `id_mapel` int(100) NOT NULL,
   `tahun_akademik` varchar(50) NOT NULL,
   `username` varchar(100) DEFAULT NULL,
   `nidn` varchar(50) NOT NULL,
@@ -355,8 +358,10 @@ INSERT INTO `m_guru` (`id`, `id_mapel`, `tahun_akademik`, `username`, `nidn`, `n
 (77, 0, '2020', 'sman25_guru_bingg', 'PTK200619010', 'P200619NIP010', 12, 'Guru B. Inggris', '32000101010', 'Guru B. Inggris', 'Bandung', '1990-03-03', 'Bandung', 'sman25_guru_bingg@gmail.com', '821312321', 'ASN', 'S1 Pendidikan Bahasa Inggris', '2013', 0, 0, 0, 0),
 (78, 0, '2020', 'sman25_guru_bsun', 'PTK200619011', 'P200619NIP011', 12, 'Guru B. Sunda', '32000101011', 'Guru B. Sunda', 'Bandung', '1990-03-03', 'Bandung', 'sman25_guru_bsun@gmail.com', '821312322', 'ASN', 'S1 Pendidikan Bahasa Sunda', '2013', 0, 0, 0, 0),
 (79, 59, '', 'ibugays', '23801283081', '', 1, 'Ibu Gays', '', '', '', '', '', '', '089627352261', '', '', '', 1, 0, 0, 0),
-(85, 59, '', 'sengklekman', '10101010', '202020', 1, 'Sengklekman', '', '', '', '', '', 'Sengklekman@ga.com', '86754633342', '', '', '', 1, 5, 0, 0),
-(88, 59, '', 'tanos', '23801283081', '', 1, 'Tanos', '', '', '', '', '', '', '86754633342', '', '', '', 1, 0, 0, 0);
+(85, 59, '', 'sengklekman', '10101010', '202020', 1, 'Sengklekman', '', '', '', '', '', 'Sengklekman@ga.com', '86754633342', '', '', '', 1, 11, 0, 0),
+(88, 59, '', 'tanos', '23801283081', '', 1, 'Tanos', '', '', '', '', '', '', '86754633342', '', '', '', 1, 0, 0, 0),
+(89, 60, '', 'vivisusanti', '1234343', '', 1, 'Vivi Susanti', '', '', '', '', '', '', '081220970900', '', '', '', 1, 2, 0, 0),
+(91, 0, '', 'gurukarsa', '23801283081', '', 1, 'guru karsa', '', '', '', '', '', '', '081220970901', '', '', '', 1, 1, 0, 0);
 
 --
 -- Triggers `m_guru`
@@ -1444,7 +1449,7 @@ CREATE TABLE `m_siswa` (
   `email` varchar(100) NOT NULL,
   `alamat` text NOT NULL,
   `id_jurusan` bigint(20) DEFAULT NULL COMMENT 'Alias dari Nama Kelas',
-  `id_guru` int(11) NOT NULL,
+  `kelas` int(11) DEFAULT NULL,
   `instansi` int(20) NOT NULL,
   `pembuatan_akun` varchar(100) NOT NULL,
   `verifikasi` varchar(150) NOT NULL,
@@ -1459,76 +1464,77 @@ CREATE TABLE `m_siswa` (
 -- Dumping data for table `m_siswa`
 --
 
-INSERT INTO `m_siswa` (`id`, `photo`, `kelompok`, `nama`, `username`, `pangkat`, `nrp`, `no_telpon`, `tempat_lahir`, `tanggal_lahir`, `nim`, `tahun_angkatan_masuk`, `angkatan`, `nik`, `email`, `alamat`, `id_jurusan`, `id_guru`, `instansi`, `pembuatan_akun`, `verifikasi`, `active_num`, `active_video`, `active_read`, `deleted`, `is_graduated`) VALUES
-(526, NULL, 'AL', 'Aji Rohimat', 'rohimat', '-', '23452345', '087634285', 'Bandung', '1997-10-01', '78678578', '2020', '2020', '456456', 'rezharanmark@gmail.com', 'Bandung', 4, 0, 1, '1591803694', '7fcc56e19c066f37edb5e04d6a9a4bf7', 178, 5, 2, 0, 1),
-(529, NULL, 'AL', 'JANG KI YONG', 'JKYCAKEP', 'INTEL', '3570256987', '08571287456', 'KOREA', '1987-02-11', '6729462819936', NULL, '', '2748273894727485', 'kiyongkiyut@yahoo.com', 'endon', 15, 0, 2, '1586108703', '231586b344c2084b63466980d909b528', 3, 0, 0, 0, 1),
-(531, NULL, 'XII TKJ 3', 'Ridwan', 'ridwan', 'Siswa', '1600123', '099', 'Bandung', '2002-01-01', '08', NULL, '', '01', 'ridwan@gmail.com', 'Bandung', 15, 0, 3, '1587385185', '6b1ae604c8fc82684ee2339f19b3482e', 0, 0, 0, 0, 0),
-(532, NULL, 'MIPA', 'Kamil', 'kamil', 'Mahasiswa', '081', '081', 'Bandung', '2000-01-01', '08', NULL, '', '0812', 'kamil@gmal.com', 'Bandung', 15, 0, 4, '1587385241', '31e9282d73542f85716ac3e52da9ee28', 1, 0, 0, 0, 0),
-(536, '01-06-2020-1591013958-visa.png', 'Dikreegg22', 'Saepudin', 'saepudin', 'gak tau', '87126318276', '08276482763', 'Bandung', '2020-05-31', '35467890', '2020', '', '1', 'sapeudinnn@gmail.com', 'Bandunggg', 6, 0, 1, '1593730637', '13f24f78baf5ba308905fb9db3d6ced7', 1, 0, 0, 0, 0),
-(537, NULL, 'Dikregss', 'Asep', 'asep', '-', '45321', '5345', 'Bdg', '1992-06-22', '6453245', '2020', '', '34564356', 'asep@yahoo.com', 'Banudng', 6, 0, 1, '1591014386', 'a4ccdc2bb450febf7c22c2b1dd293581', 0, 0, 0, 0, 0),
-(541, NULL, 'bunga', 'melati putih', 'melmela', 'smartgals', '0875490', '08127893457', 'denpasar', '1993-05-30', '83651869', '2018', '', '0876123409872367', 'melmela3093@gmail.com', 'bdg ajah', 4, 0, 1, '1591117390', 'd56faef47f7fee21dbbc1b41d37d0c97', 14, 3, 1, 0, 0),
-(543, NULL, '-', 'Deni Febriyanto', 'febri', '-', '19452/P', '0828182918291', 'Bandung', '2020-06-04', '78678578', '2020', '', '456456', 'aldilla@tnial.mil.id', '-', 9, 0, 1, '1591156731', 'd604a942d47c44a9f7a1532e2895bdaf', 1, 0, 0, 0, 0),
-(544, NULL, 'Jambu', 'Jazai', 'jazai', 'King Of Energen', '123456', '089627352261', 'Mars', '2009-02-22', '1293891', '1879', '', '182932983', 'jazai@mars.ilegal', 'Venus', 6, 0, 1, '1591164300', 'f75d4a036ded86f95702d7e8ae4a0dcc', 11, 0, 0, 0, 0),
-(545, NULL, 'Testing', 'Testing 123', 'siswatesting123', 'Siswa', '123', '821', 'Bandung', '2000-05-05', '123', '2020', '', '123', 'siswatesting123@gmail.com', 'Bandung', 4, 0, 1, '1591197103', '0f3a664cfa8f682853e4b1bb202fcfa2', 0, 0, 0, 0, 0),
-(546, NULL, 'Testing', 'Testing 456', 'siswatesting456', 'Siswa', '456', '812', 'Jakarta', '2000-05-05', '456', '2020', '', '456', 'siswatesting456@gmail.com', 'Jakarta', 4, 0, 1, '1591197103', '0f3a664cfa8f682853e4b1bb202fcfa2', 0, 0, 0, 0, 0),
-(547, NULL, 'Testing', 'Testing 789', 'siswatesting789', 'Siswa', '789', '20801', 'Semarang', '2000-05-05', '789', '2020', '', '789', 'siswatesting789@gmail.com', 'Semarang', 4, 0, 1, '1591197103', '0f3a664cfa8f682853e4b1bb202fcfa2', 0, 0, 0, 0, 0),
-(549, NULL, 'Jambu', 'The Roast', 'theroast', 'Mayjen', '2183', '08129381', 'Make make', '2020-06-06', '23142134', '1970', '1970', '3242543242', 'theroast@makemake.planet', 'Orbit', 9, 0, 1, '1591517320', '41b76365ce10bb6ce9bcaa8590de7fd6', 0, 0, 0, 0, 0),
-(550, NULL, 'XI IPS 1', 'Siswa 41', 'siswa41', '123434', '2020041', '09876543', 'Bandung', '2020-06-04', '1233413', '2020', '-', '123123123', 'siswa41@gmail.com', 'Bandung', 11, 0, 10, '1592187219', '5671b4aab9a576afec32e615631e9674', 7, 0, 0, 0, 1),
-(551, NULL, 'XI IPA 1', 'Siswa 42', 'siswa42', '2341234', '1231231', '0884234', 'Bandung', '2020-06-14', '12324123', '2020', '2020', '234234234', 'siswa42@gmail.com', 'Bandung', 10, 0, 10, '1592187580', '6a00676913d908ea1e31aad26e4989a1', 5, 0, 1, 0, 0),
-(553, NULL, 'XI IPA 1', 'Siswa 43', 'siswa43', '98798', '987987', '0863816', 'Bandung', '2020-06-09', '342342', '2020', '2020', '345345', 'siswa43@gmail.com', 'Bandung', 10, 0, 10, '1592188204', 'cc72369b6d52d5f9ed057f515ca562c6', 0, 0, 0, 0, 0),
-(554, NULL, 'XI IPS 1', 'Siswa 44', 'siswa44', '876876', '876865987', '0276382', 'Bandung', '2020-06-10', '13124234', '2020', '2020', '23423423', 'siswa44@gmail.com', 'Bandung', 15, 0, 10, '1592188251', '6412cba474f7513591c0a69a28d14e16', 0, 0, 0, 0, 0),
-(555, NULL, 'X IPA', 'ADITYA', 'adityasman21bdg', 'ISLAM', '1231231001', '8213130001', 'BANDUNG', '2006-01-01', '8213130001', '2020', '', 'L', 'adityasman21bdg@gmail.com', 'BANDUNG', 10, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 1, 1),
-(556, NULL, 'X IPA', 'AJI', 'ajisman21bdg', 'ISLAM', '1231231002', '8213130002', 'BANDUNG', '2006-01-01', '8213130002', '2020', '', 'L', 'ajisman21bdg@gmail.com', 'BANDUNG', 10, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 6, 0, 0, 0, 1),
-(557, NULL, 'X IPA', 'ANINDA', 'anindasman21bdg', 'ISLAM', '1231231003', '8213130003', 'BANDUNG', '2006-01-01', '8213130003', '2020', '', 'P', 'anindasman21bdg@gmail.com', 'BANDUNG', 15, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
-(558, NULL, 'X IPA', 'ANNISA', 'annisasman21bdg', 'ISLAM', '1231231004', '8213130004', 'BANDUNG', '2006-01-01', '8213130004', '2020', '', 'P', 'annisasman21bdg@gmail.com', 'BANDUNG', 12, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
-(559, NULL, 'XI IPA', 'BAYU', 'bayusman21bdg', 'ISLAM', '1231231005', '8213130005', 'BANDUNG', '2005-01-01', '8213130005', '2020', '', 'L', 'bayusman21bdg@gmail.com', 'BANDUNG', 12, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
-(560, NULL, 'XI IPA', 'BADRUN', 'badrunsman21bdg', 'ISLAM', '1231231006', '8213130006', 'BANDUNG', '2005-01-01', '8213130006', '2020', '', 'L', 'badrunsman21bdg@gmail.com', 'BANDUNG', 12, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
-(561, NULL, 'XI IPA', 'BILQIS', 'bilqissman21bdg', 'ISLAM', '1231231007', '8213130007', 'BANDUNG', '2005-01-01', '8213130007', '2020', '', 'P', 'bilqissman21bdg@gmail.com', 'BANDUNG', 12, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
-(562, NULL, 'XI IPA', 'BUNGA', 'bungasman21bdg', 'ISLAM', '1231231008', '8213130008', 'BANDUNG', '2005-01-01', '8213130008', '2020', '', 'P', 'bungasman21bdg@gmail.com', 'BANDUNG', 12, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
-(563, NULL, 'XII IPA', 'CACA', 'cacasman21bdg', 'ISLAM', '1231231009', '8213130009', 'BANDUNG', '2004-01-01', '8213130009', '2020', '', 'P', 'cacasman21bdg@gmail.com', 'BANDUNG', 12, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
-(564, NULL, 'XII IPA', 'CHIKA', 'chikasman21bdg', 'ISLAM', '1231231010', '8213130010', 'BANDUNG', '2004-01-01', '8213130010', '2020', '', 'P', 'chikasman21bdg@gmail.com', 'BANDUNG', 12, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
-(565, NULL, 'XII IPA', 'COKY', 'cokysman21bdg', 'ISLAM', '1231231011', '8213130011', 'BANDUNG', '2004-01-01', '8213130011', '2020', '', 'L', 'cokysman21bdg@gmail.com', 'BANDUNG', 12, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
-(566, NULL, 'XII IPA', 'CAKA', 'cakasman21bdg', 'ISLAM', '1231231012', '8213130012', 'BANDUNG', '2004-01-01', '8213130012', '2020', '', 'L', 'cakasman21bdg@gmail.com', 'BANDUNG', 12, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
-(567, NULL, 'X IPS', 'DEDE', 'dedesman21bdg', 'ISLAM', '1231231013', '8213130013', 'BANDUNG', '2006-01-01', '8213130013', '2020', '', 'L', 'dedesman21bdg@gmail.com', 'BANDUNG', 13, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
-(568, NULL, 'X IPS', 'DEDEN', 'dedensman21bdg', 'ISLAM', '1231231014', '8213130014', 'BANDUNG', '2006-01-01', '8213130014', '2020', '', 'L', 'dedensman21bdg@gmail.com', 'BANDUNG', 13, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 4, 0, 0, 0, 0),
-(569, NULL, 'X IPS', 'DELVY', 'delvysman21bdg', 'ISLAM', '1231231015', '8213130015', 'BANDUNG', '2006-01-01', '8213130015', '2020', '', 'P', 'delvysman21bdg@gmail.com', 'BANDUNG', 13, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
-(570, NULL, 'X IPS', 'DESI', 'desisman21bdg', 'ISLAM', '1231231016', '8213130016', 'BANDUNG', '2006-01-01', '8213130016', '2020', '', 'P', 'desisman21bdg@gmail.com', 'BANDUNG', 13, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
-(571, NULL, 'XI IPS', 'GIFAR', 'gifarsman21bdg', 'ISLAM', '1231231017', '8213130017', 'BANDUNG', '2005-01-01', '8213130017', '2020', '', 'L', 'gifarsman21bdg@gmail.com', 'BANDUNG', 13, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
-(572, NULL, 'XI IPS', 'GEO', 'geosman21bdg', 'ISLAM', '1231231018', '8213130018', 'BANDUNG', '2005-01-01', '8213130018', '2020', '', 'L', 'geosman21bdg@gmail.com', 'BANDUNG', 13, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
-(573, NULL, 'XI IPS', 'GHEA', 'gheasman21bdg', 'ISLAM', '1231231019', '8213130019', 'BANDUNG', '2005-01-01', '8213130019', '2020', '', 'P', 'gheasman21bdg@gmail.com', 'BANDUNG', 13, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
-(574, NULL, 'XI IPS', 'GIOVANNI', 'giovannisman21bdg', 'ISLAM', '1231231020', '8213130020', 'BANDUNG', '2005-01-01', '8213130020', '2020', '', 'P', 'giovannisman21bdg@gmail.com', 'BANDUNG', 13, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
-(575, NULL, 'XII IPS', 'HAIKAL', 'haikalsman21bdg', 'ISLAM', '1231231021', '8213130021', 'BANDUNG', '2004-01-01', '8213130021', '2020', '', 'L', 'haikalsman21bdg@gmail.com', 'BANDUNG', 13, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
-(576, NULL, 'XII IPS', 'HUSNI', 'husnisman21bdg', 'ISLAM', '1231231022', '8213130022', 'BANDUNG', '2004-01-01', '8213130022', '2020', '', 'L', 'husnisman21bdg@gmail.com', 'BANDUNG', 13, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
-(577, NULL, 'XII IPS', 'IIS', 'iissman21bdg', 'ISLAM', '1231231023', '8213130023', 'BANDUNG', '2004-01-01', '8213130023', '2020', '', 'P', 'iissman21bdg@gmail.com', 'BANDUNG', 13, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
-(578, NULL, 'XII IPS', 'IMAS', 'imassman21bdg', 'ISLAM', '1231231024', '8213130024', 'BANDUNG', '2004-01-01', '8213130024', '2020', '', 'P', 'imassman21bdg@gmail.com', 'BANDUNG', 13, 0, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
-(579, NULL, 'X IPA', 'ADITYA', 'adityasman25bdg', 'ISLAM', '1231231001', '8213130001', 'BANDUNG', '2006-01-01', '8213130001', '2020', '', 'L', 'adityasman25bdg@gmail.com', 'BANDUNG', 17, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(580, NULL, 'X IPA', 'AJI', 'ajisman25bdg', 'ISLAM', '1231231002', '8213130002', 'BANDUNG', '2006-01-01', '8213130002', '2020', '', 'L', 'ajisman25bdg@gmail.com', 'BANDUNG', 17, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(581, NULL, 'X IPA', 'ANINDA', 'anindasman25bdg', 'ISLAM', '1231231003', '8213130003', 'BANDUNG', '2006-01-01', '8213130003', '2020', '', 'P', 'anindasman25bdg@gmail.com', 'BANDUNG', 17, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(582, NULL, 'X IPA', 'ANNISA', 'annisasman25bdg', 'ISLAM', '1231231004', '8213130004', 'BANDUNG', '2006-01-01', '8213130004', '2020', '', 'P', 'annisasman25bdg@gmail.com', 'BANDUNG', 17, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(583, NULL, 'XI IPA', 'BAYU', 'bayusman25bdg', 'ISLAM', '1231231005', '8213130005', 'BANDUNG', '2005-01-01', '8213130005', '2020', '', 'L', 'bayusman25bdg@gmail.com', 'BANDUNG', 17, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(584, NULL, 'XI IPA', 'BADRUN', 'badrunsman25bdg', 'ISLAM', '1231231006', '8213130006', 'BANDUNG', '2005-01-01', '8213130006', '2020', '', 'L', 'badrunsman25bdg@gmail.com', 'BANDUNG', 17, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(585, NULL, 'XI IPA', 'BILQIS', 'bilqissman25bdg', 'ISLAM', '1231231007', '8213130007', 'BANDUNG', '2005-01-01', '8213130007', '2020', '', 'P', 'bilqissman25bdg@gmail.com', 'BANDUNG', 17, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(586, NULL, 'XI IPA', 'BUNGA', 'bungasman25bdg', 'ISLAM', '1231231008', '8213130008', 'BANDUNG', '2005-01-01', '8213130008', '2020', '', 'P', 'bungasman25bdg@gmail.com', 'BANDUNG', 17, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(587, NULL, 'XII IPA', 'CACA', 'cacasman25bdg', 'ISLAM', '1231231009', '8213130009', 'BANDUNG', '2004-01-01', '8213130009', '2020', '', 'P', 'cacasman25bdg@gmail.com', 'BANDUNG', 17, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(588, NULL, 'XII IPA', 'CHIKA', 'chikasman25bdg', 'ISLAM', '1231231010', '8213130010', 'BANDUNG', '2004-01-01', '8213130010', '2020', '', 'P', 'chikasman25bdg@gmail.com', 'BANDUNG', 17, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(589, NULL, 'XII IPA', 'COKY', 'cokysman25bdg', 'ISLAM', '1231231011', '8213130011', 'BANDUNG', '2004-01-01', '8213130011', '2020', '', 'L', 'cokysman25bdg@gmail.com', 'BANDUNG', 17, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(590, NULL, 'XII IPA', 'CAKA', 'cakasman25bdg', 'ISLAM', '1231231012', '8213130012', 'BANDUNG', '2004-01-01', '8213130012', '2020', '', 'L', 'cakasman25bdg@gmail.com', 'BANDUNG', 17, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(591, NULL, 'X IPS', 'DEDE', 'dedesman25bdg', 'ISLAM', '1231231013', '8213130013', 'BANDUNG', '2006-01-01', '8213130013', '2020', '', 'L', 'dedesman25bdg@gmail.com', 'BANDUNG', 18, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(592, NULL, 'X IPS', 'DEDEN', 'dedensman25bdg', 'ISLAM', '1231231014', '8213130014', 'BANDUNG', '2006-01-01', '8213130014', '2020', '', 'L', 'dedensman25bdg@gmail.com', 'BANDUNG', 18, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(593, NULL, 'X IPS', 'DELVY', 'delvysman25bdg', 'ISLAM', '1231231015', '8213130015', 'BANDUNG', '2006-01-01', '8213130015', '2020', '', 'P', 'delvysman25bdg@gmail.com', 'BANDUNG', 18, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(594, NULL, 'X IPS', 'DESI', 'desisman25bdg', 'ISLAM', '1231231016', '8213130016', 'BANDUNG', '2006-01-01', '8213130016', '2020', '', 'P', 'desisman25bdg@gmail.com', 'BANDUNG', 18, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(595, NULL, 'XI IPS', 'GIFAR', 'gifarsman25bdg', 'ISLAM', '1231231017', '8213130017', 'BANDUNG', '2005-01-01', '8213130017', '2020', '', 'L', 'gifarsman25bdg@gmail.com', 'BANDUNG', 18, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(596, NULL, 'XI IPS', 'GEO', 'geosman25bdg', 'ISLAM', '1231231018', '8213130018', 'BANDUNG', '2005-01-01', '8213130018', '2020', '', 'L', 'geosman25bdg@gmail.com', 'BANDUNG', 18, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(597, NULL, 'XI IPS', 'GHEA', 'gheasman25bdg', 'ISLAM', '1231231019', '8213130019', 'BANDUNG', '2005-01-01', '8213130019', '2020', '', 'P', 'gheasman25bdg@gmail.com', 'BANDUNG', 18, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(598, NULL, 'XI IPS', 'GIOVANNI', 'giovannisman25bdg', 'ISLAM', '1231231020', '8213130020', 'BANDUNG', '2005-01-01', '8213130020', '2020', '', 'P', 'giovannisman25bdg@gmail.com', 'BANDUNG', 18, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(599, NULL, 'XII IPS', 'HAIKAL', 'haikalsman25bdg', 'ISLAM', '1231231021', '8213130021', 'BANDUNG', '2004-01-01', '8213130021', '2020', '', 'L', 'haikalsman25bdg@gmail.com', 'BANDUNG', 18, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(600, NULL, 'XII IPS', 'HUSNI', 'husnisman25bdg', 'ISLAM', '1231231022', '8213130022', 'BANDUNG', '2004-01-01', '8213130022', '2020', '', 'L', 'husnisman25bdg@gmail.com', 'BANDUNG', 18, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(601, NULL, 'XII IPS', 'IIS', 'iissman25bdg', 'ISLAM', '1231231023', '8213130023', 'BANDUNG', '2004-01-01', '8213130023', '2020', '', 'P', 'iissman25bdg@gmail.com', 'BANDUNG', 18, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(602, NULL, 'XII IPS', 'IMAS', 'imassman25bdg', 'ISLAM', '1231231024', '8213130024', 'BANDUNG', '2004-01-01', '8213130024', '2020', '', 'P', 'imassman25bdg@gmail.com', 'BANDUNG', 18, 0, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
-(603, NULL, 'Jambu', 'Bara Bursa', 'barabursa', 'Islam', '213198', '08531231234214', 'Sumedang', '2000-02-22', '12839139281', '2020', '2020', 'Laki', 'barabursa@gmial.com', 'Bandung', 7, 0, 1, '1593213833', '54ad8eb1e0fc56dfe11119b1b2a3a793', 22, 0, 0, 0, 0),
-(605, NULL, '', 'RS Hasan Sadikin', 'hasanjr11', '', '02930192', '', '', '', '', NULL, '', '1', '', '', 19, 0, 1, '1593630595', 'affdf899c3c242f1287554c9a5a2d167', 0, 0, 0, 0, 0),
-(606, NULL, '', 'Yoyo', 'yoyo', '', '128301', '89233643321', '', '', '', NULL, '', '1', '-', '-', 0, 0, 1, '1593631849', '1c096d81f43a39d51651fc510320aabc', 0, 0, 0, 0, 0),
-(607, NULL, '', 'Banner Corona 122', 'coronaaaaa', '', '02930192', '', '', '', '', NULL, '', '1', '', '', 19, 85, 1, '1593730681', 'dcfc9973dbf825b484dfc90cd17d09b8', 0, 0, 0, 0, 0);
+INSERT INTO `m_siswa` (`id`, `photo`, `kelompok`, `nama`, `username`, `pangkat`, `nrp`, `no_telpon`, `tempat_lahir`, `tanggal_lahir`, `nim`, `tahun_angkatan_masuk`, `angkatan`, `nik`, `email`, `alamat`, `id_jurusan`, `kelas`, `instansi`, `pembuatan_akun`, `verifikasi`, `active_num`, `active_video`, `active_read`, `deleted`, `is_graduated`) VALUES
+(526, NULL, 'AL', 'Aji Rohimat', 'rohimat', '-', '23452345', '087634285', 'Bandung', '1997-10-01', '78678578', '2020', '2020', '456456', 'rezharanmark@gmail.com', 'Bandung', 4, 56, 1, '1591803694', '7fcc56e19c066f37edb5e04d6a9a4bf7', 178, 5, 2, 0, 1),
+(529, NULL, 'AL', 'JANG KI YONG', 'JKYCAKEP', 'INTEL', '3570256987', '08571287456', 'KOREA', '1987-02-11', '6729462819936', NULL, '', '2748273894727485', 'kiyongkiyut@yahoo.com', 'endon', 15, 56, 2, '1586108703', '231586b344c2084b63466980d909b528', 3, 0, 0, 0, 1),
+(531, NULL, 'XII TKJ 3', 'Ridwan', 'ridwan', 'Siswa', '1600123', '099', 'Bandung', '2002-01-01', '08', NULL, '', '01', 'ridwan@gmail.com', 'Bandung', 15, 56, 3, '1587385185', '6b1ae604c8fc82684ee2339f19b3482e', 0, 0, 0, 0, 0),
+(532, NULL, 'MIPA', 'Kamil', 'kamil', 'Mahasiswa', '081', '081', 'Bandung', '2000-01-01', '08', NULL, '', '0812', 'kamil@gmal.com', 'Bandung', 15, 56, 4, '1587385241', '31e9282d73542f85716ac3e52da9ee28', 1, 0, 0, 0, 0),
+(536, '01-06-2020-1591013958-visa.png', 'Dikreegg22', 'Saepudin', 'saepudin', 'gak tau', '87126318276', '08276482763', 'Bandung', '2020-05-31', '35467890', '2020', '', '1', 'sapeudinnn@gmail.com', 'Bandunggg', 6, NULL, 1, '1593730637', '13f24f78baf5ba308905fb9db3d6ced7', 1, 0, 0, 0, 0),
+(537, NULL, 'Dikregss', 'Asep', 'asep', '-', '45321', '5345', 'Bdg', '1992-06-22', '6453245', '2020', '', '34564356', 'asep@yahoo.com', 'Banudng', 6, NULL, 1, '1591014386', 'a4ccdc2bb450febf7c22c2b1dd293581', 0, 0, 0, 0, 0),
+(541, NULL, 'bunga', 'melati putih', 'melmela', 'smartgals', '0875490', '08127893457', 'denpasar', '1993-05-30', '83651869', '2018', '', '0876123409872367', 'melmela3093@gmail.com', 'bdg ajah', 4, NULL, 1, '1591117390', 'd56faef47f7fee21dbbc1b41d37d0c97', 14, 3, 1, 0, 0),
+(543, NULL, '-', 'Deni Febriyanto', 'febri', '-', '19452/P', '0828182918291', 'Bandung', '2020-06-04', '78678578', '2020', '', '456456', 'aldilla@tnial.mil.id', '-', 9, NULL, 1, '1591156731', 'd604a942d47c44a9f7a1532e2895bdaf', 1, 0, 0, 0, 0),
+(544, NULL, 'Jambu', 'Jazai', 'jazai', 'King Of Energen', '123456', '089627352261', 'Mars', '2009-02-22', '1293891', '1879', '', '182932983', 'jazai@mars.ilegal', 'Venus', 6, NULL, 1, '1591164300', 'f75d4a036ded86f95702d7e8ae4a0dcc', 11, 0, 0, 0, 0),
+(545, NULL, 'Testing', 'Testing 123', 'siswatesting123', 'Siswa', '123', '821', 'Bandung', '2000-05-05', '123', '2020', '', '123', 'siswatesting123@gmail.com', 'Bandung', 4, NULL, 1, '1591197103', '0f3a664cfa8f682853e4b1bb202fcfa2', 0, 0, 0, 0, 0),
+(546, NULL, 'Testing', 'Testing 456', 'siswatesting456', 'Siswa', '456', '812', 'Jakarta', '2000-05-05', '456', '2020', '', '456', 'siswatesting456@gmail.com', 'Jakarta', 4, NULL, 1, '1591197103', '0f3a664cfa8f682853e4b1bb202fcfa2', 0, 0, 0, 0, 0),
+(547, NULL, 'Testing', 'Testing 789', 'siswatesting789', 'Siswa', '789', '20801', 'Semarang', '2000-05-05', '789', '2020', '', '789', 'siswatesting789@gmail.com', 'Semarang', 4, NULL, 1, '1591197103', '0f3a664cfa8f682853e4b1bb202fcfa2', 0, 0, 0, 0, 0),
+(549, NULL, 'Jambu', 'The Roast', 'theroast', 'Mayjen', '2183', '08129381', 'Make make', '2020-06-06', '23142134', '1970', '1970', '3242543242', 'theroast@makemake.planet', 'Orbit', 9, NULL, 1, '1591517320', '41b76365ce10bb6ce9bcaa8590de7fd6', 0, 0, 0, 0, 0),
+(550, NULL, 'XI IPS 1', 'Siswa 41', 'siswa41', '123434', '2020041', '09876543', 'Bandung', '2020-06-04', '1233413', '2020', '-', '123123123', 'siswa41@gmail.com', 'Bandung', 11, NULL, 10, '1592187219', '5671b4aab9a576afec32e615631e9674', 7, 0, 0, 0, 1),
+(551, NULL, 'XI IPA 1', 'Siswa 42', 'siswa42', '2341234', '1231231', '0884234', 'Bandung', '2020-06-14', '12324123', '2020', '2020', '234234234', 'siswa42@gmail.com', 'Bandung', 10, NULL, 10, '1592187580', '6a00676913d908ea1e31aad26e4989a1', 5, 0, 1, 0, 0),
+(553, NULL, 'XI IPA 1', 'Siswa 43', 'siswa43', '98798', '987987', '0863816', 'Bandung', '2020-06-09', '342342', '2020', '2020', '345345', 'siswa43@gmail.com', 'Bandung', 10, NULL, 10, '1592188204', 'cc72369b6d52d5f9ed057f515ca562c6', 0, 0, 0, 0, 0),
+(554, NULL, 'XI IPS 1', 'Siswa 44', 'siswa44', '876876', '876865987', '0276382', 'Bandung', '2020-06-10', '13124234', '2020', '2020', '23423423', 'siswa44@gmail.com', 'Bandung', 15, NULL, 10, '1592188251', '6412cba474f7513591c0a69a28d14e16', 0, 0, 0, 0, 0),
+(555, NULL, 'X IPA', 'ADITYA', 'adityasman21bdg', 'ISLAM', '1231231001', '8213130001', 'BANDUNG', '2006-01-01', '8213130001', '2020', '', 'L', 'adityasman21bdg@gmail.com', 'BANDUNG', 10, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 1, 1),
+(556, NULL, 'X IPA', 'AJI', 'ajisman21bdg', 'ISLAM', '1231231002', '8213130002', 'BANDUNG', '2006-01-01', '8213130002', '2020', '', 'L', 'ajisman21bdg@gmail.com', 'BANDUNG', 10, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 6, 0, 0, 0, 1),
+(557, NULL, 'X IPA', 'ANINDA', 'anindasman21bdg', 'ISLAM', '1231231003', '8213130003', 'BANDUNG', '2006-01-01', '8213130003', '2020', '', 'P', 'anindasman21bdg@gmail.com', 'BANDUNG', 15, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
+(558, NULL, 'X IPA', 'ANNISA', 'annisasman21bdg', 'ISLAM', '1231231004', '8213130004', 'BANDUNG', '2006-01-01', '8213130004', '2020', '', 'P', 'annisasman21bdg@gmail.com', 'BANDUNG', 12, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
+(559, NULL, 'XI IPA', 'BAYU', 'bayusman21bdg', 'ISLAM', '1231231005', '8213130005', 'BANDUNG', '2005-01-01', '8213130005', '2020', '', 'L', 'bayusman21bdg@gmail.com', 'BANDUNG', 12, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
+(560, NULL, 'XI IPA', 'BADRUN', 'badrunsman21bdg', 'ISLAM', '1231231006', '8213130006', 'BANDUNG', '2005-01-01', '8213130006', '2020', '', 'L', 'badrunsman21bdg@gmail.com', 'BANDUNG', 12, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
+(561, NULL, 'XI IPA', 'BILQIS', 'bilqissman21bdg', 'ISLAM', '1231231007', '8213130007', 'BANDUNG', '2005-01-01', '8213130007', '2020', '', 'P', 'bilqissman21bdg@gmail.com', 'BANDUNG', 12, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
+(562, NULL, 'XI IPA', 'BUNGA', 'bungasman21bdg', 'ISLAM', '1231231008', '8213130008', 'BANDUNG', '2005-01-01', '8213130008', '2020', '', 'P', 'bungasman21bdg@gmail.com', 'BANDUNG', 12, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
+(563, NULL, 'XII IPA', 'CACA', 'cacasman21bdg', 'ISLAM', '1231231009', '8213130009', 'BANDUNG', '2004-01-01', '8213130009', '2020', '', 'P', 'cacasman21bdg@gmail.com', 'BANDUNG', 12, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
+(564, NULL, 'XII IPA', 'CHIKA', 'chikasman21bdg', 'ISLAM', '1231231010', '8213130010', 'BANDUNG', '2004-01-01', '8213130010', '2020', '', 'P', 'chikasman21bdg@gmail.com', 'BANDUNG', 12, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
+(565, NULL, 'XII IPA', 'COKY', 'cokysman21bdg', 'ISLAM', '1231231011', '8213130011', 'BANDUNG', '2004-01-01', '8213130011', '2020', '', 'L', 'cokysman21bdg@gmail.com', 'BANDUNG', 12, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
+(566, NULL, 'XII IPA', 'CAKA', 'cakasman21bdg', 'ISLAM', '1231231012', '8213130012', 'BANDUNG', '2004-01-01', '8213130012', '2020', '', 'L', 'cakasman21bdg@gmail.com', 'BANDUNG', 12, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
+(567, NULL, 'X IPS', 'DEDE', 'dedesman21bdg', 'ISLAM', '1231231013', '8213130013', 'BANDUNG', '2006-01-01', '8213130013', '2020', '', 'L', 'dedesman21bdg@gmail.com', 'BANDUNG', 13, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
+(568, NULL, 'X IPS', 'DEDEN', 'dedensman21bdg', 'ISLAM', '1231231014', '8213130014', 'BANDUNG', '2006-01-01', '8213130014', '2020', '', 'L', 'dedensman21bdg@gmail.com', 'BANDUNG', 13, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 4, 0, 0, 0, 0),
+(569, NULL, 'X IPS', 'DELVY', 'delvysman21bdg', 'ISLAM', '1231231015', '8213130015', 'BANDUNG', '2006-01-01', '8213130015', '2020', '', 'P', 'delvysman21bdg@gmail.com', 'BANDUNG', 13, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
+(570, NULL, 'X IPS', 'DESI', 'desisman21bdg', 'ISLAM', '1231231016', '8213130016', 'BANDUNG', '2006-01-01', '8213130016', '2020', '', 'P', 'desisman21bdg@gmail.com', 'BANDUNG', 13, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
+(571, NULL, 'XI IPS', 'GIFAR', 'gifarsman21bdg', 'ISLAM', '1231231017', '8213130017', 'BANDUNG', '2005-01-01', '8213130017', '2020', '', 'L', 'gifarsman21bdg@gmail.com', 'BANDUNG', 13, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
+(572, NULL, 'XI IPS', 'GEO', 'geosman21bdg', 'ISLAM', '1231231018', '8213130018', 'BANDUNG', '2005-01-01', '8213130018', '2020', '', 'L', 'geosman21bdg@gmail.com', 'BANDUNG', 13, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
+(573, NULL, 'XI IPS', 'GHEA', 'gheasman21bdg', 'ISLAM', '1231231019', '8213130019', 'BANDUNG', '2005-01-01', '8213130019', '2020', '', 'P', 'gheasman21bdg@gmail.com', 'BANDUNG', 13, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
+(574, NULL, 'XI IPS', 'GIOVANNI', 'giovannisman21bdg', 'ISLAM', '1231231020', '8213130020', 'BANDUNG', '2005-01-01', '8213130020', '2020', '', 'P', 'giovannisman21bdg@gmail.com', 'BANDUNG', 13, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
+(575, NULL, 'XII IPS', 'HAIKAL', 'haikalsman21bdg', 'ISLAM', '1231231021', '8213130021', 'BANDUNG', '2004-01-01', '8213130021', '2020', '', 'L', 'haikalsman21bdg@gmail.com', 'BANDUNG', 13, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
+(576, NULL, 'XII IPS', 'HUSNI', 'husnisman21bdg', 'ISLAM', '1231231022', '8213130022', 'BANDUNG', '2004-01-01', '8213130022', '2020', '', 'L', 'husnisman21bdg@gmail.com', 'BANDUNG', 13, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
+(577, NULL, 'XII IPS', 'IIS', 'iissman21bdg', 'ISLAM', '1231231023', '8213130023', 'BANDUNG', '2004-01-01', '8213130023', '2020', '', 'P', 'iissman21bdg@gmail.com', 'BANDUNG', 13, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
+(578, NULL, 'XII IPS', 'IMAS', 'imassman21bdg', 'ISLAM', '1231231024', '8213130024', 'BANDUNG', '2004-01-01', '8213130024', '2020', '', 'P', 'imassman21bdg@gmail.com', 'BANDUNG', 13, NULL, 11, '1593143026', '459913c854639fe67e5cb74b8cace402', 0, 0, 0, 0, 0),
+(579, NULL, 'X IPA', 'ADITYA', 'adityasman25bdg', 'ISLAM', '1231231001', '8213130001', 'BANDUNG', '2006-01-01', '8213130001', '2020', '', 'L', 'adityasman25bdg@gmail.com', 'BANDUNG', 17, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(580, NULL, 'X IPA', 'AJI', 'ajisman25bdg', 'ISLAM', '1231231002', '8213130002', 'BANDUNG', '2006-01-01', '8213130002', '2020', '', 'L', 'ajisman25bdg@gmail.com', 'BANDUNG', 17, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(581, NULL, 'X IPA', 'ANINDA', 'anindasman25bdg', 'ISLAM', '1231231003', '8213130003', 'BANDUNG', '2006-01-01', '8213130003', '2020', '', 'P', 'anindasman25bdg@gmail.com', 'BANDUNG', 17, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(582, NULL, 'X IPA', 'ANNISA', 'annisasman25bdg', 'ISLAM', '1231231004', '8213130004', 'BANDUNG', '2006-01-01', '8213130004', '2020', '', 'P', 'annisasman25bdg@gmail.com', 'BANDUNG', 17, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(583, NULL, 'XI IPA', 'BAYU', 'bayusman25bdg', 'ISLAM', '1231231005', '8213130005', 'BANDUNG', '2005-01-01', '8213130005', '2020', '', 'L', 'bayusman25bdg@gmail.com', 'BANDUNG', 17, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(584, NULL, 'XI IPA', 'BADRUN', 'badrunsman25bdg', 'ISLAM', '1231231006', '8213130006', 'BANDUNG', '2005-01-01', '8213130006', '2020', '', 'L', 'badrunsman25bdg@gmail.com', 'BANDUNG', 17, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(585, NULL, 'XI IPA', 'BILQIS', 'bilqissman25bdg', 'ISLAM', '1231231007', '8213130007', 'BANDUNG', '2005-01-01', '8213130007', '2020', '', 'P', 'bilqissman25bdg@gmail.com', 'BANDUNG', 17, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(586, NULL, 'XI IPA', 'BUNGA', 'bungasman25bdg', 'ISLAM', '1231231008', '8213130008', 'BANDUNG', '2005-01-01', '8213130008', '2020', '', 'P', 'bungasman25bdg@gmail.com', 'BANDUNG', 17, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(587, NULL, 'XII IPA', 'CACA', 'cacasman25bdg', 'ISLAM', '1231231009', '8213130009', 'BANDUNG', '2004-01-01', '8213130009', '2020', '', 'P', 'cacasman25bdg@gmail.com', 'BANDUNG', 17, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(588, NULL, 'XII IPA', 'CHIKA', 'chikasman25bdg', 'ISLAM', '1231231010', '8213130010', 'BANDUNG', '2004-01-01', '8213130010', '2020', '', 'P', 'chikasman25bdg@gmail.com', 'BANDUNG', 17, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(589, NULL, 'XII IPA', 'COKY', 'cokysman25bdg', 'ISLAM', '1231231011', '8213130011', 'BANDUNG', '2004-01-01', '8213130011', '2020', '', 'L', 'cokysman25bdg@gmail.com', 'BANDUNG', 17, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(590, NULL, 'XII IPA', 'CAKA', 'cakasman25bdg', 'ISLAM', '1231231012', '8213130012', 'BANDUNG', '2004-01-01', '8213130012', '2020', '', 'L', 'cakasman25bdg@gmail.com', 'BANDUNG', 17, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(591, NULL, 'X IPS', 'DEDE', 'dedesman25bdg', 'ISLAM', '1231231013', '8213130013', 'BANDUNG', '2006-01-01', '8213130013', '2020', '', 'L', 'dedesman25bdg@gmail.com', 'BANDUNG', 18, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(592, NULL, 'X IPS', 'DEDEN', 'dedensman25bdg', 'ISLAM', '1231231014', '8213130014', 'BANDUNG', '2006-01-01', '8213130014', '2020', '', 'L', 'dedensman25bdg@gmail.com', 'BANDUNG', 18, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(593, NULL, 'X IPS', 'DELVY', 'delvysman25bdg', 'ISLAM', '1231231015', '8213130015', 'BANDUNG', '2006-01-01', '8213130015', '2020', '', 'P', 'delvysman25bdg@gmail.com', 'BANDUNG', 18, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(594, NULL, 'X IPS', 'DESI', 'desisman25bdg', 'ISLAM', '1231231016', '8213130016', 'BANDUNG', '2006-01-01', '8213130016', '2020', '', 'P', 'desisman25bdg@gmail.com', 'BANDUNG', 18, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(595, NULL, 'XI IPS', 'GIFAR', 'gifarsman25bdg', 'ISLAM', '1231231017', '8213130017', 'BANDUNG', '2005-01-01', '8213130017', '2020', '', 'L', 'gifarsman25bdg@gmail.com', 'BANDUNG', 18, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(596, NULL, 'XI IPS', 'GEO', 'geosman25bdg', 'ISLAM', '1231231018', '8213130018', 'BANDUNG', '2005-01-01', '8213130018', '2020', '', 'L', 'geosman25bdg@gmail.com', 'BANDUNG', 18, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(597, NULL, 'XI IPS', 'GHEA', 'gheasman25bdg', 'ISLAM', '1231231019', '8213130019', 'BANDUNG', '2005-01-01', '8213130019', '2020', '', 'P', 'gheasman25bdg@gmail.com', 'BANDUNG', 18, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(598, NULL, 'XI IPS', 'GIOVANNI', 'giovannisman25bdg', 'ISLAM', '1231231020', '8213130020', 'BANDUNG', '2005-01-01', '8213130020', '2020', '', 'P', 'giovannisman25bdg@gmail.com', 'BANDUNG', 18, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(599, NULL, 'XII IPS', 'HAIKAL', 'haikalsman25bdg', 'ISLAM', '1231231021', '8213130021', 'BANDUNG', '2004-01-01', '8213130021', '2020', '', 'L', 'haikalsman25bdg@gmail.com', 'BANDUNG', 18, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(600, NULL, 'XII IPS', 'HUSNI', 'husnisman25bdg', 'ISLAM', '1231231022', '8213130022', 'BANDUNG', '2004-01-01', '8213130022', '2020', '', 'L', 'husnisman25bdg@gmail.com', 'BANDUNG', 18, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(601, NULL, 'XII IPS', 'IIS', 'iissman25bdg', 'ISLAM', '1231231023', '8213130023', 'BANDUNG', '2004-01-01', '8213130023', '2020', '', 'P', 'iissman25bdg@gmail.com', 'BANDUNG', 18, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(602, NULL, 'XII IPS', 'IMAS', 'imassman25bdg', 'ISLAM', '1231231024', '8213130024', 'BANDUNG', '2004-01-01', '8213130024', '2020', '', 'P', 'imassman25bdg@gmail.com', 'BANDUNG', 18, NULL, 12, '1593152580', 'd39520319d8124cebfd74680723b548b', 0, 0, 0, 0, 0),
+(603, NULL, 'Jambu', 'Bara Bursa', 'barabursa', 'Islam', '213198', '08531231234214', 'Sumedang', '2000-02-22', '12839139281', '2020', '2020', 'Laki', 'barabursa@gmial.com', 'Bandung', 7, 56, 1, '1593213833', '54ad8eb1e0fc56dfe11119b1b2a3a793', 25, 0, 0, 0, 0),
+(605, NULL, '', 'RS Hasan Sadikin', 'hasanjr11', '', '02930192', '', '', '', '', NULL, '', '1', '', '', 19, NULL, 1, '1593630595', 'affdf899c3c242f1287554c9a5a2d167', 0, 0, 0, 0, 0),
+(606, NULL, '', 'Yoyo', 'yoyo', '', '128301', '89233643321', '', '', '', NULL, '', '1', '-', '-', 0, NULL, 1, '1593631849', '1c096d81f43a39d51651fc510320aabc', 0, 0, 0, 0, 0),
+(607, NULL, '', 'Banner Corona 122', 'coronaaaaa', '', '02930192', '', '', '', '', NULL, '', '1', '', '', 19, NULL, 1, '1593730681', 'dcfc9973dbf825b484dfc90cd17d09b8', 0, 0, 0, 0, 0),
+(608, NULL, '', 'Arif X MIPA 1ge', 'arifmipa1', '', '02930192', '', '', '', '', NULL, '', '1', '', '', NULL, NULL, 1, '1593935615', '050f982fbea278cabc584d45117a3639', 1, 0, 0, 0, 0);
 
 --
 -- Triggers `m_siswa`
@@ -1754,7 +1760,7 @@ INSERT INTO `rule_users` (`id`, `id_menu`, `id_level`) VALUES
 (148, 47, 4),
 (150, 49, 3),
 (151, 49, 2),
-(153, 50, 4),
+(153, 33, 4),
 (154, 50, 2),
 (155, 25, 4);
 
@@ -1915,60 +1921,52 @@ CREATE TABLE `tb_detail_kelas` (
 --
 
 INSERT INTO `tb_detail_kelas` (`id`, `id_peserta`, `id_kelas`) VALUES
-(65, 536, 3),
-(66, 537, 3),
-(80, 526, 6),
-(86, 543, 34),
-(89, 541, 1),
-(94, 536, 37),
-(95, 537, 37),
-(98, 544, 37),
-(99, 526, 1),
-(100, 551, 39),
-(101, 550, 38),
-(102, 553, 39),
-(103, 554, 38),
-(104, 555, 40),
-(105, 556, 40),
-(106, 557, 40),
-(107, 558, 40),
-(114, 579, 43),
-(115, 580, 43),
-(116, 581, 43),
-(117, 582, 43),
-(118, 591, 44),
-(119, 592, 44),
-(120, 593, 44),
-(121, 594, 44),
-(134, 567, 41),
-(135, 568, 41),
-(136, 569, 41),
-(137, 570, 41),
-(138, 571, 41),
-(139, 572, 41),
-(140, 573, 41),
-(141, 574, 41),
-(142, 575, 41),
-(143, 576, 41),
-(144, 577, 41),
-(145, 578, 41),
-(146, 545, 1),
-(147, 603, 45),
-(148, 544, 46),
-(149, 526, 47),
-(150, 541, 47),
-(151, 541, 47),
-(152, 545, 47),
-(153, 546, 47),
-(154, 547, 47),
-(155, 546, 1),
-(156, 547, 1),
-(157, 526, 51),
-(158, 541, 51),
-(159, 541, 51),
-(160, 545, 51),
-(161, 546, 51),
-(162, 547, 51);
+(164, 608, 56);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_detail_kelas_mapel`
+--
+
+CREATE TABLE `tb_detail_kelas_mapel` (
+  `id` int(11) NOT NULL,
+  `id_kelas` int(11) NOT NULL,
+  `id_mapel` int(11) NOT NULL,
+  `id_guru` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tb_detail_kelas_mapel`
+--
+
+INSERT INTO `tb_detail_kelas_mapel` (`id`, `id_kelas`, `id_mapel`, `id_guru`) VALUES
+(1, 56, 59, 88),
+(2, 56, 60, 89),
+(3, 57, 60, 89),
+(4, 57, 63, 88),
+(5, 57, 67, 70);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_detail_mapel`
+--
+
+CREATE TABLE `tb_detail_mapel` (
+  `id` int(11) NOT NULL,
+  `id_mapel` int(11) NOT NULL,
+  `id_guru` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tb_detail_mapel`
+--
+
+INSERT INTO `tb_detail_mapel` (`id`, `id_mapel`, `id_guru`) VALUES
+(5, 55, 91),
+(6, 59, 91),
+(7, 60, 91);
 
 -- --------------------------------------------------------
 
@@ -2325,35 +2323,21 @@ CREATE TABLE `tb_kelas` (
   `id` bigint(20) NOT NULL,
   `nama` varchar(150) DEFAULT NULL,
   `keterangan` text DEFAULT NULL,
-  `id_trainer` int(6) DEFAULT NULL,
-  `id_mapel` int(6) DEFAULT NULL,
-  `id_instansi` bigint(20) DEFAULT NULL,
-  `id_jurusan` bigint(20) DEFAULT NULL
+  `id_trainer` int(6) DEFAULT NULL COMMENT 'Wali Kelas',
+  `id_mapel` varchar(100) DEFAULT NULL COMMENT 'Mapel-mapel setiap kelas',
+  `id_guru` varchar(100) NOT NULL COMMENT 'Id Para guru yang ngajar di kelas\r\n',
+  `id_instansi` bigint(20) DEFAULT NULL COMMENT 'GAK KEPAKE DULU',
+  `id_jurusan` bigint(20) DEFAULT NULL COMMENT 'GAK KEPAKE DULU\r\n'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `tb_kelas`
 --
 
-INSERT INTO `tb_kelas` (`id`, `nama`, `keterangan`, `id_trainer`, `id_mapel`, `id_instansi`, `id_jurusan`) VALUES
-(1, 'II Pelaut 2', 'Online', 1, 55, 1, 4),
-(3, 'Dikreg7777', 'Kelas Reguler', 33, 59, 1, 6),
-(6, 'Kewarganegaraan', 'Kewarganegaraan', 37, 62, 1, 8),
-(34, 'Strategi Operasi Laut', '-', 38, 63, 1, 9),
-(37, 'II Pelaut 1', 'Online', 1, 55, 1, 6),
-(38, 'XI IPS 1', '-', 49, 71, 10, 11),
-(39, 'XI IPA 1', '-', 46, 70, 10, 10),
-(40, 'X IPA', 'X IPA', 53, 77, 11, 12),
-(41, 'X IPa', 'X IPa', 53, 77, 11, 15),
-(42, 'X MIPA 1', '', 66, 83, 11, 15),
-(43, 'X IPA (Matematika 10)', '-', 68, 84, 12, 17),
-(44, 'X IPS (Matematika 10)', '-', 68, 85, 12, 18),
-(45, 'Belajar Psikologi', 'Sangat penting buat pengembangan diri!', 1, 59, 1, 7),
-(46, 'Red Room', 'You know what Red Room mean right?', 1, 59, 1, 6),
-(47, 'Bahas Psikologi youtuber', 'Shaip', 85, 59, 1, 4),
-(49, 'Dasar-dasar Hynoterapi', 'Bahas aja sebentar da', NULL, 59, 1, 4),
-(50, 'Dasar-dasar Hynoterapi', 'Bahas aja sebentar da', NULL, 59, 1, 4),
-(51, 'Dasar-dasar Hynoterapi', 'Bahas sebentar', 85, 59, 1, 4);
+INSERT INTO `tb_kelas` (`id`, `nama`, `keterangan`, `id_trainer`, `id_mapel`, `id_guru`, `id_instansi`, `id_jurusan`) VALUES
+(56, 'X MIPA 1', 'X MIPA 1 yah', 64, '59,60', '88,89', 1, NULL),
+(57, 'XI MIPA 2', '', 32, '60,63,67', '89,88,70', 1, NULL),
+(58, 'XI IPS 1', '', 28, '68,69,71,74', '3,4,1,5', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -2508,15 +2492,6 @@ CREATE TABLE `tb_penilaian` (
   `token` varchar(5) DEFAULT NULL,
   `izin` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
-
---
--- Dumping data for table `tb_penilaian`
---
-
-INSERT INTO `tb_penilaian` (`id`, `id_kelas`, `id_paket_soal`, `nama_ujian`, `jumlah_soal`, `waktu`, `jenis`, `detil_jenis`, `tgl_mulai`, `terlambat`, `status_token`, `verifikasi`, `token`, `izin`) VALUES
-(1, 1, 2, 'testing', 1, 120, 'set', NULL, '2020-06-10 18:00:00', '2020-06-11 12:00:00', NULL, NULL, NULL, 1),
-(2, 38, 4, 'Penilaian Guru Geografi', 1, 50, 'set', NULL, '2020-06-03 19:54:00', '2020-06-17 21:57:00', NULL, NULL, NULL, 1),
-(3, 45, 3, 'Test Psikologi', 1, 100, 'set', NULL, '2020-06-29 14:00:00', '2020-06-30 14:00:00', NULL, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -3443,6 +3418,18 @@ ALTER TABLE `tb_detail_kelas`
   ADD KEY `id_peserta` (`id_peserta`) USING BTREE;
 
 --
+-- Indexes for table `tb_detail_kelas_mapel`
+--
+ALTER TABLE `tb_detail_kelas_mapel`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tb_detail_mapel`
+--
+ALTER TABLE `tb_detail_mapel`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `tb_dimensi`
 --
 ALTER TABLE `tb_dimensi`
@@ -3688,13 +3675,13 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT for table `m_admin`
 --
 ALTER TABLE `m_admin`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=721;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=725;
 
 --
 -- AUTO_INCREMENT for table `m_guru`
 --
 ALTER TABLE `m_guru`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
 
 --
 -- AUTO_INCREMENT for table `m_laporan`
@@ -3724,7 +3711,7 @@ ALTER TABLE `m_materi_video`
 -- AUTO_INCREMENT for table `m_siswa`
 --
 ALTER TABLE `m_siswa`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=608;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=609;
 
 --
 -- AUTO_INCREMENT for table `m_soal`
@@ -3784,7 +3771,19 @@ ALTER TABLE `tb_block_materi`
 -- AUTO_INCREMENT for table `tb_detail_kelas`
 --
 ALTER TABLE `tb_detail_kelas`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=163;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=165;
+
+--
+-- AUTO_INCREMENT for table `tb_detail_kelas_mapel`
+--
+ALTER TABLE `tb_detail_kelas_mapel`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `tb_detail_mapel`
+--
+ALTER TABLE `tb_detail_mapel`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `tb_dimensi`
@@ -3856,7 +3855,7 @@ ALTER TABLE `tb_jurusan`
 -- AUTO_INCREMENT for table `tb_kelas`
 --
 ALTER TABLE `tb_kelas`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `tb_komen_materi`

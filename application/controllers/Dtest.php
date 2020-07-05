@@ -56,8 +56,6 @@ class Dtest extends MY_Controller {
 
 		$where = [];
 
-
-
 		switch ($this->log_lvl) {
 
 			case 'siswa':
@@ -84,7 +82,7 @@ class Dtest extends MY_Controller {
 
 				$where['kls.id_peserta'] = $this->akun->id;
 
-				$where['kls.id_instansi'] = $this->akun->instansi;
+				// $where['kls.id_instansi'] = $this->akun->instansi;
 
 
 
@@ -329,10 +327,7 @@ class Dtest extends MY_Controller {
 			'searchFilter' => ['Mata Pelajaran'],
 
 			'instansi' => ($this->log_lvl == 'admin') ? $this->m_instansi->get_all() : $this->m_instansi->get_many_by(['id'=>$this->akun->instansi]) 
-
 		];
-
-
 
 		$this->render('modul_pelatihan/list', $data);
 
