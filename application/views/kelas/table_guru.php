@@ -29,7 +29,7 @@
 				<td>
 					<button class="btn btn-primary btn-sm rekrut mb-2" data-id="<?= $rows->id; ?>" onclick="displaySiswa(this)">Lihat Siswa</button>
 
-					<a class="btn btn-sm btn-primary" href="<?= base_url('Materi/lists/') . md5($rows->dmapel); ?>">Mulai Kelas</button>
+					<button onclick="displayMapel(this)" class="btn btn-sm btn-primary">Mulai Kelas</button>
 				</td>
 			</tr>
 		<?php endforeach;?>

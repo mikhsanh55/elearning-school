@@ -10,21 +10,29 @@ class M_kelas extends MY_Model {
 		parent::__construct();
 		
 	}
+
+	public function count_by($where=array()){
+		$get = $this->db->select('
+							kls.id,
+						')
+		->from('tb_kelas kls')
+		->join('m_guru gr','gr.id=kls.id_trainer','inner')
+		->join('tb_instansi ins','ins.id=kls.id_instansi','inner')
+		->get()
+		->result();
+	
+		return count($get);
+	}
+
 	public function get_all($where=array()){
 		$get = $this->db->select('
 							kls.*,
 							gr.nama as nama_guru,
 							ins.instansi,
-							dmapel.id_guru AS dguru,
-							dmapel.id_mapel AS dmapel,
-							mp.nama AS nama_mapel
 						')
 		->from('tb_kelas kls')
-		->join('tb_detail_kelas_mapel dmapel', 'dmapel.id_kelas = kls.id', 'inner')
-		->join('m_guru gr','gr.id=kls.id_trainer','left')
-		->join('m_mapel mp','mp.id=dmapel.id_mapel','inner')
-		->join('tb_instansi ins','ins.id=kls.id_instansi','left')
-		->order_by('mp.id','asc')
+		->join('m_guru gr','gr.id=kls.id_trainer','inner')
+		->join('tb_instansi ins','ins.id=kls.id_instansi','inner')
 		->where($where)
 		->get()
 		->result();
@@ -113,21 +121,7 @@ class M_kelas extends MY_Model {
 		return $get;
 	}
 
-	public function count_by($where=array()){
-		$get = $this->db->select('
-							kls.id,
-						')
-		->from('tb_kelas kls')
-		->join('m_guru gr','gr.id=kls.id_trainer','left')
-		->join('m_mapel mp','mp.id=kls.id_mapel','left')
-		->join('tb_instansi ins','ins.id=kls.id_instansi','left')
-		->order_by('mp.id','asc')
-		->where($where)
-		->get()
-		->result();
 	
-		return count($get);
-	}
 
 	public function count_by_siswa($where=array()){
 		
@@ -227,15 +221,42 @@ class M_kelas extends MY_Model {
     	return $data;
     }
 
+    public function count_guru_all($where = []) {
+    	return count($this->get_guru_all($where));
+    }
+
+    public function get_guru_all($where = []) {
+    	$get = $this->db->select('
+							kls.*,
+							gr.nama as nama_guru,
+							ins.instansi,
+							dmapel.id_guru AS dguru,
+							dmapel.id_mapel AS dmapel,
+							mp.nama AS nama_mapel
+						')
+		->from('tb_kelas kls')
+		->join('tb_detail_kelas_mapel dmapel', 'dmapel.id_kelas = kls.id', 'inner')
+		->join('m_guru gr','gr.id=kls.id_trainer','left')
+		->join('m_mapel mp','mp.id=dmapel.id_mapel','inner')
+		->join('tb_instansi ins','ins.id=kls.id_instansi','left')
+		->order_by('mp.id','asc')
+		->where($where)
+		->get()
+		->result();
+	
+      
+		return $get;
+    }
+
     public function paginate_guru($page = 1, $limit = 10, $where = []) {
     	$where = array_merge($where, $this->where);
         $offset = ($page<=1) ? 0 : ($page-1)*$limit;
         $this->db->limit($limit, $offset);
-        $results = $this->get_all($where);
+        $results = $this->get_guru_all($where);
         //echo  $this->db->last_query(); exit;
         // get counts (e.g. for pagination)
         $count_results = count($results);
-        $count_total = $this->count_guru($where);
+        $count_total = $this->count_guru_all($where);
         $total_pages = ceil($count_total / $limit);
         $counts = array(
             'from_num'      => ($count_results==0) ? 0 : $offset + 1,
