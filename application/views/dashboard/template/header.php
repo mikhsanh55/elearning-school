@@ -23,6 +23,9 @@
   <!-- Chart JS -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <style type="text/css">
+    .capitalize {
+      text-transform: capitalize;
+    }
     .active {
       background: black;
       color:#fff;

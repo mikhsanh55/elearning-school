@@ -24,11 +24,12 @@
 			<th>
 				NIS
 			</th>
-			<th>Kelas</th>
+			<!-- <th>Kelas</th> -->
 			<th>Jenis Kelamin</th>
 			<th>Password</th>
 			<th>Opsi</th>
 		</tr>
+		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $x= 1; foreach ($paginate['data'] as $rows):
 			$get = $this->m_admin->get_by(array('level'=>'siswa','kon_id'=>$rows->id));
 			$length_pass = strlen($rows->password);
@@ -43,7 +44,7 @@
 				<td><?=$rows->nama;?></td>
 				<td><?=$rows->username;?></td>
 				<td><?=$rows->nrp;?></td>
-				<td><?=$rows->nama_kelas;?></td>
+				<!-- <td><?=$rows->nama_kelas;?></td> -->
 				<td>
 					<?= $rows->nik == 1 ? 'Laki - laki' : 'Perempuan'; ?>
 				</td>
@@ -71,6 +72,11 @@
 				</td>	
 			</tr>
 		<?php $x++;endforeach ?>
+		<?php } else { ?>
+			<tr>
+				<td colspan="9" class="text-center">Data Kosong</td>
+			</tr>
+		<?php } ?>
 	</thead>
 <tbody>
 </tbody>

@@ -63,35 +63,30 @@ input:checked + .slider:before {
 	<thead>
 		<tr>
 			<th class="frist">No</th>
-			<th class="text-left">Nama Siswa</th>
-			<th class="text-left">NUPTK/NIP</th>
+			<th>Mata Pelajaran</th>
+			<th>Nama Guru</th>
 			<th>Opsi</th>
-			
 		</tr>
 		<?php 
 			if(count($paginate['data']) > 0) {
 			$i= $page_start; foreach ($paginate['data'] as $rows):
-			$check_kelas = $this->m_detail_kelas->count_by(['id_peserta'=>$rows->id,'id_kelas'=>$id_kelas]);
+			$check_kelas = $this->m_detail_kelas_mapel->count_by(['id_mapel'=>$rows->id_mapel,'id_kelas'=>$id_kelas, 'id_guru' => $rows->id_guru]);
 		?>
 			<tr>
 				<td align="center" class="frist"><?=$i;?></td>
-				<td><?=$rows->nama;?> </td>
+				<td><?=$rows->nama_mapel;?> </td>
 				<td>
-					<?= $rows->nrp; ?>
+					<?= $rows->nama_guru; ?>
 				</td>
-				
 				<td class="frist">
 					<label class="switch" data-toggle="tooltip">
-							<input type="checkbox" class="aktivasi"  data-peserta="<?=$rows->id;?>" <?=($check_kelas > 0) ? 'checked' : NULL ?>>
+						<input type="checkbox" class="aktivasi"  data-mapel="<?=$rows->id_mapel;?>" data-guru="<?= $rows->id_guru; ?>" <?=($check_kelas > 0) ? 'checked' : NULL ?>>
 						<span class="slider round"></span>
 					</label>
 				</td>
-				
 			</tr>
 		<?php $i++;endforeach; } else { ?>
-			<tr>
-			<td colspan="4" class="text-center">Data Kosong</td>
-			</tr>
+			<tr colspan="4" class="text-center">Data Kosong</tr>
 		<?php } ?>
 	</thead>
 <tbody>
@@ -123,10 +118,11 @@ $('.aktivasi').change(function(){
 		
 		$.ajax({
 			type:'post',
-			url : '<?=base_url('kelas/update_kelas');?>',
+			url : '<?=base_url('kelas/update_mapel');?>',
 			data : {
 				aktif : aktif,
-				id_peserta  : $(this).data('peserta'),
+				id_mapel  : $(this).data('mapel'),
+				id_guru : $(this).data('guru'),
 				id_kelas : '<?=$id_kelas;?>'
 			},
 			success:function(response){

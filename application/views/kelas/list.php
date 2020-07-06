@@ -83,7 +83,7 @@
 				<h2><strong> Daftar <?= $this->name; ?></strong></h2>	
 			</div>
 			<div class="col-sm-12 col-md-6 col-lg-6 text-right">
-				<a class="btn btn-light" href="<?= base_url('jurusan'); ?>">Kembali</a>
+				<a class="btn btn-light" onclick="window.history.back()">Kembali</a>
 			</div>
 		</div>
 		<div id="accordion" class="panel-group">
@@ -100,14 +100,14 @@
 					<div class="form-group">
 							<label for="search">Search&nbsp;&nbsp;</label>
 							<div class="rs-select2 js-select-simple select--no-search">
-								<select id="filter" class="form-control input-sm">
+								<select id="modal-filter" class="form-control input-sm">
 									<?php foreach ($searchFilter as $key => $val): ?>
 										<option value="<?=$key;?>"><?=$val;?></option>
 									<?php endforeach ?>
 								</select>
 								<div class="select-dropdown"></div>
 							</div>
-							<input type="text" style="width: 50%;height:30px;" class="form-control input-sm" id="search" placeholder="ketikan yang anda cari" name="search">
+							<input type="text" style="width: 50%;height:30px;" class="form-control input-sm" id="modal-search" placeholder="ketikan yang anda cari" name="search">
 						</div>
 					</from>
 					<br>
@@ -117,7 +117,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				Limit 
-				<select id="limit">
+				<select id="modal-limit">
 					<option value="10">10</option>
 					<option value="50">50</option>
 					<option value="100">100</option>
@@ -195,8 +195,9 @@
 				id_kelas : $(self).data('id'),
 			},
 			success: function(res) {
-				$(self).prop('disabled', false).text('Lihat Siswa')
+				$(self).prop('disabled', false).text('Pilih Siswa')
 				$('#daftar-siswa').html(res)		
+				$('#listSiswaModal').modal('show')
 			}			
 		}).done(() => $('#listSiswaModal').modal('show'))
 	}
@@ -207,44 +208,15 @@
 		$(self).prop('disabled', true).text('Loading...')
 		$.ajax({
 			type: 'POST',
-			url: "<?= base_url('kelas/data_mapel') ?>",
+			url: "<?= base_url('kelas/daftar_mapel') ?>",
 			data: {
 				id_kelas: $(self).data('id'),
 			},
-			dataType: 'JSON',
 			success: function(res) {
-				$(self).prop('disabled', false).text('Lihat Mapel')
+				$(self).prop('disabled', false).text('Pilih Mapel')
 				$('#listSiswaModal .modal-title').text('Daftar Mata Pelajaran Kelas ')
-				html += `<table id="mapel-table" class="table table-bordered table-striped">
-					<thead>
-						<tr>
-							<th class="text-left">No</th>
-							<th>Mata Pelajaran</th>
-							<th>Guru Mata Pelajaran</th>
-						</tr>
-					</thead>
-					<tbody>
-				`
-				if(res.result.length > 0) {
-					$('#listSiswaModal .modal-title').text('Daftar Mata Pelajaran Kelas ' + res.result[0].nama)
-					res.result.forEach((item, i) => {
-						html += `<tr>
-							<td>${++i}</td>
-							<td>${item.nama_mapel}</td>
-							<td class="text-capitalize">${item.nama_guru}</td>
-						`
-					})	
-				}
-				else {
-					html += `<tr>
-						<td colspan="3" class="text-center">Data Kosong</td>
-					</tr>
-					`
-				}
 				
-				html += `</tbody>
-				</table>`
-				$('#listSiswaModal .modal-body #daftar-siswa').html(html)
+				$('#listSiswaModal .modal-body #daftar-siswa').html(res)
 
 			}
 		}).done(() => {
@@ -256,7 +228,8 @@
 	$(document).ready(function(){
 		pageLoad(1,'kelas/page_load');
 
-		$('#limit,#filter').change(function(){
+		$('#limit').change(function(){
+			alert()
 			pageLoad(1,'kelas/page_load');
 		});
 
@@ -284,9 +257,9 @@
 			url  : '<?php echo base_url() ?>' + url + '/' + pg,
 			data :{
 				pg    : pg,
-				limit : $('#limit').val(),
-				filter : $('#filter').val(),
-				search : $('#search').val()
+				limit : $('#modal-limit').val(),
+				filter : $('#modal-filter').val(),
+				search : $('#modal-search').val()
 			},
 			success:function(response){
 				$('#content-view').html(response);

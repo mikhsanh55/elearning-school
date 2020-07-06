@@ -64,7 +64,6 @@
 
 							</div>
 
-
 							<div class="col-md-6 form-group">
 
 								<label><?= $this->name; ?></label>
@@ -157,13 +156,13 @@
 
 	$(document).ready(function(){
 
-		pageLoad(1,'kelas/page_load_murid');
+		pageLoad(1,'kelas/page_load_murid_kelas');
 
 
 
 		$('#limit').change(function(){
 
-			pageLoad(1,'kelas/page_load_murid');
+			pageLoad(1,'kelas/page_load_murid_kelas');
 
 		});
 
@@ -171,7 +170,7 @@
 
 		$('#search-murid').keyup(delay(function (e) {
 
-			pageLoad(1,'kelas/page_load_murid');
+			pageLoad(1,'kelas/page_load_murid_kelas');
 
 		}, 500));
 
@@ -243,7 +242,7 @@
 
 			success:function(response){
 
-				pageLoad(1,'kelas/page_load_murid');
+				pageLoad(1,'kelas/page_load_murid_kelas');
 				window.location.reload()
 			}
 

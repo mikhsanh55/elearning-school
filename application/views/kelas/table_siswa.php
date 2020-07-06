@@ -19,7 +19,7 @@
 				<td><?= $rows->nama_guru; ?></td>
 				<td>
 
-					<a class="btn btn-primary btn-sm " href="<?= base_url('Materi/lists/') . md5($rows->id_mapel) ?>">Ikuti Kelas</a>
+					<a class="btn btn-primary btn-sm " href="<?= base_url('Materi/lists/') . md5($rows->dmapel) ?>">Ikuti Kelas</a>
 				</td>
 			</tr>
 		<?php endforeach; ?>	

@@ -24,7 +24,7 @@
 
             <div class="col-sm-12 col-md-6 col-lg-6">
 
-                <h2><?=(empty($edit->id)) ? 'Tambah' : 'Update' ;?> <?= $this->name; ?></h2>
+                <h2><?=(empty($edit->id)) ? 'Tambah' : 'Update' ;?> Mata Pelajaran</h2>
 
 
 
@@ -64,7 +64,6 @@
 
 							</div>
 
-
 							<div class="col-md-6 form-group">
 
 								<label><?= $this->name; ?></label>
@@ -96,12 +95,11 @@
 						<div class="form-group">
 
 							<label for="search">Search&nbsp;&nbsp;</label>
-
-							<select id="filter-murid" class="form-control input-sm">
-								<?php foreach ($searchFilter as $key => $val): ?>
-									<option value="<?=$key;?>"><?=$val;?></option>
-								<?php endforeach ?>
-							</select>
+								<select id="filter" class="form-control input-sm">
+									<?php foreach ($searchFilter as $key => $val): ?>
+										<option value="<?=$key;?>"><?=$val;?></option>
+									<?php endforeach ?>
+								</select>
 
 							<input type="text" style="width: 50%;" class="form-control input-sm" id="search-murid" placeholder="ketikan nama yang anda cari" name="search">
 
@@ -157,13 +155,13 @@
 
 	$(document).ready(function(){
 
-		pageLoad(1,'kelas/page_load_murid');
+		pageLoad(1,'kelas/page_load_mapel');
 
 
 
 		$('#limit').change(function(){
 
-			pageLoad(1,'kelas/page_load_murid');
+			pageLoad(1,'kelas/page_load_mapel');
 
 		});
 
@@ -171,7 +169,7 @@
 
 		$('#search-murid').keyup(delay(function (e) {
 
-			pageLoad(1,'kelas/page_load_murid');
+			pageLoad(1,'kelas/page_load_mapel');
 
 		}, 500));
 
@@ -243,7 +241,7 @@
 
 			success:function(response){
 
-				pageLoad(1,'kelas/page_load_murid');
+				pageLoad(1,'kelas/page_load_mapel');
 				window.location.reload()
 			}
 
@@ -265,11 +263,11 @@
 
 				pg    : pg,
 
-				filter: $('#filter-murid').val(),
-
 				limit : $('#limit-murid').val(),
 
 				search : $('#search-murid').val(),
+
+				filter: $('#filter').val(),
 
 				id_kelas : '<?=$kelas->id;?>',
 

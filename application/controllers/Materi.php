@@ -131,7 +131,7 @@ class Materi extends MY_Controller
     {
 
         $data = [
-            'title' => 'Daftar Materi - Elearning UMKM',
+            'title' => 'Daftar Materi',
             'mapel' => $this->m_mapel->get_by(['md5(id)' => $id_mapel]),
         ];
         // print_r($data);exit;
@@ -147,9 +147,9 @@ class Materi extends MY_Controller
 		$limit = 10;
 		$where = [];
 
-        if ($this->log_lvl == 'guru') {
-            $where['mt.id_trainer'] = $this->akun->id;
-        }
+        // if ($this->log_lvl == 'guru') {
+        //     $where['mt.id_trainer'] = $this->akun->id;
+        // }
 
        
         if($this->log_lvl != 'admin'){
@@ -158,7 +158,7 @@ class Materi extends MY_Controller
         
         $where['mt.id_mapel'] = $post['id_mapel'];
         
-        $paginate                   = $this->m_materi->paginate_materi($pg,$where,$limit);
+        $paginate         = $this->m_materi->paginate_materi($pg,$where,$limit);
         $data['paginate'] = $paginate;
 		$data['paginate']['url']	= 'materi/page_load';
 		$data['paginate']['search'] = 'lookup_key';

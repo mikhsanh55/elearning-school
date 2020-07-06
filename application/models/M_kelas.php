@@ -14,11 +14,15 @@ class M_kelas extends MY_Model {
 		$get = $this->db->select('
 							kls.*,
 							gr.nama as nama_guru,
-							ins.instansi
+							ins.instansi,
+							dmapel.id_guru AS dguru,
+							dmapel.id_mapel AS dmapel,
+							mp.nama AS nama_mapel
 						')
 		->from('tb_kelas kls')
+		->join('tb_detail_kelas_mapel dmapel', 'dmapel.id_kelas = kls.id', 'inner')
 		->join('m_guru gr','gr.id=kls.id_trainer','left')
-		->join('m_mapel mp','mp.id=kls.id_mapel','left')
+		->join('m_mapel mp','mp.id=dmapel.id_mapel','inner')
 		->join('tb_instansi ins','ins.id=kls.id_instansi','left')
 		->order_by('mp.id','asc')
 		->where($where)
@@ -197,7 +201,8 @@ class M_kelas extends MY_Model {
     	// else {
     	// 	$result = [];
     	// }
-    	$result = $this->db->select('kls.id, kls.nama, mapel.nama AS nama_mapel, guru.nama AS nama_guru, dkmapel.*')
+
+    	$result = $this->db->select('kls.id, kls.nama, mapel.nama AS nama_mapel, guru.nama AS nama_guru, dkmapel.*, dkmapel.id_mapel AS dmapel')
     						->from('tb_kelas kls')
     						->join('tb_detail_kelas_mapel dkmapel', 'kls.id = dkmapel.id_kelas','inner')
     						->join('m_mapel mapel', 'dkmapel.id_mapel = mapel.id', 'left')

@@ -159,7 +159,7 @@
 							<td style="width: 25%">NIS<span class="text-danger">*</span></td>
 							<td style="width: 75%"><input type="text" class="form-control" name="nrp" id="nrp" required></td>
 						</tr>
-						<tr>
+						<!-- <tr>
 							<td style="width: 25%">Kelas<span class="text-danger">*</span></td>
 							<td>
 								<select name="id_kelas" id="id_kelas" class="form-control" required>
@@ -169,22 +169,8 @@
 								    <?php endforeach; ?>
 								</select>
 							</td>
-						</tr>
-						<!-- <tr>
-							<td style="width: 25%">Wali Kelas</td>
-							<td>
-								<select name="id_guru" id="id_guru" class="form-control">
-									<option value="0">Belum Ada</option>
-								    <?php foreach($guru as $rows) : ?>
-								        <option value="<?= $rows->id; ?>"><?= ucwords($rows->nama); ?></option>
-								    <?php endforeach; ?>
-								</select>
-							</td>
 						</tr> -->
-						<!-- <tr>
-							<td style="width: 25%">Angkatan</td>
-							<td style="width: 75%"><input type="text" maxlength = "10" class="form-control" name="angkatan" id="angkatan" required></td>
-						</tr> -->
+						
 
 						<tr>
 							<td style="width: 25%">No.Telp/Hp</td>
@@ -410,11 +396,12 @@
 							$("#tempat").val(response.data.tempat_lahir);
 							$("#tanggal").val(response.data.tanggal_lahir);
 							$("#nim").val(response.data.nim);
-							$("#nik").val(response.data.nik);
+							var jk = response.data.nik == 'L' ? 1 : 0;
+							$("#nik").val(jk);
 							$("#email").val(response.data.email);
 							$("#alamat").val(response.data.alamat);
 							$("#instansi").val(response.data.instansi);
-							$("#id_kelas").val(response.data.id_kelas);
+							// $("#id_kelas").val(response.data.id_kelas);
 							$("#tahun_angkatan_masuk").val(response.data.tahun_angkatan_masuk);
 							// $("#angkatan").val(response.data.angkatan)
 							$("#nama").focus();

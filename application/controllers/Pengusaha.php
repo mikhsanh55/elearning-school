@@ -661,7 +661,6 @@ class Pengusaha extends MY_Controller {
 		    $where["akun.is_graduated"] = 0;	
 		}
 		
-
 		if (!empty($post['search'])) {
 			switch ($post['filter']) {
 				case 0:

@@ -266,7 +266,6 @@
 			};
 		}
 
-
 	})
 
 
@@ -280,13 +279,13 @@
 				id : mapel_id,
 			},
 			success:function(response){
-				html = '<ol>';
+				html = '<ul class="list-group">';
 				var i = 1;
 				$.each( response.trainer, function( key, rows ) {
-					html += `<li>` + i + '.' +rows.nama_guru+ `</li>`;
+					html += `<li class="list-group-item capitalize">` + i + '.' +rows.nama_guru+ `</li>`;
 					i++;
 				});
-				html += '</ol>';
+				html += '</ul>';
 
 				$('#modal_show').modal('show');
 				$('#content_modals').html(html);

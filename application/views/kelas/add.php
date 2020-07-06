@@ -76,7 +76,7 @@
 
 			<div class="form-group col-md-6">
 
-				<label for="mapel">Mata Pelajaran</label>
+				<!-- <label for="mapel">Mata Pelajaran</label>
 				
 				<div class="dropdown show">
 				  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width:80%;text-align: left;">
@@ -117,7 +117,7 @@
 				    <?php endforeach;
 				     } ?>
 				  </div>
-				</div>
+				</div> -->
 				
 
 			</div>
@@ -128,7 +128,7 @@
 
 				<label for="nama">Nama <?= $this->name; ?>:</label>
 
-				<input type="text" value="<?=(empty($edit->nama)) ? NULL : $edit->nama ;?>" class="form-control" id="nama" placeholder="Masukan Nama Room" name="nama" required="" maxlength="150">
+				<input type="text" value="<?=(empty($edit->nama)) ? NULL : $edit->nama ;?>" class="form-control" id="nama" placeholder="Masukan Nama Kelas" name="nama" required="" maxlength="150">
 
 			</div>
 

@@ -8,11 +8,9 @@ class M_siswa extends MY_Model
 
 
      public function get_all($where=array()){
-    	$get = $this->db->select('akun.*, in.instansi AS nama_instansi, kls.nama as nama_kelas, user.id as user_id, user.password')
+    	$get = $this->db->select('akun.*, in.instansi AS nama_instansi, user.id as user_id, user.password')
 				    	->from('m_siswa akun')
-				    	->join('tb_instansi in','in.id = akun.instansi','left')
-                        ->join('tb_detail_kelas dkls', 'dkls.id_peserta = akun.id', 'inner')
-                        ->join('tb_kelas kls', 'dkls.id_kelas = kls.id', 'left')
+				    	->join('tb_instansi in','akun.instansi = in.id','left')
                         ->join('m_admin user', 'akun.id = user.kon_id', 'left')
 				    	->where($where)
 				    	->get()
@@ -40,8 +38,8 @@ class M_siswa extends MY_Model
         //echo  $this->db->last_query(); exit;
         // get counts (e.g. for pagination)
         $count_results = count($results);
-        // $count_total = $this->count_by_cs($where);
-        $count_total =count($results);
+        $count_total = $this->count_by_cs($where);
+        // $count_total =count($results);
         $total_pages = ceil($count_total / $limit);
         $counts = array(
             'from_num'      => ($count_results==0) ? 0 : $offset + 1,

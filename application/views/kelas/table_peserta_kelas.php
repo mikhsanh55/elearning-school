@@ -65,32 +65,25 @@ input:checked + .slider:before {
 			<th class="frist">No</th>
 			<th class="text-left">Nama Siswa</th>
 			<th class="text-left">NUPTK/NIP</th>
-			<th>Opsi</th>
 			
 		</tr>
 		<?php 
 			if(count($paginate['data']) > 0) {
-			$i= $page_start; foreach ($paginate['data'] as $rows):
-			$check_kelas = $this->m_detail_kelas->count_by(['id_peserta'=>$rows->id,'id_kelas'=>$id_kelas]);
+			$i= 1; foreach ($paginate['data'] as $rows):
 		?>
 			<tr>
-				<td align="center" class="frist"><?=$i;?></td>
-				<td><?=$rows->nama;?> </td>
+				<td align="center" class="frist"><?=$i++;?></td>
+				<td><?=$rows->nama_siswa;?> </td>
 				<td>
 					<?= $rows->nrp; ?>
 				</td>
 				
-				<td class="frist">
-					<label class="switch" data-toggle="tooltip">
-							<input type="checkbox" class="aktivasi"  data-peserta="<?=$rows->id;?>" <?=($check_kelas > 0) ? 'checked' : NULL ?>>
-						<span class="slider round"></span>
-					</label>
-				</td>
+				
 				
 			</tr>
 		<?php $i++;endforeach; } else { ?>
 			<tr>
-			<td colspan="4" class="text-center">Data Kosong</td>
+			<td colspan="3" class="text-center">Data Kosong</td>
 			</tr>
 		<?php } ?>
 	</thead>
@@ -111,27 +104,3 @@ input:checked + .slider:before {
 	})
 	
 </script> -->
-<script>
-$('.aktivasi').change(function(){
-		var aktivasi = $(this);
-		if($(this).is(":checked")){
-			var aktif = 1;
-		}
-		else if($(this).is(":not(:checked)")){
-			var aktif = 0;
-		}
-		
-		$.ajax({
-			type:'post',
-			url : '<?=base_url('kelas/update_kelas');?>',
-			data : {
-				aktif : aktif,
-				id_peserta  : $(this).data('peserta'),
-				id_kelas : '<?=$id_kelas;?>'
-			},
-			success:function(response){
-
-			}
-		})
-	})
-</script>

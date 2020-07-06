@@ -18,6 +18,8 @@ class Dtest extends MY_Controller {
 
         $this->opsi = array("a","b","c","d","e");
 
+        $this->load->model('m_detail_mapel');
+
         $this->load->model('m_kelas');
 
         $this->load->model('m_mapel');
@@ -1143,7 +1145,7 @@ class Dtest extends MY_Controller {
 
 		$data = array(
 
-			'trainer' => $this->m_mapel_cs->get_many_by(array('mp.id'=>$post['id'])), 
+			'trainer' => $this->m_detail_mapel->get_all(array('dmapel.id_mapel'=>$post['id'])), 
 
 		);
 
