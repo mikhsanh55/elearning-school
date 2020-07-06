@@ -85,6 +85,7 @@ class Login extends MY_Controller
         			if ($get_user->level == "siswa") {
         				$siswa = $this->m_siswa->get_by(array('id'=>$get_user->kon_id));
         				$instansi = $this->m_instansi->get_by(array('id'=>$siswa->instansi));
+                        $cek_kelas = $this->m_detail_kelas->get_by(['id' => $get_user->kon_id]);
         				// if (empty($instansi)) {
         				// 	$_log['log']['status']			= "0";
         				// 	$_log['log']['keterangan']		= "Maaf, akun anda tidak terdaftar pada instansi mana pun, silahkan hubungi admin";
@@ -96,7 +97,14 @@ class Login extends MY_Controller
         				// 	$_log['log']['detil_admin']		= null;
         				// 	j($_log);exit;
         				// }else
-                         if($siswa->deleted == 1){
+                        // Jika Siswa belum punya kelas
+                        if(empty($cek_kelas)) {
+                            $_log['log']['status']          = "0";
+                            $_log['log']['keterangan']      = "Anda belum memiliki kelas, harap hubungi Admin";
+                            $_log['log']['detil_admin']     = null;
+                            j($_log);exit;
+                        }
+                        else if($siswa->deleted == 1){
         					$_log['log']['status']			= "0";
         					$_log['log']['keterangan']		= "Maaf, akun anda di nonakifkan, silahkan hubungi admin";
         					$_log['log']['detil_admin']		= null;
@@ -112,6 +120,9 @@ class Login extends MY_Controller
         					if (!empty($siswa)) {
         						$sess_nama_user = $siswa->nama;
         					}
+                            else {
+                                $sess_nama_user = 'Siswa';
+                            }
         				}
 
         			}else if ($get_user->level == "instansi") {

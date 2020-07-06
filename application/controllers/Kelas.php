@@ -92,7 +92,7 @@ class Kelas extends MY_Controller
   public function siswa(){
   		$siswa = $this->m_detail_kelas->get_by(['id_peserta' => $this->session->admin_konid]);
   		$kelas = $this->m_kelas->get_by(['kls.id' => $siswa->id_kelas]);
-  		// print_r($kelas);exit;
+  		
 		$data = array(
 
 			'searchFilter' => array('Nama','Mata Pelajaran'),
