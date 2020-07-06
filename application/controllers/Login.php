@@ -85,7 +85,8 @@ class Login extends MY_Controller
         			if ($get_user->level == "siswa") {
         				$siswa = $this->m_siswa->get_by(array('id'=>$get_user->kon_id));
         				$instansi = $this->m_instansi->get_by(array('id'=>$siswa->instansi));
-                        $cek_kelas = $this->m_detail_kelas->get_by(['id' => $get_user->kon_id]);
+                        $cek_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $get_user->kon_id]);
+                        // print_r($cek_kelas);exit;
         				// if (empty($instansi)) {
         				// 	$_log['log']['status']			= "0";
         				// 	$_log['log']['keterangan']		= "Maaf, akun anda tidak terdaftar pada instansi mana pun, silahkan hubungi admin";
