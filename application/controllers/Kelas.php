@@ -437,7 +437,7 @@ class Kelas extends MY_Controller
   		
 		$data = array(
 
-			'searchFilter' 	=> array('Nama','NUPTK'),
+			'searchFilter' 	=> array('Nama','NIS', 'Kelas'),
 
 			'kelas' 		=> $this->m_kelas->get_by(['kls.id'=>$post['id']]),
 
@@ -501,6 +501,11 @@ class Kelas extends MY_Controller
 				case 1:
 					$where["(lower(akun.nrp) like '%".strtolower($post['search'])."%' )"] = null;
 				break;
+
+				case 2: 
+					$where["(lower(akun.alamat) like '%".strtolower($post['search'])."%' )"] = null;
+				break;
+
 			}
 			
 

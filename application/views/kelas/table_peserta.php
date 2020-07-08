@@ -92,7 +92,7 @@ input:checked + .slider:before {
 			</tr>
 		<?php $i++;endforeach; } else { ?>
 			<tr>
-			<td colspan="4" class="text-center">Data Kosong</td>
+			<td colspan="5" class="text-center">Data Kosong</td>
 			</tr>
 		<?php } ?>
 	</thead>

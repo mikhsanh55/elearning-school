@@ -159,9 +159,12 @@
 
 		pageLoad(1,'kelas/page_load_murid');
 
+		$('#filter-murid').change(function() {
+			pageLoad(1,'kelas/page_load_murid');			
+		})
 
 
-		$('#limit').change(function(){
+		$('#limit-murid').change(function(){
 
 			pageLoad(1,'kelas/page_load_murid');
 
