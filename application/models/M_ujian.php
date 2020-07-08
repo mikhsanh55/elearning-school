@@ -15,14 +15,13 @@ class M_ujian extends MY_Model {
 		$get = $this->db->select('
 							uji.*,
 							kls.nama as kelas,
-							gr.nama as nama_guru,
 							mp.nama as nama_mapel,
 							ins.instansi as nama_instansi
 						')
 		->from('tb_ujian uji')
 		->join('tb_kelas kls','kls.id=uji.id_kelas','left')
-		->join('m_guru gr','gr.id=kls.id_trainer','left')
-		->join('m_mapel mp','mp.id=kls.id_mapel','left')
+		->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'left')
+		->join('m_mapel mp','mp.id=dmkls.id_mapel','left')
 		->join('tb_instansi ins','ins.id=kls.id_instansi','left')
 		->order_by('uji.id','asc')
 		->where($where)

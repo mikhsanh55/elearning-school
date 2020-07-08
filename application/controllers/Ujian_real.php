@@ -280,6 +280,7 @@ class Ujian_real extends MY_Controller {
 			'tgl_mulai'		=> date_default($post['tgl_mulai']).' '.$post['waktu_mulai'],
 			'terlambat'		=> date_default($post['tgl_selesai']).' '.$post['waktu_selesai'],
 			'min_nilai'		=> $post['min_nilai'],
+			'izin'			=> 1
 
 		];
 		$data['id_instansi'] = $this->akun->instansi;
@@ -346,7 +347,9 @@ class Ujian_real extends MY_Controller {
 
 			'terlambat'		=> date_default($post['tgl_selesai']).' '.$post['waktu_selesai'],
 
-			'min_nilai'		=> $post['min_nilai']
+			'min_nilai'		=> $post['min_nilai'],
+
+			'izin'			=> 1
 
 		];
 
@@ -1891,7 +1894,14 @@ class Ujian_real extends MY_Controller {
 
 			$nilai = ($jumlah_benar / $jumlah_soal)  * 100;
 
-			$nilai_bobot = ($nilai_bobot / $total_bobot)  * 100;
+			if($total_bobot > 0) {
+				$nilai_bobot = ($nilai_bobot / $total_bobot)  * 100;	
+			}
+			else {
+				$nilai_bobot = ($nilai_bobot)  * 100;
+			}
+
+			
 
 			
 			// Update status siswa jika nilainya lulus

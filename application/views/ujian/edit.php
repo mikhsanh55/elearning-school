@@ -46,7 +46,7 @@
 						<select name="type_ujian" id="type_ujian" style="width: 100%;" required>
 
 							<option disabled="disabled" selected="selected">Pilih</option>
-
+							<?php if($this->log_lvl != 'guru' && $this->log_lvl != 'siswa') { ?>
 							<?php foreach ($tipe_ujian as $key => $rows): ?>
 
 								<?php if ($edit->type_ujian == $key): ?>
@@ -58,10 +58,10 @@
 									<option value="<?=$key;?>"><?=$rows;?></option>
 
 								<?php endif ?>
-
-								
-
 							<?php endforeach ?>
+							<?php } else { ?>
+								<option value="harian" selected>Ulangan Harian</option>
+							<?php } ?>
 
 						</select>
 
@@ -306,7 +306,7 @@
 
 					}else{
 
-						alert(response.message);
+						// alert(response.message);
 
 						window.location = '<?=base_url('ujian_real');?>'
 

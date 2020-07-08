@@ -66,12 +66,12 @@ class Jadwal extends MY_Controller {
 
 		);
 
-		$data = $this->getClient();
+		// $data = $this->getClient();
 		
 		if($this->log_lvl == 'guru'){
 		    $kelas = $this->m_kelas->get_many_by(['id_trainer'=>$this->akun->id]);
 		}else if($this->log_lvl == 'admin'){
-		    $kelas = $this->m_kelas->get_all();
+		    $kelas = $this->m_kelas->get_all(['kls.id_instansi'=>$this->akun->instansi]);
 		    
 		}else{
 		    $kelas = $this->m_kelas->get_many_by(['kls.id_instansi'=>$this->akun->instansi]);

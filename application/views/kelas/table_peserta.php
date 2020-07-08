@@ -64,7 +64,8 @@ input:checked + .slider:before {
 		<tr>
 			<th class="frist">No</th>
 			<th class="text-left">Nama Siswa</th>
-			<th class="text-left">NUPTK/NIP</th>
+			<th class="text-left">NIS</th>
+			<th class="text-left">Kelas</th>
 			<th>Opsi</th>
 			
 		</tr>
@@ -79,6 +80,7 @@ input:checked + .slider:before {
 				<td>
 					<?= $rows->nrp; ?>
 				</td>
+				<td><?= $rows->alamat; ?></td>
 				
 				<td class="frist">
 					<label class="switch" data-toggle="tooltip">

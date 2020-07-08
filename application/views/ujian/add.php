@@ -46,12 +46,15 @@
 						<select name="type_ujian" id="type_ujian" style="width: 100%;" required>
 
 							<option disabled="disabled" selected="selected">Pilih</option>
+							<?php if($this->log_lvl != 'guru' && $this->log_lvl != 'siswa') { ?>
+								<?php foreach ($tipe_ujian as $key => $rows): ?>
 
-							<?php foreach ($tipe_ujian as $key => $rows): ?>
+									<option value="<?=$key;?>"><?=$rows;?></option>
 
-								<option value="<?=$key;?>"><?=$rows;?></option>
-
-							<?php endforeach ?>
+								<?php endforeach ?>
+							<?php } else { ?>
+								<option value="harian">Ulangan Harian</option>
+							<?php } ?>
 
 						</select>
 
@@ -93,9 +96,11 @@
 					<div class="rs-select2 js-select-simple select--no-search">
 						<select name="id_mapel" id="id_mapel" style="width: 100%;" required>
 							<option disabled="disabled" selected="selected">Pilih</option>
-							<?php foreach($mapel as $row) : ?>
-								<option value="<?= $row->id; ?>"><?= $row->nama; ?></option>
-							<?php endforeach; ?>
+							
+								<?php foreach($mapel as $row) : ?>
+									<option value="<?= $row->id; ?>"><?= $row->nama; ?></option>
+								<?php endforeach; ?>
+
 						</select>
 						<div class="select-dropdown"></div>
 					</div>
@@ -244,7 +249,7 @@
 
 					}else{
 
-						alert(response.message);
+						// alert(response.message);
 
 						window.location = '<?=base_url('ujian_real');?>'
 

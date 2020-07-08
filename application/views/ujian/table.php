@@ -85,7 +85,7 @@
 					 	<?php endif ?>
 
 						<?php if ($essay > 0): ?>
-					 		<button type="button" class="btn btn-warning btn-sm mr-2  mb-2" onclick="window.location = '<?=base_url('ujian_essay/ikuti_ujian/'.encrypt_url($rows->id));?>'"  data-toggle="tooltip" title="" disabled>Belum Dinilai</button>
+					 		<button type="button" class="btn btn-warning btn-sm mr-2  mb-2" onclick="window.location = '<?=base_url('ujian_essay/ikuti_ujian/'.encrypt_url($rows->id));?>'"  data-toggle="tooltip" title="" disabled>Sudah Essay</button>
 					 	<?php else: ?>
 					 		<?php if($jumlah_soal_essay > 0) : ?>
 					 		<button type="button" class="btn btn-success btn-sm mr-2  mb-2" onclick="window.location = '<?=base_url('ujian_essay/ikuti_ujian/'.encrypt_url($rows->id));?>'"  data-toggle="tooltip" title="">Mulai Essay</button>
