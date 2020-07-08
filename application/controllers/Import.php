@@ -63,14 +63,14 @@ class Import extends MY_Controller {
                 if ($index != 1) {
                         $id_kelas = $this->m_jurusan->get_by(['jurusan' => $row['E'], 'id_instansi' => $this->akun->instansi]);
                         $id_guru = $this->m_guru->get_by(['nama' => $row['F'], 'instansi' => $this->akun->instansi]);
-                        $jk = ($row['G'] == 'L' || $row['G'] == 'Laki-laki') ? 1 : 0;
+                        // $jk = ( == 'L' || $row['G'] == 'Laki-Laki') ? 1 : 0;
                         $data = array(
                             'nama'  => $row['B'],
                             'username'  => $row['C'],
                             'nrp' => $row['D'], // NIS
                             'id_jurusan' => !empty($id_kelas) ? $id_kelas->id : 0,
                             'no_telpon' => $row['J'],
-                            'nik' => $jk, // Jenis Kelamin
+                            'nik' => $row['G'], // Jenis Kelamin
                             'email'  => $row['H'],
                             'alamat'  => $row['I'],
                             'instansi'  => $this->akun->instansi,

@@ -100,24 +100,27 @@ class Trainer extends MY_Controller {
 
 		if ($uri3 == "det") {
 			$a['data'] = $this->db->query("SELECT * FROM m_guru WHERE id = '$uri4'")->row();
-			$a['mapel'] = $this->m_guru->get_join_many_by(['dmapel.id_guru' => $uri4]);
-			$mapels = $this->m_mapel->get_all();
-
+			$a['mapel'] = $this->m_guru->get_join_many_by(['dmapel.id_guru' => $uri4, 'guru.instansi' => $this->akun->instansi]);
+			$mapels = $this->m_mapel->get_all(['id_instansi' => $this->akun->instansi]);
+			//  print_r('Detail ' .count($a['mapel']));
+			// print_r('Asli ' .count($mapels));
+			// exit;
 			$count = 0;$i = 0;
 			$html = '';
 
 			foreach($mapels as $x => $mapel) {
 				$html .= '<div>';
-				if($count < count($a['mapel'])) {
-					
-
+				// if($count < count($a['mapel'])) {
+				
+					echo $mapel->id . $a['mapel'][$i]->idmapel ."<br>";
 					if($mapel->id == $a['mapel'][$i]->idmapel) {
 						$count++;
 						$i++;
 
-						$html .= '<input type="checkbox" name="mapel[]" checked value="'.$mapel->id.'" /> <span class="ml-1">'.$mapel->nama.'</span>';
+						$html .= '<input type="checkbox" name="mapel[]" checked value="'.$mapel->id.'" /> <span class="ml-1">'.$mapel->nama.'s</span>';
 					}
 					else {
+						$i++;
 						$html .= '<input type="checkbox" name="mapel[]" value="'.$mapel->id.'" /> <span class="ml-1">'.$mapel->nama.'</span>';	
 					}
 				}
@@ -166,15 +169,16 @@ class Trainer extends MY_Controller {
 						$this->db->update('m_guru', $datas);
 
 						$inserted_id = $post['id'];
-						print_r($post['mapel']);exit;
+						// print_r($post['mapel']);exit;
 						for($i = 0;$i < count($post['mapel']);$i++) {
 							$data_mapel = $this->m_detail_mapel->get_by(['id_mapel' => $post['mapel'][$i],'id_guru' => $post['id']]);
 
+							$data = [
+								'id_mapel' => $post['mapel'][$i],
+								'id_guru' => $post['id'], 
+							];
 							if(!empty($data_mapel)) {
-								$data = [
-									'id_mapel' => $post['mapel'][$i],
-									'id_guru' => $inserted_id, 
-								];
+								
 
 								$this->m_detail_mapel->update($data, ['id' => $data_mapel->id]);
 
@@ -183,7 +187,8 @@ class Trainer extends MY_Controller {
 								// print_r($data_mapel);exit;
 							}
 							else {
-								$this->db->insert('tb_detail_mapel', ['id_mapel' => $post['mapel'][$i],'id_guru' => $inserted_id]);	
+								$this->m_detail_mapel->insert($data);
+								// print_r($data);exit;
 							}
 							
 							
