@@ -223,7 +223,7 @@ class MY_Controller extends CI_Controller
 		$this->page_title = (!empty($this->sub_menu->nama_menu)) ? $this->sub_menu->nama_menu : NULL;
 		
 		// Set Data center berdasarkan Instansi
-		$this->akun->instansi = $this->m_instansi->get_by(['selected' => 1])->id;
+		// $this->akun->instansi = $this->m_instansi->get_by(['selected' => 1])->id;
 		// print_r($this->akun);exit;
 		
 	}
