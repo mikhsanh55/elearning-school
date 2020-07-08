@@ -23,10 +23,6 @@
                     <td>Mata Pelajaran</td><td><?php echo $du['nmmapel']; ?></td>
                   </tr>
                   <tr>
-                    <td>Trainer</td>
-                    <td><?php echo $du['nmguru']; ?></td>
-                  </tr>
-                  <tr>
                     <td>Nama Ujian</td>
                     <td><?php echo $du['nama_ujian']; ?></td>
                   </tr>

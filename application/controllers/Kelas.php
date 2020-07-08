@@ -200,7 +200,7 @@ class Kelas extends MY_Controller
 
       'id_trainer'  => $post['id_trainer'], // Wali Kelas
 
-      'id_mapel'    => implode(',', $post['mapel']),
+      // 'id_mapel'    => implode(',', $post['mapel']),
 
 	  'id_instansi' => $this->akun->instansi,
 

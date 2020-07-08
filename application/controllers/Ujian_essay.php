@@ -88,7 +88,7 @@ class Ujian_essay extends MY_Controller {
 
 		} else {
 
-			$kelas = $this->m_kelas->get_all();
+			$kelas = $this->m_kelas->get_all(['kls.id_instansi' => $this->akun->instansi]);
 
 		}
 
@@ -418,11 +418,11 @@ class Ujian_essay extends MY_Controller {
 
 
 
-		if ($this->log_lvl == 'guru') {
+		// if ($this->log_lvl == 'guru') {
 
-			$where['kls.id_trainer'] = $this->akun->id;
+		// 	$where['kls.id_trainer'] = $this->akun->id;
 
-		}
+		// }
 
 		
 
@@ -1007,7 +1007,7 @@ class Ujian_essay extends MY_Controller {
 
 										a.token, a.nama_ujian, a.jumlah_soal, a.waktu,
 
-										a.status_token, b.nama nmguru, c.nama nmmapel,
+										a.status_token, c.nama nmmapel,
 
 										(case
 
@@ -1023,11 +1023,11 @@ class Ujian_essay extends MY_Controller {
 
 								->from('tb_ujian a')
 
-								->join('tb_kelas kls','kls.id = a.id_kelas')
+								->join('tb_kelas kls','kls.id = a.id_kelas', 'left')
 
-								->join('m_guru b','kls.id_trainer = b.id')
+								->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'left')
 
-								->join(' m_mapel c','kls.id_mapel = c.id')
+								->join(' m_mapel c','dmkls.id_mapel = c.id', 'left')
 
 								->where('a.id',decrypt_url($id_ujian))
 

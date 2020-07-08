@@ -20,11 +20,7 @@
                     <td ><?php echo $dp->nama; ?></td>
                   </tr>
                   <tr>
-                    <td>Modul</td><td><?php echo $du['nmmapel']; ?></td>
-                  </tr>
-                  <tr>
-                    <td>Trainer</td>
-                    <td><?php echo $du['nmguru']; ?></td>
+                    <td>Mata Pelajaran</td><td><?php echo $du['nmmapel']; ?></td>
                   </tr>
                   <tr>
                     <td>Nama Ujian</td>

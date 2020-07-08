@@ -427,11 +427,11 @@ class Ujian_real extends MY_Controller {
 
 
 
-		if ($this->log_lvl == 'guru') {
+		// if ($this->log_lvl == 'guru') {
 
-			$where['uji.id_guru'] = $this->akun->id;
+		// 	$where['uji.id_guru'] = $this->akun->id;
 
-		}
+		// }
 
 		
 
@@ -1218,7 +1218,7 @@ class Ujian_real extends MY_Controller {
 
 										a.token, a.nama_ujian, a.jumlah_soal, a.waktu,
 
-										a.status_token, b.nama nmguru, c.nama nmmapel,
+										a.status_token, c.nama nmmapel,
 
 										(case
 
@@ -1234,9 +1234,7 @@ class Ujian_real extends MY_Controller {
 
 								->from('tb_ujian a')
 
-								->join('tb_jurusan kls', 'kls.id = a.id_kelas', 'left')
-
-								->join('m_guru b','a.id_guru = b.id', 'left')
+								->join('tb_kelas kls', 'kls.id = a.id_kelas', 'left')
 
 								->join(' m_mapel c','a.id_mapel = c.id', 'left')
 
@@ -1296,7 +1294,6 @@ class Ujian_real extends MY_Controller {
 					")->row();
 
 				
-
 				if ($this->total_ujian <= $cek->jmlh) {
 
 					redirect('ujian_real/');

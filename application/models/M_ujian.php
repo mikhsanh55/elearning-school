@@ -83,17 +83,16 @@ class M_ujian extends MY_Model {
 	public function get_all_siswa($where=array()){
 		$get = $this->db->select('
 							uji.*,
-							kls.jurusan as kelas,
-							gr.nama as nama_guru,
+							kls.nama as kelas,
 							mp.nama as nama_mapel,
 							ins.instansi as nama_instansi
 						')
 		->from('tb_ujian uji')
-		->join('tb_jurusan kls', 'kls.id = uji.id_kelas', 'left')
-		->join('m_siswa sis', 'sis.id_jurusan = kls.id', 'left')
+		->join('tb_kelas kls', 'kls.id = uji.id_kelas', 'left')
+		->join('tb_detail_kelas dkls', 'dkls.id_kelas = kls.id', 'left')
+		->join('m_siswa sis', 'sis.id = dkls.id_peserta', 'left')
 		// ->join('tb_kelas kls','kls.id=uji.id_kelas','left')
 		// ->join('tb_detail_kelas dekls','dekls.id_kelas=kls.id','left')
-		->join('m_guru gr','gr.id=uji.id_guru','left')
 		->join('m_mapel mp','mp.id=uji.id_mapel','left')
 		->join('tb_instansi ins','ins.id=kls.id_instansi','left')
 		->order_by('uji.id','asc')
@@ -118,13 +117,13 @@ class M_ujian extends MY_Model {
 	public function get_by($where=array()){
 		$get = $this->db->select('
 							uji.*,
-							kls.jurusan as kelas,
+							kls.nama as kelas,
 							gr.nama as nama_guru,
 							mp.nama as nama_mapel,
 							ins.instansi as nama_instansi
 						')
 		->from('tb_ujian uji')
-		->join('tb_jurusan kls', 'kls.id = uji.id_kelas', 'left')
+		->join('tb_kelas kls', 'kls.id = uji.id_kelas', 'left')
 		->join('m_siswa sis', 'sis.id_jurusan = kls.id', 'left')
 		->join('m_guru gr','gr.id=uji.id_guru','left')
 		->join('m_mapel mp','mp.id=uji.id_mapel','left')
@@ -141,13 +140,13 @@ class M_ujian extends MY_Model {
 	public function get_many_by($where=array()){
 		$get = $this->db->select('
 							uji.*,
-							kls.jurusan as kelas,
+							kls.nama as kelas,
 							gr.nama as nama_guru,
 							mp.nama as nama_mapel,
 							ins.instansi as nama_instansi
 						')
 		->from('tb_ujian uji')
-		->join('tb_jurusan kls', 'kls.id = uji.id_kelas', 'left')
+		->join('tb_kelas kls', 'kls.id = uji.id_kelas', 'left')
 		->join('m_guru gr','gr.id=uji.id_guru','left')
 		->join('m_mapel mp','mp.id=uji.id_mapel','left')
 		->join('tb_instansi ins','ins.id=kls.id_instansi','left')
