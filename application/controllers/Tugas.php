@@ -63,8 +63,18 @@ class Tugas extends MY_Controller {
 
 
 	public function add(){
+		if($this->log_lvl == 'admin' || $this->log_lvl == 'admin_instansi' || $this->log_lvl == 'instansi') {
+			$kelas = $this->m_kelas->get_all(['kls.id_instansi' => $this->akun->instansi]);
+			$mapel = $this->m_mapel->get_detail_all(['mapel.id_instansi' => $this->akun->instansi]);
+		}
+		else {
+			$kelas = $this->m_kelas->get_data_mapel(['kls.id_instansi' => $this->akun->instansi, 'dkmapel.id_guru' => $this->akun->id]);
+			$mapel = $this->m_mapel->get_detail_all(['mapel.id_instansi' => $this->akun->instansi, 'guru.id' => $this->akun->id]);
+		}
+		// print_r($mapel);exit;
 		$data = array(
-			'kelas' => $this->m_kelas->get_all()
+			'kelas' => $kelas,
+			'mapel' => $mapel
 		);
 		$this->render('tugas/add',$data);
 	}
@@ -99,9 +109,14 @@ class Tugas extends MY_Controller {
 
 		$data = array(
 			'id_kelas' => $post['kelas'], 
+			'id_mapel' => $post['mapel'],
 			'keterangan' => $post['keterangan'],
 			'end_date' => date_default($post['end_date']).' '.$post['end_time'],
 		);
+
+		if($this->log_lvl == 'guru') {
+			$data['id_guru'] = $this->akun->id;
+		}
 
 		$kirim = $this->m_tugas->insert($data);
 		$last_id = $this->db->insert_id();
@@ -174,9 +189,14 @@ class Tugas extends MY_Controller {
 
 		$data = array(
 			'id_kelas' => $post['kelas'], 
+			'id_mapel' => $post['mapel'],
 			'keterangan' => $post['keterangan'],
 			'end_date' => date_default($post['end_date']).' '.$post['end_time'],
 		);
+
+		if($this->log_lvl == 'guru') {
+			$data['id_guru'] = $this->akun->id;
+		}
 
 		$kirim = $this->m_tugas->update($data,array('id'=>$post['id']));
 
@@ -263,11 +283,12 @@ class Tugas extends MY_Controller {
 
 		}
 
-		if ($this->log_lvl == 'guru') {
-			$where['kls.id_trainer'] = $this->akun->id;
-		}
+		// if ($this->log_lvl == 'guru') {
+		// 	$where['tugas.id_guru'] = 9;
+		// }
 
 		$paginate = $this->m_tugas->paginate($pg,$where,$limit);
+		// print_r($paginate);exit;
 		$data['paginate'] = $paginate;
 		$data['paginate']['url']	= 'tugas/page_load';
 		$data['paginate']['search'] = 'lookup_key';
@@ -440,7 +461,7 @@ class Tugas extends MY_Controller {
 	{	
 
 		$data = array(
-			'searchFilter' => array('Nama','NRP'),
+			'searchFilter' => array('Nama'),
 			'tugas' => $tugas = $this->m_tugas->get_by(array('tgs.id'=>decrypt_url($id))),
 			'kelas' => $this->m_kelas->get_by(array('kls.id'=>$tugas->id_kelas))
 		);

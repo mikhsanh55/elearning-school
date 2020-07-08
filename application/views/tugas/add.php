@@ -3,7 +3,6 @@
 		color: #ff2121;
 		font-weight: bold;
 	}
-
 	.errors-input{
 		border: 1px solid #ff2121;
 	}
@@ -17,15 +16,35 @@
 				<div class="rs-select2 js-select-simple select--no-search">
 					<select name="kelas" id="kelas" style="width: 30%;" required>
 						<option disabled="disabled" value="null" selected="selected">Pilih</option>
-						<?php foreach ($kelas as $rows): ?>
-							<option value="<?=$rows->id;?>"><?=$rows->nama;?></option>
-						<?php endforeach ?>
+						<?php if($this->log_lvl == 'guru') { ?>
+							<?php foreach ($kelas as $rows): ?>
+								<option value="<?=$rows->id_kelas;?>"><?=$rows->nama;?></option>
+							<?php endforeach ?>
+						<?php } else { ?>
+							<?php foreach ($kelas as $rows): ?>
+								<option value="<?=$rows->id;?>"><?=$rows->nama;?></option>
+							<?php endforeach ?>
+						<?php } ?>
 					</select>
 					<div class="select-dropdown"></div>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="">Mata Pelajaran</label>
+				<div class="rs-select2 js-select-simple select--no-search">
+					<select name="mapel" id="mapel" style="width: 30%;" required>
+						<option disabled="disabled" value="null" selected="selected">Pilih</option>
+						<?php if($this->log_lvl == 'guru') { ?>
+							<?php foreach ($mapel as $rows): ?>
+								<option value="<?=$rows->id_mapel;?>"><?=$rows->nama_mapel;?></option>
+							<?php endforeach ?>
+						<?php } else { ?>
+							<?php foreach ($mapel as $rows): ?>
+								<option value="<?=$rows->id;?>"><?=$rows->nama;?></option>
+							<?php endforeach ?>
+						<?php } ?>
+					</select>
+					<div class="select-dropdown"></div>
 			</div>
 			<div class="form-group">
 				<label for="nama">Keterangan</label>

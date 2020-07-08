@@ -57,7 +57,6 @@ class M_kelas extends MY_Model {
 		->where($where)
 		->get()
 		->result();
-
 		return $get;
 	}
 
@@ -106,13 +105,14 @@ class M_kelas extends MY_Model {
 							gr.nama as nama_guru,
 							mp.nama as nama_mapel,
 							ins.instansi,
-							jurus.jurusan
+							dmkls.id_mapel AS idmapel,
+							dmkls.id_guru AS idguru
 						')
 		->from('tb_kelas kls')
-		->join('m_guru gr','gr.id=kls.id_trainer','left')
-		->join('m_mapel mp','mp.id=kls.id_mapel','left')
+		->join('tb_detail_kelas_mapel dmkls', 'kls.id = dmkls.id_kelas', 'inner')
+		->join('m_guru gr','gr.id=dmkls.id_guru','left')
+		->join('m_mapel mp','mp.id=dmkls.id_mapel','left')
 		->join('tb_instansi ins','ins.id=kls.id_instansi','left')
-		->join('tb_jurusan jurus','jurus.id=kls.id_jurusan','left')
 		->order_by('mp.id','asc')
 		->where($where)
 		->get()

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 05, 2020 at 09:19 PM
+-- Generation Time: Jul 08, 2020 at 11:17 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.3.16
 
@@ -330,7 +330,7 @@ INSERT INTO `m_guru` (`id`, `id_mapel`, `tahun_akademik`, `username`, `nidn`, `n
 (49, 0, '2020', 'gurugeografi', '007', '007', 10, 'Guru Geografi', '-', '-', '-', '2020-06-07', '--', 'gurugeografi@gmail.com', '081321321321', '-', '-', '-', 1, 0, 0, 0),
 (50, 0, '2020', 'gurusosiologi', '008', '008', 10, 'Guru Sosiologi', '-', '-', '-', '2020-06-08', '--', 'gurusosiologi@gmail.com', '09876543123456', '-', '-', '-', 1, 0, 0, 0),
 (51, 0, '2020', 'gurusejarah', '009', '009', 10, 'Guru Sejarah', '-', '-', '-', '2020-06-09', '--', 'gurusejarah@gmail.com', '762345678765456', '-', '-', '-', 1, 0, 0, 0),
-(52, 0, '2020', 'guruekonomi', '0010', '0010', 10, 'Guru Ekonomi', '-', '-', '-', '2020-06-10', '--', 'guruekonomi@gmail.com', '09876544231234', '-', '-', '-', 1, 0, 0, 0),
+(52, 0, '2020', 'guruekonomi', '0010', '0010', 10, 'Guru Ekonomi', '-', '-', '-', '2020-06-10', '--', 'guruekonomi@gmail.com', '09876544231234', '-', '-', '-', 1, 2, 11, 0),
 (53, 0, '2020', 'sman21_guru_mtk', 'PTK200619001', 'P200619NIP001', 11, 'Guru Matematika', '32000101001', 'Guru Matematika', 'Bandung', '1990-03-03', 'Bandung', 'sman21_guru_mtk@gmail.com', '821312312', 'ASN', 'S1 Pendidikan Matematika', '2013', 1, 0, 0, 0),
 (54, 0, '2020', 'sman21_guru_fisika', 'PTK200619002', 'P200619NIP002', 11, 'Guru Fisika', '32000101002', 'Guru Fisika', 'Bandung', '1990-03-03', 'Bandung', 'sman21_guru_fisika@gmail.com', '821312313', 'ASN', 'S1 Pendidikan Fisika', '2013', 1, 0, 0, 0),
 (55, 0, '2020', 'sman21_guru_kimia', 'PTK200619003', 'P200619NIP003', 11, 'Guru Kimia', '32000101003', 'Guru Kimia', 'Bandung', '1990-03-03', 'Bandung', 'sman21_guru_kimia@gmail.com', '821312314', 'ASN', 'S1 Pendidikan Kimia', '2013', 1, 0, 0, 0),
@@ -361,7 +361,7 @@ INSERT INTO `m_guru` (`id`, `id_mapel`, `tahun_akademik`, `username`, `nidn`, `n
 (85, 59, '', 'sengklekman', '10101010', '202020', 1, 'Sengklekman', '', '', '', '', '', 'Sengklekman@ga.com', '86754633342', '', '', '', 1, 11, 0, 0),
 (88, 59, '', 'tanos', '23801283081', '', 1, 'Tanos', '', '', '', '', '', '', '86754633342', '', '', '', 1, 0, 0, 0),
 (89, 60, '', 'vivisusanti', '1234343', '', 1, 'Vivi Susanti', '', '', '', '', '', '', '081220970900', '', '', '', 1, 2, 0, 0),
-(91, 0, '', 'gurukarsa', '23801283081', '', 1, 'guru karsa', '', '', '', '', '', '', '081220970901', '', '', '', 1, 6, 0, 0);
+(91, 0, '', 'gurukarsa', '23801283081', '', 10, 'guru karsa', '', '', '', '', '', '', '081220970901', '', '', '', 1, 16, 0, 0);
 
 --
 -- Triggers `m_guru`
@@ -1403,7 +1403,10 @@ INSERT INTO `m_materi` (`id`, `id_mapel`, `id_trainer`, `id_type_video`, `title`
 (21, 59, 1, 1, 'Fucek 1', '<p>dawda wfwfwfa&nbsp; dwd wad aw</p>\n', 1, 0, 'https://localhost/elearning/assets/materi/video/29-06-2020-1593425511-demo-covid19app.mp4', 'assets/materi/video/29-06-2020-1593425511-demo-covid19app.mp4', 1, NULL, NULL, 1, 0, 0),
 (22, 59, 1, 1, 'R Language', '<p>R Language</p>\n', 1, 0, 'https://localhost/elearning/assets/materi/video/29-06-2020-1593425547-demo-covid19app.mp4', 'assets/materi/video/29-06-2020-1593425547-demo-covid19app.mp4', 1, NULL, NULL, 1, 0, 0),
 (23, 59, 1, 3, 'My YT First Video', '<p>Sisilipris</p>\n', 1, 0, 'https://www.youtube.com/embed/rY5cW2NO2mk', 'https://www.youtube.com/watch?v=rY5cW2NO2mk', 1, NULL, NULL, 1, 1, 0),
-(24, 59, 85, 3, 'Dasar Hynoterapi 1', '<p>Perhatikan materi sampai habis, karena diakhir akan dilaksanakan ujian harian</p>\n', 1, 0, 'https://www.youtube.com/embed/1T2gaG5vPk8', 'https://www.youtube.com/watch?v=1T2gaG5vPk8', 0, NULL, NULL, 1, 0, 0);
+(24, 59, 85, 3, 'Dasar Hynoterapi 1', '<p>Perhatikan materi sampai habis, karena diakhir akan dilaksanakan ujian harian</p>\n', 1, 0, 'https://www.youtube.com/embed/1T2gaG5vPk8', 'https://www.youtube.com/watch?v=1T2gaG5vPk8', 0, NULL, NULL, 1, 0, 0),
+(25, 66, 535, 2, 'testt', '<p>test</p>\n', 1, 0, '1BTEdYsy3pZAx_3Ch4UH9-_1y7h942Z5U', '1BTEdYsy3pZAx_3Ch4UH9-_1y7h942Z5U', 0, NULL, NULL, 1, 0, 0),
+(26, 66, 535, 2, '311 tolol', '<p>tolol</p>\n', 1, 0, '1BTEdYsy3pZAx_3Ch4UH9-_1y7h942Z5U', '1BTEdYsy3pZAx_3Ch4UH9-_1y7h942Z5U', 0, NULL, NULL, 1, 0, 0),
+(27, 72, 52, 2, 'Ekonomi 12', '<p>dw</p>\n', 1, 0, '1UXLkLSuNteo1_KR06y8BKCxTa9VURj9p', '1UXLkLSuNteo1_KR06y8BKCxTa9VURj9p', 0, NULL, NULL, 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -1535,7 +1538,7 @@ INSERT INTO `m_siswa` (`id`, `photo`, `kelompok`, `nama`, `username`, `pangkat`,
 (605, NULL, '', 'RS Hasan Sadikin', 'hasanjr11', '', '02930192', '', '', '', '', NULL, '', '1', '', '', 19, NULL, 1, '1593630595', 'affdf899c3c242f1287554c9a5a2d167', 0, 0, 0, 0, 0),
 (606, NULL, '', 'Yoyo', 'yoyo', '', '128301', '89233643321', '', '', '', NULL, '', '1', '-', '-', 0, NULL, 1, '1593631849', '1c096d81f43a39d51651fc510320aabc', 0, 0, 0, 0, 0),
 (607, NULL, '', 'Banner Corona 122', 'coronaaaaa', '', '02930192', '', '', '', '', NULL, '', '1', '', '', 19, NULL, 1, '1593730681', 'dcfc9973dbf825b484dfc90cd17d09b8', 0, 0, 0, 0, 0),
-(608, NULL, '', 'Arif X MIPA 1ge', 'arifmipa1', '', '02930192', '', '', '', '', NULL, '', '1', '', '', NULL, NULL, 1, '1593935615', '050f982fbea278cabc584d45117a3639', 3, 0, 0, 0, 0);
+(608, NULL, '', 'Arif X MIPA 1ge', 'arifmipa1', '', '02930192', '', '', '', '', NULL, '', '1', '', '', NULL, NULL, 10, '1593935615', '050f982fbea278cabc584d45117a3639', 18, 0, 0, 0, 1);
 
 --
 -- Triggers `m_siswa`
@@ -1680,7 +1683,12 @@ INSERT INTO `m_soal_ujian` (`id`, `id_ujian`, `bobot`, `file`, `tipe_file`, `soa
 (42, 17, 10, '', '', '<p>Ibu Kota Indonesia adalah??</p>', '#####<p>Jakarta</p>', '#####<p>Kalimantan</p>', '#####<p>Bandung</p>', '#####<p>Palembang</p>', '', 'Ponti', '0000-00-00 00:00:00', 0, 0),
 (43, 17, 10, '', '', '<p>Apakah Nama resmi Virus Corona</p>', '#####<p>COVED</p>', '#####<p>CORON</p>', '#####<p>COVID-19</p>', '#####<p>COVID-20</p>', '', 'COVID', '0000-00-00 00:00:00', 0, 0),
 (48, 20, 10, '', '', '<p>Ibu Kota Indonesia adalah??</p>', '#####<p>Jakarta</p>', '#####<p>Kalimantan</p>', '#####<p>Bandung</p>', '#####<p>Palembang</p>', '#####<p>Pontianak</p>', 'A', '0000-00-00 00:00:00', 0, 0),
-(49, 20, 10, '', '', '<p>Apakah Nama resmi Virus Corona</p>', '#####<p>COVED</p>', '#####<p>CORON</p>', '#####<p>COVID-19</p>', '#####<p>COVID-20</p>', '#####<p>COVID-naintin</p>', 'C', '0000-00-00 00:00:00', 0, 0);
+(49, 20, 10, '', '', '<p>Apakah Nama resmi Virus Corona</p>', '#####<p>COVED</p>', '#####<p>CORON</p>', '#####<p>COVID-19</p>', '#####<p>COVID-20</p>', '#####<p>COVID-naintin</p>', 'C', '0000-00-00 00:00:00', 0, 0),
+(50, 23, 0, '', '', '<p>Data Jakarta berjumlah berapa ... orang?</p>\r\n', '#####<p>1</p>\r\n', '#####<p>2</p>\r\n', '#####<p>345</p>\r\n', '#####<p>4</p>\r\n', '#####<p>45</p>\r\n', 'E', '2020-07-08 16:48:35', 0, 1),
+(55, 26, 0, '', '', '<p>Test singkatan dari</p>\r\n', '#####<p>TEST</p>\r\n', '#####<p>TESTSS</p>\r\n', '#####<p>TEST aja</p>\r\n', '#####<p>Test -&gt; Ujian</p>\r\n', '#####<p>Testo</p>\r\n', 'D', '2020-07-08 20:12:29', 0, 1),
+(56, 26, 0, '', '', '<p>wqwe</p>\r\n', '#####<p>2314</p>\r\n', '#####<p>454gwegerf</p>\r\n', '#####<p>4533rf</p>\r\n', '#####<p>f4esf</p>\r\n', '#####<p>asw1</p>\r\n', 'C', '2020-07-08 20:12:56', 0, 1),
+(57, 27, 0, '', '', '<p>Venus planet keberapa?</p>\r\n', '#####<p>1</p>\r\n', '#####<p>2</p>\r\n', '#####<p>3</p>\r\n', '#####<p>4</p>\r\n', '#####<p>Engga tau soalnya engga spesifik</p>\r\n', 'E', '2020-07-08 20:20:11', 1, 0),
+(58, 27, 0, '', '', '<p>Planet paling dingin</p>\r\n', '#####<p>Kutub</p>\r\n', '#####<p>Iceland</p>\r\n', '#####<p>Ice ice</p>\r\n', '#####<p>Ice Cream</p>\r\n', '#####<p>Ice berg</p>\r\n', 'B', '2020-07-08 20:22:24', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -1705,7 +1713,8 @@ CREATE TABLE `m_soal_ujian_essay` (
 INSERT INTO `m_soal_ujian_essay` (`id`, `id_ujian`, `bobot`, `file`, `tipe_file`, `soal`, `tgl_input`) VALUES
 (29, 3, 70, 'file_ujian_soal_essay_29.jpg', 'image/jpeg', '<p>Logo apa ini ?</p>\r\n', '2020-06-21 14:52:34'),
 (30, 3, 30, '', '', '<p>arti dari &quot;How Are You&quot;</p>\r\n', '2020-06-21 15:44:49'),
-(31, 6, 30, '', '', '<p>Ibu Kota Jawa Barat?</p>\r\n', '2020-06-26 16:59:19');
+(31, 6, 30, '', '', '<p>Ibu Kota Jawa Barat?</p>\r\n', '2020-06-26 16:59:19'),
+(34, 23, 10, '', '', '<p>Jelaskan proses fotosintesis</p>\r\n', '2020-07-08 16:49:40');
 
 -- --------------------------------------------------------
 
@@ -1865,7 +1874,7 @@ CREATE TABLE `tb_akun_lembaga` (
 INSERT INTO `tb_akun_lembaga` (`id`, `nama`, `username`, `no_telpon`, `tempat_lahir`, `tanggal_lahir`, `email`, `instansi`, `pembuatan_akun`, `verifikasi`, `deleted`) VALUES
 (532, 'indriawan', 'adminseskoal', '', 'bandun', '2020-03-14', 'rezharanmarks@gmail.com', 1, '1591185633', '23bc4a561514c32309f3a429541b12af', 0),
 (533, 'STASIUN BALAPAN', 'STASIUN', '', 'JAKARTA', '2020-04-05', 'STASIUNLEARN@GMAIL.COM', 2, '1586100594', '8ff1dee6cec9670029c6f4d8fd0a62bd', 0),
-(535, 'WKWKWK', 'WKWKWK', '', 'WKWKWK', '2001-01-01', 'WKWKWKCOBA@GMAIL.COM', 1, '1586100909', '86808f06d32eb28c5971cb911bf046ba', 0),
+(535, 'WKWKWK', 'WKWKWK', '', 'WKWKWK', '2001-01-01', 'WKWKWKCOBA@GMAIL.COM', 10, '1586100909', '86808f06d32eb28c5971cb911bf046ba', 0),
 (536, 'Staff TU', 'stafftu', '', 'Bandung', '1977-08-12', 'smktu@gmail.com', 3, '1587384873', 'd9f533abba5805c41609558980d5303b', 0),
 (537, 'Akademik Kampus', 'akademik', '', 'Bandung', '1977-08-12', 'akademik@gmail.com', 4, '1587385046', 'c7f1947bda4dc4a7ebeec79293cd7194', 0),
 (540, 'alel', 'alel', '', 'Bandung', '2001-01-01', 'alel@gmail.com', 7, '1591126481', 'e7c509251af05602114dd574e3151960', 0),
@@ -1922,14 +1931,7 @@ CREATE TABLE `tb_detail_kelas` (
 --
 
 INSERT INTO `tb_detail_kelas` (`id`, `id_peserta`, `id_kelas`) VALUES
-(164, 608, 56),
-(166, 526, 60),
-(167, 532, 60),
-(168, 529, 60),
-(169, 531, 60),
-(170, 536, 60),
-(171, 543, 60),
-(173, 532, 56);
+(176, 608, 62);
 
 -- --------------------------------------------------------
 
@@ -1949,15 +1951,9 @@ CREATE TABLE `tb_detail_kelas_mapel` (
 --
 
 INSERT INTO `tb_detail_kelas_mapel` (`id`, `id_kelas`, `id_mapel`, `id_guru`) VALUES
-(1, 56, 59, 88),
-(2, 56, 60, 89),
-(3, 57, 60, 89),
-(4, 57, 63, 88),
-(5, 57, 67, 70),
-(6, 56, 55, 91),
-(7, 56, 60, 91),
 (8, 59, 59, 91),
-(9, 59, 55, 91);
+(9, 59, 55, 91),
+(11, 62, 72, 52);
 
 -- --------------------------------------------------------
 
@@ -1978,7 +1974,12 @@ CREATE TABLE `tb_detail_mapel` (
 INSERT INTO `tb_detail_mapel` (`id`, `id_mapel`, `id_guru`) VALUES
 (5, 55, 91),
 (6, 59, 91),
-(7, 60, 91);
+(7, 60, 91),
+(8, 110, 10),
+(9, 111, 10),
+(42, 72, 52),
+(44, 0, 0),
+(46, 67, 52);
 
 -- --------------------------------------------------------
 
@@ -2101,7 +2102,12 @@ INSERT INTO `tb_ikut_ujian` (`id`, `id_ujian`, `id_penggunaan`, `id_user`, `list
 (2, 6, NULL, 556, '12', '12:A:N', 1, '100.00', '100.00', '2020-06-26 17:02:24', '2020-06-26 17:02:49', 'N', '12:A:N', 1),
 (3, 7, NULL, 603, '13', '13:A:N', 1, '100.00', '100.00', '2020-06-27 10:20:46', '2020-06-27 10:21:14', 'N', '13:A:N', 1),
 (15, 13, NULL, 603, '21,22,25', '21:B:N,22:B:N,25:B:N', 1, '33.33', '4.76', '2020-06-29 22:14:53', '2020-06-29 22:15:06', 'N', '21:A:N,22:C:N,25:B:N', 1),
-(16, 20, NULL, 603, '44,45', '44:A:N,45:E:N', 0, '0.00', '0.00', '2020-06-30 09:19:49', '2020-06-30 09:20:09', 'N', '44:Ponti:N,45:COVID:N', 1);
+(16, 20, NULL, 603, '44,45', '44:A:N,45:E:N', 0, '0.00', '0.00', '2020-06-30 09:19:49', '2020-06-30 09:20:09', 'N', '44:Ponti:N,45:COVID:N', 1),
+(17, 23, NULL, 608, '50', '50:C:N', 0, '0.00', '0.00', '2020-07-08 17:18:27', '2020-07-08 17:18:40', 'N', '50:E:N', 1),
+(18, 24, NULL, 608, '51,52', '51:B:N,52:C:N', 1, '50.00', '0.00', '2020-07-08 19:43:36', '2020-07-08 19:44:00', 'N', '51:A:N,52:C:N', 1),
+(19, 25, NULL, 608, '53,54', '53:A:N,54:A:N', 2, '100.00', '0.00', '2020-07-08 19:52:38', '2020-07-08 19:53:03', 'N', '53:A:N,54:A:N', 1),
+(20, 26, NULL, 608, '55,56', '55:A:N,56:B:N', 0, '0.00', '0.00', '2020-07-08 20:13:20', '2020-07-08 20:14:09', 'N', '55:D:N,56:C:N', 1),
+(21, 27, NULL, 608, '57,58', '57:E:N,58:B:N', 2, '100.00', '0.00', '2020-07-08 20:23:52', '2020-07-08 20:24:08', 'N', '57:E:N,58:B:N', 1);
 
 -- --------------------------------------------------------
 
@@ -2135,7 +2141,8 @@ INSERT INTO `tb_ikut_ujian_essay` (`id`, `id_ujian`, `id_penggunaan`, `id_user`,
 (2, 6, NULL, 556, '31', 0, '0.00', '0.00', '2020-06-26 17:03:39', '2020-06-26 17:03:52', 'N', '', 1, NULL),
 (3, 7, NULL, 603, '32', 0, '0.00', '0.00', '2020-06-27 10:21:29', '2020-06-27 10:22:45', 'N', '', 1, NULL),
 (4, 11, NULL, 603, '33', 0, '0.00', '0.00', '2020-06-29 14:25:55', '2020-06-29 14:26:12', 'N', '', 1, NULL),
-(5, 13, NULL, 603, '0', 0, '0.00', '0.00', '2020-06-29 21:33:19', '2020-06-29 22:53:00', 'Y', '', 1, NULL);
+(5, 13, NULL, 603, '0', 0, '0.00', '0.00', '2020-06-29 21:33:19', '2020-06-29 22:53:00', 'Y', '', 1, NULL),
+(6, 23, NULL, 608, '34', 0, '0.00', '0.00', '2020-07-08 17:31:40', '2020-07-08 17:31:55', 'N', '', 1, 'lulus');
 
 -- --------------------------------------------------------
 
@@ -2168,7 +2175,8 @@ INSERT INTO `tb_ikut_ujian_essay_pertama` (`id`, `id_ujian`, `id_penggunaan`, `i
 (2, 6, NULL, 556, '31', 0, '0.00', '0.00', '2020-06-26 17:03:39', '2020-06-26 18:13:39', 'N', '', 1),
 (3, 7, NULL, 603, '32', 0, '0.00', '0.00', '2020-06-27 10:21:29', '2020-06-27 13:44:29', 'N', '', 1),
 (4, 11, NULL, 603, '33', 0, '0.00', '0.00', '2020-06-29 14:25:55', '2020-06-29 16:25:55', 'N', '', 1),
-(5, 13, NULL, 603, '', 0, '0.00', '0.00', '2020-06-29 21:35:01', '2020-06-29 22:55:01', 'N', '', 1);
+(5, 13, NULL, 603, '', 0, '0.00', '0.00', '2020-06-29 21:35:01', '2020-06-29 22:55:01', 'N', '', 1),
+(6, 23, NULL, 608, '34', 0, '0.00', '0.00', '2020-07-08 17:31:40', '2020-07-08 19:11:40', 'N', '', 1);
 
 -- --------------------------------------------------------
 
@@ -2202,7 +2210,12 @@ INSERT INTO `tb_ikut_ujian_pertama` (`id`, `id_ujian`, `id_penggunaan`, `id_user
 (2, 6, NULL, 556, '12', '12:A:N', 0, '0.00', '0.00', '2020-06-26 17:02:24', '2020-06-26 18:12:24', 'N', '12:A:N', 1),
 (3, 7, NULL, 603, '13', '13:A:N', 0, '0.00', '0.00', '2020-06-27 10:20:46', '2020-06-27 13:43:46', 'N', '13:A:N', 1),
 (15, 20, NULL, 603, '44,45', '44:A:N,45:E:N', 0, '0.00', '0.00', '2020-06-30 09:19:49', '2020-06-30 11:19:49', 'N', '44:Ponti:N,45:COVID:N', 1),
-(14, 13, NULL, 603, '21,22,25', '21:B:N,22:B:N,25:B:N', 0, '0.00', '0.00', '2020-06-29 22:14:53', '2020-06-29 23:34:53', 'N', '21:A:N,22:C:N,25:B:N', 1);
+(14, 13, NULL, 603, '21,22,25', '21:B:N,22:B:N,25:B:N', 0, '0.00', '0.00', '2020-06-29 22:14:53', '2020-06-29 23:34:53', 'N', '21:A:N,22:C:N,25:B:N', 1),
+(16, 23, NULL, 608, '50', '50:C:N', 0, '0.00', '0.00', '2020-07-08 17:18:27', '2020-07-08 18:58:27', 'N', '50:E:N', 1),
+(17, 24, NULL, 608, '51,52', '51:B:N,52:C:N', 0, '0.00', '0.00', '2020-07-08 19:43:36', '2020-07-08 21:23:36', 'N', '51:A:N,52:C:N', 1),
+(18, 25, NULL, 608, '53,54', '53:A:N,54:A:N', 0, '0.00', '0.00', '2020-07-08 19:52:38', '2020-07-08 21:32:38', 'N', '53:A:N,54:A:N', 1),
+(19, 26, NULL, 608, '55,56', '55:A:N,56:B:N', 0, '0.00', '0.00', '2020-07-08 20:13:20', '2020-07-08 21:53:20', 'N', '55:D:N,56:C:N', 1),
+(20, 27, NULL, 608, '57,58', '57:E:N,58:B:N', 0, '0.00', '0.00', '2020-07-08 20:23:52', '2020-07-08 22:23:52', 'N', '57:E:N,58:B:N', 1);
 
 -- --------------------------------------------------------
 
@@ -2216,20 +2229,23 @@ CREATE TABLE `tb_instansi` (
   `nama_pimpinan` varchar(200) DEFAULT NULL,
   `no_telp` varchar(14) DEFAULT NULL,
   `alamat` varchar(255) DEFAULT NULL,
-  `deleted` tinyint(1) NOT NULL DEFAULT 0
+  `deleted` tinyint(1) NOT NULL DEFAULT 0,
+  `selected` tinyint(4) DEFAULT 0,
+  `file_format_guru` varchar(100) NOT NULL,
+  `file_format_siswa` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `tb_instansi`
 --
 
-INSERT INTO `tb_instansi` (`id`, `instansi`, `nama_pimpinan`, `no_telp`, `alamat`, `deleted`) VALUES
-(1, 'SESKOAL', '-', '-', '-', 0),
-(8, 'STT AL', '-', '-', '-', 0),
-(9, 'Akademi Angkatan Laut', '-', '-', '-', 0),
-(10, 'SMAN 5 Bandung', '-', '-', 'Bandung', 0),
-(11, 'SMAN 21 BANDUNG', 'KEPSEK SMAN 21 BANDUNG', '022', 'BANDUNG', 0),
-(12, 'SMAN 25 BANDUNG', 'KEPSEK SMAN 25 BANDUNG', '022', 'BANDUNG', 0);
+INSERT INTO `tb_instansi` (`id`, `instansi`, `nama_pimpinan`, `no_telp`, `alamat`, `deleted`, `selected`, `file_format_guru`, `file_format_siswa`) VALUES
+(1, 'SESKOAL', '-', '-', '-', 0, 0, '', ''),
+(8, 'STT AL', '-', '-', '-', 0, 0, '', ''),
+(9, 'Akademi Angkatan Laut', '-', '-', '-', 0, 0, '', ''),
+(10, 'SMAN 5 Bandung', '-', '-', 'Bandung', 0, 1, '', ''),
+(11, 'SMAN 21 BANDUNG', 'KEPSEK SMAN 21 BANDUNG', '022', 'BANDUNG', 0, 0, '', ''),
+(12, 'SMAN 25 BANDUNG', 'KEPSEK SMAN 25 BANDUNG', '022', 'BANDUNG', 0, 0, '', '');
 
 -- --------------------------------------------------------
 
@@ -2263,7 +2279,8 @@ INSERT INTO `tb_jadwal` (`id`, `id_calendar`, `id_kelas`, `id_materi`, `id_guru`
 (15, 'YTBjZWwzMnZtNjUwZWI0cjVyMjlwbzBrOW9fMjAyMDA2MDFUMDUyMDAwWiBhamlyb2hpbWF0OThAbQ', 36, 3, NULL, 'tes', '2020-06-01 05:20:00', '2020-06-05 09:26:31', '#0071c5'),
 (17, 'dXBqZHZpdGZ0djZwa2oxN2djdHJlYWhsNW9fMjAyMDA2MjNUMTEwMTAwWiBkd2lzdXJkaWFuYTg4QG0', 39, 14, NULL, '-', '2020-06-23 11:01:00', '2020-06-27 03:21:00', ''),
 (18, 'bmtza2pwMWhrcDFzcWFzOGxvdmxxODNvcmdfMjAyMDA2MDFUMDIyMjAwWiBpa2hzYW5oYW1pZGFuMTNAbQ', 45, 17, NULL, 'Jam ajar wajib', '2020-06-26 02:22:00', '2020-06-27 20:00:00', '#008000'),
-(19, 'bnNzaGlwNDRzYjM4ZDN0czcwdTIyc2Fnbm9fMjAyMDA2MjlUMTQwMDAwWiBpa2hzYW5oYW1pZGFuMTNAbQ', 45, 22, NULL, 'Haru tepat waktu, R Language ada pemabahasan penting', '2020-06-29 14:00:00', '2020-06-30 14:00:00', '#008000');
+(19, 'bnNzaGlwNDRzYjM4ZDN0czcwdTIyc2Fnbm9fMjAyMDA2MjlUMTQwMDAwWiBpa2hzYW5oYW1pZGFuMTNAbQ', 45, 22, NULL, 'Haru tepat waktu, R Language ada pemabahasan penting', '2020-06-29 14:00:00', '2020-06-30 14:00:00', '#008000'),
+(22, '5f061399b788a', 62, 27, 52, 'Test', '2020-07-08 12:00:00', '2020-07-09 14:00:00', '#0071c5');
 
 -- --------------------------------------------------------
 
@@ -2291,7 +2308,8 @@ INSERT INTO `tb_jawaban_essay` (`id`, `id_ujian`, `id_user`, `id_ikut_essay`, `i
 (2, 3, 526, 1, 30, 'apa kabar', 'N', 20),
 (3, 6, 556, 2, 31, 'Kota Bandung', 'N', 1),
 (4, 7, 603, 3, 32, 'Jadi gini', 'N', 0),
-(5, 11, 603, 4, 33, 'Dua', 'N', 0);
+(5, 11, 603, 4, 33, 'Dua', 'N', 0),
+(6, 23, 608, 6, 34, 'Siap boz', 'N', 10);
 
 -- --------------------------------------------------------
 
@@ -2347,11 +2365,7 @@ CREATE TABLE `tb_kelas` (
 --
 
 INSERT INTO `tb_kelas` (`id`, `nama`, `keterangan`, `id_trainer`, `id_mapel`, `id_guru`, `id_instansi`, `id_jurusan`) VALUES
-(56, 'X MIPA 1', 'X MIPA 1 yah', 64, '59,60', '88,89', 1, NULL),
-(57, 'XI MIPA 2', '', 32, '60,63,67', '89,88,70', 1, NULL),
-(58, 'XI IPS 1', '', 28, '68,69,71,74', '3,4,1,5', 1, NULL),
-(59, 'X IPS 2', '', 41, '63,65,66', '', 1, NULL),
-(60, 'XI Bahasa 1', 'Kelas Bahasa 1', 30, NULL, '', 1, NULL);
+(62, 'X IPS 12', '', 52, NULL, '', 10, NULL);
 
 -- --------------------------------------------------------
 
@@ -2646,6 +2660,8 @@ CREATE TABLE `tb_tugas` (
   `id` bigint(20) NOT NULL,
   `keterangan` text DEFAULT NULL,
   `id_kelas` int(6) DEFAULT NULL,
+  `id_mapel` int(11) NOT NULL,
+  `id_guru` int(11) NOT NULL,
   `end_date` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
@@ -2653,16 +2669,19 @@ CREATE TABLE `tb_tugas` (
 -- Dumping data for table `tb_tugas`
 --
 
-INSERT INTO `tb_tugas` (`id`, `keterangan`, `id_kelas`, `end_date`) VALUES
-(1, 'Tugas ketika liur', 3, '2020-04-20 23:59:00'),
-(23, 'test', 37, '2020-06-02 00:00:00'),
-(24, 'test 2324', 37, '2020-06-02 00:00:00'),
-(25, 'Adwada', 37, '2020-06-06 00:00:00'),
-(26, 'test', 1, '2020-06-16 20:00:00'),
-(27, 'Tugas Harian', 38, '2020-06-17 08:12:00'),
-(28, 'Kerjakan tugas Integral', 40, '2020-06-27 03:44:00'),
-(29, 'Kerjakan hanya 1 jam', 45, '2020-06-28 02:00:00'),
-(30, 'Harus selesai hari ini', 51, '2020-07-03 14:00:00');
+INSERT INTO `tb_tugas` (`id`, `keterangan`, `id_kelas`, `id_mapel`, `id_guru`, `end_date`) VALUES
+(1, 'Tugas ketika liur', 3, 0, 0, '2020-04-20 23:59:00'),
+(23, 'test', 37, 0, 0, '2020-06-02 00:00:00'),
+(24, 'test 2324', 37, 0, 0, '2020-06-02 00:00:00'),
+(25, 'Adwada', 37, 0, 0, '2020-06-06 00:00:00'),
+(26, 'test', 1, 0, 0, '2020-06-16 20:00:00'),
+(27, 'Tugas Harian', 38, 0, 0, '2020-06-17 08:12:00'),
+(28, 'Kerjakan tugas Integral', 40, 0, 0, '2020-06-27 03:44:00'),
+(29, 'Kerjakan hanya 1 jam', 45, 0, 0, '2020-06-28 02:00:00'),
+(30, 'Harus selesai hari ini', 51, 0, 0, '2020-07-03 14:00:00'),
+(31, '', 57, 0, 0, '2020-07-17 14:00:00'),
+(33, 'Tugas Ashiap', 62, 0, 0, '2020-07-09 14:00:00'),
+(34, 'Tewst', 62, 67, 52, '2020-07-02 12:00:00');
 
 -- --------------------------------------------------------
 
@@ -2692,7 +2711,10 @@ INSERT INTO `tb_tugas_attachment` (`id`, `id_tugas`, `file`, `format`) VALUES
 (9, 27, 'tugas-15-06-2020-1592190930-0.png', '.png'),
 (10, 28, 'tugas-26-06-2020-1593164756-0.xlsx', '.xlsx'),
 (11, 29, 'tugas-27-06-2020-1593228308-0.pdf', '.pdf'),
-(12, 30, 'tugas-02-07-2020-1593699146-0.xlsx', '.xlsx');
+(12, 30, 'tugas-02-07-2020-1593699146-0.xlsx', '.xlsx'),
+(13, 31, 'tugas-08-07-2020-1594178418-0.png', '.png'),
+(15, 33, 'tugas-09-07-2020-1594237507-0.png', '.png'),
+(16, 34, 'tugas-09-07-2020-1594240274-0.png', '.png');
 
 -- --------------------------------------------------------
 
@@ -2723,7 +2745,8 @@ INSERT INTO `tb_tugas_attachment_siswa` (`id`, `id_tugas`, `id_siswa`, `file`, `
 (28, 26, 526, 'tugas-Aji_Rohimat-15-06-2020-1592155615-0.png', '.png', '2020-06-15 00:26:55'),
 (29, 27, 550, 'tugas-Siswa_41-15-06-2020-1592192551-0.png', '.png', '2020-06-15 10:42:31'),
 (30, 28, 556, 'tugas-AJI-26-06-2020-1593164868-0.xlsx', '.xlsx', '2020-06-26 16:47:48'),
-(31, 29, 603, 'tugas-Bara_Bursa-27-06-2020-1593228882-0.png', '.png', '2020-06-27 10:34:44');
+(31, 29, 603, 'tugas-Bara_Bursa-27-06-2020-1593228882-0.png', '.png', '2020-06-27 10:34:44'),
+(32, 33, 608, 'tugas-Arif_X_MIPA_1ge-09-07-2020-1594242130-0.xlsx', '.xlsx', '2020-07-09 04:02:10');
 
 -- --------------------------------------------------------
 
@@ -2745,7 +2768,8 @@ CREATE TABLE `tb_tugas_nilai` (
 INSERT INTO `tb_tugas_nilai` (`id`, `id_tugas`, `id_siswa`, `nilai`) VALUES
 (2, 26, 526, 100),
 (3, 27, 550, 0),
-(4, 28, 556, 80);
+(4, 28, 556, 80),
+(5, 33, 608, 70);
 
 -- --------------------------------------------------------
 
@@ -2787,7 +2811,11 @@ INSERT INTO `tb_ujian` (`id`, `id_kelas`, `id_guru`, `id_mapel`, `id_instansi`, 
 (14, 15, 1, 84, 1, 'harian', 'Ulangan Psikologi Harian', 0, 100, 'set', NULL, '2020-06-29 14:00:00', '2020-06-30 14:00:00', NULL, NULL, NULL, 0, 75),
 (17, 19, 0, 0, 1, 'harian', 'Biofisika Asik 1', 2, 120, 'set', NULL, '2020-06-29 14:00:00', '2020-06-30 14:00:00', NULL, NULL, NULL, 0, 75),
 (19, 19, 0, 60, 1, 'harian', 'MTK Diskrit Cookbook', 0, 120, 'set', NULL, '2020-06-29 14:00:00', '2020-06-30 14:00:00', NULL, NULL, NULL, 0, 75),
-(20, 7, 535, 62, 1, 'uas', 'Perilaku sebagai Warga Negara', 2, 120, 'set', NULL, '2020-06-29 14:00:00', '2020-06-30 14:00:00', NULL, NULL, NULL, 1, 75);
+(20, 7, 535, 62, 1, 'uas', 'Perilaku sebagai Warga Negara', 2, 120, 'set', NULL, '2020-06-29 14:00:00', '2020-06-30 14:00:00', NULL, NULL, NULL, 1, 75),
+(23, 62, 535, 66, 10, 'harian', 'Fisika Asiik part 1', 1, 100, 'set', NULL, '2020-07-08 14:00:00', '2020-07-09 14:00:00', NULL, NULL, NULL, 1, 70),
+(26, 62, 91, 70, 10, 'harian', 'Bioteknologi 1', 3, 100, 'set', NULL, '2020-07-08 17:00:00', '2020-07-09 17:00:00', NULL, NULL, NULL, 1, 65),
+(27, 62, 535, 69, 10, 'harian', 'Ujian Terooozzz 1', 3, 120, 'set', NULL, '2020-07-08 17:00:00', '2020-07-09 17:00:00', NULL, NULL, NULL, 1, 65),
+(28, 62, 52, 72, 10, 'harian', 'Garam The Exam', 0, 100, 'set', NULL, '2020-07-08 14:00:00', '2020-07-10 14:00:00', NULL, NULL, NULL, 1, 75);
 
 -- --------------------------------------------------------
 
@@ -3713,7 +3741,7 @@ ALTER TABLE `m_mapel`
 -- AUTO_INCREMENT for table `m_materi`
 --
 ALTER TABLE `m_materi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `m_materi_video`
@@ -3743,13 +3771,13 @@ ALTER TABLE `m_soal_penilaian`
 -- AUTO_INCREMENT for table `m_soal_ujian`
 --
 ALTER TABLE `m_soal_ujian`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `m_soal_ujian_essay`
 --
 ALTER TABLE `m_soal_ujian_essay`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `rule_users`
@@ -3785,19 +3813,19 @@ ALTER TABLE `tb_block_materi`
 -- AUTO_INCREMENT for table `tb_detail_kelas`
 --
 ALTER TABLE `tb_detail_kelas`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=176;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=177;
 
 --
 -- AUTO_INCREMENT for table `tb_detail_kelas_mapel`
 --
 ALTER TABLE `tb_detail_kelas_mapel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tb_detail_mapel`
 --
 ALTER TABLE `tb_detail_mapel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `tb_dimensi`
@@ -3821,25 +3849,25 @@ ALTER TABLE `tb_ikut_penilaian_pertama`
 -- AUTO_INCREMENT for table `tb_ikut_ujian`
 --
 ALTER TABLE `tb_ikut_ujian`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `tb_ikut_ujian_essay`
 --
 ALTER TABLE `tb_ikut_ujian_essay`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tb_ikut_ujian_essay_pertama`
 --
 ALTER TABLE `tb_ikut_ujian_essay_pertama`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tb_ikut_ujian_pertama`
 --
 ALTER TABLE `tb_ikut_ujian_pertama`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `tb_instansi`
@@ -3851,13 +3879,13 @@ ALTER TABLE `tb_instansi`
 -- AUTO_INCREMENT for table `tb_jadwal`
 --
 ALTER TABLE `tb_jadwal`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `tb_jawaban_essay`
 --
 ALTER TABLE `tb_jawaban_essay`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tb_jurusan`
@@ -3869,7 +3897,7 @@ ALTER TABLE `tb_jurusan`
 -- AUTO_INCREMENT for table `tb_kelas`
 --
 ALTER TABLE `tb_kelas`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `tb_komen_materi`
@@ -3935,31 +3963,31 @@ ALTER TABLE `tb_sub_menu`
 -- AUTO_INCREMENT for table `tb_tugas`
 --
 ALTER TABLE `tb_tugas`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `tb_tugas_attachment`
 --
 ALTER TABLE `tb_tugas_attachment`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `tb_tugas_attachment_siswa`
 --
 ALTER TABLE `tb_tugas_attachment_siswa`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `tb_tugas_nilai`
 --
 ALTER TABLE `tb_tugas_nilai`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tb_ujian`
 --
 ALTER TABLE `tb_ujian`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `tr_guru_mapel`
@@ -4074,12 +4102,6 @@ ALTER TABLE `tb_tugas_attachment_siswa`
 --
 ALTER TABLE `tb_tugas_nilai`
   ADD CONSTRAINT `tb_tugas_nilai_ibfk_1` FOREIGN KEY (`id_tugas`) REFERENCES `tb_tugas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `tb_ujian`
---
-ALTER TABLE `tb_ujian`
-  ADD CONSTRAINT `jurusan/kelas` FOREIGN KEY (`id_kelas`) REFERENCES `tb_jurusan` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

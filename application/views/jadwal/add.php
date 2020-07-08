@@ -61,7 +61,7 @@
 
 						<?php foreach ($kelas as $rows): ?>
 
-							<option value="<?=$rows->id;?>"><?=$rows->nama.' ( '.$rows->nama_guru.' - '.$rows->nama_mapel.' )';?></option>
+							<option value="<?=$rows->id;?>"><?=$rows->nama.' ( '.$rows->nama_guru.')';?></option>
 
 
 						<?php endforeach ?>

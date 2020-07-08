@@ -92,6 +92,7 @@
 <script type="text/javascript">
 
     $(document).on('keyup','.nilai',delay(function(e){
+        e.preventDefault();
         bobot = $(this).data('bobot');
         nilai = $(this).val();
         if(nilai <= bobot){
@@ -106,7 +107,7 @@
                     id_user : $(this).data('user'),
                 },
                 success:function(response){
-                   
+                   window.location.reload()
                 }
             });
         }else{

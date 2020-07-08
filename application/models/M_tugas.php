@@ -97,8 +97,9 @@ class M_tugas extends MY_Model {
 						')
 						->from('tb_tugas tgs')
 						->join('tb_kelas kls','kls.id=tgs.id_kelas','left')
-						->join('m_guru gr','gr.id=kls.id_trainer','left')
-						->join('m_mapel mpl','mpl.id=kls.id_mapel','left')
+						->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'left')
+						->join('m_guru gr','gr.id=dmkls.id_guru','left')
+						->join('m_mapel mpl','mpl.id=dmkls.id_mapel','left')
 						->order_by('tgs.id','desc')
 						->where($where)
 						->get()
@@ -106,6 +107,19 @@ class M_tugas extends MY_Model {
 	
       
 		return count($get);
+	}
+
+	public function get_many_by($where = []) {
+		$get = $this->db->select('tugas.*, kls.nama AS kelas, mapel.nama AS nama_mapel')
+						->from('tb_tugas tugas')
+						->join('tb_kelas kls', 'tugas.id_kelas = kls.id', 'left')
+						->join('m_mapel mapel', 'tugas.id_mapel = mapel.id', 'left')
+						// ->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'left')
+						->where($where)
+						->get()
+						->result();
+
+		return $get;
 	}
 
 	 public function paginate($page = 1, $where = array(), $limit = 10)

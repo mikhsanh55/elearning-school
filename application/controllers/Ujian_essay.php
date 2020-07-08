@@ -2020,7 +2020,7 @@ class Ujian_essay extends MY_Controller {
 		$id_user = decrypt_url($id_user);;
 
 		$this->cek_aktif();
-		cek_hakakses(array("guru"), $this->session->userdata('admin_level'));
+		// cek_hakakses(array("guru"), $this->session->userdata('admin_level'));
 		
 		
 
@@ -2093,7 +2093,7 @@ class Ujian_essay extends MY_Controller {
 
 			}
 
-
+			
 			$a['jam_mulai'] = $essay->tgl_mulai;
 			$a['jam_selesai'] = $essay->tgl_selesai;
 			$a['id_ujian'] = $essay->id_ujian;

@@ -104,10 +104,18 @@ class Ujian_real extends MY_Controller {
 		// 	$kelas = $this->m_kelas->get_all();
 
 		// }
-		$kelas = $this->m_kelas->get_all(['kls.id_instansi' => $this->akun->instansi]);
+		if($this->log_lvl == 'admin' || $this->log_lvl == 'instansi' || $this->log_lvl == 'admin_instansi') {
+			$kelas = $this->m_kelas->get_all(['kls.id_instansi' => $this->akun->instansi]);
+			$mapel = $this->m_mapel->get_many_by(['id_instansi' => $this->akun->instansi]);
+		}
+		else if($this->log_lvl == 'guru') {
+			$kelas = $this->m_kelas->get_data_mapel(['kls.id_instansi' => $this->akun->instansi, 'dkmapel.id_guru' => $this->akun->id]);
+			$mapel = $this->m_kelas->get_data_mapel(['mapel.id_instansi' => $this->akun->instansi, 'dkmapel.id_guru' => $this->akun->id]);
+
+		}
 		
-		$mapel = $this->m_mapel->get_many_by(['id_instansi' => $this->akun->instansi]);
-		// print_r($mapel);exit;
+		
+		print_r($kelas);exit;
 
 		$data = array(
 
@@ -147,10 +155,16 @@ class Ujian_real extends MY_Controller {
 		// 	$kelas = $this->m_kelas->get_all();
 
 		// }
-		$kelas = $this->m_kelas->get_many_by(['kls.id_instansi' => $this->akun->instansi]);
-		
-		$mapel = $this->m_mapel->get_many_by(['id_instansi' => $this->akun->instansi]);
+		if($this->log_lvl == 'admin' || $this->log_lvl == 'instansi' || $this->log_lvl == 'admin_instansi') {
+			$kelas = $this->m_kelas->get_all(['kls.id_instansi' => $this->akun->instansi]);
+			$mapel = $this->m_mapel->get_many_by(['id_instansi' => $this->akun->instansi]);
+		}
+		else if($this->log_lvl == 'guru') {
+			$kelas = $this->m_kelas->get_data_mapel(['kls.id_instansi' => $this->akun->instansi, 'dkmapel.id_guru' => $this->akun->id]);
+			$mapel = $this->m_kelas->get_data_mapel(['mapel.id_instansi' => $this->akun->instansi, 'dkmapel.id_guru' => $this->akun->id]);
 
+		}
+		// print_r($mapel);exit;
 
 		$id = decrypt_url($id);
 

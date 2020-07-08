@@ -5,7 +5,7 @@
 			<th class="frist"><input type="checkbox" name="checkall" id="checkall"></th>
 			<th class="frist">No</th>
 			<th>Kelas</th>
-			<th>Nama Modul Pelatihan</th>
+			<th>Mata Pelajaran</th>
 			<th>Keterangan</th>
 			<th>Opsi</th>
 		</tr>

@@ -237,27 +237,30 @@
 		$(self).prop('disabled', true).text('Loading...')
 		$.ajax({
 			type: 'post',
-			url: '<?= base_url('trainer/get_mapel') ?>',
+			url: '<?= base_url('mapel/daftar_mapel') ?>',
 			data: {
-				id: $(self).data('id')
+				id: $(self).data('id'),
+				limit: 10,
+				pg: 1,
+				id_mapel: $(self).data('id'),
+				filter: 0
 			},
-			dataType: 'JSON',
 			success: function(res) {
 				$(self).prop('disabled', false).text('Mata Pelajaran')
-				html += `
-					<ul class="list-group">
-				`
-				if(res.data.length > 0) {
-					res.data.forEach((item, i) => {
-						html += `<li class="list-group-item">${item.nama_mapel}</li>`
-					})
-				}
-				else {
-					html += `<li class="list-group-item text-center">Data Kosong</li>`
-				}
+				// html += `
+				// 	<ul class="list-group">
+				// `
+				// if(res.data.length > 0) {
+				// 	res.data.forEach((item, i) => {
+				// 		html += `<li class="list-group-item">${item.nama_mapel}</li>`
+				// 	})
+				// }
+				// else {
+				// 	html += `<li class="list-group-item text-center">Data Kosong</li>`
+				// }
 
-				html += `</ul>`
-				$('#list-mapel').html(html)
+				// html += `</ul>`
+				$('#list-mapel').html(res)
 			}
 		}).done(() => $('#modalMapel').modal('show'))
 	}

@@ -116,7 +116,8 @@
         uploadManual = false,
         /*fileVideo = '', fileVideoName = '', extVideo = '',*/
         progressBar = $('#bar1'), progressPercent = $('#percent1'),
-        uploadType = 'manual';
+        uploadType = $('input[type=radio][name=typeVideo]:checked').data('type');
+        
 
         // Validasi file
         typeVideo.forEach(function(el) {

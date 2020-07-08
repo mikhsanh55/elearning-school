@@ -159,6 +159,7 @@ class Materi extends MY_Controller
         $where['mt.id_mapel'] = $post['id_mapel'];
         
         $paginate         = $this->m_materi->paginate_materi($pg,$where,$limit);
+        // print_r($paginate);exit;
         $data['paginate'] = $paginate;
 		$data['paginate']['url']	= 'materi/page_load';
 		$data['paginate']['search'] = 'lookup_key';
@@ -224,7 +225,7 @@ class Materi extends MY_Controller
     }
     public function add()
     {
-        if($this->log_lvl != 'guru') {
+        if($this->log_lvl == 'siswa') {
             redirect('dtest/data_mapel');
         }
         $data = [
@@ -415,8 +416,8 @@ class Materi extends MY_Controller
                 'id_trainer'    => $this->akun->id,
                 'title'         => $this->input->post('title'),
                 'content'       => $this->input->post('content'),
-                'video'         => $this->input->post('video'),
-                'path_video'    => $this->input->post('video'),
+                'video'         => $this->input->post('video-gdrive'),
+                'path_video'    => $this->input->post('video-gdrive'),
                 'upload_manual' => 0,
                 'req_edit'      => 1,
                 'id_type_video' => 2

@@ -172,19 +172,19 @@
             console.log('Upload manual');
             type_video = 'manual';
             uploadManual = true;
-            uploadType = 1
+            uploadType = 'manual'
         }
         else if(selectedType.dataset.type == 'gdrive') {
             console.log('G Drive')
             type_video = 'Gdrive';
             uploadManual = false;
-            uploadType = 2
+            uploadType = 'gdrive'
         }
         else if(selectedType.dataset.type == 'youtube') {
             console.log('G Drive')
-            type_video = 'Gdrive';
+            type_video = 'Youtube';
             uploadManual = false;
-            uploadType = 3
+            uploadType = 'youtube'
         }
         // Validasi file
         typeVideo.forEach(function(el) {

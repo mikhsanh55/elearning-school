@@ -380,7 +380,7 @@ function OpenWindow(url){
   }
   else
   {
-  	alert("Akses Diizinkan ..!");
+  	// alert("Akses Diizinkan ..!");
     MyPopUp = window.open(url,"MyPopUp");//Open a new PopUp window
   }
 }

@@ -69,7 +69,7 @@ class Jadwal extends MY_Controller {
 		// $data = $this->getClient();
 		
 		if($this->log_lvl == 'guru'){
-		    $kelas = $this->m_kelas->get_many_by(['id_trainer'=>$this->akun->id]);
+		    $kelas = $this->m_kelas->get_guru_all(['dmapel.id_guru'=>$this->akun->id]);
 		}else if($this->log_lvl == 'admin'){
 		    $kelas = $this->m_kelas->get_all(['kls.id_instansi'=>$this->akun->instansi]);
 		    
@@ -84,6 +84,7 @@ class Jadwal extends MY_Controller {
 			'warna'   => $warna
 
 		);
+		// print_r($data);exit;
 
 		$this->render('jadwal/add',$data);
 
@@ -114,9 +115,9 @@ class Jadwal extends MY_Controller {
 		);
 		
 		if($this->log_lvl == 'guru'){
-		    $kelas = $this->m_kelas->get_many_by(['id_trainer'=>$this->akun->id]);
+		    $kelas = $this->m_kelas->get_guru_all(['dmapel.id_guru'=>$this->akun->id]);
 		}else if($this->log_lvl == 'admin'){
-		    $kelas = $this->m_kelas->get_all();
+		    $kelas = $this->m_kelas->get_all(['kls.id_instansi'=>$this->akun->instansi]);
 		    
 		}else{
 		    $kelas = $this->m_kelas->get_many_by(['kls.id_instansi'=>$this->akun->instansi]);
@@ -194,9 +195,10 @@ class Jadwal extends MY_Controller {
 
 
 
-		$get = $this->m_materi->get_many_by(array('id_mapel'=>$kelas->id_mapel,'id_trainer'=>$kelas->id_trainer));
+		$get = $this->m_materi->get_many_by(array('id_mapel'=>$kelas->idmapel,'id_trainer'=>$kelas->idguru));
 
-
+		// print_r($kelas);
+		// print_r($get);exit;
 
 
 
@@ -244,34 +246,57 @@ class Jadwal extends MY_Controller {
 
 		$post = $this->input->post();
 
+		$data = array(
+			'id_kelas' 		=> $post['id_kelas'],
+			'id_calendar'	=> uniqid(),
+			'id_materi'  	=> $post['materi'],
+			'keterangan' 	=> $post['keterangan'],
+			'start_date' 	=> $post['start_date'] . ' ' . $post['start_time'],
+			'end_date'   	=> $post['end_date'] . ' ' . $post['end_time'],
+			'color'  	 	=> $post['color'],
+		);
+
 		if($this->log_lvl == 'guru') {
-			$this->insertCalendar( 
-				$this->session->admin_konid,
-				$post['id_kelas'], 
-				$post['keterangan'], 
-				$post['color'], 
-				$post['start_date'], 
-				$post['start_time'], 
-				$post['end_date'], 
-				$post['end_time'], 
-				$post['materi']
-			);
+			$data['id_guru'] = $this->session->admin_konid;
 		}
 		else {
-			$this->insertCalendar( 
-				NULL,
-				$post['id_kelas'], 
-				$post['keterangan'], 
-				$post['color'], 
-				$post['start_date'], 
-				$post['start_time'], 
-				$post['end_date'], 
-				$post['end_time'], 
-				$post['materi']
-			);	
+			$data['id_guru'] = NULL;
 		}
-			
 
+		// if(!is_null($id_guru)) {
+		// 	$data['id_guru'] = $id_guru;
+		// }
+
+		$this->m_jadwal->insert($data);
+
+		// if($this->log_lvl == 'guru') {
+		// 	$this->insertCalendar( 
+		// 		$this->session->admin_konid,
+		// 		, 
+		// 		$post['keterangan'], 
+		// 		$post['color'], 
+		// 		$post['start_date'], 
+		// 		$post['start_time'], 
+		// 		$post['end_date'], 
+		// 		$post['end_time'], 
+		// 		$post['materi']
+		// 	);
+		// }
+		// else {
+		// 	$this->insertCalendar( 
+		// 		NULL,
+		// 		$post['id_kelas'], 
+		// 		$post['keterangan'], 
+		// 		$post['color'], 
+		// 		$post['start_date'], 
+		// 		$post['start_time'], 
+		// 		$post['end_date'], 
+		// 		$post['end_time'], 
+		// 		$post['materi']
+		// 	);	
+		// }
+			
+		echo json_encode(array('result' => true));
 	}
 
 

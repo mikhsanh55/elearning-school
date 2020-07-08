@@ -15,6 +15,7 @@ class Mapel extends MY_Controller {
         $this->load->model('m_mapel_cs');
         $this->load->model('m_instansi');
         $this->load->model('m_materi');
+        $this->load->model('m_detail_mapel');
         $this->page_title = 'Modul Pelatihan';
 	}
 	
@@ -73,7 +74,7 @@ class Mapel extends MY_Controller {
 	public function page_load_materi($pg = 1) {
 		$this->load->model('m_mapel_cs');
 		$post = $this->input->post();
-		$limit = 6;
+		$limit = $post['limit'];
 		$where = [];
 
 		$where['id_mapel'] = $post['id_mapel'];
@@ -102,9 +103,66 @@ class Mapel extends MY_Controller {
 		
 	}
 
+	public function update_guru_mapel() {
+		
+		$post = $this->input->post(null, true);
 
+  		$data = [
+  			'id_mapel' => $post['id_mapel'],
+  			'id_guru'  => $post['id_guru'],
+  		];
 
-	
+  		if($post['aktif'] == 1) {
+  			$this->m_detail_mapel->insert($data);
+  		}
+  		else {
+  			$this->m_detail_mapel->delete($data);	
+  		}
 
+  		$this->sendAjaxResponse($data, 200);
+	}
+	public function page_load_mapel_guru($pg = 1) {
+		$post = $this->input->post();
+		$limit = $post['limit'];
+		$where = [];
 
+		// $where['id_mapel'] = $post['id_mapel'];
+		// $where['is_verify'] = 1;
+		$where['mapel.id_instansi'] = $this->akun->instansi;
+		if (!empty($post['search'])) {
+			switch ($post['filter']) {
+				case 0:
+				$where["(lower(mapel.nama) like '%".strtolower($post['search'])."%' )"] = null;
+				break;
+						# code...
+				break;
+			}
+		}
+		$paginate = $this->m_mapel->paginate_mapel_switch($pg, $where, $limit);
+		foreach($paginate['data'] as $d) {
+			$d->id_guru = $post['id'];
+		}
+		// print_r($paginate['data']);exit;
+		$data['paginate'] = $paginate;
+		$data['paginate']['url']	= 'trainer/page_load';
+		$data['paginate']['search'] = 'lookup_key';
+		$data['page_start'] = $paginate['counts']['from_num'];
+		
+		$this->load->view('modul_pelatihan/table_murid', $data);		
+		$this->generate_page($data);
+	}
+
+	public function daftar_mapel($pg = 1) {
+		$post = $this->input->post();
+		// print_r($paginate);exit;
+		$data = [
+			'searchFilter' => ['Nama'],
+			'id_mapel' => $post['id_mapel']
+		];
+		
+		// print_r($data['paginate']);exit;
+
+		$this->load->view('modul_pelatihan/daftar_murid', $data);
+		
+	}
 }

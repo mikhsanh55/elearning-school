@@ -2,7 +2,7 @@
 <table id="custumtb">
 	<thead>
 		<tr>
-			<th class="frist"><input type="checkbox" name="checkall" id="checkall"></th>
+			<!-- <th class="frist"><input type="checkbox" name="checkall" id="checkall"></th> -->
 			<th class="frist">No</th>
 			<th>Nama</th>
 			<th>Nilai</th>
@@ -19,7 +19,7 @@
 			$keterangan = ($rows->nilai >= $ujian->min_nilai) ? 'LULUS' : 'BELUM LULUS';
 		?>
 			<tr>
-				<td><input type="checkbox" name="checklist[]" class="checklist" data-id= "<?=encrypt_url($rows->id);?>" value="<?=$rows->id;?>"></td>
+				<!-- <td><input type="checkbox" name="checklist[]" class="checklist" data-id= "<?=encrypt_url($rows->id);?>" value="<?=$rows->id;?>"></td> -->
 				<td align="center" class="frist"><?=$i;?></td>
 				<td><?=$siswa->nama;?></td>
 				<td><?=$rows->nilai;?></td>

@@ -80,21 +80,38 @@
 						<select name="id_kelas" id="id_kelas" style="width: 100%;" required>
 
 							<option disabled="disabled" selected="selected">Pilih</option>
-
+							<?php if($this->log_lvl == 'guru') { ?>
 								<?php foreach ($kelas as $rows): ?>
 
-									<?php if ($edit->id_kelas == $rows->id): ?>
+										<?php if ($edit->id_kelas == $rows->id_kelas): ?>
 
-										<option value="<?=$rows->id;?>" selected><?= $rows->nama; ?></option>
+											<option value="<?=$rows->id_kelas;?>" selected><?= $rows->nama; ?></option>
 
-									<?php else: ?>
+										<?php else: ?>
 
-										<option value="<?=$rows->id;?>"><?= $rows->nama; ?></option>
+											<option value="<?=$rows->id_kelas;?>"><?= $rows->nama; ?></option>
 
 
-									<?php endif ?>
+										<?php endif ?>
 
-							<?php endforeach ?>
+								<?php endforeach ?>
+
+							<?php } else { ?>
+									<?php foreach ($kelas as $rows): ?>
+
+										<?php if ($edit->id_kelas == $rows->id): ?>
+
+											<option value="<?=$rows->id;?>" selected><?= $rows->nama; ?></option>
+
+										<?php else: ?>
+
+											<option value="<?=$rows->id;?>"><?= $rows->nama; ?></option>
+
+
+										<?php endif ?>
+
+								<?php endforeach ?>
+							<?php } ?>
 
 						</select>
 
@@ -111,13 +128,24 @@
 					<div class="rs-select2 js-select-simple select--no-search">
 						<select name="id_mapel" id="id_mapel" style="width: 100%;" required>
 							<option disabled="disabled" selected="selected">Pilih</option>
+							<?php if($this->log_lvl == 'guru') { ?>
 							<?php foreach($mapel as $row) : ?>
-								<?php if($edit->id_mapel == $row->id) { ?>
-									<option value="<?= $row->id; ?>" selected><?= $row->nama; ?></option>
+								<?php if($edit->id_mapel == $row->id_mapel) { ?>
+									<option value="<?= $row->id_mapel; ?>" selected><?= $row->nama_mapel; ?></option>
 								<?php } else { ?>
-									<option value="<?= $row->id; ?>"><?= $row->nama; ?></option>
+									<option value="<?= $row->id_mapel; ?>"><?= $row->nama_mapel; ?></option>
 								<?php } ?>
 							<?php endforeach; ?>
+							<?php } else { ?>
+								<?php foreach($mapel as $row) : ?>
+									<?php if($edit->id_mapel == $rows->id) { ?>
+										<option value="<?= $row->id; ?>" selected><?= $row->nama; ?></option>
+									<?php } else { ?>
+										<option value="<?= $row->id; ?>" selected><?= $row->nama; ?></option>
+									<?php } ?>
+								<?php endforeach; ?>
+							<?php }?>
+
 						</select>
 						<div class="select-dropdown"></div>
 					</div>
