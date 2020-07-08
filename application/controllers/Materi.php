@@ -147,9 +147,9 @@ class Materi extends MY_Controller
 		$limit = 10;
 		$where = [];
 
-        // if ($this->log_lvl == 'guru') {
-        //     $where['mt.id_trainer'] = $this->akun->id;
-        // }
+        if ($this->log_lvl == 'guru') {
+            $where['mt.id_trainer'] = $this->akun->id;
+        }
 
        
         if($this->log_lvl != 'admin'){

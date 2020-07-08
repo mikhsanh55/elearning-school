@@ -1,4 +1,19 @@
-
+<style>
+	.password-input {
+		position: relative;
+	}
+	.password-input .fas:hover {
+		color:blue;
+	}
+	.password-input .fas {
+		transition: .3s;
+		cursor: pointer;
+		position: absolute;
+		right: 0;
+		top:37%;
+		margin-right: 10px;
+	}
+</style>
 <table id="custumtb">
 	<thead>
 		<tr>
@@ -9,7 +24,7 @@
 			<th>
 				NIS
 			</th>
-			<th>Kelas</th>
+			<!-- <th>Kelas</th> -->
 			<th>Jenis Kelamin</th>
 			<th>Password</th>
 			<th>Opsi</th>
@@ -29,7 +44,7 @@
 				<td><?=$rows->nama;?></td>
 				<td><?=$rows->username;?></td>
 				<td><?=$rows->nrp;?></td>
-				<td><?=$rows->nama_kelas;?></td>
+				<!-- <td><?=$rows->nama_kelas;?></td> -->
 				<td>
 					<?= $rows->nik == 1 ? 'Laki - laki' : 'Perempuan'; ?>
 				</td>
@@ -66,5 +81,58 @@
 <tbody>
 </tbody>
 </table>
+<script>
+	var encrypt_id, password
+	$('.mata-kau').on('click', function() {
+		encrypt_id = $(this).data('id')
+		console.log(encrypt_id)
+		if($(this).prev().prop('type') == 'text') {
+			$(this).prev().prop('type', 'password')	
+			$(this).removeClass('fa-eye-slash')
+			$(this).addClass('fa-eye')
+		}
+		else {
+			$(this).prev().prop('type', 'text')
+			$(this).addClass('fa-eye-slash')
+			$(this).removeClass('fa-eye')
+		}
+		
+	})
+
+	$('.password-reset').on('keypress', function(e) {
+		encrypt_id = $(this).data('id')
+		console.log(encrypt_id)
+		if(e.which == 13) {
+			if($(this).val() < 6) {
+				alert('Password minimal 6 karakter!')
+				return false
+			}
+			password = $(this).val()
+			$.ajax({
+				type: 'post',
+				url: "<?= base_url('pengusaha/reset_password') ?>",
+				data: {
+					encrypt_id,
+					password
+				},
+				dataType: 'json',
+				success:function(res) {
+					if(res.status) {
+						window.location.reload()
+					}
+					else {
+						console.error(res)
+						return false
+					}
+				},
+				error: function(e) {
+					console.error(e.responseText)
+					return false
+				}
+			})
+		}
+	})
+</script>
+
 
 

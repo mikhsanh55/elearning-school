@@ -651,9 +651,9 @@ class Pengusaha extends MY_Controller {
 		$limit = $post['limit'];
 		$where = [];
 
-		// if ($this->log_lvl != 'admin') {
-		// 	$where["akun.instansi"] = $this->akun->instansi;
-		// }
+		if ($this->log_lvl != 'admin') {
+			$where["akun.instansi"] = $this->akun->instansi;
+		}
 		if(isset($post['graduated'])) {
 			$where["akun.is_graduated"] = 1;	
 		}
@@ -678,6 +678,7 @@ class Pengusaha extends MY_Controller {
 			}
 		}
 		$paginate = $this->m_siswa->paginate($pg,$where,$limit);
+		// print_r($paginate);exit;
 		foreach ($paginate['data'] as $key => $value) {
 			$value->password = $this->encryption->decrypt($value->password);
 		}

@@ -260,6 +260,19 @@ input:checked + .slider:before {
 				</div>
 
 				<div class="form-group">
+					<label for="">Pilih Lembaga yang akan dijadikan Acuan Data</label>
+					<select name="instansi" id="" class="form-control">
+						<?php foreach($lembaga as $i => $v) : ?>
+							<?php if($selected_lembaga->id == $v->id) { ?>
+								<option value="<?= $v->id; ?>" selected><?= $v->instansi; ?></option>
+							<?php } else { ?>
+								<option value="<?= $v->id; ?>"><?= $v->instansi; ?></option>
+							<?php } ?>
+						<?php endforeach; ?>
+					</select>
+				</div>
+
+				<div class="form-group">
 
 					<label for="email">Judul:</label>
 

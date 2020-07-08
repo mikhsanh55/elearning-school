@@ -117,8 +117,8 @@ class Kelas extends MY_Controller
   		}
 
 		$data = array(
-			'guru' => $this->m_guru->get_all(),
-			'mapel' => $this->m_mapel->get_all()
+			'guru' => $this->m_guru->get_many_by(['instansi' => $this->akun->instansi]),
+			'mapel' => $this->m_mapel->get_many_by(['id_instansi' => $this->akun->instansi])
 		);
 		
 		// print_r($data['mapel']);exit;
@@ -132,9 +132,8 @@ class Kelas extends MY_Controller
 
 		$data = array(
 
-			'guru' => $this->m_guru->get_all(),
-			'mapel' => $this->m_mapel->get_all(),
-
+			'guru' => $this->m_guru->get_many_by(['instansi' => $this->akun->instansi]),
+			'mapel' => $this->m_mapel->get_many_by(['id_instansi' => $this->akun->instansi]),
 			'edit'     => $this->m_kelas->get_by(['kls.id'=>decrypt_url($id)]) 
 
 		);
@@ -335,7 +334,7 @@ class Kelas extends MY_Controller
   	$where = [];
 
   	// $where['kls.id'] = $post['id_kelas'];
-
+  	$where['mapel.id_instansi'] = $this->akun->instansi;
   	if(!empty($post['search'])) {
   		switch($post['filter']) {
   			case 0: 
@@ -487,7 +486,7 @@ class Kelas extends MY_Controller
 		$where = [];
 
 
-		// $where["akun.instansi"] = $this->akun->instansi;
+		$where["akun.instansi"] = $this->akun->instansi;
 
 		// $where["dkls.id_kelas"] = $post['id_kelas'];
 
@@ -763,7 +762,8 @@ class Kelas extends MY_Controller
 		$this->db->trans_begin();
 
 
-
+		$this->db->where_in('id_kelas', $where)->delete('tb_detail_kelas');
+		$this->db->where_in('id_kelas', $where)->delete('tb_detail_kelas_mapel');
 		$kirim = $this->db->where_in('id',$where)->delete('tb_kelas');
 
 

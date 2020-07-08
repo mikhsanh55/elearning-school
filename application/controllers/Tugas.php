@@ -54,7 +54,8 @@ class Tugas extends MY_Controller {
 	{	
 
 		$data = array(
-			'searchFilter' => array('Modul Pelatihan','Keterangan')
+			'searchFilter' => array('Modul Pelatihan','Keterangan'),
+			'kelas' => $this->m_kelas->get_all()
 		);
 
 		$this->render('tugas/list',$data);
@@ -63,7 +64,7 @@ class Tugas extends MY_Controller {
 
 	public function add(){
 		$data = array(
-			'kelas' => $this->m_kelas->get_many_by(array('kls.id_trainer'=>$this->akun->id)), 
+			'kelas' => $this->m_kelas->get_all()
 		);
 		$this->render('tugas/add',$data);
 	}

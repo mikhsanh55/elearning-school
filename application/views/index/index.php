@@ -53,9 +53,9 @@
         <div class="dtable hw100">
             <div class="dtable-cell hw100">
                 <div class="container text-center" >
-                    <h1 class="intro-title animated fadeInDown" style="text-shadow: 2px 2px #000;"> JALESVEVA JAYAMAHE</h1>
+                    <h1 class="intro-title animated fadeInDown" style="text-shadow: 2px 2px #000;"> Menjadikan Siswa Pintar Dan Berkualitas Dengan E-Learning</h1>
                     <p class="sub animateme fittext3 animated fadeIn" style="text-shadow: 2px 2px #000;">
-                       <strong>Justru di Laut Kita Jaya</strong>
+                       <strong>Belajar Jarak Jauh Siswa dengan Guru secara Efektif dan Efesien</strong>
                     </p>
                     <div class="sub animateme fittext3 animated fadeInUp">
                             <!--<a href="<?= base_url('register'); ?>"><button class="btn btn-primary btn-search btn-block btn-gradient"><strong>Daftar Sekarang!</strong></button></a>-->
@@ -81,7 +81,7 @@
                                     <i class="icon  icon-map"></i>
                                 </div>
                                 <div class="iconbox-wrap-content">
-                                    <h5><span>DWI WARNA</span></h5>
+                                    <h5><span>INOVATIF</span></h5>
                                 </div>
                             </div>
                             <!-- /..iconbox -->

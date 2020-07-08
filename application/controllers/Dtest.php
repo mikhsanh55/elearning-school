@@ -84,7 +84,7 @@ class Dtest extends MY_Controller {
 
 				$where['kls.id_peserta'] = $this->akun->id;
 
-				// $where['kls.id_instansi'] = $this->akun->instansi;
+				$where['kls.id_instansi'] = $this->akun->instansi;
 
 
 

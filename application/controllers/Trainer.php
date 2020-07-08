@@ -151,10 +151,9 @@ class Trainer extends MY_Controller {
 					exit();
 
 				}else{
-						$data = [
+						$datas = [
 							'nidn'  =>  $post['nidn'],
 							'nrp'  => $post['nrp'],
-							'id_mapel'	=> $post['mapel'],
 							'nama' => $post['nama'],
 							'username' => $post['username'],
 							'email'  => $post['email'],
@@ -163,7 +162,20 @@ class Trainer extends MY_Controller {
 						];  				
 
 						$this->db->where('id', $post['id']);
-						$this->db->update('m_guru', $data);
+						$this->db->update('m_guru', $datas);
+
+						$inserted_id = $post['id'];
+
+						for($i = 0;$i < count($post['mapel']);$i++) {
+							$data_mapel = $this->m_detail_mapel->get_by(['id_mapel' => $post['mapel'][$i],'id_guru' => $inserted_id]);
+
+							if(!empty($data_mapel)) {
+								$this->db->where($data_mapel->id);
+								$this->update('tb_detail_mapel', ['id_mapel' => $post['mapel'][$i],'id_guru' => $inserted_id]);	
+							}
+							
+							// $this->db->insert('tb_detail_mapel', $data_detail_mapel);
+						}
 
 						$cek_adm = $this->db->where(array('level'=>'guru','kon_id'=>$post['id']))->get('m_admin')->result();
 						if (count($cek_adm) > 0) {
@@ -500,9 +512,9 @@ class Trainer extends MY_Controller {
 			}
 		}
 
-		// if ($this->log_lvl != 'admin') {
-		// 	$where['instansi'] = $this->akun->instansi;
-		// }
+		if ($this->log_lvl != 'admin') {
+			$where['instansi'] = $this->akun->instansi;
+		}
 
 		$paginate = $this->m_guru->paginate($pg,$where,$limit);
 		foreach ($paginate['data'] as $key => $value) {

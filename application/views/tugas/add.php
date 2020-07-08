@@ -13,7 +13,7 @@
 		<h2>Tambah Tugas</h2>
 		<form id="form-akun-lembaga" method="post" enctype="multipart/form-data">
 			<div class="form-group">
-				<label for="lembaga">Kelas</label>
+				<label for="lembaga">Kelas<span class="text-danger">*</span></label>
 				<div class="rs-select2 js-select-simple select--no-search">
 					<select name="kelas" id="kelas" style="width: 30%;" required>
 						<option disabled="disabled" value="null" selected="selected">Pilih</option>
@@ -25,11 +25,11 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="nama">Keterangan:</label>
-				<textarea  class="form-control" id="keterangan" placeholder="Masukan Keterangan" name="keterangan" required=""></textarea>
+				<label for="nama">Keterangan</label>
+				<textarea  class="form-control" id="keterangan" placeholder="Masukan Keterangan" name="keterangan" ></textarea>
 			</div>
 			<div class="form-group">
-				<label for="username">Attachment:</label>
+				<label for="username">Lampiran<span class="text-danger">*</span></label>
 				<div class="custom-file mb-3">
 					<input type="file" class="custom-file-input" id="attach" name="attach[]" multiple>
 					<label class="custom-file-label" for="customFile">Choose file</label>
@@ -37,11 +37,11 @@
 				<span id="errors-file" class="errors"></span>
 			</div>
 			<div class="form-group">
-				<label for="end_date">Tanggal Pengumpulan:</label>
+				<label for="end_date">Tanggal Pengumpulan<span class="text-danger">*</span></label>
 				<input class="form-control js-datepicker" type="text" id="end_date" name="end_date"  required >
 			</div>
 			<div class="form-group">
-				<label for="end_time">Waktu Pengumpulan:</label>
+				<label for="end_time">Waktu Pengumpulan<span class="text-danger">*</span></label>
 				<input class="form-control" type="time" id="end_time" name="end_time"  required="">
 			</div>
 			

@@ -87,17 +87,17 @@ class Login extends MY_Controller
         				$instansi = $this->m_instansi->get_by(array('id'=>$siswa->instansi));
                         $cek_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $get_user->kon_id]);
                         // print_r($cek_kelas);exit;
-        				// if (empty($instansi)) {
-        				// 	$_log['log']['status']			= "0";
-        				// 	$_log['log']['keterangan']		= "Maaf, akun anda tidak terdaftar pada instansi mana pun, silahkan hubungi admin";
-        				// 	$_log['log']['detil_admin']		= null;
-        				// 	j($_log);exit;
-        				// }else if ($instansi->deleted == 1) {
-        				// 	$_log['log']['status']			= "0";
-        				// 	$_log['log']['keterangan']		= "Maaf, instansi anda di nonakifkan silahkan hubungi admin";
-        				// 	$_log['log']['detil_admin']		= null;
-        				// 	j($_log);exit;
-        				// }else
+        				if (empty($instansi)) {
+        					$_log['log']['status']			= "0";
+        					$_log['log']['keterangan']		= "Maaf, akun anda tidak terdaftar pada instansi mana pun, silahkan hubungi admin";
+        					$_log['log']['detil_admin']		= null;
+        					j($_log);exit;
+        				}else if ($instansi->deleted == 1) {
+        					$_log['log']['status']			= "0";
+        					$_log['log']['keterangan']		= "Maaf, instansi anda di nonakifkan silahkan hubungi admin";
+        					$_log['log']['detil_admin']		= null;
+        					j($_log);exit;
+        				}else
                         // Jika Siswa belum punya kelas
                         if(empty($cek_kelas)) {
                             $_log['log']['status']          = "0";

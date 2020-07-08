@@ -148,38 +148,7 @@
 							<td style="width: 25%">Nama Mata Pelajaran</td>
 							<td style="width: 75%"><input type="text" class="form-control" name="nama" id="nama" required></td>
 						</tr>
-						<!-- <tr>
-							<td style="width: 25%">SKS</td>
-							<td style="width: 75%"><input type="text" class="form-control only-number" name="sks" id="sks" maxlength="3" required></td>
-						</tr> -->
-						<!-- <tr>
-							<td style="width: 25%">Semester</td>
-							<td style="width: 75%"><input type="text" class="form-control only-number" name="semester" id="semester" maxlength="4" required></td>
-						</tr>
-						<tr>
-							<td style="width: 25%">Angkatan</td>
-							<td style="width: 75%"><input type="text" class="form-control only-number" name="angkatan" id="angkatan" maxlength="10" required></td>
-						</tr> -->
-						<!-- <tr>
-
-							<td style="width: 25%"><?=$this->transTheme->instansi;?></td>
-							<td style="width: 75%">
-								<div class="rs-select2 js-select-simple select--no-search">
-									<select name="instansi" id="instansi" style="width: 100%;">
-										<option disabled="disabled" selected="selected">Pilih</option>
-										<?php foreach ($instansi as $key => $rows): ?>
-											<?php if ($this->log_lvl == 'admin'): ?>
-												<option value="<?=$rows->id;?>" ><?=$rows->instansi;?></option>
-											<?php else: ?>
-												<option value="<?=$rows->id;?>" <?=($this->akun->instansi == $rows->id) ? 'selected' : NULL ;?> ><?=$rows->instansi;?></option>
-											<?php endif ?>
-											
-										<?php endforeach ?>
-									</select>
-									<div class="select-dropdown"></div>
-								</div>
-							</td>
-						</tr> -->
+					
 					</table>
 			</div>
 			<div class="modal-footer">

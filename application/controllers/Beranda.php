@@ -134,15 +134,17 @@ class Beranda extends MY_Controller {
 	public function view_admin()
 
 	{
-
+		$this->load->model('m_instansi');
 		$data = array(
 
 			'setting' => $this->m_setting->get_by(array('id'=>1)),
 			'slide' => $this->m_slide->get_many_by(['id_instansi'=>$this->akun->instansi]),
-
+			'lembaga' => $this->m_instansi->get_all(),
+			'selected_lembaga'  => $this->m_instansi->get_by(['selected' => 1]),
 			'patch'  => base_url('upload/slide/'),
 
 		);
+		// print_r($data);exit;
 
 		$this->render('setting/set',$data);	
 

@@ -7,7 +7,7 @@
 			<th rowspan="2">Kelas</th>
 			<th rowspan="2">Semester</th>
 			<th rowspan="2">Mata Pelajaran</th>
-			<th colspan="4">Nilai</th>
+			<th colspan="5">Nilai</th>
 		</tr>
 		<tr>
 			<th>Ujian Harian</th>

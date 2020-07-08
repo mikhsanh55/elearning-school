@@ -6,6 +6,7 @@ class Setting extends MY_Controller {
 	{
 		parent::__construct();
 		$this->load->model('m_setting');
+		$this->load->model('m_instansi');
 	}
 
 	public function index()
@@ -69,11 +70,20 @@ class Setting extends MY_Controller {
 		$data['judul'] = $post['judul'];
 		$data['footer'] = $post['footer'];
 		$data['logo_login'] = $post['status_logo'];
-	
+		
 		$kirim = $this->m_setting->update($data,array('id'=>$post['id']));
 		
 
 		if ($kirim) {
+			// Update Instansi
+			$this->m_instansi->update([
+				'selected' => 0
+			], ['selected' => 1]);
+
+			$this->m_instansi->update([
+				'selected' => 1
+			], ['id' => $post['instansi']]);
+
 			$pesan = 'Update berhasil';
 			$hasil = 1;
 			if (!empty($data['logo'])) {

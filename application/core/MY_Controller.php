@@ -32,6 +32,7 @@ class MY_Controller extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
+		$this->load->model('m_instansi');
 		$this->backButton = '<button class="btn btn-light text-right" onclick="history.back()">Kembali</button>';
 		if ($this->uri->segment(1) == 'login') {
 		} else if ($this->uri->segment(1) == 'awal' || $this->uri->segment(1) == 'lupa_password') {
@@ -221,8 +222,10 @@ class MY_Controller extends CI_Controller
 
 		$this->page_title = (!empty($this->sub_menu->nama_menu)) ? $this->sub_menu->nama_menu : NULL;
 		
-		// print_r($this->session->userdata());exit;
-	
+		// Set Data center berdasarkan Instansi
+		$this->akun->instansi = $this->m_instansi->get_by(['selected' => 1])->id;
+		// print_r($this->akun);exit;
+		
 	}
 
 	function checkactivemenu() {
