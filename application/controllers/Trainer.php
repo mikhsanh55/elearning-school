@@ -15,6 +15,7 @@ class Trainer extends MY_Controller {
         $this->waktu_sql = $waktu_sql['waktu'];
         $this->opsi = array("a","b","c","d","e");
         $this->load->model('m_admin');
+        $this->load->model('m_detail_mapel');
         $this->load->model('m_instansi');
 
         $this->load->library('validasi');
@@ -165,16 +166,27 @@ class Trainer extends MY_Controller {
 						$this->db->update('m_guru', $datas);
 
 						$inserted_id = $post['id'];
-
+						print_r($post['mapel']);exit;
 						for($i = 0;$i < count($post['mapel']);$i++) {
-							$data_mapel = $this->m_detail_mapel->get_by(['id_mapel' => $post['mapel'][$i],'id_guru' => $inserted_id]);
+							$data_mapel = $this->m_detail_mapel->get_by(['id_mapel' => $post['mapel'][$i],'id_guru' => $post['id']]);
 
 							if(!empty($data_mapel)) {
-								$this->db->where($data_mapel->id);
-								$this->update('tb_detail_mapel', ['id_mapel' => $post['mapel'][$i],'id_guru' => $inserted_id]);	
+								$data = [
+									'id_mapel' => $post['mapel'][$i],
+									'id_guru' => $inserted_id, 
+								];
+
+								$this->m_detail_mapel->update($data, ['id' => $data_mapel->id]);
+
+
+								// $this->db->where($data_mapel->id);
+								// print_r($data_mapel);exit;
+							}
+							else {
+								$this->db->insert('tb_detail_mapel', ['id_mapel' => $post['mapel'][$i],'id_guru' => $inserted_id]);	
 							}
 							
-							// $this->db->insert('tb_detail_mapel', $data_detail_mapel);
+							
 						}
 
 						$cek_adm = $this->db->where(array('level'=>'guru','kon_id'=>$post['id']))->get('m_admin')->result();

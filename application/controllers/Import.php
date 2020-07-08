@@ -69,7 +69,6 @@ class Import extends MY_Controller {
                             'username'  => $row['C'],
                             'nrp' => $row['D'], // NIS
                             'id_jurusan' => !empty($id_kelas) ? $id_kelas->id : 0,
-                            'id_guru' => !empty($id_guru) ? $id_guru->id : 0, // Wali Kelas
                             'no_telpon' => $row['J'],
                             'nik' => $jk, // Jenis Kelamin
                             'email'  => $row['H'],

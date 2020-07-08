@@ -79,10 +79,9 @@
 					<?php
 
 					if($this->session->userdata('admin_level') == "admin" || $this->session->userdata('admin_level') == "instansi" || $this->session->userdata('admin_level') == "admin_instansi"){
-
+						// <a href="#" onclick="return m_guru_matkul('.$rows->id.');" class="btn btn-primary btn-sm mr-2"><i class="glyphicon glyphicon-th-list" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Materi</a>
 						echo '<div class="btn-group">
 
-						<a href="#" onclick="return m_guru_matkul('.$rows->id.');" class="btn btn-primary btn-sm mr-2"><i class="glyphicon glyphicon-th-list" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Materi</a>
 						<button class="btn btn-sm btn-primary" data-id="'.$rows->id.'" onclick="displayMapel(this)">Mata Pelajaran</button>
 						</div>
 
