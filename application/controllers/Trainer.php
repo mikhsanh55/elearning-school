@@ -110,9 +110,8 @@ class Trainer extends MY_Controller {
 
 			foreach($mapels as $x => $mapel) {
 				$html .= '<div>';
-				// if($count < count($a['mapel'])) {
-				
-					echo $mapel->id . $a['mapel'][$i]->idmapel ."<br>";
+				if($count < count($a['mapel'])) {
+					// echo $mapel->id . $a['mapel'][$i]->idmapel ."<br>";
 					if($mapel->id == $a['mapel'][$i]->idmapel) {
 						$count++;
 						$i++;
@@ -120,8 +119,10 @@ class Trainer extends MY_Controller {
 						$html .= '<input type="checkbox" name="mapel[]" checked value="'.$mapel->id.'" /> <span class="ml-1">'.$mapel->nama.'s</span>';
 					}
 					else {
-						$i++;
-						$html .= '<input type="checkbox" name="mapel[]" value="'.$mapel->id.'" /> <span class="ml-1">'.$mapel->nama.'</span>';	
+						// $i++;
+						if($count < count($a['mapel'])) {
+							$html .= '<input type="checkbox" name="mapel[]" value="'.$mapel->id.'" /> <span class="ml-1">'.$mapel->nama.'</span>';	
+						}
 					}
 				}
 				else {
