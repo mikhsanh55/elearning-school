@@ -73,7 +73,7 @@
 
 								<?php foreach ($kelas as $rows): ?>
 
-									<option value="<?=$rows->id;?>"><?= $rows->jurusan;?></option>
+									<option value="<?=$rows->id;?>"><?= $rows->nama;?></option>
 
 
 							<?php endforeach ?>

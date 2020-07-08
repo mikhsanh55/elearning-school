@@ -111,8 +111,9 @@
 				<a class="btn btn-success btn-sm tombol-kanan" href="#" onclick="return m_guru_e(0);"><i class="fa fa-user-plus"></i> &nbsp;Tambah</a>
 				<a href="javascript:void(0);" title="edit" id="edited" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> &nbsp;Edit</a>
 				<a href="javascript:void(0);" id="deleted" title="Hapus" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> &nbsp;Hapus</a>
-
-				<a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url(); ?>upload/format_import_pengajar.xlsx"><i class="fa fa-cloud-download" aria-hidden="true"></i> &nbsp;Download Format Import</a>
+				
+				<!-- SMAN 5 Bandung -->
+				<a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url(); ?>upload/format_import_pengajar-SMAN5BDG.xlsx"><i class="fa fa-cloud-download" aria-hidden="true"></i> &nbsp;Download Format Import</a>
 				<a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url('trainer/import/'); ?>"><i class="fa fa-cloud-upload" aria-hidden="true"></i> &nbsp;Import</a>
 
 				<a href="<?=base_url('export/pengajar') ?>" class="btn btn-sm btn-success"><i class="fas fa-file-excel-o"></i>&nbsp;Export</a>

@@ -69,6 +69,10 @@ class Trainer extends MY_Controller {
 		}
 		
 	}
+
+	public function findId($obj, $search) {
+
+	}
     
 	public function m_guru() {
 		$this->cek_aktif();
@@ -102,32 +106,22 @@ class Trainer extends MY_Controller {
 			$a['data'] = $this->db->query("SELECT * FROM m_guru WHERE id = '$uri4'")->row();
 			$a['mapel'] = $this->m_guru->get_join_many_by(['dmapel.id_guru' => $uri4, 'guru.instansi' => $this->akun->instansi]);
 			$mapels = $this->m_mapel->get_all(['id_instansi' => $this->akun->instansi]);
-			//  print_r('Detail ' .count($a['mapel']));
-			// print_r('Asli ' .count($mapels));
-			// exit;
+			
 			$count = 0;$i = 0;
 			$html = '';
 
 			foreach($mapels as $x => $mapel) {
 				$html .= '<div>';
-				if($count < count($a['mapel'])) {
-					// echo $mapel->id . $a['mapel'][$i]->idmapel ."<br>";
-					if($mapel->id == $a['mapel'][$i]->idmapel) {
-						$count++;
-						$i++;
+				$checked_mapel = $this->m_guru->get_join_by(['dmapel.id_guru' => $uri4, 'guru.instansi' => $this->akun->instansi, 'mapel.id' => $mapel->id]);
 
-						$html .= '<input type="checkbox" name="mapel[]" checked value="'.$mapel->id.'" /> <span class="ml-1">'.$mapel->nama.'s</span>';
-					}
-					else {
-						// $i++;
-						if($count < count($a['mapel'])) {
-							$html .= '<input type="checkbox" name="mapel[]" value="'.$mapel->id.'" /> <span class="ml-1">'.$mapel->nama.'</span>';	
-						}
-					}
+				if(!empty($checked_mapel)) {
+					// print_r($checked_mapel);
+					$html .= '<input type="checkbox" name="mapel[]" value="'.$mapel->id.'" checked /> <span class="ml-1">'.$mapel->nama.'</span>';	
 				}
 				else {
 					$html .= '<input type="checkbox" name="mapel[]" value="'.$mapel->id.'" /> <span class="ml-1">'.$mapel->nama.'</span>';	
 				}
+
 				$html .= '</div>';
 			}
 			$a['opsi'] = $html;
@@ -170,31 +164,19 @@ class Trainer extends MY_Controller {
 						$this->db->update('m_guru', $datas);
 
 						$inserted_id = $post['id'];
-						// print_r($post['mapel']);exit;
+						
+						
+						// $this->db->where_in('id_mapel',$post['mapel'])->where(['id_guru' => $post['id']])->delete('tb_detail_mapel');
+						$del = $this->m_detail_mapel->delete(['id_guru' => $post['id']]);
 						for($i = 0;$i < count($post['mapel']);$i++) {
-							$data_mapel = $this->m_detail_mapel->get_by(['id_mapel' => $post['mapel'][$i],'id_guru' => $post['id']]);
+								$data = [
+									'id_mapel' => $post['mapel'][$i],
+									'id_guru' => $post['id'], 
+								];
 
-							$data = [
-								'id_mapel' => $post['mapel'][$i],
-								'id_guru' => $post['id'], 
-							];
-							if(!empty($data_mapel)) {
-								
-
-								$this->m_detail_mapel->update($data, ['id' => $data_mapel->id]);
-
-
-								// $this->db->where($data_mapel->id);
-								// print_r($data_mapel);exit;
-							}
-							else {
 								$this->m_detail_mapel->insert($data);
-								// print_r($data);exit;
-							}
-							
-							
 						}
-
+						
 						$cek_adm = $this->db->where(array('level'=>'guru','kon_id'=>$post['id']))->get('m_admin')->result();
 						if (count($cek_adm) > 0) {
 							$data_adm = array(

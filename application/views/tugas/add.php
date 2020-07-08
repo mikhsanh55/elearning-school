@@ -25,6 +25,9 @@
 				</div>
 			</div>
 			<div class="form-group">
+				<label for="">Mata Pelajaran</label>
+			</div>
+			<div class="form-group">
 				<label for="nama">Keterangan</label>
 				<textarea  class="form-control" id="keterangan" placeholder="Masukan Keterangan" name="keterangan" ></textarea>
 			</div>

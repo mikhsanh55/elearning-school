@@ -64,9 +64,9 @@ class Ujian_real extends MY_Controller {
 
 		$data = array(
 
-			'searchFilter' => array('Modul Pelatihan','Trainer'),
+			'searchFilter' => array('Mata Pelajaran','Guru'),
 
-			'tipe_ujian'   => $tipe_ujian = array(''=>'Semua','uts'=>'UTS','uas'=>'UAS'),
+			'tipe_ujian'   => $tipe_ujian = array(''=>'Semua','uts'=>'UTS','uas'=>'UAS', 'harian' => 'Ulangan Harian'),
 
 			'url_form' => $url,
 
@@ -104,7 +104,7 @@ class Ujian_real extends MY_Controller {
 		// 	$kelas = $this->m_kelas->get_all();
 
 		// }
-		$kelas = $this->m_jurusan->get_many_by(['id_instansi' => $this->akun->instansi]);
+		$kelas = $this->m_kelas->get_all(['kls.id_instansi' => $this->akun->instansi]);
 		
 		$mapel = $this->m_mapel->get_many_by(['id_instansi' => $this->akun->instansi]);
 		// print_r($mapel);exit;
@@ -130,7 +130,7 @@ class Ujian_real extends MY_Controller {
 
 
 
-		$tipe_ujian = array('uts'=>'UTS','uas'=>'UAS');
+		$tipe_ujian = array('uts'=>'UTS','uas'=>'UAS', 'harian' => 'Ulangan Harian');
 
 
 
@@ -147,7 +147,7 @@ class Ujian_real extends MY_Controller {
 		// 	$kelas = $this->m_kelas->get_all();
 
 		// }
-		$kelas = $this->m_jurusan->get_many_by(['id_instansi' => $this->akun->instansi]);
+		$kelas = $this->m_kelas->get_many_by(['kls.id_instansi' => $this->akun->instansi]);
 		
 		$mapel = $this->m_mapel->get_many_by(['id_instansi' => $this->akun->instansi]);
 

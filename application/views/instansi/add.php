@@ -28,25 +28,34 @@
 					<br>
 				</div>
 			</div>
-			<form action="<?=base_url('instansi/insert');?>" method="post">
+			<form action="<?=base_url('instansi/insert');?>" method="post" enctype="multipart/form-data" >
 				<div class="form-group">
-					<label for="email">Instansi:</label>
+					<label for="email">Instansi<span class="text-danger">*</span></label>
 					<input type="text" class="form-control" id="instansi" name="instansi" required="">
 				</div>
 				<div class="form-group">
-					<label for="pwd">Nama Pimpinan:</label>
+					<label for="pwd">Nama Pimpinan<span class="text-danger">*</span></label>
 					<input type="text" class="form-control" id="nama_pimpinan" name="nama_pimpinan" required="">
 				</div>
 				<div class="form-group">
-					<label for="pwd">No Telp:</label>
-					<input type="text" class="form-control" id="no_telp" name="no_telp" required="">
+					<label for="pwd">No Telp</label>
+					<input type="text" class="form-control" id="no_telp" name="no_telp" >
 				</div>
 				<div class="form-group">
-					<label for="pwd">Alamat:</label>
-					<input type="text" class="form-control" id="alamat" name="alamat" required="">
+					<label for="pwd">Alamat</label>
+					<input type="text" class="form-control" id="alamat" name="alamat">
 				</div>
+				<div class="form-group">
+					<label for="">File Format Excel Guru</label>
+					<input type="file" class="form-control" name="excel_guru">
+				</div>
+				<div class="form-group">
+					<label for="">File Format Excel Siswa</label>
+					<input type="file" class="form-control" name="excel_siswa">
+				</div>
+
 				<button type="submit" class="btn btn-default">Simpan</button>
-				<button type="button" class="btn btn-default" onclick="window.location='<?=base_url('instansi');?>'">List</button>
+				<button type="button" class="btn btn-default" onclick="window.location='<?=base_url('instansi');?>'">Kembali</button>
 			</form> 
 		</div>
 	</div>

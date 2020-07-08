@@ -85,11 +85,11 @@
 
 									<?php if ($edit->id_kelas == $rows->id): ?>
 
-										<option value="<?=$rows->id;?>" selected><?= $rows->jurusan; ?></option>
+										<option value="<?=$rows->id;?>" selected><?= $rows->nama; ?></option>
 
 									<?php else: ?>
 
-										<option value="<?=$rows->id;?>"><?= $rows->jurusan; ?></option>
+										<option value="<?=$rows->id;?>"><?= $rows->nama; ?></option>
 
 
 									<?php endif ?>

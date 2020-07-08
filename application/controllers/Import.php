@@ -203,7 +203,7 @@ class Import extends MY_Controller {
                     $data_admin = [
                         'user_id'  => $row['E'],
                         'username' => $row['F'],
-                        'password'  => $this->encryption->encrypt($row['H']),
+                        'password'  => $this->encryption->encrypt($row['F']),
                         'level'    => 'guru',
                         'kon_id'   => $inserted_id
                     ];
@@ -211,29 +211,6 @@ class Import extends MY_Controller {
                     $this->db->insert('m_admin', $data_admin);
                 }
             }
-
-           
-
-            // $this->db->insert_batch('m_guru', $data);
-            // $this->db->insert_batch('m_admin', $data_admin);
-        
-            // $siswa = $this->m_guru->get_many_by(array('id > '=>$last_id));
-        
-            // $admin = array();
-
-            // foreach ($siswa as $key => $rows) {
-            //     $admin[$key] = array(
-            //         'user_id'  => $rows->username,
-            //         'username' => $rows->email,
-            //         'password'  => $this->encryption->encrypt($row['H']),
-            //         'level'    => 'guru',
-            //         'kon_id'   => $rows->id,
-            //         'status'   => 0,
-
-            //     );
-            // }
-
-            //     $this->db->insert_batch('m_admin', $admin);
 
                 if ($this->db->trans_status() === FALSE)
                 {
