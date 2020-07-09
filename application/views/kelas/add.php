@@ -54,9 +54,9 @@
 
 				
 
-					<select name="id_trainer" id="id_trainer" style="width: 70%;" required class="form-control">
+					<select name="id_trainer" id="id_trainer" style="width: 70%;"  class="form-control">
 
-						<option disabled="disabled" value="null" selected="selected">Pilih</option>
+						<option  value="null" selected="selected">Pilih</option>
 
 						<?php 
 
