@@ -14,7 +14,7 @@
 		<form id="form-akun-lembaga" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="id" value="<?=$edit->id;?>">
 			<div class="form-group">
-				<label for="lembaga">Modul Pelatihan</label>
+				<label for="lembaga">Kelas</label>
 				<div class="rs-select2 js-select-simple select--no-search">
 					<select name="kelas" id="kelas" style="width: 30%;">
 						<option disabled="disabled" selected="">Pilih</option>
