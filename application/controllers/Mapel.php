@@ -131,7 +131,7 @@ class Mapel extends MY_Controller {
 		if (!empty($post['search'])) {
 			switch ($post['filter']) {
 				case 0:
-				$where["(lower(mapel.nama) like '%".strtolower($post['search'])."%' )"] = null;
+				$where["(lower(nama) like '%".strtolower($post['search'])."%' )"] = null;
 				break;
 						# code...
 				break;
@@ -155,7 +155,7 @@ class Mapel extends MY_Controller {
 		$post = $this->input->post();
 		// print_r($paginate);exit;
 		$data = [
-			'searchFilter' => ['Nama'],
+			'searchFilter' => ['Mata Pelajaran'],
 			'id_mapel' => $post['id_mapel']
 		];
 		

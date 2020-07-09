@@ -65,6 +65,7 @@ input:checked + .slider:before {
 			<th class="frist">No</th>
 			<th>Mata Pelajaran</th>
 			<th>Nama Guru</th>
+			<th>Username</th>
 			<th>Opsi</th>
 		</tr>
 		<?php 
@@ -78,6 +79,7 @@ input:checked + .slider:before {
 				<td>
 					<?= $rows->nama_guru; ?>
 				</td>
+				<td><?=$rows->username_guru;?></td>
 				<td class="frist">
 					<label class="switch" data-toggle="tooltip">
 						<input type="checkbox" class="aktivasi"  data-mapel="<?=$rows->id_mapel;?>" data-guru="<?= $rows->id_guru; ?>" <?=($check_kelas > 0) ? 'checked' : NULL ?>>

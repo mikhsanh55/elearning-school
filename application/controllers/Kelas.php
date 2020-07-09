@@ -344,14 +344,17 @@ class Kelas extends MY_Controller
   			break;
   			case 1:
   				$where["(lower(guru.nama) like '%" . strtolower($post['search']) . "%' )"] = null;
-  			break;
+			  break;
+			  case 2:
+				$where["(lower(guru.username) like '%" . strtolower($post['search']) . "%' )"] = null;
+			break;
   		}
   	}
 
   	$paginate = $this->m_mapel->paginate_mapel($pg, $where, $limit);
   	$data['paginate'] = $paginate;
 
-	$data['paginate']['url']	= 'kelas/page_load_mapel/1';
+	$data['paginate']['url']	= 'kelas/page_load_mapel';
 
 	$data['paginate']['search'] = 'lookup_key';
 
@@ -406,7 +409,7 @@ class Kelas extends MY_Controller
 		// print_r($paginate);exit;
 		$data['paginate'] = $paginate;
 
-		$data['paginate']['url']	= 'kelas/page_load_siswa/1';
+		$data['paginate']['url']	= 'kelas/page_load_siswa';
 
 		$data['paginate']['search'] = 'lookup_key';
 
@@ -424,7 +427,7 @@ class Kelas extends MY_Controller
   	$post = $this->input->post();
 
   	$data = [
-  		'searchFilter' => ['Mata Pelajaran', 'Guru'],
+  		'searchFilter' => ['Mata Pelajaran', 'Guru','Username'],
   		'kelas' => $this->m_kelas->get_by(['kls.id' => $post['id_kelas']]),
   		'id_kelas' => $post['id_kelas']
   	];
