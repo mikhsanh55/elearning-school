@@ -16,8 +16,8 @@ class M_kelas extends MY_Model {
 							kls.id,
 						')
 		->from('tb_kelas kls')
-		->join('m_guru gr','gr.id=kls.id_trainer','inner')
-		->join('tb_instansi ins','ins.id=kls.id_instansi','inner')
+		->join('m_guru gr','gr.id=kls.id_trainer','left')
+		->join('tb_instansi ins','ins.id=kls.id_instansi','left')
 		->get()
 		->result();
 	
@@ -31,8 +31,8 @@ class M_kelas extends MY_Model {
 							ins.instansi,
 						')
 		->from('tb_kelas kls')
-		->join('m_guru gr','gr.id=kls.id_trainer','inner')
-		->join('tb_instansi ins','ins.id=kls.id_instansi','inner')
+		->join('m_guru gr','gr.id=kls.id_trainer','left')
+		->join('tb_instansi ins','ins.id=kls.id_instansi','left')
 		->where($where)
 		->get()
 		->result();
@@ -109,7 +109,7 @@ class M_kelas extends MY_Model {
 							dmkls.id_guru AS idguru
 						')
 		->from('tb_kelas kls')
-		->join('tb_detail_kelas_mapel dmkls', 'kls.id = dmkls.id_kelas', 'inner')
+		->join('tb_detail_kelas_mapel dmkls', 'kls.id = dmkls.id_kelas', 'left')
 		->join('m_guru gr','gr.id=dmkls.id_guru','left')
 		->join('m_mapel mp','mp.id=dmkls.id_mapel','left')
 		->join('tb_instansi ins','ins.id=kls.id_instansi','left')
@@ -198,7 +198,7 @@ class M_kelas extends MY_Model {
 
     	$result = $this->db->select('kls.id, kls.nama, mapel.nama AS nama_mapel, guru.nama AS nama_guru, dkmapel.*, dkmapel.id_mapel AS dmapel')
     						->from('tb_kelas kls')
-    						->join('tb_detail_kelas_mapel dkmapel', 'kls.id = dkmapel.id_kelas','inner')
+    						->join('tb_detail_kelas_mapel dkmapel', 'kls.id = dkmapel.id_kelas','left')
     						->join('m_mapel mapel', 'dkmapel.id_mapel = mapel.id', 'left')
     						->join('m_guru guru', 'dkmapel.id_guru = guru.id', 'left')
     						->where($where)
@@ -211,7 +211,7 @@ class M_kelas extends MY_Model {
     public function get_kelas_by($where = []) {
     	$result = $this->db->select('kls.id, kls.nama, mapel.nama AS nama_mapel, guru.nama AS nama_guru')
     						->from('tb_kelas kls')
-    						->join('tb_detail_kelas_mapel dkmapel', 'kls.id = dkmapel.id_kelas','inner')
+    						->join('tb_detail_kelas_mapel dkmapel', 'kls.id = dkmapel.id_kelas','left')
     						->join('m_mapel mapel', 'dkmapel.id_mapel = mapel.id', 'left')
     						->join('m_guru guru', 'dkmapel.id_guru = guru.id', 'left')
     						->where($where)
@@ -235,9 +235,9 @@ class M_kelas extends MY_Model {
 							mp.nama AS nama_mapel
 						')
 		->from('tb_kelas kls')
-		->join('tb_detail_kelas_mapel dmapel', 'dmapel.id_kelas = kls.id', 'inner')
+		->join('tb_detail_kelas_mapel dmapel', 'dmapel.id_kelas = kls.id', 'left')
 		->join('m_guru gr','gr.id=kls.id_trainer','left')
-		->join('m_mapel mp','mp.id=dmapel.id_mapel','inner')
+		->join('m_mapel mp','mp.id=dmapel.id_mapel','left')
 		->join('tb_instansi ins','ins.id=kls.id_instansi','left')
 		->order_by('mp.id','asc')
 		->where($where)

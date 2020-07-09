@@ -14,8 +14,8 @@ class M_mapel extends MY_Model {
 	public function search_detail($where) {
 		$get = $this->db->select('dmapel.*, mapel.nama AS nama_mapel, guru.nama AS nama_guru')
 						->from('tb_detail_mapel dmapel')
-						->join('m_mapel mapel', 'dmapel.id_mapel = mapel.id', 'inner')
-						->join('m_guru guru', 'dmapel.id_guru = guru.id', 'inner')
+						->join('m_mapel mapel', 'dmapel.id_mapel = mapel.id', 'left')
+						->join('m_guru guru', 'dmapel.id_guru = guru.id', 'left')
 						->like($where)
 						->get()
 						->result();
@@ -26,8 +26,8 @@ class M_mapel extends MY_Model {
 	public function get_detail_all($where) {
 		$get = $this->db->select('dmapel.*, mapel.nama AS nama_mapel, guru.nama AS nama_guru')
 						->from('tb_detail_mapel dmapel')
-						->join('m_mapel mapel', 'dmapel.id_mapel = mapel.id', 'inner')
-						->join('m_guru guru', 'dmapel.id_guru = guru.id', 'inner')
+						->join('m_mapel mapel', 'dmapel.id_mapel = mapel.id', 'left')
+						->join('m_guru guru', 'dmapel.id_guru = guru.id', 'left')
 						->where($where)
 						->get()
 						->result();
