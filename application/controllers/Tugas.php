@@ -64,17 +64,18 @@ class Tugas extends MY_Controller {
 
 	public function add(){
 		if($this->log_lvl == 'admin' || $this->log_lvl == 'admin_instansi' || $this->log_lvl == 'instansi') {
-			$kelas = $this->m_kelas->get_all();
+			$kelas = $this->m_kelas->get_all(['kls.id_instansi' => $this->akun->instansi]);
 			$mapel = $this->m_mapel->get_detail_all(['mapel.id_instansi' => $this->akun->instansi]);
 		}
 		else {
-			// $kelas = $this->m_kelas->get_data_mapel(['kls.id_instansi' => $this->akun->instansi, 'dkmapel.id_guru' => $this->akun->id]);
-			$kelas = $this->m_kelas->get_all();
-			// $mapel = $this->m_mapel->get_detail_all(['mapel.id_instansi' => $this->akun->instansi, 'guru.id' => $this->akun->id]);
-			$mapel = $this->m_mapel->get_detail_all(['mapel.id_instansi' => $this->akun->instansi]);
+			$kelas = $this->m_kelas->kelas_tugas(['kls.id_instansi' => $this->akun->instansi, 'dmapel.id_guru' => $this->akun->id]);
+
+			// $kelas = $this->m_kelas->get_all();
+			$mapel = $this->m_mapel->get_detail_all(['mapel.id_instansi' => $this->akun->instansi, 'guru.id' => $this->akun->id]);
+			// $mapel = $this->m_mapel->get_detail_all(['mapel.id_instansi' => $this->akun->instansi]);
 		}
-		// print_r($kelas);
-		// print_r($mapel);exit;
+		// print_r($mapel);
+		// exit;
 		$data = array(
 			'kelas' => $kelas,
 			'mapel' => $mapel
@@ -282,7 +283,7 @@ class Tugas extends MY_Controller {
 		}
 
 		if ($this->log_lvl != 'admin') {
-			// $where['kls.id_instansi'] = $this->akun->instansi;
+			$where['kls.id_instansi'] = $this->akun->instansi;
 
 		}
 

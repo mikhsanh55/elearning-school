@@ -230,6 +230,7 @@ class Kelas extends MY_Controller
   	$where = [];
 
   	$where['dmapel.id_guru'] = $this->session->admin_konid;
+  	// print_r($this->session->admin_konid);exit;
   	$paginate = $this->m_kelas->paginate_guru(1, $limit, $where);
   	// print_r($paginate);exit;
   	$data['paginate'] = $paginate;

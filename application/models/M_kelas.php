@@ -238,7 +238,7 @@ class M_kelas extends MY_Model {
 		->join('tb_detail_kelas_mapel dmapel', 'dmapel.id_kelas = kls.id', 'left')
 		->join('m_guru gr','gr.id=kls.id_trainer','left')
 		->join('m_mapel mp','mp.id=dmapel.id_mapel','left')
-		->join('tb_instansi ins','ins.id=kls.id_instansi','left')
+		->join('tb_instansi ins','ins.id=kls.id_instansi','right')
 		->order_by('mp.id','asc')
 		->where($where)
 		->get()
@@ -270,6 +270,18 @@ class M_kelas extends MY_Model {
         return array('data' => $results, 'counts' => $counts);
     }
 
+    public function kelas_tugas($where = []) {
+    	$get = $this->db->select('kls.*, dmapel.id_guru, mapel.nama AS nama_guru')
+    					->from('tb_kelas kls')
+    					->join('tb_detail_kelas_mapel dmapel', 'kls.id = dmapel.id_kelas', 'left')
+    					->join('m_mapel mapel', 'mapel.id = dmapel.id_mapel', 'left')
+    					->where($where)
+    					->get()
+    					->result();
+
+    	return $get;
+
+    }
 }
 
 /* End of file m_perusahaan.php */
