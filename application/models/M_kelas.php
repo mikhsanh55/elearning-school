@@ -271,7 +271,7 @@ class M_kelas extends MY_Model {
     }
 
     public function kelas_tugas($where = []) {
-    	$get = $this->db->select('kls.*, dmapel.id_guru, mapel.nama AS nama_guru')
+    	$get = $this->db->select('kls.*, dmapel.id_guru, dmapel.id_mapel AS idmapel, mapel.nama AS nama_guru')
     					->from('tb_kelas kls')
     					->join('tb_detail_kelas_mapel dmapel', 'kls.id = dmapel.id_kelas', 'left')
     					->join('m_mapel mapel', 'mapel.id = dmapel.id_mapel', 'left')

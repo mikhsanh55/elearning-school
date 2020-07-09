@@ -125,7 +125,6 @@ class Mapel extends MY_Controller {
 		$post = $this->input->post();
 		$limit = $post['limit'];
 		$where = [];
-
 		// $where['id_mapel'] = $post['id_mapel'];
 		// $where['is_verify'] = 1;
 		$where['mapel.id_instansi'] = $this->akun->instansi;
@@ -144,7 +143,7 @@ class Mapel extends MY_Controller {
 		}
 		// print_r($paginate['data']);exit;
 		$data['paginate'] = $paginate;
-		$data['paginate']['url']	= 'trainer/page_load';
+		$data['paginate']['url']	= 'mapel/page_load_mapel_guru';
 		$data['paginate']['search'] = 'lookup_key';
 		$data['page_start'] = $paginate['counts']['from_num'];
 		

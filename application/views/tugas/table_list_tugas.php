@@ -4,6 +4,7 @@
 		<tr>
 			<th class="frist">No</th>
 			<th>Kelas</th>
+			<th>Mata Pelajaran</th>
 			<th>Keterangan</th>
 			<th>Tanggal Selesai</th>
 			<th class="frist">Terkumpul</th>
@@ -24,10 +25,13 @@
 			}else{
 				$date = NULL;
 			}
+			$mapel = $this->m_mapel->get_by(['id' => $rows->id_mapel]);
+			$nama_mapel = !empty($mapel->nama) ? $mapel->nama : '';	
 		?>
 			<tr>
 				<td align="center" class="frist"><?=$i;?></td>
 				<td><?=$rows->kelas;?></td>
+				<td><?= $nama_mapel; ?></td>
 				<td><?=$rows->keterangan;?></td>
 				<td><?=$date;?></td>
 				<td>

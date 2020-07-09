@@ -26,7 +26,6 @@ class M_tugas extends MY_Model {
 		->where($where)
 		->get()
 		->result();
-	
       
 		return $get;
 	}
@@ -51,7 +50,7 @@ class M_tugas extends MY_Model {
 							tgs.*,
 							kls.nama as kelas,
 							(SELECT nama FROM m_mapel WHERE id = kls.id_mapel) as nama_mapel,
-							(SELECT nama FROM m_guru WHERE id = kls.id_trainer) as nama_trainer
+							(SELECT nama FROM m_guru WHERE id = kls.id_trainer) as nama_trainer,
 						')
 		->from('tb_tugas tgs')
 		->join('tb_kelas kls','kls.id=tgs.id_kelas','left')

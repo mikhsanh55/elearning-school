@@ -74,7 +74,7 @@ class Tugas extends MY_Controller {
 			$mapel = $this->m_mapel->get_detail_all(['mapel.id_instansi' => $this->akun->instansi, 'guru.id' => $this->akun->id]);
 			// $mapel = $this->m_mapel->get_detail_all(['mapel.id_instansi' => $this->akun->instansi]);
 		}
-		// print_r($mapel);
+		// print_r($kelas);
 		// exit;
 		$data = array(
 			'kelas' => $kelas,
@@ -100,6 +100,7 @@ class Tugas extends MY_Controller {
 			'kelas' => $this->m_kelas->get_many_by(array('gr.id'=>$this->akun->id)), 
 			'edit' => $this->m_tugas->get_by(array('md5(tgs.id)'=>$id)), 
 		);
+		// print_r($data['edit']);exit;
 		$this->render('tugas/edit',$data);
 	}
 
@@ -108,12 +109,13 @@ class Tugas extends MY_Controller {
 		$post = $this->input->post();
 		$files = $_FILES;
 		$qty_attach = $_FILES['attach']['name'];
-
+		// print_r($post);exit;
 		$this->db->trans_start();
 
 		$data = array(
 			'id_kelas' => $post['kelas'], 
-			// 'id_mapel' => $post['mapel'],
+			'id_mapel' => $post['mapel'],
+			'id_guru' => $post['guru'],
 			'keterangan' => $post['keterangan'],
 			'end_date' => date_default($post['end_date']).' '.$post['end_time'],
 		);

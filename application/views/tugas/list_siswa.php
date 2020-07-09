@@ -91,21 +91,14 @@
 								<h2><strong>Tugas</strong></h2>
 							</div>
 							<div class="row">
-							<div class="col-md-4 form-group">
+							<div class="col-md-6 form-group">
 								<label><?=$this->transTheme->guru;?></label>
 								<div class="label-isi" >
 									<?=$kelas->nama_guru;?>
 									<div class="select-dropdown"></div>
 								</div>
 							</div>
-							<div class="col-md-4 form-group">
-								<label>Mata Pelajaran</label>
-								<div class="label-isi" >
-									<?=$kelas->nama_mapel;?>
-									<div class="select-dropdown"></div>
-								</div>
-							</div>
-							<div class="col-md-4 form-group">
+							<div class="col-md-6 form-group">
 								<label>Kelas</label>
 								<div class="label-isi" >
 									<?=$kelas->nama;?>
