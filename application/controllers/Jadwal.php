@@ -473,7 +473,7 @@ class Jadwal extends MY_Controller {
 		}else{
 			$data['filter'] = array(
 
-				'searchFilter' => array('Trainer','Mata Pelajaran','Materi','keterangan'),
+				'searchFilter' => array('Pengajar','Mata Pelajaran','Materi','keterangan'),
 
 			);
 			$data_calendar = $this->m_jadwal->get_kalender(array('kls.id_trainer'=>$this->akun->id));

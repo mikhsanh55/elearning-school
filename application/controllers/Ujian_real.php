@@ -42,7 +42,7 @@ class Ujian_real extends MY_Controller {
 
 		$data = array(
 
-			'searchFilter' => array('Mata Pelajaran'),
+			'searchFilter' => array('Kelas', 'Nama Ujian'),
 
 			'tipe_ujian'   => $tipe_ujian = array(''=>'Semua','uts'=>'UTS','uas'=>'UAS', 'harian' => 'Ulangan Harian')
 
@@ -413,13 +413,13 @@ class Ujian_real extends MY_Controller {
 
 				case 0:
 
-					$where["(lower(mp.nama) like '%".strtolower($post['search'])."%' )"] = null;
+					$where["(lower(kls.nama) like '%".strtolower($post['search'])."%' )"] = null;
 
 					break;
 
 				case 1:
 
-					$where["(lower(gr.nama) like '%".strtolower($post['search'])."%' )"] = null;
+					$where["(lower(uji.nama_ujian) like '%".strtolower($post['search'])."%' )"] = null;
 
 					break;
 
@@ -437,7 +437,7 @@ class Ujian_real extends MY_Controller {
 
 		if (!empty($post['tipe_ujian'])) {
 
-			$where['type_ujian'] = $post['tipe_ujian'];
+			$where['uji.type_ujian'] = $post['tipe_ujian_real'];
 
 		}
 

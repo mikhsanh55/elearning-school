@@ -15,14 +15,16 @@ class M_jadwal extends MY_Model {
         $get = $this->db->select("
                 jwl.*,
 				mt.title as nama_materi,
-                mt.id_mapel as mt_id_mapel
+                mt.id_mapel as mt_id_mapel,
+                mp.nama  nama_mp
             ")
             ->from('`tb_jadwal` jwl')
             ->join('tb_kelas kls','kls.id=jwl.id_kelas')
             // ->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'inner')
             ->join('m_guru gr','gr.id = jwl.id_guru', 'left')
-            // ->join('m_mapel mp','mp.id = d.id_mapel','left')
+            
             ->join('m_materi mt','mt.id = jwl.id_materi','left')
+            ->join('m_mapel mp','mp.id = mt.id_mapel','left')
             ->where($where)
             ->get()
             ->result();
