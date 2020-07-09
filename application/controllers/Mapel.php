@@ -127,7 +127,7 @@ class Mapel extends MY_Controller {
 		$where = [];
 		// $where['id_mapel'] = $post['id_mapel'];
 		// $where['is_verify'] = 1;
-		$where['mapel.id_instansi'] = $this->akun->instansi;
+		$where['id_instansi'] = $this->akun->instansi;
 		if (!empty($post['search'])) {
 			switch ($post['filter']) {
 				case 0:
@@ -137,16 +137,16 @@ class Mapel extends MY_Controller {
 				break;
 			}
 		}
-		$paginate = $this->m_mapel->paginate_mapel_switch($pg, $where, $limit);
+		$paginate = $this->m_mapel->paginate($pg, $where, $limit);
 		foreach($paginate['data'] as $d) {
 			$d->id_guru = $post['id'];
 		}
-		// print_r($paginate['data']);exit;
+
 		$data['paginate'] = $paginate;
 		$data['paginate']['url']	= 'mapel/page_load_mapel_guru';
 		$data['paginate']['search'] = 'lookup_key';
 		$data['page_start'] = $paginate['counts']['from_num'];
-		
+	
 		$this->load->view('modul_pelatihan/table_murid', $data);		
 		$this->generate_page($data);
 	}

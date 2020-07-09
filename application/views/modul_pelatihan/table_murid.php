@@ -68,18 +68,20 @@
 				
 			</tr>
 			<?php 
+			
 				if(count($paginate['data']) > 0) {
 				$i= $page_start; foreach ($paginate['data'] as $rows):
 				$check_kelas = $this->m_detail_mapel->count_by(['id_mapel'=>$rows->id,'id_guru'=>$rows->id_guru]);
+				
 				if(!empty($check_kelas)) {
 
 				}
-				// print_r($paginate['data']);
+		
 
 			?>
 				<tr>
 					<td align="center" class="frist"><?=$i;?></td>
-					<td><?=$rows->nama_mapel;?> </td>
+					<td><?=$rows->nama;?> </td>
 					
 					<td class="frist">
 						<label class="switch" data-toggle="tooltip">

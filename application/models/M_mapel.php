@@ -43,6 +43,7 @@ class M_mapel extends MY_Model {
 						->where($where)
 						->get()
 						->result();
+					
 
 		return $get;
 	}
