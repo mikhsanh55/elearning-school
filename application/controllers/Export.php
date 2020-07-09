@@ -12,7 +12,7 @@ class Export extends MY_Controller {
 	public $excelFileName;
 	public $excelDisplayOutput;
 	public $excelObjectWriter;
-
+	
 	function __construct() {
 		parent::__construct();
 		$this->db->query("SET time_zone='+7:00'");

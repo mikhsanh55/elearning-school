@@ -42,7 +42,7 @@ class Ujian_real extends MY_Controller {
 
 		$data = array(
 
-			'searchFilter' => array('Modul Pelatihan','Trainer'),
+			'searchFilter' => array('Mata Pelajaran','Pengajar'),
 
 			'tipe_ujian'   => $tipe_ujian = array(''=>'Semua','uts'=>'UTS','uas'=>'UAS')
 

@@ -29,7 +29,7 @@ class Adminlembaga extends MY_Controller {
 	public function index(){
 		$data = array(
 			'instansi' => $this->m_instansi->get_all(), 
-			'searchFilter' => array('Nama','Username','Email','Lembaga')
+			'searchFilter' => array('Nama','Username','Email')
 		);
 		$this->render('admin_lembaga/list',$data);
 	}

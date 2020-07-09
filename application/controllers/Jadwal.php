@@ -32,7 +32,7 @@ class Jadwal extends MY_Controller {
 
 		$data = array(
 
-			'searchFilter' => array('Trainer','Mata Pelajaran','Materi','keterangan'),
+			'searchFilter' => array('Pengajar','Mata Pelajaran','Materi','Keterangan'),
 
 		);
 
