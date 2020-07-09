@@ -12,7 +12,7 @@
 		
 	</thead>
 	<tbody>
-		<?php $i = 1;foreach($paginate['data'] as $rows) : ?>
+		<?php $i = $paginate['counts']['from_num']; foreach($paginate['data'] as $rows) : ?>
 			<tr>
 				<td>
 					<input type="checkbox" name="checklist[]" class="checklist" data-id= "<?=encrypt_url($rows->id);?>" value="<?=$rows->id;?>">
