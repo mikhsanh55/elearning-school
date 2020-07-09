@@ -446,11 +446,11 @@ class Ujian_real extends MY_Controller {
 
 
 
-		// if ($this->log_lvl == 'guru') {
+		if ($this->log_lvl == 'guru') {
 
-		// 	$where['uji.id_guru'] = $this->akun->id;
+			$where['uji.id_guru'] = $this->akun->id;
 
-		// }
+		}
 
 		
 
