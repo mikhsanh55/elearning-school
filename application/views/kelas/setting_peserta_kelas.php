@@ -160,7 +160,7 @@
 
 
 
-		$('#limit').change(function(){
+		$('#limit-murid').change(function(){
 
 			pageLoad(1,'kelas/page_load_murid_kelas');
 

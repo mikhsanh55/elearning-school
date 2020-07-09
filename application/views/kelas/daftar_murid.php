@@ -90,7 +90,7 @@
 	$(document).ready(function(){
 		pageLoad(1,'kelas/page_load_murid2');
 
-		$('#limit').change(function(){
+		$(document).on('change','#limit-murid',function(){
 			pageLoad(1,'kelas/page_load_murid2');
 		});
 
