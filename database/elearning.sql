@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 09, 2020 at 03:02 PM
+-- Generation Time: Jul 09, 2020 at 05:20 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.3.16
 
@@ -330,7 +330,7 @@ INSERT INTO `m_guru` (`id`, `id_mapel`, `tahun_akademik`, `username`, `nidn`, `n
 (49, 0, '2020', 'gurugeografi', '007', '007', 10, 'Guru Geografi', '-', '-', '-', '2020-06-07', '--', 'gurugeografi@gmail.com', '081321321321', '-', '-', '-', 1, 0, 0, 0),
 (50, 0, '2020', 'gurusosiologi', '008', '008', 10, 'Guru Sosiologi', '-', '-', '-', '2020-06-08', '--', 'gurusosiologi@gmail.com', '09876543123456', '-', '-', '-', 1, 0, 0, 0),
 (51, 0, '2020', 'gurusejarah', '009', '009', 10, 'Guru Sejarah', '-', '-', '-', '2020-06-09', '--', 'gurusejarah@gmail.com', '762345678765456', '-', '-', '-', 1, 0, 0, 0),
-(52, 0, '2020', 'guruekonomi', '0010', '0010', 10, 'Guru Ekonomi', '-', '-', '-', '2020-06-10', '--', 'guruekonomi@gmail.com', '09876544231234', '-', '-', '-', 1, 5, 11, 0),
+(52, 0, '2020', 'guruekonomi', '0010', '0010', 10, 'Guru Ekonomi', '-', '-', '-', '2020-06-10', '--', 'guruekonomi@gmail.com', '09876544231234', '-', '-', '-', 1, 7, 11, 0),
 (53, 0, '2020', 'sman21_guru_mtk', 'PTK200619001', 'P200619NIP001', 11, 'Guru Matematika', '32000101001', 'Guru Matematika', 'Bandung', '1990-03-03', 'Bandung', 'sman21_guru_mtk@gmail.com', '821312312', 'ASN', 'S1 Pendidikan Matematika', '2013', 1, 0, 0, 0),
 (54, 0, '2020', 'sman21_guru_fisika', 'PTK200619002', 'P200619NIP002', 11, 'Guru Fisika', '32000101002', 'Guru Fisika', 'Bandung', '1990-03-03', 'Bandung', 'sman21_guru_fisika@gmail.com', '821312313', 'ASN', 'S1 Pendidikan Fisika', '2013', 1, 0, 0, 0),
 (55, 0, '2020', 'sman21_guru_kimia', 'PTK200619003', 'P200619NIP003', 11, 'Guru Kimia', '32000101003', 'Guru Kimia', 'Bandung', '1990-03-03', 'Bandung', 'sman21_guru_kimia@gmail.com', '821312314', 'ASN', 'S1 Pendidikan Kimia', '2013', 1, 0, 0, 0),
@@ -361,7 +361,7 @@ INSERT INTO `m_guru` (`id`, `id_mapel`, `tahun_akademik`, `username`, `nidn`, `n
 (85, 59, '', 'sengklekman', '10101010', '202020', 1, 'Sengklekman', '', '', '', '', '', 'Sengklekman@ga.com', '86754633342', '', '', '', 1, 11, 0, 0),
 (88, 59, '', 'tanos', '23801283081', '', 1, 'Tanos', '', '', '', '', '', '', '86754633342', '', '', '', 1, 0, 0, 0),
 (89, 60, '', 'vivisusanti', '1234343', '', 1, 'Vivi Susanti', '', '', '', '', '', '', '081220970900', '', '', '', 1, 2, 0, 0),
-(91, 0, '', 'gurukarsa', '23801283081', '', 10, 'guru karsa', '', '', '', '', '', '', '081220970901', '', '', '', 1, 19, 0, 0);
+(91, 0, '', 'gurukarsa', '23801283081', '', 10, 'guru karsa', '', '', '', '', '', '', '081220970901', '', '', '', 1, 21, 0, 0);
 
 --
 -- Triggers `m_guru`
@@ -1406,7 +1406,8 @@ INSERT INTO `m_materi` (`id`, `id_mapel`, `id_trainer`, `id_type_video`, `title`
 (24, 59, 85, 3, 'Dasar Hynoterapi 1', '<p>Perhatikan materi sampai habis, karena diakhir akan dilaksanakan ujian harian</p>\n', 1, 0, 'https://www.youtube.com/embed/1T2gaG5vPk8', 'https://www.youtube.com/watch?v=1T2gaG5vPk8', 0, NULL, NULL, 1, 0, 0),
 (25, 66, 535, 2, 'testt', '<p>test</p>\n', 1, 0, '1BTEdYsy3pZAx_3Ch4UH9-_1y7h942Z5U', '1BTEdYsy3pZAx_3Ch4UH9-_1y7h942Z5U', 0, NULL, NULL, 1, 0, 0),
 (26, 66, 535, 2, '311 tolol', '<p>tolol</p>\n', 1, 0, '1BTEdYsy3pZAx_3Ch4UH9-_1y7h942Z5U', '1BTEdYsy3pZAx_3Ch4UH9-_1y7h942Z5U', 0, NULL, NULL, 1, 0, 0),
-(27, 72, 52, 2, 'Ekonomi 12', '<p>dw</p>\n', 1, 0, '1UXLkLSuNteo1_KR06y8BKCxTa9VURj9p', '1UXLkLSuNteo1_KR06y8BKCxTa9VURj9p', 0, NULL, NULL, 1, 1, 0);
+(27, 72, 52, 2, 'Ekonomi 12', '<p>dw</p>\n', 1, 0, '1UXLkLSuNteo1_KR06y8BKCxTa9VURj9p', '1UXLkLSuNteo1_KR06y8BKCxTa9VURj9p', 0, NULL, NULL, 1, 1, 0),
+(28, 67, 52, 2, 'tests Ekonomi negara', '<p>dwadwada</p>\n', 1, 0, '1', '1', 0, NULL, NULL, 1, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -2682,7 +2683,8 @@ INSERT INTO `tb_tugas` (`id`, `keterangan`, `id_kelas`, `id_mapel`, `id_guru`, `
 (28, 'Kerjakan tugas Integral', 40, 0, 0, '2020-06-27 03:44:00'),
 (29, 'Kerjakan hanya 1 jam', 45, 0, 0, '2020-06-28 02:00:00'),
 (30, 'Harus selesai hari ini', 51, 0, 0, '2020-07-03 14:00:00'),
-(36, 'Kimia asiik part 1', 62, 67, 52, '2020-07-11 14:00:00');
+(36, 'Kimia asiik part 1', 62, 67, 52, '2020-07-11 14:00:00'),
+(37, 'Sejarah Bangsa', 62, 72, 535, '2020-07-16 02:00:00');
 
 -- --------------------------------------------------------
 
@@ -2713,7 +2715,8 @@ INSERT INTO `tb_tugas_attachment` (`id`, `id_tugas`, `file`, `format`) VALUES
 (10, 28, 'tugas-26-06-2020-1593164756-0.xlsx', '.xlsx'),
 (11, 29, 'tugas-27-06-2020-1593228308-0.pdf', '.pdf'),
 (12, 30, 'tugas-02-07-2020-1593699146-0.xlsx', '.xlsx'),
-(18, 36, 'tugas-09-07-2020-1594297878-0.pdf', '.pdf');
+(18, 36, 'tugas-09-07-2020-1594297878-0.pdf', '.pdf'),
+(19, 37, 'tugas-09-07-2020-1594301121-0.pdf', '.pdf');
 
 -- --------------------------------------------------------
 
@@ -3738,7 +3741,7 @@ ALTER TABLE `m_mapel`
 -- AUTO_INCREMENT for table `m_materi`
 --
 ALTER TABLE `m_materi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `m_materi_video`
@@ -3960,13 +3963,13 @@ ALTER TABLE `tb_sub_menu`
 -- AUTO_INCREMENT for table `tb_tugas`
 --
 ALTER TABLE `tb_tugas`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `tb_tugas_attachment`
 --
 ALTER TABLE `tb_tugas_attachment`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `tb_tugas_attachment_siswa`
