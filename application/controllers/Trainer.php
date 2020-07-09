@@ -498,13 +498,13 @@ class Trainer extends MY_Controller {
 					$where["(lower(`guru`.`nama`) like '%".strtolower($post['search'])."%' )"] = null;
 					break;
 				case 1:
-					$where["(lower(username) like '%".strtolower($post['search'])."%' )"] = null;
+					$where["(lower(guru.username) like '%".strtolower($post['search'])."%' )"] = null;
 					break;
 				case 2:
-					$where["(lower(nidn) like '%".strtolower($post['search'])."%' )"] = null;
+					$where["(lower(guru.nidn) like '%".strtolower($post['search'])."%' )"] = null;
 					break;
 				case 3:
-					$where["(lower(nrp) like '%".strtolower($post['search'])."%' )"] = null;
+					$where["(lower(guru.nrp) like '%".strtolower($post['search'])."%' )"] = null;
 					break;
 				default:
 					# code...

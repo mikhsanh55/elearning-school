@@ -10,7 +10,7 @@
 	</thead>
 	<tbody>
 		<?php if(count($paginate['data']) > 0) { ?>
-		<?php $no = 1;foreach($paginate['data'] as $rows) : 
+		<?php $no = $paginate['counts']['from_num'];foreach($paginate['data'] as $rows) : 
 
 		?>
 			<tr>

@@ -69,7 +69,7 @@ input:checked + .slider:before {
 		</tr>
 		<?php 
 			if(count($paginate['data']) > 0) {
-			$i= 1; foreach ($paginate['data'] as $rows):
+			$i = $paginate['counts']['from_num']; foreach ($paginate['data'] as $rows):
 		?>
 			<tr>
 				<td align="center" class="frist"><?=$i++;?></td>
