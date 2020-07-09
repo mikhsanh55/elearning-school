@@ -97,7 +97,7 @@ class Tugas extends MY_Controller {
 		);
 
 		$data = array(
-			'kelas' => $this->m_kelas->get_many_by(array('gr.id'=>$this->akun->id)), 
+			'kelas' => $this->m_kelas->get_all(['kls.id_instansi' => $this->akun->instansi]), 
 			'edit' => $this->m_tugas->get_by(array('md5(tgs.id)'=>$id)), 
 		);
 		// print_r($data['edit']);exit;
@@ -288,7 +288,7 @@ class Tugas extends MY_Controller {
 			$where['kls.id_instansi'] = $this->akun->instansi;
 
 		}
-		
+
 
 		// if ($this->log_lvl == 'guru') {
 		// 	$where['tugas.id_guru'] = 9;

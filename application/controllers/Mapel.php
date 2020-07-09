@@ -164,4 +164,25 @@ class Mapel extends MY_Controller {
 		$this->load->view('modul_pelatihan/daftar_murid', $data);
 		
 	}
+
+	public function get_mapel() {
+		$this->load->model('m_detail_kelas_mapel');
+		$post = $this->input->post();
+		$id_kelas = $post['id_kelas'];
+		$html = '';
+		$res = $this->m_detail_kelas_mapel->get_many_by(['id_kelas' => $id_kelas]);
+
+		if(count($res) > 0) {
+			$html = '<option disabled="disabled" value="null" selected="selected">Pilih</option>';
+
+			foreach($res as $row) {
+				$mapel = $this->m_mapel->get_by(['id' => $row->id_mapel]);
+				$nama_mapel = !empty($mapel->nama) ? $mapel->nama : '';
+				$html .= '<option value="'. $row->id_mapel .'" >'.$nama_mapel.'</option>';
+			}
+
+		}
+
+		echo $html;
+	}
 }

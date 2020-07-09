@@ -11,7 +11,7 @@
 	<div class="inner-box">
 		<h2>Tambah Tugas</h2>
 		<form id="form-akun-lembaga" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="mapel" value="" id="mapel" />
+			<!-- <input type="hidden" name="mapel" value="" id="mapel" /> -->
 			<input type="hidden" name="guru" value="<?= $this->akun->id; ?>">
 			<div class="form-group">
 				<label for="lembaga">Kelas<span class="text-danger">*</span></label>
@@ -20,26 +20,25 @@
 						<option disabled="disabled" value="null" selected="selected">Pilih</option>
 							
 							<?php foreach ($kelas as $rows): 
-								$mapel = $this->m_mapel->get_by(['id' => $rows->idmapel]);
-								$nama_mapel = !empty($mapel->nama) ? $mapel->nama : '';
+								// $mapel = $this->m_mapel->get_by(['id' => $rows->id_mapel]);
 							?>
-								<option value="<?=$rows->id;?>" data-mapel="<?= $rows->idmapel; ?>"><?=$rows->nama . ' - ' . $nama_mapel;?></option>
+								<option value="<?=$rows->id;?>" data-mapel="<?= $rows->id_mapel; ?>"><?=$rows->nama ;?></option>
 							<?php endforeach ?>
 					</select>
 					<div class="select-dropdown"></div>
 				</div>
 			</div>
-			<!-- <div class="form-group">
+			<div class="form-group">
 				<label for="">Mata Pelajaran</label>
 				<div class="rs-select2 js-select-simple select--no-search">
 					<select name="mapel" id="mapel" style="width: 30%;" required>
 						<option disabled="disabled" value="null" selected="selected">Pilih</option>
-							<?php foreach ($mapel as $rows): ?>
+							<!-- <?php foreach ($mapel as $rows): ?>
 								<option value="<?=$rows->id_mapel;?>"><?=$rows->nama_mapel;?></option>
-							<?php endforeach ?>
+							<?php endforeach ?> -->
 					</select>
 					<div class="select-dropdown"></div>
-			</div> -->
+			</div>
 			<div class="form-group">
 				<label for="nama">Keterangan</label>
 				<textarea  class="form-control" id="keterangan" placeholder="Masukan Keterangan" name="keterangan" ></textarea>
@@ -100,7 +99,24 @@
         });
 
         $('#kelas').change(function() {
-        	$('#mapel').val($('#kelas option:selected').data('mapel'))
+        	// $('#mapel').val($('#kelas option:selected').data('mapel'))
+        	var id_kelas = $(this).val()
+        	$.ajax({
+        		type: 'post',
+        		url: "<?= base_url('mapel/get_mapel') ?>",
+        		data: {
+        			id_kelas
+        		},
+        		success:function(res) {
+
+        			// res.opsi.forEach(function(item, i) {
+        			// 	html += `<option value="${item.id}">${item.nama}</option>`
+        			// })
+
+        			$('#mapel').html(res)
+        		}
+        	})
+
         })
 	
 		// Add Tugas Event

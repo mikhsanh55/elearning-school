@@ -30,6 +30,21 @@
 				</div>
 			</div>
 			<div class="form-group">
+				<label for="">Mata Pelajaran</label>
+				<div class="rs-select2 js-select-simple select--no-search">
+					<select name="mapel" id="mapel" style="width: 30%;" required>
+						<?php 
+						$data_mapel = $this->m_mapel->get_by(['id' => $edit->id_mapel]);
+						?>
+						<option value="<?= $edit->id_mapel; ?>"><?= !empty($data_mapel) ? $data_mapel->nama : ''; ?></option>
+						<!-- <option disabled="disabled" value="null" selected="selected">Pilih</option> -->
+							<!-- <?php foreach ($mapel as $rows): ?>
+								<option value="<?=$rows->id_mapel;?>"><?=$rows->nama_mapel;?></option>
+							<?php endforeach ?> -->
+					</select>
+					<div class="select-dropdown"></div>
+			</div>
+			<div class="form-group">
 				<label for="nama">Keterangan:</label>
 				<textarea  class="form-control" id="keterangan" placeholder="Masukan Keterangan" name="keterangan" required=""><?=$edit->keterangan;?></textarea>
 			</div>
@@ -87,6 +102,27 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		listAttach();
+
+		 $('#kelas').change(function() {
+        	// $('#mapel').val($('#kelas option:selected').data('mapel'))
+        	var id_kelas = $(this).val()
+        	$.ajax({
+        		type: 'post',
+        		url: "<?= base_url('mapel/get_mapel') ?>",
+        		data: {
+        			id_kelas
+        		},
+        		success:function(res) {
+
+        			// res.opsi.forEach(function(item, i) {
+        			// 	html += `<option value="${item.id}">${item.nama}</option>`
+        			// })
+
+        			$('#mapel').html(res)
+        		}
+        	})
+
+        })
 
 		$('input[type="file"]').change(function(e){
             var fileName = e.target.files[0].name;
