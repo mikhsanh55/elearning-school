@@ -113,7 +113,7 @@ class M_tugas extends MY_Model {
 		$get = $this->db->select('tugas.*, kls.nama AS kelas')
 						->from('tb_tugas tugas')
 						->join('tb_kelas kls', 'tugas.id_kelas = kls.id', 'left')
-						->join('m_mapel mapel', 'tugas.id_mapel = mapel.id', 'left')
+						// ->join('m_mapel mapel', 'tugas.id_mapel = mapel.id', 'left')
 						// ->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'left')
 						->where($where)
 						->get()
