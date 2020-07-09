@@ -5,7 +5,7 @@
 			<th class="frist"><input type="checkbox" name="checkall" id="checkall"></th>
 			<th class="frist">No</th>
 			<th>Kelas</th>
-			<th>Mata Pelajaran</th>
+			<!-- <th>Mata Pelajaran</th> -->
 			<th>Keterangan</th>
 			<th>Opsi</th>
 		</tr>
@@ -16,7 +16,7 @@
 				<td><input type="checkbox" name="checklist[]" class="checklist" value="<?=$rows->id;?>" data-id="<?=md5($rows->id);?>"></td>
 				<td align="center" class="frist"><?=$i;?></td>
 				<td><?=$rows->kelas;?></td>
-				<td><?=$rows->nama_mapel;?></td>
+				<!-- <td><?=$rows->nama_mapel;?></td> -->
 				<td><?=$rows->keterangan;?></td>
 				<td>
 					<a href="<?=base_url('tugas/lampiran/'.md5($rows->id));?>" class="" title="Lampiran"><i class="fa fa-paperclip" style="font-size: 25px;"></i></a>
