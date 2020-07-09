@@ -73,21 +73,14 @@
 						<select name="id_kelas" id="id_kelas" style="width: 100%;" required>
 
 							<option disabled="disabled" selected="selected">Pilih</option>
-							<?php if($this->log_lvl == 'admin' || $this->log_lvl == 'instansi' || $this->log_lvl == 'admin_instansi') { ?>
+							
 								<?php foreach ($kelas as $rows): ?>
 
 									<option value="<?=$rows->id;?>"><?= $rows->nama;?></option>
 
 
 								<?php endforeach ?>
-							<?php } else { ?>
-								<?php foreach ($kelas as $rows): ?>
-
-									<option value="<?=$rows->id_kelas;?>"><?= $rows->nama;?></option>
-
-
-								<?php endforeach ?>
-							<?php } ?>
+							
 
 						</select>
 
@@ -104,15 +97,10 @@
 					<div class="rs-select2 js-select-simple select--no-search">
 						<select name="id_mapel" id="id_mapel" style="width: 100%;" required>
 							<option disabled="disabled" selected="selected">Pilih</option>
-							<?php if($this->log_lvl == 'guru') { ?>
-								<?php foreach($mapel as $row) : ?>
-									<option value="<?= $row->id_mapel; ?>"><?= $row->nama_mapel; ?></option>
-								<?php endforeach; ?>
-							<?php } else { ?>
+							
 								<?php foreach($mapel as $row) : ?>
 									<option value="<?= $row->id; ?>"><?= $row->nama; ?></option>
 								<?php endforeach; ?>
-							<?php } ?>
 
 						</select>
 						<div class="select-dropdown"></div>
