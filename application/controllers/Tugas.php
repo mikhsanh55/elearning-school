@@ -64,12 +64,12 @@ class Tugas extends MY_Controller {
 
 	public function add(){
 		if($this->log_lvl == 'admin' || $this->log_lvl == 'admin_instansi' || $this->log_lvl == 'instansi') {
-			$kelas = $this->m_kelas->get_all(['kls.id_instansi' => $this->akun->instansi]);
+			$kelas = $this->m_kelas->get_all();
 			$mapel = $this->m_mapel->get_detail_all(['mapel.id_instansi' => $this->akun->instansi]);
 		}
 		else {
 			// $kelas = $this->m_kelas->get_data_mapel(['kls.id_instansi' => $this->akun->instansi, 'dkmapel.id_guru' => $this->akun->id]);
-			$kelas = $this->m_kelas->get_all(['kls.id_instansi' => $this->akun->instansi]);
+			$kelas = $this->m_kelas->get_all();
 			// $mapel = $this->m_mapel->get_detail_all(['mapel.id_instansi' => $this->akun->instansi, 'guru.id' => $this->akun->id]);
 			$mapel = $this->m_mapel->get_detail_all(['mapel.id_instansi' => $this->akun->instansi]);
 		}
