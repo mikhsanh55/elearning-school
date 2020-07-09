@@ -73,6 +73,7 @@ class Tugas extends MY_Controller {
 			// $mapel = $this->m_mapel->get_detail_all(['mapel.id_instansi' => $this->akun->instansi, 'guru.id' => $this->akun->id]);
 			$mapel = $this->m_mapel->get_detail_all(['mapel.id_instansi' => $this->akun->instansi]);
 		}
+		// print_r($kelas);
 		// print_r($mapel);exit;
 		$data = array(
 			'kelas' => $kelas,

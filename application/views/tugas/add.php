@@ -40,7 +40,7 @@
 							<?php endforeach ?>
 						<?php } else { ?> -->
 							<?php foreach ($mapel as $rows): ?>
-								<option value="<?=$rows->id;?>"><?=$rows->nama;?></option>
+								<option value="<?=$rows->id;?>"><?=$rows->nama_mapel;?></option>
 							<?php endforeach ?>
 						<!-- <?php } ?> -->
 					</select>
