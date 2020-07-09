@@ -117,7 +117,8 @@ class Jadwal extends MY_Controller {
 		);
 		
 		if($this->log_lvl == 'guru'){
-		    $kelas = $this->m_kelas->get_guru_all(['dmapel.id_guru'=>$this->akun->id]);
+		    // $kelas = $this->m_kelas->get_all(['kls.id_instansi'=>$this->akun->instansi]);
+		    $kelas = $this->m_kelas->get_all(['kls.id_instansi'=>$this->akun->instansi]);
 		}else if($this->log_lvl == 'admin'){
 		    $kelas = $this->m_kelas->get_all(['kls.id_instansi'=>$this->akun->instansi]);
 		    

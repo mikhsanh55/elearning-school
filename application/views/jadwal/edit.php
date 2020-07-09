@@ -64,12 +64,12 @@
 
 							<?php if ($rows->id == $edit->id_kelas): ?>
 
-								<option value="<?=$rows->id;?>" selected><?=$rows->nama.' ( '.$rows->nama_guru.' - '.$rows->nama_mapel.' )';?></option>
+								<option value="<?=$rows->id;?>" selected><?=$rows->nama;?></option>
 
 
 							<?php else: ?>
 
-								<option value="<?=$rows->id;?>"><?=$rows->nama.' ( '.$rows->nama_guru.' - '.$rows->nama_mapel.' )';?></option>
+								<option value="<?=$rows->id;?>"><?=$rows->nama;?></option>
 
 
 							<?php endif ?>

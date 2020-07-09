@@ -61,7 +61,8 @@
 
 						<?php foreach ($kelas as $rows): ?>
 
-							<option value="<?=$rows->id;?>"><?=$rows->nama.' ( '.$rows->nama_guru.')';?></option>
+							<!-- <option value="<?=$rows->id;?>"><?=$rows->nama.' ( '.$rows->nama_guru.')';?></option> -->
+							<option value="<?=$rows->id;?>"><?=$rows->nama;?></option>
 
 
 						<?php endforeach ?>
@@ -133,7 +134,6 @@
 					<label for="pwd">Selesai:</label>
 
 					<input type="date" class="" id="end_date" name="end_date">
-
 					<input type="time" class="" id="end_time" name="end_time">
 
 				</div>
