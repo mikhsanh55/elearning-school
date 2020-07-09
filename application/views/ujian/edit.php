@@ -116,7 +116,7 @@
 									<?php if($edit->id_mapel == $rows->id) { ?>
 										<option value="<?= $row->id; ?>" selected><?= $row->nama; ?></option>
 									<?php } else { ?>
-										<option value="<?= $row->id; ?>" selected><?= $row->nama; ?></option>
+										<option value="<?= $row->id; ?>"><?= $row->nama; ?></option>
 									<?php } ?>
 								<?php endforeach; ?>
 
