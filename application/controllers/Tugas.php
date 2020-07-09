@@ -282,7 +282,7 @@ class Tugas extends MY_Controller {
 		}
 
 		if ($this->log_lvl != 'admin') {
-			$where['kls.id_instansi'] = $this->akun->instansi;
+			// $where['kls.id_instansi'] = $this->akun->instansi;
 
 		}
 
