@@ -112,7 +112,7 @@ class Tugas extends MY_Controller {
 
 		$data = array(
 			'id_kelas' => $post['kelas'], 
-			'id_mapel' => $post['mapel'],
+			// 'id_mapel' => $post['mapel'],
 			'keterangan' => $post['keterangan'],
 			'end_date' => date_default($post['end_date']).' '.$post['end_time'],
 		);
