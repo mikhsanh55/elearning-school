@@ -318,7 +318,9 @@
 			      <iframe  src="${el.getAttribute('data-video')}" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
 
 			      <div style="width: 80px; height: 80px; position: absolute; opacity: 0; right: 0px; top: 0px; background:#000;">&nbsp;</div>
-			</div>`;
+
+			</div>
+			<span class="mt-2">Klik <a href="${el.getAttribute('data-url')}" target="_blank">disini</a> untuk belajar</span>`;
     	}
     	
     	// $('#upload-materi').modal('hide');

@@ -14,15 +14,14 @@ class M_jadwal extends MY_Model {
 	 public function get_all($where=array()){
         $get = $this->db->select("
                 jwl.*,
-				gr.nama as nama_guru,
-				mp.nama as nama_mp,
-				mt.title as nama_materi
+				mt.title as nama_materi,
+                mt.id_mapel as mt_id_mapel
             ")
             ->from('`tb_jadwal` jwl')
             ->join('tb_kelas kls','kls.id=jwl.id_kelas')
-            ->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'inner')
-            ->join('m_guru gr','gr.id = dmkls.id_guru', 'left')
-            ->join('m_mapel mp','mp.id = dmkls.id_mapel','left')
+            // ->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'inner')
+            ->join('m_guru gr','gr.id = jwl.id_guru', 'left')
+            // ->join('m_mapel mp','mp.id = d.id_mapel','left')
             ->join('m_materi mt','mt.id = jwl.id_materi','left')
             ->where($where)
             ->get()
@@ -94,15 +93,14 @@ class M_jadwal extends MY_Model {
     public function get_by($where=array()){
         $get = $this->db->select("
                 jwl.*,
-                gr.nama as nama_guru,
-                mp.nama as nama_mp,
-                mt.title as nama_materi
+                mt.title as nama_materi,
+                mt.id_mapel as mt_id_mapel
             ")
             ->from('`tb_jadwal` jwl')
             ->join('tb_kelas kls','kls.id=jwl.id_kelas')
-            ->join('tb_detail_kelas dekls','kls.id=dekls.id_kelas')
-            ->join('m_guru gr','gr.id = kls.id_trainer')
-            ->join('m_mapel mp','mp.id = kls.id_mapel','left')
+            // ->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'inner')
+            ->join('m_guru gr','gr.id = jwl.id_guru', 'left')
+            // ->join('m_mapel mp','mp.id = d.id_mapel','left')
             ->join('m_materi mt','mt.id = jwl.id_materi','left')
             ->where($where)
             ->get()

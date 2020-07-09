@@ -122,7 +122,7 @@
                return false;
            }
            else if(file.size > 20746185) {
-               alert('File terlalu besar!');
+               alert('File terlalu besar! Maksimal 20 MB');
                this.value = '';
                return false;
            }
@@ -180,7 +180,7 @@
                             else {
                                 $('#spin-icon').toggleClass('hide');
                                 console.log(res);
-                                alert('Something wrong, contact your developer');
+                                alert(res.msg);
                                 return false;
                             }
                         }

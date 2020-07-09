@@ -235,7 +235,7 @@ class M_kelas extends MY_Model {
 							mp.nama AS nama_mapel
 						')
 		->from('tb_kelas kls')
-		->join('tb_detail_kelas_mapel dmapel', 'dmapel.id_kelas = kls.id', 'left')
+		->join('tb_detail_kelas_mapel dmapel', 'dmapel.id_kelas = kls.id', 'inner')
 		->join('m_guru gr','gr.id=kls.id_trainer','left')
 		->join('m_mapel mp','mp.id=dmapel.id_mapel','left')
 		->join('tb_instansi ins','ins.id=kls.id_instansi','right')

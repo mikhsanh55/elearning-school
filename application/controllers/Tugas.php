@@ -54,7 +54,7 @@ class Tugas extends MY_Controller {
 	{	
 
 		$data = array(
-			'searchFilter' => array('Modul Pelatihan','Keterangan'),
+			'searchFilter' => array('Mata Pelajaran','Keterangan'),
 			'kelas' => $this->m_kelas->get_all()
 		);
 
@@ -272,10 +272,10 @@ class Tugas extends MY_Controller {
 		if (!empty($post['search'])) {
 			switch ($post['filter']) {
 				case 0:
-					$where["(lower(mpl.nama) like '%".strtolower($post['search'])."%' )"] = null;
+					$where["(lower(mapel.nama) like '%".strtolower($post['search'])."%' )"] = null;
 					break;
 				case 1:
-					$where["(lower(tgs.keterangan) like '%".strtolower($post['search'])."%' )"] = null;
+					$where["(lower(tugas.keterangan) like '%".strtolower($post['search'])."%' )"] = null;
 					break;
 				
 				default:

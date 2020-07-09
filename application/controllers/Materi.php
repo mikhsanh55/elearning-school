@@ -502,7 +502,7 @@ class Materi extends MY_Controller
                     'msg'    => 'Upload file gagal! .'.$this->upload->display_errors(),
                 ];
                 echo json_encode($d);
-                http_response_code(200);
+                http_response_code(500);
                 exit;
             } else {
                 $upload_data = $this->upload->data(); //Returns array of containing all of the data related to the file you uploaded.

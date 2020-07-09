@@ -58,16 +58,20 @@
 				$time2 = NULL;
 
 			}
+			$nama_guru = $this->m_guru->get_by(['id' => $rows->id_guru]);
+			$nama_guru = !empty($nama_guru) ? $nama_guru->nama : '';
 
+			$nama_mapel = $this->m_mapel->get_by(['id' => $rows->mt_id_mapel]);
+			$nama_mapel = !empty($nama_mapel) ? $nama_mapel->nama : '';
 		?>
 
 			<tr>
 
 				<td align="center" class="frist"><?=$i;?></td>
 
-				<td><?=$rows->nama_guru;?></td>
+				<td><?=$nama_guru;?></td>
 
-				<td><?=$rows->nama_mp;?></td>
+				<td><?=$nama_mapel;?></td>
 
 				<td><?=$rows->nama_materi;?></td>
 

@@ -228,8 +228,11 @@
 	$(document).ready(function(){
 		pageLoad(1,'kelas/page_load');
 
+		$(document).on('change','#modal-limit',function(){
+			pageLoad(1,'kelas/page_load');
+		});
+
 		$('#limit').change(function(){
-			alert()
 			pageLoad(1,'kelas/page_load');
 		});
 

@@ -42,9 +42,9 @@ class Ujian_real extends MY_Controller {
 
 		$data = array(
 
-			'searchFilter' => array('Mata Pelajaran','Pengajar'),
+			'searchFilter' => array('Mata Pelajaran'),
 
-			'tipe_ujian'   => $tipe_ujian = array(''=>'Semua','uts'=>'UTS','uas'=>'UAS')
+			'tipe_ujian'   => $tipe_ujian = array(''=>'Semua','uts'=>'UTS','uas'=>'UAS', 'harian' => 'Ulangan Harian')
 
 		);
 
@@ -446,11 +446,11 @@ class Ujian_real extends MY_Controller {
 
 
 
-		// if ($this->log_lvl == 'guru') {
+		if ($this->log_lvl == 'guru') {
 
-		// 	$where['uji.id_guru'] = $this->akun->id;
+			$where['uji.id_guru'] = $this->akun->id;
 
-		// }
+		}
 
 		
 

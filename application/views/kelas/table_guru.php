@@ -18,7 +18,7 @@
 	</thead>
 
 	<tbody>
-		<?php $i = 1;foreach($paginate['data'] as $rows) : 
+		<?php $i = $paginate['counts']['from_num'];foreach($paginate['data'] as $rows) : 
 			$mapel = $this->m_mapel->get_by(['id' => $rows->id_mapel]);
 		?>
 			<tr>

@@ -69,7 +69,8 @@ class Jadwal extends MY_Controller {
 		// $data = $this->getClient();
 		
 		if($this->log_lvl == 'guru'){
-		    $kelas = $this->m_kelas->get_guru_all(['dmapel.id_guru'=>$this->akun->id]);
+		    // $kelas = $this->m_kelas->get_guru_all(['dmapel.id_guru'=>$this->akun->id]);
+		    $kelas = $this->m_kelas->get_all(['kls.id_instansi'=>$this->akun->instansi]);
 		}else if($this->log_lvl == 'admin'){
 		    $kelas = $this->m_kelas->get_all(['kls.id_instansi'=>$this->akun->instansi]);
 		    
@@ -195,7 +196,7 @@ class Jadwal extends MY_Controller {
 
 
 
-		$get = $this->m_materi->get_many_by(array('id_mapel'=>$kelas->idmapel,'id_trainer'=>$kelas->idguru));
+		$get = $this->m_materi->get_many_by(array('id_trainer'=>$kelas->idguru));
 
 		// print_r($kelas);
 		// print_r($get);exit;
@@ -533,6 +534,11 @@ class Jadwal extends MY_Controller {
 
 		}
 
+		$nama_guru = $this->m_guru->get_by(['id' => $get->id_guru]);
+			$nama_guru = !empty($nama_guru) ? $nama_guru->nama : '';
+
+		$nama_mapel = $this->m_mapel->get_by(['id' => $get->mt_id_mapel]);
+		$nama_mapel = !empty($nama_mapel) ? $nama_mapel->nama : '';
 
 
 		if (!empty($get->end_date)) {
@@ -554,7 +560,8 @@ class Jadwal extends MY_Controller {
 
 
 		$custom = array(
-
+			'nama_mapel' => $nama_mapel,
+			'nama_guru' => $nama_guru,
 			'tgl_mulai' => $date, 
 
 			'tgl_selesai' => $date2,

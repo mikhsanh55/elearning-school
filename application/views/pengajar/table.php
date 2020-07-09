@@ -39,7 +39,7 @@
 
 		</tr>
 
-		<?php $x = 1; foreach ($paginate['data'] as $rows):
+		<?php $x = $paginate['counts']['from_num']; foreach ($paginate['data'] as $rows):
 	
 			$get = $this->m_admin->get_by(array('level'=>'guru','kon_id'=>$rows->id));
 			$instansi = $this->m_instansi->get_by(['id'=>$rows->instansi]);

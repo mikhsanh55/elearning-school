@@ -220,12 +220,12 @@
                      <tr>
                       <td>Pengajar</td>
                       <td>:</td>
-                      <td>`+response.data.nama_guru+`</td>
+                      <td>`+response.custom.nama_guru+`</td>
                     </tr>
                      <tr>
-                      <td>Modul</td>
+                      <td>Mata Pelajaran</td>
                       <td>:</td>
-                      <td>`+ response.data.nama_mp+`</td>
+                      <td>`+ response.custom.nama_mapel+`</td>
                     </tr>
                      <tr>
                       <td>Materi</td>
@@ -236,16 +236,23 @@
                       <td>Tanggal Mulai</td>
                       <td>:</td>
                       <td>`+response.custom.tgl_mulai+`</td>
-                      <td></td>
-                      <td>Pukul</td>
+                      
+                    </tr>
+                    <tr>
+                      <td>Jam Mulai</td>  
+                      <td>:</td>
                       <td>`+response.custom.waktu_mulai+`</td>
                     </tr>
                      <tr>
                       <td>Tanggal Selesai</td>
                       <td>:</td>
                       <td>`+response.custom.tgl_selesai+`</td>
-                      <td></td>
-                      <td>Pukul</td>
+                      
+                    </tr>
+                    <tr>
+                      <td>Jam Selesai</td>
+                      <td>:</td>
+                      
                       <td>`+response.custom.waktu_selesai+`</td>
                     </tr>
                     
