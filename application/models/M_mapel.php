@@ -25,10 +25,11 @@ class M_mapel extends MY_Model {
 
 	public function get_detail_all($where) {
 		$get = $this->db->select('dmapel.*, mapel.nama AS nama_mapel, guru.nama AS nama_guru,guru.username as username_guru')
-						->from('tb_detail_mapel dmapel')
-						->join('m_mapel mapel', 'dmapel.id_mapel = mapel.id', 'left')
+						->from('m_mapel mapel')
+						->join('tb_detail_mapel dmapel', 'dmapel.id_mapel = mapel.id', 'left')
 						->join('m_guru guru', 'dmapel.id_guru = guru.id', 'left')
 						->where($where)
+						->group_by('mapel.id,guru.id')
 						->get()
 						->result();
 
