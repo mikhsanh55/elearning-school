@@ -44,7 +44,7 @@
 				<br><br>            
                 <div class="row container mx-auto">
                     <div class="col-sm-12">
-                        <h4><label for="video" class="text-success">Video</label><span class="text-danger"> *</span></h4>
+                        <h4><label for="video" class="text-success">Video</label></h4>
                         <div class="form-group d-flex">
                         	<!-- <div class="mr-4">
                         		<label for="type-manual">Upload Manual</label>
@@ -110,7 +110,7 @@
         mapel = sessionStorage.getItem('mapel') != null ? sessionStorage.getItem('mapel') : localStorage.getItem('mapel'),
         video = document.querySelector('input[type=text][name=video]'),
         videoYt = document.querySelector('input[type=text][name=videoYt]'),
-        videoManual = document.querySelector('input[type=file][name=video-manual]'),
+        // videoManual = document.querySelector('input[type=file][name=video-manual]'),
         typeVideo = document.querySelectorAll('input[type=radio][name=typeVideo]'),
         uploadManual = false,
         /*fileVideo = '', fileVideoName = '', extVideo = '',*/
@@ -119,48 +119,73 @@
         
 
         // Validasi file
-        typeVideo.forEach(function(el) {
-        	el.addEventListener('change', function() {
-        		if(el.dataset.type == 'manual')	{
-        			// videoManual.classList.remove('d-none')
+        $('input[type=radio][name=typeVideo]').change(function() {
+        	if($(this).data('type') == 'manual')	{
+    			video.classList.add('d-none')
+    			videoYt.classList.add('d-none')
+    			uploadManual = true
+    			uploadType = 'manual'
+    		}
+    		else if($(this).data('type') == 'gdrive')	{// Google Drive
+    			video.classList.remove('d-none')
+    			
+    			// videoManual.classList.add('d-none')
+				videoYt.classList.add('d-none')
+    			uploadManual = false
+    			uploadType = 'gdrive'
+    		}
+    		else if($(this).data('type') == 'youtube')	{ // Youtube Link
+    			videoYt.classList.remove('d-none')
 
-        			video.classList.add('d-none')
-        			videoYt.classList.add('d-none')
-        			uploadManual = true
-        			uploadType = 'manual'
-        		}
-        		else if(el.dataset.type == 'gdrive') { // Google Drive
-        			video.classList.remove('d-none')
+    			// videoManual.classList.add('d-none')
+    			video.classList.add('d-none')
+    			uploadManual = false
+    			uploadType = 'youtube'
+    		}	
+        })
+
+     //    typeVideo.forEach(function(el) {
+     //    	el.addEventListener('change', function() {
+     //    		if(el.dataset.type == 'manual')	{
+     //    			// videoManual.classList.remove('d-none')
+
+     //    			video.classList.add('d-none')
+     //    			videoYt.classList.add('d-none')
+     //    			uploadManual = true
+     //    			uploadType = 'manual'
+     //    		}
+     //    		else if(el.dataset.type == 'gdrive') { // Google Drive
+     //    			video.classList.remove('d-none')
         			
-        			// videoManual.classList.add('d-none')
-					videoYt.classList.add('d-none')
-        			uploadManual = false
-        			uploadType = 'gdrive'
-        		}
-        		else if(el.dataset.type == 'youtube'){ // Youtube Link
-        			videoYt.classList.remove('d-none')
+     //    			// videoManual.classList.add('d-none')
+					// videoYt.classList.add('d-none')
+     //    			uploadManual = false
+     //    			uploadType = 'gdrive'
+     //    		}
+     //    		else if(el.dataset.type == 'youtube'){ // Youtube Link
+     //    			videoYt.classList.remove('d-none')
 
-        			// videoManual.classList.add('d-none')
-        			video.classList.add('d-none')
-        			uploadManual = false
-        			uploadType = 'youtube'
-        		}	
-        	})
+     //    			// videoManual.classList.add('d-none')
+     //    			video.classList.add('d-none')
+     //    			uploadManual = false
+     //    			uploadType = 'youtube'
+     //    		}	
+     //    	})
         	
-        });
+     //    });
 
         // Define Vars for Video Upload Manual
         var file = '', filename = '', ext = ''
-        videoManual.addEventListener('change', function() {
-           file = this.files[0]; 
-		   filename = this.value;
-		   ext = filename.substring(filename.lastIndexOf('.') + 1);
-		   if(ext != 'mp4' && ext != 'mkv') {
-		       alert('Harap upload video!');
-		       this.value = '';
-		       return false;
-		   }
-        })
+     //    videoManual.addEventListener('change', function() {
+     //       file = this.files[0]; 
+		   // filename = this.value;
+		   // ext = filename.substring(filename.lastIndexOf('.') + 1);
+		   // if(ext != 'mp4' && ext != 'mkv') {
+		   //     alert('Harap upload video!');
+		   //     this.value = '';
+		   //     return false;
+		   // }
+     //    })
         
         // When Trainer / Admin create Sub MOdule
 		$('button[type=submit]').click(function(e) {
@@ -179,21 +204,23 @@
 			}	
 			// Store Data
 			let data = new FormData();
-			switch(uploadType) {
-				case 'manual':
-				data.append('video_manual', file)
-				data.append('id_type_video', 1)
-				break
+			if(video.value != '' || videoYt.value != '') {
+				switch(uploadType) {
+					case 'manual':
+					data.append('video_manual', file)
+					data.append('id_type_video', 1)
+					break
 
-				case 'gdrive':
-				data.append('video-gdrive', video.value)
-				data.append('id_type_video', 2)
-				break
+					case 'gdrive':
+					data.append('video-gdrive', video.value)
+					data.append('id_type_video', 2)
+					break
 
-				case 'youtube':
-				data.append('video-youtube', videoYt.value)
-				data.append('id_type_video', 3)
-				break
+					case 'youtube':
+					data.append('video-youtube', videoYt.value)
+					data.append('id_type_video', 3)
+					break
+				}
 			}
 
 			data.append('title', title.val());

@@ -416,8 +416,8 @@ class Materi extends MY_Controller
                 'id_trainer'    => $this->akun->id,
                 'title'         => $this->input->post('title'),
                 'content'       => $this->input->post('content'),
-                'video'         => $this->input->post('video-gdrive'),
-                'path_video'    => $this->input->post('video-gdrive'),
+                'video'      => !empty($this->input->post('video-gdrive')) ?  $this->input->post('video-gdrive') : 1,
+                'path_video'      => !empty($this->input->post('video-gdrive')) ?  $this->input->post('video-gdrive') : 1,
                 'upload_manual' => 0,
                 'req_edit'      => 1,
                 'id_type_video' => 2
@@ -1010,8 +1010,8 @@ class Materi extends MY_Controller
                 'id_type_video' => 2,
                 'title'      => $this->input->post('title'),
                 'content'    => $this->input->post('content'),
-                'video'      => $this->input->post('video-gdrive'),
-                'path_video' => $this->input->post('video-gdrive'),
+                'video'      => !empty($this->input->post('video-gdrive')) ?  $this->input->post('video-gdrive') : 1,
+                'path_video'      => !empty($this->input->post('video-gdrive')) ?  $this->input->post('video-gdrive') : 1,
                 'req_add'    => 1,
             ];
             if ($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') {
