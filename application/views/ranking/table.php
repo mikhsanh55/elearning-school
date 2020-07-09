@@ -10,7 +10,7 @@
 
 			<th>Pengajar</th>
 
-			<th>Modul Materi</th>
+			<th>Mata Pelajaran</th>
 
 			<th class="frist">Nilai</th>
 
@@ -38,7 +38,7 @@
     		<?php $i++;endforeach ?>
     	<?php } else { ?>
     	    <tr>
-    	        <td colspan="4" class="text-center">No data found</td>
+    	        <td colspan="4" class="text-center">Data Kosong</td>
     	    </tr>
     	<?php } ?>
 

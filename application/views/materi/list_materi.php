@@ -1,9 +1,10 @@
+
 <table class="table table-bordered table-striped" id="table-materi">
 
 <thead>
 
 <tr class="">
-<td class="text-center  " width="30"><i class="fas fa-book"></i></td>
+<td class="text-center" width="30"><i class="fas fa-book"></i></td>
 <th class="materi-link text-secondary">Judul</th>
 
 <th class="materi-link text-secondary">Tanggal Aktif</th>
@@ -391,7 +392,7 @@
 
     <tr>
 
-        <td colspan="4" class="text-center text-secondary">Materi belum ada :(</td>
+        <td colspan="4" class="text-center text-secondary">Data Kosong</td>
 
     </tr>
 

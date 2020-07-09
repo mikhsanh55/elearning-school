@@ -27,7 +27,7 @@
             <tr>
                 <th class="text-center">Ranking</th>
                 <th>Pengajar</th>
-                <th>Modul Materi</th>
+                <th>Mata Pelajaran</th>
                 <th class="text-center">Nilai</th>
             </tr>
         </thead>

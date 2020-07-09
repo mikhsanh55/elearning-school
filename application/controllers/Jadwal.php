@@ -78,6 +78,7 @@ class Jadwal extends MY_Controller {
 		    $kelas = $this->m_kelas->get_many_by(['kls.id_instansi'=>$this->akun->instansi]);
 		}
 
+		// print_r($kelas);exit;
 		$data = array(
 
 			'kelas' => $kelas,

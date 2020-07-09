@@ -11,6 +11,7 @@
 			<?php endif;?>
 			<th style="width: 10%">Opsi</th>
 		</tr>
+		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows):
 
 		?>
@@ -28,6 +29,15 @@
 				</td>
 			</tr>
 		<?php $i++;endforeach ?>
+		<?php } else { ?>
+			<tr>
+			<?php if($this->log_lvl == 'admin') { ?>
+				<td class="text-center" colspan="6">Data Kosong</td>
+			<?php } else { ?>
+				<td class="text-center" colspan="5">Data Kosong</td>
+			<?php } ?>
+			</tr>
+		<?php } ?>
 	</thead>
 <tbody>
 </tbody>

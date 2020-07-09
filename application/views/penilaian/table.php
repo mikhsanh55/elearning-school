@@ -13,6 +13,7 @@
 			<th>Waktu Mulai</th>
 			<th class="frist">Opsi</th>
 		</tr>
+		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows):
 			$paket = $this->m_paket_soal->count_by(['id'=>$rows->id_paket_soal]);
 			$penilaian = $this->db->where('id_penilaian',$rows->id)->get('tb_ikut_penilaian')->result();
@@ -71,6 +72,11 @@
 				</td>	
 			</tr>
 		<?php $i++;endforeach ?>
+		<?php } else { ?>
+			<tr>
+				<td class="text-center" colspan="10">Data Kosong</td>
+			</tr>
+		<?php } ?>
 	</thead>
 <tbody>
 </tbody>

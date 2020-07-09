@@ -64,9 +64,10 @@ input:checked + .slider:before {
 		<tr>
 			<th class="frist">No</th>
 			<th>Nama Mata Pelajaran</th>
-			<th>Trainer</th>
+			<th>Pengajar</th>
 			<th>Opsi</th>
 		</tr>
+		<?php if(count($paginate['data']) > 0) { ?>
 		<?php 
 		    $i= $page_start; foreach ($paginate['data'] as $rows):
 		    $count = $this->m_materi_instansi->count_by(array('id_instansi'=>$id_instansi,'id_mapel'=>$rows->id,'id_trainer'=>$rows->guru_id));
@@ -83,6 +84,11 @@ input:checked + .slider:before {
 				</td>
 			</tr>
 		<?php $i++;endforeach ?>
+		<?php } else { ?>
+			<tr>
+			<td class="text-center" colspan="4">Data Kosong</td>
+			</tr>
+		<?php } ?>
 	</thead>
 <tbody>
 </tbody>

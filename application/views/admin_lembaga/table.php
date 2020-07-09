@@ -25,6 +25,7 @@
 			<th>Password</th>
 			<th class="frist">Opsi</th>
 		</tr>
+		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows):
 			$admin = $this->m_admin->count_by(array('level'=>'admin_instansi','kon_id'=>$rows->id));
 		?>
@@ -58,6 +59,11 @@
 				</td>	
 			</tr>
 		<?php $i++;endforeach ?>
+	<?php } else { ?>
+		<tr>
+		<td colspan="7" class="text-center">Data Kosong</td>
+		</tr>
+	<?php }?>
 	</thead>
 <tbody>
 </tbody>

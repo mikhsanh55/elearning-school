@@ -8,6 +8,7 @@
 			<th>Frekuensi</th>
 			<th>Persentase</th>
 		</tr>
+		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows): 
 			$presentase = ($rows->jumlah/$rows->total) * 100;
 			$pesent = number_format($presentase, 2);
@@ -26,6 +27,11 @@
  				</td>
 			</tr>
 		<?php $i++;endforeach ?>
+		<?php } else { ?>
+			<tr>
+				<td class="text-center" colspan="5">Data Kosong</td>
+			</tr>
+		<?php } ?>
 	</thead>
 <tbody>
 </tbody>

@@ -10,6 +10,7 @@
 			<th class="frist">Terkumpul</th>
 
 		</tr>
+		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows):
 			$count = $this->m_tugas_attach_siswa->count_by(array('id_tugas'=>$rows->id,'id_siswa'=>$this->akun->id));
 			if ($count > 0) {
@@ -39,6 +40,11 @@
 				</td>
 			</tr>
 		<?php $i++;endforeach ?>
+		<?php } else { ?>
+    	    <tr>
+    	        <td colspan="6" class="text-center">Data Kosong</td>
+    	    </tr>
+    	<?php } ?>
 	</thead>
 <tbody>
 </tbody>

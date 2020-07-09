@@ -9,6 +9,7 @@
 			<th>Keterangan</th>
 			<th>Opsi</th>
 		</tr>
+		<?php if(count($paginate['data']) > 0) { ?>
 		<?php  $i= $page_start; foreach ($paginate['data'] as $rows):
 			$mapel = $this->m_mapel->get_by(['id' => $rows->id_mapel]);
 			$nama_mapel = !empty($mapel->nama) ? $mapel->nama : '';	
@@ -25,6 +26,11 @@
 				</td>
 			</tr>
 		<?php $i++;endforeach ?>
+		<?php } else { ?>
+    	    <tr>
+    	        <td colspan="6" class="text-center">Data Kosong</td>
+    	    </tr>
+    	<?php } ?>
 	</thead>
 <tbody>
 </tbody>

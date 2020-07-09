@@ -23,6 +23,7 @@
 			</th>
 			<th><?=$this->transTheme->instansi;?></th>
 		</tr>
+		<?php if(count($datas) > 0) { ?>
 		<?php $i= 1; foreach ($datas as $rows):
 			$get = $this->m_admin->get_by(array('level'=>'siswa','kon_id'=>$rows->id));
 		?>
@@ -35,6 +36,11 @@
 				
 			</tr>
 		<?php $i++;endforeach ?>
+	<?php } else { ?>
+		<tr>
+			<td class="text-center" colspan="5">Data Kosong</td>
+		</tr>
+	<?php } ?>
 	</thead>
 <tbody>
 </tbody>

@@ -10,6 +10,7 @@
 			<?php endif;?>
 			<th class="frist">Opsi</th>
 		</tr>
+		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows):
 
 		?>
@@ -24,6 +25,18 @@
 				
 			</tr>
 		<?php $i++;endforeach ?>
+		<?php } else { ?>
+			<?php if($this->log_lvl == 'admin') { ?>
+				<tr>
+					<td class="text-center" colspan="5">Data Kosong</td>
+				</tr>
+			<?php } else { ?>
+				<tr>
+					<td class="text-center" colspan="4">Data Kosong</td>
+				</tr>
+			<?php } ?>
+			
+		<?php } ?>
 	</thead>
 <tbody>
 </tbody>

@@ -18,6 +18,7 @@
 	</thead>
 
 	<tbody>
+		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $i = $paginate['counts']['from_num'];foreach($paginate['data'] as $rows) : 
 			$mapel = $this->m_mapel->get_by(['id' => $rows->id_mapel]);
 		?>
@@ -33,6 +34,11 @@
 				</td>
 			</tr>
 		<?php endforeach;?>
+		<?php } else { ?>
+			<tr>
+				<td class="text-center" colspan="5">Data Kosong</td>
+			</tr>
+		<?php } ?>
 		
 	</tbody>
 

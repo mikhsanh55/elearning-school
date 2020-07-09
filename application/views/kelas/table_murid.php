@@ -65,6 +65,7 @@ input:checked + .slider:before {
 			<th class="frist">No</th>
 			<th><?=$this->transTheme->siswa;?></th>
 		</tr>
+		<?php if(count($paginate['data']) > 0) { ?>
 		<?php 
 			$i= $page_start; foreach ($paginate['data'] as $rows):
 			$check_kelas = $this->m_detail_kelas->count_by(['id_peserta'=>$rows->id,'id_kelas',$id_kelas]);
@@ -74,6 +75,11 @@ input:checked + .slider:before {
 				<td><?=$rows->nama_siswa;?></td>
 			</tr>
 		<?php $i++;endforeach ?>
+		<?php } else { ?>
+			<tr>
+				<td class="text-center" colspan="2">Data Kosong</td>
+			</tr>
+		<?php } ?>
 	</thead>
 <tbody>
 </tbody>

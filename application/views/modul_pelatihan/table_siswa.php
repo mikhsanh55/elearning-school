@@ -7,6 +7,7 @@
 			<th><?=$this->transTheme->guru;?></th>
 			<th>Opsi</th>
 		</tr>
+		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows):
 			$get = $this->m_admin->get_by(array('level'=>'guru','kon_id'=>$rows->id));
 		?>
@@ -28,6 +29,11 @@
 				</td>	
 			</tr>
 		<?php $i++;endforeach ?>
+		<?php } else { ?>
+			<tr>
+				<td class="text-center" colspan="3">Data Kosong</td>
+			</tr>
+		<?php } ?>
 	</thead>
 <tbody>
 </tbody>

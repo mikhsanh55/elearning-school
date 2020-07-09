@@ -22,7 +22,7 @@
 				<th>Opsi</th>
 
 		</tr>
-
+		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows): 
 
 			if (!empty($rows->start_date)) {
@@ -93,6 +93,11 @@
 			</tr>
 
 		<?php $i++;endforeach ?>
+	<?php } else { ?>
+		<tr>
+		<td class="text-center" colspan="8">Data Kosong</td>
+		</tr>
+	<?php } ?>
 
 	</thead>
 

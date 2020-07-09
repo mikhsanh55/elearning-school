@@ -7,9 +7,10 @@
 			<th>Kode</th>
 			<th>Nama Pimpinan</th>
 			<th>No Telp</th>
-			<th>Alamat</>
+			<th>Alamat</td>
 			<th>Opsi</th>
 		</tr>
+		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows): ?>
 			<tr>
 				<td align="center" class="frist"><?=$i;?></td>
@@ -36,6 +37,11 @@
 				</td>
 			</tr>
 		<?php $i++;endforeach ?>
+	<?php } else { ?>
+		<tr>
+		<td class="text-center" colspan="7">Data Kosong</td>
+		</tr>
+	<?php } ?>
 	</thead>
 <tbody>
 </tbody>
