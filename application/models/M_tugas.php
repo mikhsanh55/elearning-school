@@ -89,17 +89,25 @@ class M_tugas extends MY_Model {
 	}
 
 	public function count_by_cs($where=array()){
-		$get = $this->db->select('
-							tgs.*,
-							gr.nama as nama_trainer,
-							mpl.nama as nama_mapel
-						')
-						->from('tb_tugas tgs')
-						->join('tb_kelas kls','kls.id=tgs.id_kelas','left')
-						->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'left')
-						->join('m_guru gr','gr.id=dmkls.id_guru','left')
-						->join('m_mapel mpl','mpl.id=dmkls.id_mapel','left')
-						->order_by('tgs.id','desc')
+		// $get = $this->db->select('
+		// 					tgs.*,
+		// 					gr.nama as nama_trainer,
+		// 					mpl.nama as nama_mapel
+		// 				')
+		// 				->from('tb_tugas tgs')
+		// 				->join('tb_kelas kls','kls.id=tgs.id_kelas','left')
+		// 				->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'left')
+		// 				->join('m_guru gr','gr.id=dmkls.id_guru','left')
+		// 				->join('m_mapel mpl','mpl.id=dmkls.id_mapel','left')
+		// 				->order_by('tgs.id','desc')
+		// 				->where($where)
+		// 				->get()
+		// 				->result();
+		$get = $this->db->select('tugas.*, kls.nama AS kelas')
+						->from('tb_tugas tugas')
+						->join('tb_kelas kls', 'tugas.id_kelas = kls.id', 'left')
+						// ->join('m_mapel mapel', 'tugas.id_mapel = mapel.id', 'left')
+						// ->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'left')
 						->where($where)
 						->get()
 						->result();

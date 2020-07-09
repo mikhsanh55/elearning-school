@@ -288,6 +288,7 @@ class Tugas extends MY_Controller {
 			$where['kls.id_instansi'] = $this->akun->instansi;
 
 		}
+		
 
 		// if ($this->log_lvl == 'guru') {
 		// 	$where['tugas.id_guru'] = 9;
