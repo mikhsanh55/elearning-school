@@ -577,8 +577,6 @@ class Kelas extends MY_Controller
 
     	$data['page_start'] = $paginate['counts']['from_num'];
 
-    
-
 		$data['id_kelas'] = $post['id_kelas'];
 
 
