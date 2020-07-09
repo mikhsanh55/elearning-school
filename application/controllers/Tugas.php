@@ -118,9 +118,9 @@ class Tugas extends MY_Controller {
 			'end_date' => date_default($post['end_date']).' '.$post['end_time'],
 		);
 
-		if($this->log_lvl == 'guru') {
-			$data['id_guru'] = $this->akun->id;
-		}
+		// if($this->log_lvl == 'guru') {
+		// 	$data['id_guru'] = $this->akun->id;
+		// }
 
 		$kirim = $this->m_tugas->insert($data);
 		$last_id = $this->db->insert_id();
@@ -193,14 +193,14 @@ class Tugas extends MY_Controller {
 
 		$data = array(
 			'id_kelas' => $post['kelas'], 
-			'id_mapel' => $post['mapel'],
+			// 'id_mapel' => $post['mapel'],
 			'keterangan' => $post['keterangan'],
 			'end_date' => date_default($post['end_date']).' '.$post['end_time'],
 		);
 
-		if($this->log_lvl == 'guru') {
-			$data['id_guru'] = $this->akun->id;
-		}
+		// if($this->log_lvl == 'guru') {
+		// 	$data['id_guru'] = $this->akun->id;
+		// }
 
 		$kirim = $this->m_tugas->update($data,array('id'=>$post['id']));
 
