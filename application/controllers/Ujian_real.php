@@ -109,8 +109,10 @@ class Ujian_real extends MY_Controller {
 			$mapel = $this->m_mapel->get_many_by(['id_instansi' => $this->akun->instansi]);
 		}
 		else if($this->log_lvl == 'guru') {
-			$kelas = $this->m_kelas->get_data_mapel(['kls.id_instansi' => $this->akun->instansi, 'dkmapel.id_guru' => $this->akun->id]);
-			$mapel = $this->m_kelas->get_data_mapel(['mapel.id_instansi' => $this->akun->instansi, 'dkmapel.id_guru' => $this->akun->id]);
+			// $kelas = $this->m_kelas->get_data_mapel(['kls.id_instansi' => $this->akun->instansi, 'dkmapel.id_guru' => $this->akun->id]);
+			$kelas = $this->m_kelas->get_all(['kls.id_instansi' => $this->akun->instansi]);
+			// $mapel = $this->m_kelas->get_data_mapel(['mapel.id_instansi' => $this->akun->instansi, 'dkmapel.id_guru' => $this->akun->id]);
+			$mapel = $this->m_mapel->get_many_by(['id_instansi' => $this->akun->instansi]);
 
 		}
 		
