@@ -31,7 +31,7 @@
 
 			<th>Password</th>
 
-			<th>NUPTK / NIP</th>
+			<th>NIS</th>
 
 			<!-- <th>Mata Pelajaran</th> -->
 

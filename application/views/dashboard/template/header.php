@@ -26,10 +26,6 @@
     .capitalize {
       text-transform: capitalize;
     }
-    .active {
-      background: black;
-      color:#fff;
-    }
     .fa-ban:hover { 
       cursor: not-allowed;
     }

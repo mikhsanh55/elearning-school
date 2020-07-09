@@ -46,11 +46,11 @@
                     <div class="col-sm-12">
                         <h4><label for="video" class="text-success">Video</label><span class="text-danger"> *</span></h4>
                         <div class="form-group d-flex">
-                        	<div class="mr-4">
+                        	<!-- <div class="mr-4">
                         		<label for="type-manual">Upload Manual</label>
                         		
                         		<input type="radio" name="typeVideo" id="type-manual" data-type="manual">
-                        	</div>
+                        	</div> -->
                         	<div class="mr-4">
                         		<label for="type-gdrive">Google Drive</label>
                         		<input type="radio" name="typeVideo" id="type-gdrive" checked data-type="gdrive">
@@ -61,9 +61,8 @@
                         	</div>
                         </div>        
                         <input type="text" class="form-control" placeholder="Masukan Id Video Google Drive" name="video" value="" autofocus>
-                        <input type="file" name="video-manual" class="form-control d-none" value="">
+                        <!-- <input type="file" name="video-manual" class="form-control d-none" value=""> -->
                         <input type="text" class="form-control d-none" placeholder="Masukan Link Video Youtube" name="videoYt">
-                        <!-- <input type="file" name="video" value=""> -->
                     </div>
                 </div>
                 <br><br>            
@@ -123,7 +122,7 @@
         typeVideo.forEach(function(el) {
         	el.addEventListener('change', function() {
         		if(el.dataset.type == 'manual')	{
-        			videoManual.classList.remove('d-none')
+        			// videoManual.classList.remove('d-none')
 
         			video.classList.add('d-none')
         			videoYt.classList.add('d-none')
@@ -133,7 +132,7 @@
         		else if(el.dataset.type == 'gdrive') { // Google Drive
         			video.classList.remove('d-none')
         			
-        			videoManual.classList.add('d-none')
+        			// videoManual.classList.add('d-none')
 					videoYt.classList.add('d-none')
         			uploadManual = false
         			uploadType = 'gdrive'
@@ -141,7 +140,7 @@
         		else if(el.dataset.type == 'youtube'){ // Youtube Link
         			videoYt.classList.remove('d-none')
 
-        			videoManual.classList.add('d-none')
+        			// videoManual.classList.add('d-none')
         			video.classList.add('d-none')
         			uploadManual = false
         			uploadType = 'youtube'
@@ -162,18 +161,6 @@
 		       return false;
 		   }
         })
-  /*   video.addEventListener('change', function(e) {
-            fileVideo = this.files[0];
-            fileVideoName = this.value;
-            extVideo = fileVideoName.substring(fileVideoName.lastIndexOf('.') + 1)
-
-            if(extVideo != 'mp4') {
-                alert('File harus video!')
-                this.value = ''
-                return false
-            }
-
-        })*/
         
         // When Trainer / Admin create Sub MOdule
 		$('button[type=submit]').click(function(e) {
