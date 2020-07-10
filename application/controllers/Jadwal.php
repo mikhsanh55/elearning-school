@@ -477,7 +477,6 @@ class Jadwal extends MY_Controller {
 
 			);
 			$data_calendar = $this->m_jadwal->get_kalender(array('kls.id_trainer'=>$this->akun->id));
-			echo $this->db->last_query();exit;
 		}
 		
 	
