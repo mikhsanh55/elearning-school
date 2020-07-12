@@ -83,6 +83,9 @@
   .caret-90deg {
     transform:rotate(90deg);
   }
+  #profile-wrapper .profile-title, .p-title {
+    font-family: "Roboto Condensed", Helvetica, Arial, sans-serif;
+  }
   </style>
   <!-- styles needed for carousel slider -->
   <link href="<?= base_url(); ?>assets/plugins/owl-carousel/owl.carousel.css" rel="stylesheet">

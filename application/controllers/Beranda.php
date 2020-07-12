@@ -15,7 +15,33 @@ class Beranda extends MY_Controller {
 		$this->load->model('m_setting_instansi');
 
 		$this->load->model('m_slide');
+		$this->load->model('m_guru');
+		$this->load->model('m_detail_mapel');
+		$this->load->model('m_siswa');
 
+	}
+
+	public function profile($encrypt_id) {
+		if(is_null($encrypt_id)) {
+			redirect('beranda');
+		}
+
+		$data['data'] = $this->m_guru->get_by(['id' => decrypt_url($encrypt_id)]);
+		$data['id'] = decrypt_url($encrypt_id);
+		// switch ($this->log_lvl) {
+		// 	case 'guru':
+		// 		$data['data'] = $this->m_guru->get_by(['id' => decrypt_url($encrypt_id)]);
+		// 		break;
+		// 	case 'siswa':
+		// 		$data['data'] = $this->m_siswa->get_by(['id' => $this->akun->id]);
+		// 	default:
+		// 	break;
+		// }
+
+
+		
+
+		$this->render('beranda/profile', $data);
 	}
 
 

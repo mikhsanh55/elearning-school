@@ -51,5 +51,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['default_controller'] = 'awal';
 $route['kelas/riwayat-mengajar/(:any)'] = 'Kelas/riwayat_mengajar/$1';
+$route['profile/guru/(:any)'] = 'beranda/profile/$1';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

@@ -23,17 +23,23 @@
 
                         <span><i class="icon-user fa"></i>
                                 <?php if($this->session->userdata('admin_level') == "admin"){
-                                    echo "Admin";
+                                    echo "Super Admin";
                                }else if($this->session->userdata('admin_level') == "guru"){
                                   echo "Pengajar";
                               }else if($this->session->userdata('admin_level') == "siswa"){
                                  echo "Siswa";
-                             }else if($this->session->userdata('admin_level') == "instansi"){
-                                 echo "Lembaga";
+                             }else if($this->session->userdata('admin_level') == "instansi" || $this->session->userdata('admin_level') == "admin_instansi"){
+                                 echo "Admin";
                              }?>
                                  <?php echo "(".$this->akun->nama." - ".$this->akun->nrp.")"; ?></span>  <i class=" icon-down-open-big fa"></i></a>
                             <ul class="dropdown-menu user-menu dropdown-menu-right">
-
+                                 <?php if($this->log_lvl == 'guru') : ?>
+                                <li class="dropdown-item">
+                                    <a href="<?= base_url('profile/guru/') . encrypt_url($this->akun->id); ?>">
+                                        <i class="icon-user"></i> Profil
+                                    </a>
+                                </li>
+                                <?php endif; ?>
                                 <li class="dropdown-item"><a href="#" onclick="return rubah_password();"><i class="icon-key"></i> Ubah Password </a>
                                 </li>
 
