@@ -77,14 +77,7 @@
 								</td>
 							</tr>
 					</table>
-					<!-- <h2 class="profile-title">Suyanto Tjipto</h2>
-					<h4 class="text-primary font-weight-bold">Guru</h4>	
-					<div class="row">
-						<div class="col-sm-12 col-md-6 col-lg-6">
-							<p class="font-weight-bold">NUPTK</p>
-
-						</div>
-					</div> -->
+					
 				</div>
 			</div>
 		</div>

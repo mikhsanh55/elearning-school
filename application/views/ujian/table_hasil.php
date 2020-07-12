@@ -1,5 +1,5 @@
 
-<table id="custumtb">
+<table class="table table-bordered table-striped table-hovered">
 	<thead>
 		<tr>
 			<!-- <th class="frist"><input type="checkbox" name="checkall" id="checkall"></th> -->

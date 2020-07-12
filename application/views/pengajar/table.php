@@ -15,7 +15,7 @@
 	}
 </style>
 
-<table id="custumtb">
+<table class="table table-bordered table-striped table-hovered">
 
 	<thead>
 

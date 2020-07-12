@@ -1,5 +1,5 @@
 
-<table id="custumtb">
+<table class="table table-bordered table-striped table-hovered">
 	<thead>
 		<tr>
 			<th class="frist" rowspan="2">No</th>
