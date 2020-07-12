@@ -175,7 +175,7 @@
 			<div class="modal-footer">
 				<button class="btn btn-sm" data-dismiss="modal" aria-hidden="true"><i class="fa fa-minus-circle"></i> Tutup</button>
 			</div>
-	
+
 		</div>
 	</div>
 </div> -->

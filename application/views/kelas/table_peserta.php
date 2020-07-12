@@ -67,7 +67,7 @@ input:checked + .slider:before {
 			<th class="text-left">NIS</th>
 			<th class="text-left">Kelas</th>
 			<th>Opsi</th>
-			
+		
 		</tr>
 		<?php 
 			if(count($paginate['data']) > 0) {

@@ -23,17 +23,31 @@ class M_mapel extends MY_Model {
 		return $get;
 	}
 
+	/*
+	* Get mapel and it's teachers based on class and mapel which not already set yet.
+	*/
 	public function get_detail_all($where) {
-		$get = $this->db->select('dmapel.*, mapel.nama AS nama_mapel, guru.nama AS nama_guru,guru.username as username_guru')
+		$query1 = $this->db->select('dmapel.*, mapel.nama AS nama_mapel, guru.nama AS nama_guru,guru.username as username_guru')
 						->from('m_mapel mapel')
-						->join('tb_detail_mapel dmapel', 'dmapel.id_mapel = mapel.id', 'left')
+						->join('tb_detail_kelas_mapel dmapel', 'dmapel.id_mapel = mapel.id', 'left')
 						->join('m_guru guru', 'dmapel.id_guru = guru.id', 'left')
 						->where($where)
 						->group_by('mapel.id,guru.id')
 						->get()
 						->result();
 
-		return $get;
+		$query2 = $this->db->query("
+			SELECT dmapel.*, mapel.nama AS nama_mapel, mapel.id_instansi, guru.nama AS nama_guru, guru.username AS username_guru
+			FROM m_mapel mapel
+			LEFT JOIN tb_detail_mapel dmapel ON mapel.id = dmapel.id_mapel
+			LEFT JOIN m_guru guru ON guru.id = dmapel.id_guru
+			WHERE mapel.id_instansi = ".$this->akun->instansi."
+			AND mapel.id NOT IN 
+				(SELECT id_mapel FROM tb_detail_kelas_mapel)
+			GROUP BY mapel.id, guru.id
+		")->result();
+
+		return array_merge($query1, $query2);
 	}
 
 	public function get_detail_all_switch($where) {

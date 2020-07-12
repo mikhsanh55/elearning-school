@@ -230,6 +230,7 @@ class Kelas extends MY_Controller
   	$where = [];
 
   	$where['dmapel.id_guru'] = $this->session->admin_konid;
+
   	// print_r($this->session->admin_konid);exit;
   	$paginate = $this->m_kelas->paginate_guru(1, $limit, $where);
   	// print_r($paginate);exit;
@@ -334,7 +335,7 @@ class Kelas extends MY_Controller
   	$limit = $post['limit'];
   	$where = [];
 
-  	// $where['kls.id'] = $post['id_kelas'];
+  	$where['dmapel.id_kelas'] = $post['id_kelas'];
   	$where['mapel.id_instansi'] = $this->akun->instansi;
   	if(!empty($post['search'])) {
   		switch($post['filter']) {
@@ -435,6 +436,11 @@ class Kelas extends MY_Controller
   	$this->load->view('kelas/setting_mapel', $data);
   }
 
+  /*
+  *	Get Data Siswa per kelas
+  *	Hak Akses : Admin & Guru
+  *	Menu :  Kelas -> Button Pilih Kelas
+  */
   public function daftar_murid(){
   	$post = $this->input->post();
   	
@@ -493,8 +499,8 @@ class Kelas extends MY_Controller
 		$where["akun.instansi"] = $this->akun->instansi;
 		$where["akun.is_graduated"] = 0;
 
-		// $where["dkls.id_kelas"] = $post['id_kelas'];
-
+		$where["dkls.id_kelas"] = $post['id_kelas'];
+ 
 
 
 		if ($post['search']) {
@@ -516,9 +522,7 @@ class Kelas extends MY_Controller
 
 		}
 
-		
-
-		$paginate = $this->m_siswa->paginate($pg,$where,$limit);
+		$paginate = $this->m_siswa->paginate_siswa_not_class($pg,$where,$limit);
 
 		$data['paginate'] = $paginate;
 
@@ -553,6 +557,7 @@ class Kelas extends MY_Controller
 		// $where["akun.instansi"] = $this->akun->instansi;
 
 		$where["dk.id_kelas"] = $post['id_kelas'];
+		$where["sis.is_graduated"] = 0;
 
 		if ($post['search']) {
 			switch($post['filter']) {
