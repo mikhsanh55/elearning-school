@@ -113,7 +113,7 @@
 				<a href="javascript:void(0);" title="edit" id="edited" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> &nbsp;Edit</a>
 				<a href="javascript:void(0);" id="deleted" title="Hapus" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> &nbsp;Hapus</a>
 
-				<a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url(); ?>upload/format_siswa.xlsx"><i class="fa fa-cloud-download" aria-hidden="true"></i> &nbsp;Download Format Import</a>
+				<a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url(); ?>upload/format_siswa_baru.xlsx"><i class="fa fa-cloud-download" aria-hidden="true"></i> &nbsp;Download Format Import</a>
 				<a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url(); ?>pengusaha/import"><i class="fa fa-cloud-upload" aria-hidden="true"></i> &nbsp;Import</a>
 				<a class="btn btn-success btn-sm tombol-kanan" href="<?php echo base_url('export/siswa'); ?>"><i class="fa fa-file-excel-o" aria-hidden="true"></i> &nbsp;Export</a>
 				<a class="btn btn-success btn-sm tombol-kanan" href="javascript:void(0);" id="riwayat" title="Riwayatkan"><i class="fa fa-check" aria-hidden="true"></i> &nbsp;Riwayatkan Kelulusan</a>

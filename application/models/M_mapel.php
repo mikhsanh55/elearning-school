@@ -115,6 +115,54 @@ class M_mapel extends MY_Model {
 
 	}
 
+	public function get_all_mapel_guru($where = []) {
+		$query1 = $this->db->select('dmapel.*, mapel.nama AS nama_mapel, mapel.id')
+						->from('m_mapel mapel')
+						->join('tb_detail_mapel dmapel', 'dmapel.id_mapel = mapel.id', 'left')
+						->where($where)
+						->group_by('mapel.id')
+						->get()
+						->result();
+
+		$query2 = $this->db->query("
+			SELECT dmapel.*, mapel.nama AS nama_mapel, mapel.id_instansi, mapel.id
+			FROM m_mapel mapel
+			LEFT JOIN tb_detail_mapel dmapel ON mapel.id = dmapel.id_mapel
+			WHERE mapel.id_instansi = ".$this->akun->instansi."
+			AND mapel.id NOT IN 
+				(SELECT id_mapel FROM tb_detail_mapel)
+			GROUP BY mapel.id
+		")->result();
+
+		return array_merge($query1, $query2);
+	}
+
+	public function count_all_mapel_guru($where = []) {
+		return count($this->get_all_mapel_guru($where));
+	}
+
+	// Untuk Pilih Mapel di Menu Guru
+	public function paginate_mapel_guru($page = 1, $where = [], $limit = 10) {
+		$where = array_merge($where, $this->where);
+        $offset = ($page<=1) ? 0 : ($page-1)*$limit;
+        $this->db->limit($limit, $offset);
+        $results = $this->get_all_mapel_guru($where);
+        
+        $count_results = count($results);
+        $count_total = $this->count_all_mapel_guru($where);
+        $total_pages = ceil($count_total / $limit);
+        $counts = array(
+            'from_num'      => ($count_results==0) ? 0 : $offset + 1,
+            'to_num'        => ($count_results==0) ? 0 : $offset + $count_results,
+            'total_num'     => $count_total,
+            'curr_page'     => $page,
+            'total_pages'   => ($count_results==0) ? 1 : $total_pages,
+            'limit'         => $limit,
+        );
+
+        return array('data' => $results, 'counts' => $counts);
+	}
+
 }
 
 /* End of file m_mapel.php */

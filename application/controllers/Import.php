@@ -84,7 +84,7 @@ class Import extends MY_Controller {
                         $data_admin = [
                             'user_id'  => $row['C'],
                             'username' => $row['G'],
-                            'password'  => empty($row['I']) ? $this->encryption->encrypt($row['G']) : $this->encryption->encrypt($row['I']),
+                            'password'  => empty($row['I']) ? $this->encryption->encrypt($row['C']) : $this->encryption->encrypt($row['I']),
                             'level'    => 'siswa',
                             'kon_id'   => $inserted_id
                         ];
@@ -215,7 +215,7 @@ class Import extends MY_Controller {
 
                         // Jika Mapel > 1
                         if(strpos(trim($row['I']), ',')) {
-                            $mapel = explode(',', $row['I'])
+                            $mapel = explode(',', $row['I']);
                             for($x = 0;$x < count($mapel);$x++) {
                                 $id_mapel = $this->m_mapel->get_by(['nama' => trim($mapel[$x])]);
                                 $id_mapel = empty($id_mapel) ? 0 : $id_mapel->id;

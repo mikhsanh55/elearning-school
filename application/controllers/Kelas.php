@@ -397,11 +397,7 @@ class Kelas extends MY_Controller
 					break;
 
 				default:
-
-					# code...
-
 					break;
-
 			}
 
 		}

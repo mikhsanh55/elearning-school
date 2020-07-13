@@ -81,7 +81,7 @@
 			?>
 				<tr>
 					<td align="center" class="frist"><?=$i;?></td>
-					<td><?=$rows->nama;?> </td>
+					<td><?=$rows->nama_mapel;?> </td>
 					
 					<td class="frist">
 						<label class="switch" data-toggle="tooltip">
