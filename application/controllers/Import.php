@@ -75,9 +75,10 @@ class Import extends MY_Controller {
                         // $id_kelas = $this->m_jurusan->get_by(['jurusan' => $row['E'], 'id_instansi' => $this->akun->instansi]);
                         // $id_guru = $this->m_guru->get_by(['nama' => $row['F'], 'instansi' => $this->akun->instansi]);
                         // $jk = ( == 'L' || $row['G'] == 'Laki-Laki') ? 1 : 0;
+                        $username = empty($row['C']) ? $this->createUsername($row['B']) : $row['B'];
                         $data = array(
                             'nama'  => $row['B'],
-                            'username'  => empty($row['C']) ? $this->createUsername($row['B']) : $row['B'],
+                            'username'  => $username,
                             'nrp' => $row['D'], // NIS
                             'id_jurusan' => 0,
                             'no_telpon' => $row['E'],
@@ -93,7 +94,7 @@ class Import extends MY_Controller {
                         $inserted_id = $this->db->insert_id();
 
                         $data_admin = [
-                            'user_id'  => empty($row['C']) ? $this->createUsername($row['B']) : $row['B'],
+                            'user_id'  => $username,
                             'username' => $row['G'],
                             'password'  => empty($row['I']) ? $this->encryption->encrypt($row['C']) : $this->encryption->encrypt($row['I']),
                             'level'    => 'siswa',
