@@ -106,7 +106,7 @@ class Import extends MY_Controller {
                         $this->db->insert('m_admin', $data_admin);
 
                         if(!empty($row['J'])) {
-                            $get = $this->kelas->get_by(['nama' => trim($row['J'])]);
+                            $get = $this->m_kelas->get_by(['nama' => trim($row['J'])]);
                             if(!empty($get)) {
                                 $data_detail_kelas = [
                                     'id_peserta' => $inserted_id,
