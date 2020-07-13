@@ -61,18 +61,18 @@ class Import extends MY_Controller {
 
 
                 if ($index != 1) {
-                        $id_kelas = $this->m_jurusan->get_by(['jurusan' => $row['E'], 'id_instansi' => $this->akun->instansi]);
-                        $id_guru = $this->m_guru->get_by(['nama' => $row['F'], 'instansi' => $this->akun->instansi]);
+                        // $id_kelas = $this->m_jurusan->get_by(['jurusan' => $row['E'], 'id_instansi' => $this->akun->instansi]);
+                        // $id_guru = $this->m_guru->get_by(['nama' => $row['F'], 'instansi' => $this->akun->instansi]);
                         // $jk = ( == 'L' || $row['G'] == 'Laki-Laki') ? 1 : 0;
                         $data = array(
                             'nama'  => $row['B'],
                             'username'  => $row['C'],
                             'nrp' => $row['D'], // NIS
-                            'id_jurusan' => !empty($id_kelas) ? $id_kelas->id : 0,
-                            'no_telpon' => $row['J'],
-                            'nik' => $row['G'], // Jenis Kelamin
-                            'email'  => $row['H'],
-                            'alamat'  => $row['I'],
+                            'id_jurusan' => 0,
+                            'no_telpon' => $row['E'],
+                            'nik' => $row['F'], // Jenis Kelamin
+                            'email'  => $row['G'],
+                            'alamat'  => $row['H'],
                             'instansi'  => $this->akun->instansi,
                             'pembuatan_akun' => time(),
                             'verifikasi' => md5(time())
@@ -83,8 +83,8 @@ class Import extends MY_Controller {
 
                         $data_admin = [
                             'user_id'  => $row['C'],
-                            'username' => $row['H'],
-                            'password'  => $this->encryption->encrypt($row['C']),
+                            'username' => $row['G'],
+                            'password'  => empty($row['I']) ? $this->encryption->encrypt($row['G']) : $this->encryption->encrypt($row['I']),
                             'level'    => 'siswa',
                             'kon_id'   => $inserted_id
                         ];
@@ -185,7 +185,7 @@ class Import extends MY_Controller {
             foreach($sheet as $index => $row){
 
                 if($index > 1){
-                    $id_mapel = $this->m_mapel->get_by(['nama' => trim($row['I']), 'id_instansi' => $this->akun->instansi]);
+                    // $id_mapel = $this->m_mapel->get_by(['nama' => trim($row['I']), 'id_instansi' => $this->akun->instansi]);
                     $data = array(
                         'nidn'  => $row['B'],
                         'nrp'  => $row['C'],
@@ -193,7 +193,7 @@ class Import extends MY_Controller {
                         'username' => $row['E'],
                         'email'  => $row['F'],
                         'no_telpon'  => $row['G'],
-                        'id_mapel' => !empty($id_mapel) ? $id_mapel->id : 0,
+                        // 'id_mapel' => !empty($id_mapel) ? $id_mapel->id : 0,
                         'instansi' => $this->akun->instansi
                     );
 
@@ -209,6 +209,37 @@ class Import extends MY_Controller {
                     ];
 
                     $this->db->insert('m_admin', $data_admin);
+
+                    // Insert Data
+                    if(!is_null($row['I'])) {
+
+                        // Jika Mapel > 1
+                        if(strpos(trim($row['I']), ',')) {
+                            $mapel = explode(',', $row['I'])
+                            for($x = 0;$x < count($mapel);$x++) {
+                                $id_mapel = $this->m_mapel->get_by(['nama' => trim($mapel[$x])]);
+                                $id_mapel = empty($id_mapel) ? 0 : $id_mapel->id;
+                                $data_detail_mapel = [
+                                    'id_mapel' => $id_mapel,
+                                    'id_guru' => $inserted_id
+                                ];
+
+                                $this->db->insert('tb_detail_mapel', $data_detail_mapel);
+                            }
+                        }
+                        else {
+                            $id_mapel = $this->m_mapel->get_by(['nama' => trim($row['I'])]);
+                            $id_mapel = empty($id_mapel) ? 0 : $id_mapel->id;
+                            $data_detail_mapel = [
+                                'id_mapel' => $id_mapel,
+                                'id_guru' => $inserted_id
+                            ];
+
+                            $this->db->insert('tb_detail_mapel', $data_detail_mapel);
+                        } 
+                            
+                    }
+                        
                 }
             }
 

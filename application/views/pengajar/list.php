@@ -113,7 +113,7 @@
 				<a href="javascript:void(0);" id="deleted" title="Hapus" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> &nbsp;Hapus</a>
 				
 				<!-- SMAN 5 Bandung -->
-				<a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url(); ?>upload/format_import_pengajar-SMAN5BDG.xlsx"><i class="fa fa-cloud-download" aria-hidden="true"></i> &nbsp;Download Format Import</a>
+				<a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url(); ?>upload/format_import_pengajar.xlsx"><i class="fa fa-cloud-download" aria-hidden="true"></i> &nbsp;Download Format Import</a>
 				<a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url('trainer/import/'); ?>"><i class="fa fa-cloud-upload" aria-hidden="true"></i> &nbsp;Import</a>
 
 				<a href="<?=base_url('export/pengajar') ?>" class="btn btn-sm btn-success"><i class="fas fa-file-excel-o"></i>&nbsp;Export</a>
