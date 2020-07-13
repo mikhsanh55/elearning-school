@@ -105,6 +105,20 @@ class Import extends MY_Controller {
 
                         $this->db->insert('m_admin', $data_admin);
 
+                        if(!empty($row['J'])) {
+                            $get = $this->kelas->get_by(['nama' => trim($row['J'])]);
+                            if(!empty($get)) {
+                                $data_detail_kelas = [
+                                    'id_peserta' => $inserted_id,
+                                    'id_kelas' => $get->id
+                                ];    
+
+                                $this->db->insert('tb_detail_kelas', $data_detail_kelas);
+                            }
+                            
+                        }
+                        
+
                     }
                 }
 

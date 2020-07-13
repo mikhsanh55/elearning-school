@@ -8,7 +8,7 @@ class M_ranking extends MY_Model {
 
 	protected $_table = 'tb_rank';
 
-	protected $order_by = array('id','asc');
+	protected $order_by = array('id','desc');
 
 
 

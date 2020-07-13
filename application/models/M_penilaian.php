@@ -8,7 +8,7 @@ class M_penilaian extends MY_Model {
 
 	protected $_table = 'tb_penilaian';
 
-	protected $order_by = array('id','asc');
+	protected $order_by = array('id','desc');
 
 
 

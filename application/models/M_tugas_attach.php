@@ -3,7 +3,7 @@
 class M_tugas_attach extends MY_Model {
 
 	protected $_table = 'tb_tugas_attachment';
-	protected $order_by = array('id','asc');
+	protected $order_by = array('id','desc');
 
 	public function __construct()
 	{

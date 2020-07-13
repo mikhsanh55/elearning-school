@@ -3,7 +3,7 @@
 class m_materi extends MY_Model {
 
 	protected $_table = 'm_materi';
-	protected $order_by = array('id','asc');
+	protected $order_by = array('id','desc');
 
 	public function __construct()
 	{

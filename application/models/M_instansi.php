@@ -3,7 +3,7 @@
 class M_instansi extends MY_Model {
 
 	protected $_table = 'tb_instansi';
-	protected $order_by = array('id','asc');
+	protected $order_by = array('id','desc');
 
 	public function __construct()
 	{

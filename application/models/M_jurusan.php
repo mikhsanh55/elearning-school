@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class M_jurusan extends MY_Model {
 
   protected $_table = 'tb_jurusan';
-	protected $order_by = array('id','asc');
+	protected $order_by = array('id','desc');
 
   public function __construct()
   {

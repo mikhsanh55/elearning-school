@@ -514,7 +514,6 @@ class Kelas extends MY_Controller
 				break;
 
 			}
-			
 
 		}
 

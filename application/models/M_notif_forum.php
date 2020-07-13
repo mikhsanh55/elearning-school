@@ -3,7 +3,7 @@
 class M_notif_forum extends MY_Model {
 
 	protected $_table = 'tb_notifikasi_forum';
-	protected $order_by = array('id','asc');
+	protected $order_by = array('id','desc');
 
 	public function __construct()
 	{

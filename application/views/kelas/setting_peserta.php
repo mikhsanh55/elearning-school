@@ -253,9 +253,7 @@
 		})
 
 	}
-
-
-
+	
 	function pageLoad(pg, url, search){
 
 		$.ajax({

@@ -3,7 +3,7 @@
 class M_setting extends MY_Model {
 
 	protected $_table = 'tb_setting';
-	protected $order_by = array('id','asc');
+	protected $order_by = array('id','desc');
 
 	public function __construct()
 	{

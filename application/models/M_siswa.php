@@ -22,7 +22,8 @@ class M_siswa extends MY_Model
     *  Get Siswa based on its class and siswa which not have class
     *
     */
-    public function get_siswa_not_class($where=array()){
+    public function get_siswa_not_class($where=array(), $limit = 10){
+        $limit = intval($limit);
         // Get siswa berdasarkan
     	$query1 = $this->db->select('akun.*, in.instansi AS nama_instansi, user.id as user_id, user.password, dkls.id_kelas')
 				    	->from('m_siswa akun')
@@ -30,6 +31,7 @@ class M_siswa extends MY_Model
 				    	->join('tb_instansi in','akun.instansi = in.id','left')
                         ->join('m_admin user', 'akun.id = user.kon_id', 'left')
 				    	->where($where)
+                        ->limit($limit)
                         ->get()
 				    	->result();
 
@@ -42,19 +44,23 @@ class M_siswa extends MY_Model
             LEFT JOIN tb_detail_kelas dkls ON siswa.id = dkls.id_peserta
             WHERE siswa.instansi = ". $this->akun->instansi ."
             AND siswa.id NOT IN 
-                (SELECT id_peserta FROM tb_detail_kelas)"
+                (SELECT id_peserta FROM tb_detail_kelas)
+            LIMIT $limit
+            "
         )->result();
 
 		return array_merge($query1, $query2);
     }
 
-    public function count_by_siswa_not_class($where = []) {
-            $query1 = $this->db->select('akun.*, in.instansi AS nama_instansi, user.id as user_id, user.password, dkls.id_kelas')
+    public function count_by_siswa_not_class($where = [], $limit = 10) {
+        $limit = intval($limit);
+        $query1 = $this->db->select('akun.*, in.instansi AS nama_instansi, user.id as user_id, user.password, dkls.id_kelas')
                         ->from('m_siswa akun')
                         ->join('tb_detail_kelas dkls', 'akun.id = dkls.id_peserta', 'left')
                         ->join('tb_instansi in','akun.instansi = in.id','left')
                         ->join('m_admin user', 'akun.id = user.kon_id', 'left')
                         ->where($where)
+                        ->limit($limit)
                         ->get()
                         ->result();
 
@@ -67,7 +73,9 @@ class M_siswa extends MY_Model
             LEFT JOIN tb_detail_kelas dkls ON siswa.id = dkls.id_peserta
             WHERE siswa.instansi = ". $this->akun->instansi ."
             AND siswa.id NOT IN 
-                (SELECT id_peserta FROM tb_detail_kelas)"
+                (SELECT id_peserta FROM tb_detail_kelas)
+            LIMIT $limit
+            "
         )->result();
         
         return count(array_merge($query1, $query2));
@@ -98,11 +106,11 @@ class M_siswa extends MY_Model
         $where = array_merge($where, $this->where);
         $offset = ($page<=1) ? 0 : ($page-1)*$limit;
         $this->db->limit($limit, $offset);
-        $results = $this->get_siswa_not_class($where);
+        $results = $this->get_siswa_not_class($where, $limit);
         //echo  $this->db->last_query(); exit;
         // get counts (e.g. for pagination)
         $count_results = count($results);
-        $count_total = $this->count_by_siswa_not_class($where);
+        $count_total = $this->count_by_siswa_not_class($where, $limit);
         // $count_total =count($results);
         $total_pages = ceil($count_total / $limit);
         $counts = array(

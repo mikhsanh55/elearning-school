@@ -3,7 +3,7 @@
 class M_mapel extends MY_Model {
 
 	protected $_table = 'm_mapel';
-	protected $order_by = array('id','asc');
+	protected $order_by = array('id','desc');
 
 	public function __construct()
 	{
