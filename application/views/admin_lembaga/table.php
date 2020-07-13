@@ -14,6 +14,7 @@
 		margin-right: 10px;
 	}
 </style>
+
 <table class="table table-bordered table-striped table-hovered">
 	<thead>
 		<tr>

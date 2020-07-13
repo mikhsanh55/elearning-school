@@ -14,7 +14,7 @@
 		margin-right: 10px;
 	}
 </style>
-<table class="table table-bordered table-striped table-hovered">
+<table class="table table-bordered table-striped table-hovered" >
 	<thead>
 		<tr>
 			<th><input type="checkbox" name="checkall" id="checkall"></th>

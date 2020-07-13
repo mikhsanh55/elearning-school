@@ -78,13 +78,14 @@ class M_siswa extends MY_Model
     *
     */
     public function count_by_cs($where=array()){
-    	$get = $this->db->select('akun.*, in.instansi AS nama_instansi, dkls.id_kelas')
-				    	->from('m_siswa akun')
-                        ->join('tb_detail_kelas dkls', 'akun.id = dkls.id_peserta', 'inner')
-				    	->join('tb_instansi in','in.id = akun.instansi','left')
-				    	->where($where)
-				    	->get()
-				    	->result();
+    	$get = $this->db->select('akun.*, in.instansi AS nama_instansi, user.id as user_id, user.password, dkls.id_kelas')
+                        ->from('m_siswa akun')
+                        ->join('tb_detail_kelas dkls', 'akun.id = dkls.id_peserta', 'left')
+                        ->join('tb_instansi in','akun.instansi = in.id','left')
+                        ->join('m_admin user', 'akun.id = user.kon_id', 'left')
+                        ->where($where)
+                        ->get()
+                        ->result();
 		return count($get);
     }
 

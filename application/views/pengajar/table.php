@@ -15,7 +15,7 @@
 	}
 </style>
 
-<table class="table table-bordered table-striped table-hovered">
+<table class="table table-bordered table-striped table-hovered" >
 
 	<thead>
 
