@@ -41,6 +41,24 @@ class M_kelas extends MY_Model {
 		return $get;
 	}
 
+	public function get_kls_guru($where=array()){
+		$get = $this->db->select('
+							kls.*,
+							gr.nama as nama_guru,
+							ins.instansi,
+						')
+		->from('tb_kelas kls')
+		->join('tb_detail_kelas_mapel klsmapel','klsmapel.id_kelas = kls.id')
+		->join('m_guru gr','gr.id=klsmapel.id_guru','left')
+		->join('tb_instansi ins','ins.id=kls.id_instansi','left')
+		->where($where)
+		->get()
+		->result();
+	
+      
+		return $get;
+	}
+
 	public function rekaptulasi($where=array()){
 		$get = $this->db->select('
 									dekls.id_peserta,

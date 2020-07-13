@@ -70,7 +70,7 @@ class Jadwal extends MY_Controller {
 		
 		if($this->log_lvl == 'guru'){
 		    // $kelas = $this->m_kelas->get_guru_all(['dmapel.id_guru'=>$this->akun->id]);
-		    $kelas = $this->m_kelas->get_all(['kls.id_instansi'=>$this->akun->instansi]);
+		    $kelas = $this->m_kelas->get_kls_guru(['kls.id_instansi'=>$this->akun->instansi,'gr.id'=>$this->akun->id]);
 		}else if($this->log_lvl == 'admin'){
 		    $kelas = $this->m_kelas->get_all(['kls.id_instansi'=>$this->akun->instansi]);
 		    
@@ -476,7 +476,7 @@ class Jadwal extends MY_Controller {
 				'searchFilter' => array('Pengajar','Mata Pelajaran','Materi','keterangan'),
 
 			);
-			$data_calendar = $this->m_jadwal->get_kalender(array('kls.id_trainer'=>$this->akun->id));
+			$data_calendar = $this->m_jadwal->get_kalender(array('klsmpl.id_guru'=>$this->akun->id));
 		}
 		
 	
