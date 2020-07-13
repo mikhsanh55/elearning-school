@@ -225,6 +225,7 @@ class MY_Controller extends CI_Controller
 		// Set Data center berdasarkan Instansi
 		// $this->akun->instansi = $this->m_instansi->get_by(['selected' => 1])->id;
 		// print_r($this->akun);exit;
+		echo "<script>alert('Selamat Datang'); </script>";
 		
 	}
 
