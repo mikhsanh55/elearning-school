@@ -9,6 +9,7 @@ class Import extends MY_Controller {
         $this->load->model('m_soal_ujian');
         $this->load->model('m_jurusan');
         $this->load->model('m_mapel');
+        $this->load->model('m_kelas');
         
         $this->db->query("SET time_zone='+7:00'");
     }
