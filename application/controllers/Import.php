@@ -76,6 +76,8 @@ class Import extends MY_Controller {
                         // $id_guru = $this->m_guru->get_by(['nama' => $row['F'], 'instansi' => $this->akun->instansi]);
                         // $jk = ( == 'L' || $row['G'] == 'Laki-Laki') ? 1 : 0;
                         $username = empty($row['C']) ? $this->createUsername($row['B']) : $row['B'];
+                        $email = empty($row['G']) ? 'example@gmail.com' : $row['G'];
+                        $alamat = empty($row['H']) ? '-' : $row['H'];
                         $data = array(
                             'nama'  => $row['B'],
                             'username'  => $username,
@@ -83,8 +85,8 @@ class Import extends MY_Controller {
                             'id_jurusan' => 0,
                             'no_telpon' => $row['E'],
                             'nik' => $row['F'], // Jenis Kelamin
-                            'email'  => $row['G'],
-                            'alamat'  => $row['H'],
+                            'email'  => $email,
+                            'alamat'  => $alamat,
                             'instansi'  => $this->akun->instansi,
                             'pembuatan_akun' => time(),
                             'verifikasi' => md5(time())
@@ -95,8 +97,8 @@ class Import extends MY_Controller {
 
                         $data_admin = [
                             'user_id'  => $username,
-                            'username' => $row['G'],
-                            'password'  => empty($row['I']) ? $this->encryption->encrypt($row['C']) : $this->encryption->encrypt($row['I']),
+                            'username' => $email,
+                            'password'  => empty($row['I']) ? $this->encryption->encrypt($username) : $this->encryption->encrypt($row['I']),
                             'level'    => 'siswa',
                             'kon_id'   => $inserted_id
                         ];
