@@ -19,6 +19,17 @@ class Import extends MY_Controller {
         } 
     }
 
+    public function createUsername($name) {
+        $name = explode(' ', $name);
+
+        $name = array_map(function($n){
+            return strtolower($n);
+        }, $name);
+
+        $name = implode('', $name);
+        return $name;
+    }
+
     public function siswa() {
 
         include APPPATH.'third_party/PHPExcel/PHPExcel.php';
@@ -66,7 +77,7 @@ class Import extends MY_Controller {
                         // $jk = ( == 'L' || $row['G'] == 'Laki-Laki') ? 1 : 0;
                         $data = array(
                             'nama'  => $row['B'],
-                            'username'  => $row['C'],
+                            'username'  => empty($row['C']) ? $this->createUsername($row['B']) : $row['B'],
                             'nrp' => $row['D'], // NIS
                             'id_jurusan' => 0,
                             'no_telpon' => $row['E'],
@@ -82,7 +93,7 @@ class Import extends MY_Controller {
                         $inserted_id = $this->db->insert_id();
 
                         $data_admin = [
-                            'user_id'  => $row['C'],
+                            'user_id'  => empty($row['C']) ? $this->createUsername($row['B']) : $row['B'],
                             'username' => $row['G'],
                             'password'  => empty($row['I']) ? $this->encryption->encrypt($row['C']) : $this->encryption->encrypt($row['I']),
                             'level'    => 'siswa',

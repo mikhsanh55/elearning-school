@@ -142,7 +142,7 @@ class Mapel extends MY_Controller {
 		// foreach($paginate['data'] as $d) {
 		// 	$d->id_guru = $post['id'];
 		// }
-		print_r($paginate);exit;
+		// print_r($paginate);exit;
 
 		$data['paginate'] = $paginate;
 		$data['paginate']['url']	= 'mapel/page_load_mapel_guru';
