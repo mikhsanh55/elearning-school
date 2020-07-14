@@ -214,7 +214,7 @@ class Jadwal extends MY_Controller {
 			$materi = $this->m_materi->get_by(['id_trainer' => $data->id_guru]);
 			if(!empty($materi)) {
 				$data->id_materi = $materi->id;
-				$data->nama_materi = $materi->nama;
+				$data->nama_materi = $materi->title;
 			}
 		}
 
