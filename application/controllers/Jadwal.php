@@ -217,7 +217,7 @@ class Jadwal extends MY_Controller {
 			}
 		}
 
-		print_r($get);exit;
+		// print_r($get);exit;
 		// print_r($get);
 
 
