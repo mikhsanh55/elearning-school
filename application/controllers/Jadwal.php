@@ -211,7 +211,13 @@ class Jadwal extends MY_Controller {
 		// 	}
 		// }
 		foreach($detail_mapel_kelas as $data) {
-			$materi = $this->m_materi->get_by(['id_trainer' => $data->id_guru]);
+			if($this->log_lvl == 'guru') {
+				$materi = $this->m_materi->get_by(['id_trainer' => $this->akun->id]);
+			}
+			else {
+				$materi = $this->m_materi->get_by(['id_trainer' => $data->id_guru]);	
+			}
+			
 			if(!empty($materi)) {
 				$data->id_materi = $materi->id;
 				$data->nama_materi = $materi->title;
