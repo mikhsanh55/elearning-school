@@ -137,6 +137,7 @@ class Jadwal extends MY_Controller {
 			'warna'   => $warna
 
 		);
+		print_r($data);exit;
 
 		$this->render('jadwal/edit',$data);
 
