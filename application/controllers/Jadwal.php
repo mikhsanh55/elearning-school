@@ -200,27 +200,20 @@ class Jadwal extends MY_Controller {
 		$detail_mapel_kelas = $this->m_detail_kelas_mapel->get_many_by(['id_kelas' => $this->input->post('id_kelas')]);
 
 
-		$get = $this->m_materi->get_many_by(array('id_trainer'=>$kelas->idguru));
-		// foreach($get as $i => $data) {
-		// 	$nama_mapel = $this->m_mapel->get_by(['id' => $data->id_mapel]);
-		// 	if(!empty($nama_mapel)) {
-		// 		$data->nama_mapel = $nama_mapel->nama;
-		// 	}
-		// 	else {
-		// 		$data->nama_mapel = 'Mapel Kosong';
-		// 	}
-		// }
-		foreach($detail_mapel_kelas as $data) {
-			if($this->log_lvl == 'guru') {
-				$materi = $this->m_materi->get_by(['id_trainer' => $this->akun->id]);
+		if($this->log_lvl == 'guru') {
+			$get = $this->m_materi->get_many_by(array('id_trainer'=>$this->akun->id));
+		}
+		else {
+			$get = $this->m_materi->get_many_by(array('id_trainer'=>$kelas->idguru));
+		}
+		
+		foreach($get as $i => $data) {
+			$nama_mapel = $this->m_mapel->get_by(['id' => $data->id_mapel]);
+			if(!empty($nama_mapel)) {
+				$data->nama_mapel = $nama_mapel->nama;
 			}
 			else {
-				$materi = $this->m_materi->get_by(['id_trainer' => $data->id_guru]);	
-			}
-			
-			if(!empty($materi)) {
-				$data->id_materi = $materi->id;
-				$data->nama_materi = $materi->title;
+				$data->nama_mapel = 'Mapel Kosong';
 			}
 		}
 
