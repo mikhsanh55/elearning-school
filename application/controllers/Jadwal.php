@@ -201,13 +201,20 @@ class Jadwal extends MY_Controller {
 
 
 		$get = $this->m_materi->get_many_by(array('id_trainer'=>$kelas->idguru));
-		foreach($get as $i => $data) {
-			$nama_mapel = $this->m_mapel->get_by(['id' => $data->id_mapel]);
-			if(!empty($nama_mapel)) {
-				$data->nama_mapel = $nama_mapel->nama;
-			}
-			else {
-				$data->nama_mapel = 'Mapel Kosong';
+		// foreach($get as $i => $data) {
+		// 	$nama_mapel = $this->m_mapel->get_by(['id' => $data->id_mapel]);
+		// 	if(!empty($nama_mapel)) {
+		// 		$data->nama_mapel = $nama_mapel->nama;
+		// 	}
+		// 	else {
+		// 		$data->nama_mapel = 'Mapel Kosong';
+		// 	}
+		// }
+		foreach($detail_mapel_kelas as $data) {
+			$materi = $this->m_materi->get_by(['id_trainer' => $data->id_guru]);
+			if(!empty($materi)) {
+				$data->id_materi = $materi->id;
+				$data->nama_materi = $materi->nama;
 			}
 		}
 
