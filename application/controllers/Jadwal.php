@@ -20,6 +20,8 @@ class Jadwal extends MY_Controller {
 
 		$this->load->model('m_kelas');
 
+		$this->load->model('m_detail_kelas_mapel');
+
 	
 
 	}
@@ -75,7 +77,7 @@ class Jadwal extends MY_Controller {
 		    $kelas = $this->m_kelas->get_all(['kls.id_instansi'=>$this->akun->instansi]);
 		    
 		}else{
-		    $kelas = $this->m_kelas->get_many_by(['kls.id_instansi'=>$this->akun->instansi]);
+		    $kelas = $this->m_kelas->get_all(['kls.id_instansi'=>$this->akun->instansi]);
 		}
 
 		// print_r($kelas);exit;
@@ -195,10 +197,19 @@ class Jadwal extends MY_Controller {
 
 
 		$kelas = $this->m_kelas->get_by(['kls.id'=>$this->input->post('id_kelas')]);
-
+		$detail_mapel_kelas = $this->m_detail_kelas_mapel->get_many_by(['id_kelas' => $this->input->post('id_kelas')]);
 
 
 		$get = $this->m_materi->get_many_by(array('id_trainer'=>$kelas->idguru));
+		foreach($get as $i => $data) {
+			$nama_mapel = $this->m_mapel->get_by(['id' => $data->id_mapel]);
+			if(!empty($nama_mapel)) {
+				$data->nama_mapel = $nama_mapel->nama;
+			}
+			else {
+				$data->nama_mapel = 'Mapel Kosong';
+			}
+		}
 
 		// print_r($kelas);
 		// print_r($get);exit;
@@ -223,11 +234,11 @@ class Jadwal extends MY_Controller {
 
 			if ($rows->id == $post['id_materi']) {
 
-				$select .= '<option value="'.$rows->id.'" selected>'.$rows->title.'</option>';
+				$select .= '<option value="'.$rows->id.'" selected>' . $rows->nama_mapel .' - ' .$rows->title.'</option>';
 
 			}else{
 
-				$select .= '<option value="'.$rows->id.'">'.$rows->title.'</option>';
+				$select .= '<option value="'.$rows->id.'">' . $rows->nama_mapel .' - '.$rows->title.'</option>';
 
 			}
 

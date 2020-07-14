@@ -166,16 +166,16 @@ class Trainer extends MY_Controller {
 						$inserted_id = $post['id'];
 						
 						
-						// $this->db->where_in('id_mapel',$post['mapel'])->where(['id_guru' => $post['id']])->delete('tb_detail_mapel');
-						// $del = $this->m_detail_mapel->delete(['id_guru' => $post['id']]);
-						// for($i = 0;$i < count($post['mapel']);$i++) {
-						// 		$data = [
-						// 			'id_mapel' => $post['mapel'][$i],
-						// 			'id_guru' => $post['id'], 
-						// 		];
+						$this->db->where_in('id_mapel',$post['mapel'])->where(['id_guru' => $post['id']])->delete('tb_detail_mapel');
+						$del = $this->m_detail_mapel->delete(['id_guru' => $post['id']]);
+						for($i = 0;$i < count($post['mapel']);$i++) {
+								$data = [
+									'id_mapel' => $post['mapel'][$i],
+									'id_guru' => $post['id'], 
+								];
 
-						// 		$this->m_detail_mapel->insert($data);
-						// }
+								$this->m_detail_mapel->insert($data);
+						}
 						
 						$cek_adm = $this->db->where(array('level'=>'guru','kon_id'=>$post['id']))->get('m_admin')->result();
 						if (count($cek_adm) > 0) {
@@ -226,13 +226,13 @@ class Trainer extends MY_Controller {
 				$this->db->insert('m_guru', $data);
 
 				$inserted_id = $this->db->insert_id();
-				// for($i = 0;$i < count($post['mapel']);$i++) {
-				// 	$data_detail_mapel = [
-				// 		'id_mapel' => $post['mapel'][$i],
-				// 		'id_guru' => $inserted_id
-				// 	];
-				// 	$this->db->insert('tb_detail_mapel', $data_detail_mapel);
-				// }
+				for($i = 0;$i < count($post['mapel']);$i++) {
+					$data_detail_mapel = [
+						'id_mapel' => $post['mapel'][$i],
+						'id_guru' => $inserted_id
+					];
+					$this->db->insert('tb_detail_mapel', $data_detail_mapel);
+				}
 
 				$check_login = $this->m_admin->get_many_by(['kon_id' => $inserted_id]);
 				$kon_ids = [];
