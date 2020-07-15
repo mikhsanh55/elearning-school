@@ -123,7 +123,6 @@ class M_mapel extends MY_Model {
 						->group_by('mapel.id')
 						->get()
 						->result();
-
 		$query2 = $this->db->query("
 			SELECT dmapel.*, mapel.nama AS nama_mapel, mapel.id_instansi, mapel.id
 			FROM m_mapel mapel

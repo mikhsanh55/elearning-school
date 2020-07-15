@@ -85,6 +85,9 @@
 		
 
 			?>
+			<script>
+				console.warn(<?= json_encode($check_kelas); ?>)
+			</script>
 				<tr>
 					<td align="center" class="frist"><?=$i;?></td>
 					<td><?=$rows->nama_mapel;?> </td>

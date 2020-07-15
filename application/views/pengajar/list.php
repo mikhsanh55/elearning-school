@@ -15,6 +15,7 @@
 		border-radius: 25px;
 	}
 
+
 	table th {
 		padding: 2px 5px;
 		border:1px solid #337ab7;

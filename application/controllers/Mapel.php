@@ -125,7 +125,7 @@ class Mapel extends MY_Controller {
 		$post = $this->input->post();
 		$limit = $post['limit'];
 		$where = [];
-		// $where['id_mapel'] = $post['id_mapel'];
+		$where['dmapel.id_guru'] = $post['id'];
 		// $where['is_verify'] = 1;
 		$where['id_instansi'] = $this->akun->instansi;
 		if (!empty($post['search'])) {
@@ -138,9 +138,9 @@ class Mapel extends MY_Controller {
 			}
 		}
 		$paginate = $this->m_mapel->paginate_mapel_guru($pg, $where, $limit);
-		// foreach($paginate['data'] as $d) {
-		// 	$d->id_guru = $post['id'];
-		// }
+		foreach($paginate['data'] as $d) {
+			$d->id_guru = $post['id'];
+		}
 		// print_r($paginate);exit;
 
 		$data['paginate'] = $paginate;
