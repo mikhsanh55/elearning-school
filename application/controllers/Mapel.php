@@ -125,7 +125,6 @@ class Mapel extends MY_Controller {
 		$post = $this->input->post();
 		$limit = $post['limit'];
 		$where = [];
-
 		// $where['id_mapel'] = $post['id_mapel'];
 		// $where['is_verify'] = 1;
 		$where['id_instansi'] = $this->akun->instansi;
