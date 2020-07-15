@@ -118,7 +118,7 @@ class M_mapel extends MY_Model {
 	public function get_all_mapel_guru($where = []) {
 		$query1 = $this->db->select('dmapel.*, mapel.nama AS nama_mapel, mapel.id')
 						->from('m_mapel mapel')
-						->join('tb_detail_mapel dmapel', 'dmapel.id_mapel = mapel.id', 'inner')
+						->join('tb_detail_mapel dmapel', 'dmapel.id_mapel = mapel.id', 'left')
 						->where($where)
 						->group_by('mapel.id')
 						->get()
@@ -127,7 +127,7 @@ class M_mapel extends MY_Model {
 		$query2 = $this->db->query("
 			SELECT dmapel.*, mapel.nama AS nama_mapel, mapel.id_instansi, mapel.id
 			FROM m_mapel mapel
-			INNER JOIN tb_detail_mapel dmapel ON mapel.id = dmapel.id_mapel
+			LEFT JOIN tb_detail_mapel dmapel ON mapel.id = dmapel.id_mapel
 			WHERE mapel.id_instansi = ".$this->akun->instansi."
 			AND mapel.id NOT IN 
 				(SELECT id_mapel FROM tb_detail_mapel)
