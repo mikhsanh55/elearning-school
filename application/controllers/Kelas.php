@@ -301,7 +301,6 @@ class Kelas extends MY_Controller
 		}
 
 
-
 		$paginate = $this->m_kelas->paginate($pg,$where,$limit);
 
 		$data['paginate'] = $paginate;
