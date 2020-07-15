@@ -79,7 +79,7 @@
 					<div class="panel panel-info">
 						<div class="panel-heading">
 							<div class="tombol-kanan">
-								<h2><strong>Data Ujian</strong></h2>
+								<h2><strong>Data Ulangan</strong></h2>
 							</div>
 						</div>
 					</div>

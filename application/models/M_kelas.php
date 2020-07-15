@@ -131,6 +131,22 @@ class M_kelas extends MY_Model {
 		return $get;
 	}
 
+	public function get_join_by($where=array()){
+		$get = $this->db->select('
+							kls.*,
+							gr.nama as nama_guru,
+							ins.instansi,
+						')
+		->from('tb_kelas kls')
+		->join('m_guru gr','gr.id=kls.id_trainer','left')
+		->join('tb_instansi ins','ins.id=kls.id_instansi','left')
+		->where($where)
+		->get()
+		->row();
+	
+		return $get;
+	}
+
 	
 	public function count_by_siswa($where=array()){
 		

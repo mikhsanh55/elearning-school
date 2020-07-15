@@ -290,9 +290,9 @@ class Tugas extends MY_Controller {
 		}
 
 
-		// if ($this->log_lvl == 'guru') {
-		// 	$where['tugas.id_guru'] = 9;
-		// }
+		if ($this->log_lvl == 'guru') {
+			$where['tugas.id_guru'] = $this->akun->instansi;
+		}
 
 		$paginate = $this->m_tugas->paginate($pg,$where,$limit);
 		// print_r($paginate);exit;

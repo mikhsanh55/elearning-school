@@ -22,63 +22,34 @@ class M_siswa extends MY_Model
     *  Get Siswa based on its class and siswa which not have class
     *
     */
-    public function get_siswa_not_class($where=array(), $limit = 10){
-        $limit = intval($limit);
+    public function get_siswa_not_class($where=array()){
         // Get siswa berdasarkan
     	$query1 = $this->db->select('akun.*, in.instansi AS nama_instansi, user.id as user_id, user.password, dkls.id_kelas')
 				    	->from('m_siswa akun')
                         ->join('tb_detail_kelas dkls', 'akun.id = dkls.id_peserta', 'left')
 				    	->join('tb_instansi in','akun.instansi = in.id','left')
                         ->join('m_admin user', 'akun.id = user.kon_id', 'left')
-				    	->where($where)
-                        ->limit($limit)
+                        ->where($where)
+                        ->group_by('akun.id')
                         ->get()
 				    	->result();
 
-        // Get Data Siswa that not have class
-        $query2 = $this->db->query("
-            SELECT siswa.*, ins.instansi AS nama_instansi, users.id AS user_id, users.password, dkls.id_kelas
-            FROM m_siswa siswa
-            LEFT JOIN tb_instansi ins ON siswa.instansi = ins.id
-            LEFT JOIN m_admin users ON siswa.id = users.kon_id
-            LEFT JOIN tb_detail_kelas dkls ON siswa.id = dkls.id_peserta
-            WHERE siswa.instansi = ". $this->akun->instansi ."
-            AND siswa.id NOT IN 
-                (SELECT id_peserta FROM tb_detail_kelas)
-            LIMIT $limit
-            "
-        )->result();
-
-		return array_merge($query1, $query2);
+		return $query1;
     }
 
-    public function count_by_siswa_not_class($where = [], $limit = 10) {
-        $limit = intval($limit);
+    public function count_by_siswa_not_class($where = []) {
+
         $query1 = $this->db->select('akun.*, in.instansi AS nama_instansi, user.id as user_id, user.password, dkls.id_kelas')
                         ->from('m_siswa akun')
                         ->join('tb_detail_kelas dkls', 'akun.id = dkls.id_peserta', 'left')
                         ->join('tb_instansi in','akun.instansi = in.id','left')
                         ->join('m_admin user', 'akun.id = user.kon_id', 'left')
                         ->where($where)
-                        ->limit($limit)
+                        ->group_by('akun.id')
                         ->get()
                         ->result();
-
-
-        $query2 = $this->db->query("
-            SELECT siswa.*, ins.instansi AS nama_instansi, users.id AS user_id, users.password, dkls.id_kelas
-            FROM m_siswa siswa
-            LEFT JOIN tb_instansi ins ON siswa.instansi = ins.id
-            LEFT JOIN m_admin users ON siswa.id = users.kon_id
-            LEFT JOIN tb_detail_kelas dkls ON siswa.id = dkls.id_peserta
-            WHERE siswa.instansi = ". $this->akun->instansi ."
-            AND siswa.id NOT IN 
-                (SELECT id_peserta FROM tb_detail_kelas)
-            LIMIT $limit
-            "
-        )->result();
         
-        return count(array_merge($query1, $query2));
+        return count($query1);
     }
 
     /*

@@ -110,16 +110,7 @@
 					<label for="">Mata Pelajaran</label>
 					<div class="rs-select2 js-select-simple select--no-search">
 						<select name="id_mapel" id="id_mapel" style="width: 100%;" required>
-							<option disabled="disabled" selected="selected">Pilih</option>
-							
-								<?php foreach($mapel as $row) : ?>
-									<?php if($edit->id_mapel == $rows->id) { ?>
-										<option value="<?= $row->id; ?>" selected><?= $row->nama; ?></option>
-									<?php } else { ?>
-										<option value="<?= $row->id; ?>"><?= $row->nama; ?></option>
-									<?php } ?>
-								<?php endforeach; ?>
-
+				
 						</select>
 						<div class="select-dropdown"></div>
 					</div>
@@ -272,7 +263,36 @@
 
 	$(document).ready(function(){
 
+		mapel();
 		
+		$('#id_kelas').change(function(){
+			$.ajax({
+				type : 'post',
+				url  : '<?=base_url('ujian_real/get_mapel_kelas');?>',
+				data : {
+					id_kelas : $(this).val()
+				},
+				dataType : 'json',
+				success:function(response){
+					$('#id_mapel').html(response.select);
+				}
+			})
+		});
+
+		function mapel(){
+			$.ajax({
+				type : 'post',
+				url  : '<?=base_url('ujian_real/get_mapel_kelas');?>',
+				data : {
+					id_kelas : $('#id_kelas').val(),
+					id_mapel : '<?=$edit->id_mapel;?>'
+				},
+				dataType : 'json',
+				success:function(response){
+					$('#id_mapel').html(response.select);
+				}
+			})
+		}
 
 	})
 

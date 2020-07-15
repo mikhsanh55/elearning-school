@@ -444,11 +444,12 @@ class Kelas extends MY_Controller
 
 			'searchFilter' 	=> array('Nama','NIS', 'Kelas'),
 
-			'kelas' 		=> $this->m_kelas->get_by(['kls.id'=>$post['id']]),
+			'kelas' 		=> $this->m_kelas->get_join_by(['kls.id'=>$post['id']]),
 
 			'id_kelas' 	=> $post['id_kelas']
 
 		);
+
 		if($this->log_lvl == 'guru') {
 			$this->load->view('kelas/setting_peserta_kelas',$data);
 		}
@@ -493,8 +494,9 @@ class Kelas extends MY_Controller
 
 		$where["akun.instansi"] = $this->akun->instansi;
 		$where["akun.is_graduated"] = 0;
+		$where["(dkls.id_kelas = ".$post['id_kelas']." OR dkls.id_kelas is null)"] = NULL;
 
-		$where["dkls.id_kelas"] = $post['id_kelas'];
+
  
 
 

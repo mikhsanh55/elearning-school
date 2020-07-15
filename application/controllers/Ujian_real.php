@@ -89,31 +89,11 @@ class Ujian_real extends MY_Controller {
 
 		$tipe_ujian = array('uts'=>'UTS','uas'=>'UAS', 'harian' => 'Ulangan Harian');
 
-		
-
-		// if ($this->log_lvl == 'guru') {
-
-		// 	$kelas = $this->m_kelas->get_many_by(['id_trainer'=>$this->akun->id,'kls.id_instansi'=>$this->akun->instansi]);
-
-		// } else if ($this->log_lvl == 'instansi' || $this->log_lvl == 'admin_instansi'){
-
-		// 	$kelas = $this->m_kelas->get_many_by(['kls.id_instansi'=>$this->akun->instansi]);
-
-		// } else {
-
-		// 	$kelas = $this->m_kelas->get_all();
-
-		// }
 		if($this->log_lvl == 'admin' || $this->log_lvl == 'instansi' || $this->log_lvl == 'admin_instansi') {
-			$kelas = $this->m_kelas->get_all();
-			$mapel = $this->m_mapel->get_many_by(['id_instansi' => $this->akun->instansi]);
+			$kelas = $this->m_kelas->get_many_by(['kls.id_instansi'=>$this->akun->instansi]);
 		}
 		else if($this->log_lvl == 'guru') {
-			// $kelas = $this->m_kelas->get_data_mapel(['kls.id_instansi' => $this->akun->instansi, 'dkmapel.id_guru' => $this->akun->id]);
-			$kelas = $this->m_kelas->get_all();
-			// $mapel = $this->m_kelas->get_data_mapel(['mapel.id_instansi' => $this->akun->instansi, 'dkmapel.id_guru' => $this->akun->id]);
-			$mapel = $this->m_mapel->get_many_by(['id_instansi' => $this->akun->instansi]);
-
+			$kelas = $this->m_kelas->get_many_by(['kls.id_instansi'=>$this->akun->instansi]);
 		}
 		
 		
@@ -123,8 +103,7 @@ class Ujian_real extends MY_Controller {
 
 			'tipe_ujian' => $tipe_ujian, 
 
-			'kelas' => $kelas,
-			'mapel' => $mapel
+			'kelas' => $kelas
 
 		);
 
@@ -159,11 +138,9 @@ class Ujian_real extends MY_Controller {
 		// }
 		if($this->log_lvl == 'admin' || $this->log_lvl == 'instansi' || $this->log_lvl == 'admin_instansi') {
 			$kelas = $this->m_kelas->get_all(['kls.id_instansi' => $this->akun->instansi]);
-			$mapel = $this->m_mapel->get_many_by(['id_instansi' => $this->akun->instansi]);
 		}
 		else if($this->log_lvl == 'guru') {
 			$kelas = $this->m_kelas->get_data_mapel(['kls.id_instansi' => $this->akun->instansi, 'dkmapel.id_guru' => $this->akun->id]);
-			$mapel = $this->m_kelas->get_data_mapel(['mapel.id_instansi' => $this->akun->instansi, 'dkmapel.id_guru' => $this->akun->id]);
 
 		}
 		// print_r($mapel);exit;
@@ -175,11 +152,11 @@ class Ujian_real extends MY_Controller {
 			'tipe_ujian' => $tipe_ujian, 
 
 			'kelas' => $kelas,
-			'mapel' => $mapel,
 
 			'edit' => $this->m_ujian->get_by(['uji.id'=>$id])
 
 		);
+		
 
 		$this->render('ujian/edit',$data);
 
@@ -282,11 +259,12 @@ class Ujian_real extends MY_Controller {
 	public function insert(){
 
 		$post = $this->input->post();
-
+		$mapel = explode('-',$post['id_mapel']);
 		$data = [
 
 			'id_kelas'		=> $post['id_kelas'],
-			'id_mapel'		=> $post['id_mapel'],
+			'id_guru'		=> $mapel[1],
+			'id_mapel'		=> $mapel[0],
 			'type_ujian'  	=> $post['type_ujian'],
 			'nama_ujian'  	=> $post['nama_ujian'],
 			'jumlah_soal'  	=> 0,
@@ -303,7 +281,7 @@ class Ujian_real extends MY_Controller {
 		if($post['type_ujian'] == 'uts') {
 			$data['izin'] = 1;
 		}
-		if ($this->log_lvl == 'guru' || $this->log_lvl == 'instansi') {
+		if ($this->log_lvl == 'guru') {
 
 			$data['id_guru'] = $this->akun->id;
 
@@ -340,12 +318,13 @@ class Ujian_real extends MY_Controller {
 		$post = $this->input->post();
 
 
-
+		$mapel = explode('-',$post['id_mapel']);
 		$data = [
 
 			'id_kelas'		=> $post['id_kelas'],
 
-			'id_mapel'		=> $post['id_mapel'],
+			'id_guru'		=> $mapel[1],
+			'id_mapel'		=> $mapel[0],
 
 			'type_ujian'  	=> $post['type_ujian'],
 
@@ -371,6 +350,12 @@ class Ujian_real extends MY_Controller {
 
 		if($post['type_ujian'] == 'uts') {
 			$data['izin'] = 1;
+		}
+
+		if ($this->log_lvl == 'guru') {
+
+			$data['id_guru'] = $this->akun->id;
+
 		}
 
 
@@ -2295,6 +2280,34 @@ class Ujian_real extends MY_Controller {
 
 		echo json_encode(array('result'=>$result));
 
+	}
+
+	function get_mapel_kelas(){
+		$post = $this->input->post();
+		$where = ['mp.id_instansi' => $this->akun->instansi,'klsmp.id_kelas'=>$post['id_kelas']];
+		if($this->log_lvl == 'guru'){
+			$where['klsmp.id_guru'] = $this->akun->id;
+		}
+		$post['id_mapel'] = (empty($post['id_mapel'])) ? 0 : $post['id_mapel'];
+		$mapel = $this->m_mapel->join_kls_mpl($where);
+
+		$select = '<option value="">Pilih</option>';
+
+		foreach ($mapel as $key => $rows) {
+			if($rows->id == $post['id_mapel']){
+				$select .= '<option value="'.$rows->id."-".$rows->id_guru.'" selected>'.$rows->mapel.'</option>';
+			}else{
+				$select .= '<option value="'.$rows->id."-".$rows->id_guru.'">'.$rows->mapel.'</option>';
+			}
+			
+		}
+
+		$json = ['select'=>$select];
+
+		echo json_encode($json);
+
+
+		
 	}
 
 

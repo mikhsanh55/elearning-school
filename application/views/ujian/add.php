@@ -96,12 +96,6 @@
 					<label for="">Mata Pelajaran</label>
 					<div class="rs-select2 js-select-simple select--no-search">
 						<select name="id_mapel" id="id_mapel" style="width: 100%;" required>
-							<option disabled="disabled" selected="selected">Pilih</option>
-							
-								<?php foreach($mapel as $row) : ?>
-									<option value="<?= $row->id; ?>"><?= $row->nama; ?></option>
-								<?php endforeach; ?>
-
 						</select>
 						<div class="select-dropdown"></div>
 					</div>
@@ -212,7 +206,19 @@
 
 	$(document).ready(function(){
 
-
+		$('#id_kelas').change(function(){
+			$.ajax({
+				type : 'post',
+				url  : '<?=base_url('ujian_real/get_mapel_kelas');?>',
+				data : {
+					id_kelas : $(this).val()
+				},
+				dataType : 'json',
+				success:function(response){
+					$('#id_mapel').html(response.select);
+				}
+			})
+		});
 
 	})
 

@@ -162,6 +162,17 @@ class M_mapel extends MY_Model {
         return array('data' => $results, 'counts' => $counts);
 	}
 
+	function join_kls_mpl($where){
+		$get = $this->db->select('mp.id,mp.nama as mapel , klsmp.id_guru , gr.nama as nama_guru')
+						->from('m_mapel mp')
+						->join('tb_detail_kelas_mapel klsmp','klsmp.id_mapel = mp.id','inner')
+						->join('m_guru gr','gr.id = klsmp.id_guru','left')
+						->where($where)
+						->get()
+						->result();
+		return $get;
+	}
+
 }
 
 /* End of file m_mapel.php */
