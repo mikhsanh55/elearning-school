@@ -72,7 +72,7 @@
 				if(count($paginate['data']) > 0) {
 				$i= $page_start; foreach ($paginate['data'] as $rows):
 				if(!empty($rows->id_guru)) {
-					$check_kelas = $this->m_detail_mapel->count_by(['id_mapel'=>$rows->id,'id_guru'=>$rows->id_guru]);	
+					$check_kelas = $this->m_detail_mapel->count_by(['id_mapel'=>$rows->id_mapel,'id_guru'=>$rows->id_guru]);	
 				}
 				else {
 					$check_kelas = FALSE;
