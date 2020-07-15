@@ -171,7 +171,7 @@ class Mapel extends MY_Controller {
 		$post = $this->input->post();
 		$id_kelas = $post['id_kelas'];
 		$html = '';
-		$res = $this->m_detail_kelas_mapel->get_many_by(['id_kelas' => $id_kelas]);
+		$res = $this->m_detail_kelas_mapel->get_many_by(['id_kelas' => $id_kelas,'guru.id'=>$this->akun->id]);
 
 		if(count($res) > 0) {
 			$html = '<option disabled="disabled" value="null" selected="selected">Pilih</option>';
