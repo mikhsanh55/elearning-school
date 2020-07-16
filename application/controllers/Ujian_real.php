@@ -688,6 +688,7 @@ class Ujian_real extends MY_Controller {
 
 
 			$p = $this->input->post();
+			print_r($p);exit;
 
 			$pembuat_soal = ($this->log_lvl == "admin") ? $p['id_guru'] : $this->log_id;
 
