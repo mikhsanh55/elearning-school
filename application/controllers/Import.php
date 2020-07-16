@@ -98,7 +98,8 @@ class Import extends MY_Controller {
                         $inserted_id = $this->db->insert_id();
 
                         $data_admin = [
-                            'user_id'  => $username,
+                            // 'user_id'  => $username,
+                            'username' => $row['C'],
                             'username' => $email,
                             'password'  => empty($row['I']) ? $this->encryption->encrypt($username) : $this->encryption->encrypt($row['I']),
                             'level'    => 'siswa',
