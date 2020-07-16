@@ -4,13 +4,13 @@
 		<tr>
 			<!-- <th class="frist"><input type="checkbox" name="checkall" id="checkall"></th> -->
 			<th class="frist">No</th>
-			<th>Nama</th>
+			<th>Siswa</th>
 			<th>Nilai</th>
 			<th>Jumlah Benar</th>
 			<th>Keterangan</th>
-			<th>Nilai Minimum</th>
-			<th>Tanggal Mulai</th>
-			<th>Tanggal Selesai</th>
+			<th>KKM</th>
+			<th>Waktu Mulai</th>
+			<th>Waktu Selesai</th>
 			<!-- <th class="frist">Opsi</th> -->
 		</tr>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows):

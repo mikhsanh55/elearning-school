@@ -34,7 +34,7 @@ class Jadwal extends MY_Controller {
 
 		$data = array(
 
-			'searchFilter' => array('Pengajar','Mata Pelajaran','Materi','Keterangan'),
+			'searchFilter' => array('Guru','Mata Pelajaran','Materi','Keterangan'),
 
 		);
 
@@ -458,7 +458,7 @@ class Jadwal extends MY_Controller {
 		}else{
 			$data['filter'] = array(
 
-				'searchFilter' => array('Pengajar','Mata Pelajaran','Materi','keterangan'),
+				'searchFilter' => array('Guru','Mata Pelajaran','Materi','Keterangan'),
 
 			);
 			$data_calendar = $this->m_jadwal->get_kalender(array('klsmpl.id_guru'=>$this->akun->id));
@@ -493,6 +493,7 @@ class Jadwal extends MY_Controller {
 
 		}
 		$data['get_data'] = json_encode($calendar);
+		// print_r($calendar);exit;
 		$this->render('jadwal/kalender', $data);
 
 	}

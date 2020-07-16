@@ -25,7 +25,7 @@
                                 <?php if($this->session->userdata('admin_level') == "admin"){
                                     echo "Super Admin";
                                }else if($this->session->userdata('admin_level') == "guru"){
-                                  echo "Pengajar";
+                                  echo "Guru";
                               }else if($this->session->userdata('admin_level') == "siswa"){
                                  echo "Siswa";
                              }else if($this->session->userdata('admin_level') == "instansi" || $this->session->userdata('admin_level') == "admin_instansi"){
@@ -43,7 +43,7 @@
                                 <li class="dropdown-item"><a href="#" onclick="return rubah_password();"><i class="icon-key"></i> Ubah Password </a>
                                 </li>
 
-                                <li class="dropdown-item"><a href="<?php echo base_url(); ?>login/logout" onclick="return confirm('Keluar ?');"> <i class=" icon-logout "></i> Log out </a>
+                                <li class="dropdown-item"><a href="<?php echo base_url(); ?>login/logout" onclick="return confirm('Anda yakin ingin keluar dari Aplikasi E-Learning?');"> <i class=" icon-logout "></i> Logout </a>
                                 </li>
                             </ul>
                         </li>

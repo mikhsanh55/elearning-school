@@ -113,8 +113,11 @@
 					<!-- <a class="btn btn-success btn-sm tombol-kanan" href="<?=base_url('ujian_real/add');?>"><i class="fa fa-user-plus"></i> &nbsp;Tambah</a>
 					<a href="javascript:void(0);" title="edit" id="edited" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> &nbsp;Edit</a>
 					<a href="javascript:void(0);" id="deleted" title="Hapus" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> &nbsp;Hapus</a> -->
-					<a href="<?= base_url('export/pdf_hasil_ujian/') . encrypt_url($id_ujian); ?>" class="btn btn-sm btn-danger tombol-kanan" title="export to PDF" target="_blank">
-						<i class="fas fa-print"> &nbsp;Export PDF</i>
+					<a href="<?= base_url('export/pdf_hasil_ujian/') . encrypt_url($id_ujian); ?>" class="btn btn-sm btn-danger tombol-kanan" title="Export Hasil Ujian ke PDF" target="_blank">
+						<i class="fas fa-print"></i>&nbsp;Export ke PDF
+					</a>
+					<a href="<?= base_url('export/hasil_ujian/') . encrypt_url($id_ujian); ?>" class="btn btn-sm btn-success" title="Export Hasil Ujian ke Excel">
+						<i class="fas fa-file-excel-o"></i>&nbsp;Export ke Excel
 					</a>
 				<?php endif;?>
 

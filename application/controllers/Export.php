@@ -466,6 +466,57 @@ class Export extends MY_Controller {
 		$this->excelColumnNo = 1;
 	}
 
+	// Hasil Ujian PG
+	public function hasil_ujian($md5_id_ujian) {
+		$this->load->model('m_ikut_ujian');
+		$this->load->model('m_ujian');
+		$this->load->model('m_siswa');
+		$id = decrypt_url($md5_id_ujian);
+		$this->excelDatas = $this->m_ikut_ujian->get_many_by(['id' => $id, 'status' => 'N']);
+
+		// Initialize excel object
+		$this->excelInitialize();
+
+		$this->excelCellsHeading = [
+			['cell' => 'A', 'label' => 'No'],
+			['cell' => 'B', 'label' => 'Siswa'],
+			['cell' => 'C', 'label' => 'Jumlah Benar'],
+			['cell' => 'D', 'label' => 'Keterangan'],
+			['cell' => 'E', 'label' => 'KKM'],
+			['cell' => 'F', 'label' => 'Waktu Mulai'],
+			['cell' => 'G', 'label' => 'Waktu Selesai']
+		];
+
+		// Write heading excel use method on MY_Controller.php
+		$this->excelWriteHeading();
+
+		$this->excelDataStart = 2;
+
+		foreach($this->excelDatas as $data) {
+			$ujian = $this->m_ujian->get_by(['uji.id'=>$data->id_ujian]);
+			$siswa = $this->m_siswa->get_by(['id'=>$data->id_user]);
+			$keterangan = ($data->nilai >= $ujian->min_nilai) ? 'LULUS' : 'BELUM LULUS';
+			$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, $this->excelColumnNo);
+			$this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $siswa->nama);
+			$this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $data->jml_benar);
+			$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $keterangan);
+			$this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $ujian->min_nilai);
+			$this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, $data->tgl_mulai);
+			$this->excelObject->getActiveSheet()->SetCellValue('G' . $this->excelDataStart, $data->tgl_selesai);
+
+			$this->excelDataStart++;
+			  $this->excelColumnNo++;
+		}
+
+
+		// Create Filename and output as .xlsx
+		$this->excelFileName = "Data Hasil Ujian - " . date('m-d-Y') . ".xlsx";
+		$this->excelDisplayOutput();
+
+		// Set No Column back to 1 for reuse
+		$this->excelColumnNo = 1;
+	}
+
 	/**
 	 * PDF Export Section
 	 */

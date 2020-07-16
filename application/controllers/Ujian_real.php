@@ -2129,7 +2129,32 @@ class Ujian_real extends MY_Controller {
 
 		}
 
-		
+	public function delete() {
+		$post = $this->input->post();
+
+		$this->db->trans_begin();
+		$deleted = $this->db->where('id', $post['id'])->delete('tb_ujian');
+		if ($this->db->trans_status() === FALSE) {
+			$this->db->trans_rollback();
+		}
+		else {
+			$this->db->trans_commit();
+		}
+
+		if($deleted) {
+			$this->sendAjaxResponse([
+				'status' => TRUE,
+				'msg' => 'Data Ujian Berhasil dihapus'
+			], 200);
+		}
+		else {
+			$this->sendAjaxResponse([
+				'status' => FALSE,
+				'msg' => 'Data Ujian Gagal dihapus'
+			], 500);	
+		}
+
+	}
 
 	public function multi_delete(){
 

@@ -6,7 +6,7 @@
 
 			<th class="frist">No</th>
 
-			<th class="text-left">Daftar Kelas</th>
+			<th class="text-left">Kelas</th>
 
 			<th class="text-left">Wali Kelas</th>
 
@@ -28,7 +28,7 @@
 				<td><?= $rows->nama_guru; ?></td>
 				<td><?= $rows->nama_mapel; ?></td>
 				<td>
-					<button class="btn btn-primary btn-sm rekrut mb-2" data-id="<?= $rows->id; ?>" onclick="displaySiswa(this)">Lihat Siswa</button>
+					<button class="btn btn-primary btn-sm rekrut mb-2" data-id="<?= $rows->id; ?>" onclick="displaySiswa(this)">Daftar Siswa</button>
 
 					<a href="<?= base_url('Materi/lists/') . md5($rows->dmapel); ?>" class="btn btn-sm btn-primary">Materi</a>
 				</td>
