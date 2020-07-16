@@ -418,6 +418,7 @@ class Kelas extends MY_Controller
 		}
 
 		$paginate = $this->m_kelas->paginate_siswa($pg,$where,$limit);
+	
 		// print_r($paginate);exit;
 		$data['paginate'] = $paginate;
 
