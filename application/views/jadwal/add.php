@@ -220,7 +220,7 @@
 
 				success:function(response){
 
-					window.location = '<?=base_url('jadwal');?>'
+					window.location = '<?=base_url();?>' + response.url
 
 				}
 

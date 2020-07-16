@@ -431,6 +431,12 @@ class Ujian_real extends MY_Controller {
 		if ($this->log_lvl == 'guru') {
 
 			$where['uji.id_guru'] = $this->akun->id;
+			$id_kelas = $this->m_kelas->get_data_mapel(['dkmapel.id_guru' => $this->akun->id, 'kls.id_instansi' => $this->akun->instansi]);
+			if(empty($id_kelas)) {
+				die("Kelas kosong");
+			}
+			// print_r($id_kelas);exit;
+			$where['uji.id_kelas'] = $id_kelas[0]->id_kelas;
 
 		}
 

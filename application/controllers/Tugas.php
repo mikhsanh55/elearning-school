@@ -286,12 +286,19 @@ class Tugas extends MY_Controller {
 
 		if ($this->log_lvl != 'admin') {
 			$where['kls.id_instansi'] = $this->akun->instansi;
-
 		}
 
 
 		if ($this->log_lvl == 'guru') {
-			$where['tugas.id_guru'] = $this->akun->instansi;
+			$where['tugas.id_guru'] = $this->akun->id;
+		}
+		else if($this->log_lvl == 'siswa') {
+			$id_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $this->akun->id]);
+			if(empty($id_kelas)) {
+				die('Siswa belum memiliki kelas, harap hubungi admin');
+			}
+
+			$where['id_kelas'] = $id_kelas->id_kelas;
 		}
 
 		$paginate = $this->m_tugas->paginate($pg,$where,$limit);
@@ -411,13 +418,16 @@ class Tugas extends MY_Controller {
 		$id = decrypt_url($id);
 		$siswa = decrypt_url($siswa);
 
-
+		$nilai_siswa = !empty($this->m_tugas_nilai->get_by(['id_tugas' => $id, 'id_siswa' => $siswa])) ? $this->m_tugas_nilai->get_by(['id_tugas' => $id, 'id_siswa' => $siswa])->nilai : 0;
 		$data = array(
 			'detail' => $this->m_tugas->get_by(array('tgs.id'=>$id)),
 			'attach' => $this->m_tugas_attach_siswa->get_many_by(array('id_tugas'=>$id,'id_siswa'=>$siswa)), 
 			'type' => $this->type,
 			'color' => $this->color,
-			'tugas_id' => encrypt_url($id)
+			'tugas_id' => encrypt_url($id),
+			'id_siswa' => $siswa,
+			'id_tugas' => $id,
+			'nilai_siswa' => $nilai_siswa
 		);
 
 		$this->render('tugas/lampiran_detail',$data);
@@ -620,12 +630,21 @@ class Tugas extends MY_Controller {
 			$kirim = $this->m_tugas_nilai->insert($post);
 			$aksi = 'insert';
 		}
-		
-		$json = ['send' => $kirim,'action'=>$aksi];
 
-		echo json_encode($json);
-
-
+		if($kirim) {
+			$this->sendAjaxResponse([
+				'nilai' => $post['nilai'],
+				'status' => TRUE,
+				'msg' => 'Nilai Siswa berhasil diupdate'	
+			], 200);
+		}
+		else {
+			$this->sendAjaxResponse([
+				'nilai' => $post['nilai'],
+				'status' => FALSE,
+				'msg' => 'Nilai Siswa gagal diupdate'	
+			], 500);
+		}
 	}
 
 }

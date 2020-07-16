@@ -195,8 +195,6 @@ class Jadwal extends MY_Controller {
 
 	public function get_materi(){
 
-
-
 		$kelas = $this->m_kelas->get_by(['kls.id'=>$this->input->post('id_kelas')]);
 		$detail_mapel_kelas = $this->m_detail_kelas_mapel->get_many_by(['id_kelas' => $this->input->post('id_kelas')]);
 
@@ -217,11 +215,6 @@ class Jadwal extends MY_Controller {
 				$data->nama_mapel = 'Mapel Kosong';
 			}
 		}
-
-		// print_r($get);exit;
-		// print_r($get);
-
-
 
 		$post = $this->input->post();
 
@@ -251,16 +244,11 @@ class Jadwal extends MY_Controller {
 
 		}
 
-
-
-
-
 		$json = array('result' => true, 'select' => $select );
 
 		echo json_encode($json);
 
 	}
-
 
 
 	public function insert(){
@@ -289,35 +277,14 @@ class Jadwal extends MY_Controller {
 		// }
 
 		$this->m_jadwal->insert($data);
-
-		// if($this->log_lvl == 'guru') {
-		// 	$this->insertCalendar( 
-		// 		$this->session->admin_konid,
-		// 		, 
-		// 		$post['keterangan'], 
-		// 		$post['color'], 
-		// 		$post['start_date'], 
-		// 		$post['start_time'], 
-		// 		$post['end_date'], 
-		// 		$post['end_time'], 
-		// 		$post['materi']
-		// 	);
-		// }
-		// else {
-		// 	$this->insertCalendar( 
-		// 		NULL,
-		// 		$post['id_kelas'], 
-		// 		$post['keterangan'], 
-		// 		$post['color'], 
-		// 		$post['start_date'], 
-		// 		$post['start_time'], 
-		// 		$post['end_date'], 
-		// 		$post['end_time'], 
-		// 		$post['materi']
-		// 	);	
-		// }
-			
-		echo json_encode(array('result' => true));
+		$url = '';
+		if($this->log_lvl == 'lembaga' || $this->log_lvl == 'admin' || $this->log_lvl == 'admin_lembaga') {
+			$url = '/jadwal';
+		}
+		else {
+			$url = '/jadwal/kalender';
+		}
+		echo json_encode(array('result' => true, 'url' => $url));
 	}
 
 
