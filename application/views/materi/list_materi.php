@@ -75,7 +75,7 @@
                     <?php if($this->log_lvl != 'admin' && $this->log_lvl != 'instansi') : ?>
                     <a href="<?= base_url('Materi/diskusi') . '/'.$materi->id?>"  data-href="" class="m-2 btn btn-primary btn-sm">
 
-                                <i class="fas fa-comments" title="Edit materi"></i> Diskusi
+                                <i class="fas fa-comments" title="Edit materi"></i> Diskusi <?=$materi->id_kelas;?>
 
                             </a>
                     <?php endif; ?>        
@@ -202,7 +202,7 @@
 
                     <?php } ?>
 
-                    <?php if($this->session->userdata('admin_level') == 'admin') : ?>
+                    <?php if($this->session->userdata('admin_level') == 'admin' || $this->log_lvl == 'guru') : ?>
 
                         <?php if($materi->is_verify == 1): ?>
 
@@ -352,19 +352,19 @@
 
                     <?php } ?>
 
-                    <?php if($this->session->userdata('admin_level') == 'admin') : ?>
+                    <?php if($this->log_lvl == 'admin' || $this->log_lvl == 'guru') : ?>
 
                         <?php if($materi->is_verify == 1): ?>
 
                             <?php if($materi->pdf == 1) { ?>
 
-                            <a href="#" class="m-2 btn btn-sm btn-danger hapus-materi" data-materi="<?= md5($materi->id); ?>">
+                            <a href="#" class="m-2 btn btn-sm btn-danger hapus-materi" data-materi="<?= encrypt_url($materi->id); ?>">
 
                             <i class="fas fa-trash mr-2" title="Hapus materi"></i>Hapus</a>
 
                             <?php } else { ?>
 
-                            <a href="#" class="m-2 hapus-materi btn btn-sm btn-danger" data-materi="<?= md5($materi->id); ?>">
+                            <a href="#" class="m-2 hapus-materi btn btn-sm btn-danger" data-materi="<?= encrypt_url($materi->id); ?>">
 
                             <i class="fas fa-trash mr-2" title="Hapus materi"></i> Hapus</a>
 
