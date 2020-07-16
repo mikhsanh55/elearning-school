@@ -417,7 +417,7 @@ class Ujian_real extends MY_Controller {
 
 
 
-		if (!empty($post['tipe_ujian'])) {
+		if (!empty($post['tipe_ujian_real'])) {
 
 			$where['uji.type_ujian'] = $post['tipe_ujian_real'];
 
@@ -466,7 +466,7 @@ class Ujian_real extends MY_Controller {
 
 		$data['page_start'] = $paginate['counts']['from_num'];
 
-
+		// print_r($this->db->last_query());exit;
 
 		$this->load->view('ujian/table',$data);
 
