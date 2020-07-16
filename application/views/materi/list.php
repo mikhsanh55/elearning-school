@@ -260,6 +260,25 @@
 			pageLoad(1,'materi/page_load');
 		}, 500));
 
+		$(document).on('click','.hapus-materi',function(){
+			$.ajax({
+				type : 'post',
+				url  : '<?=base_url('materi/deleteMapel');?>',
+				dataType : 'json',
+				data : {
+					id_materi : $(this).data('materi')
+				},
+				success:function(response){
+					if(response.delete == true){
+						alert('Berhasil Menghapus Materi');
+					}else{
+						alert('Gagal Menghapus Materi');
+					}
+					pageLoad(1,'materi/page_load');
+				}
+			})
+		});
+
 		
 	})
 	/* Function Declarations */
