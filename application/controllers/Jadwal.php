@@ -367,7 +367,7 @@ class Jadwal extends MY_Controller {
 
 		$post = $this->input->post();
 
-		$limit = $post['limit'];
+		$limit = 10;
 
 		$where = [];
 
@@ -461,16 +461,17 @@ class Jadwal extends MY_Controller {
 				'searchFilter' => array('Guru','Mata Pelajaran','Materi','Keterangan'),
 
 			);
-			$data_calendar = $this->m_jadwal->get_kalender(array('klsmpl.id_guru'=>$this->akun->id));
+			$data_calendar = $this->m_jadwal->get_all(array('jwl.id_guru'=>$this->akun->id));
 		}
 		
 	
-		
+
 
 		foreach ($data_calendar as $key => $val) 
 
 		{
-
+			$keterangan = $text = str_replace("\r\n",'', $val->keterangan);
+			
 			$calendar[] = array(
 
 				'id' 	=> intval($val->id), 
@@ -481,7 +482,7 @@ class Jadwal extends MY_Controller {
 
 				'time' => $val->nama_mp, 
 
-				'description' => trim($val->keterangan), 
+				'description' => trim($keterangan), 
 
 				'start' => $val->start_date,
 
@@ -492,9 +493,16 @@ class Jadwal extends MY_Controller {
 			);
 
 		}
+		
 		$data['get_data'] = json_encode($calendar);
-		// print_r($calendar);exit;
-		$this->render('jadwal/kalender', $data);
+		
+	
+		if($this->log_lvl == 'guru'){
+			$this->render('jadwal/kalender', $data);
+		}else{
+			$this->render('jadwal/kalender_siswa', $data);
+		}
+		
 
 	}
 
