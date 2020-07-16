@@ -121,11 +121,12 @@ class Mapel extends MY_Controller {
 
   		$this->sendAjaxResponse($data, 200);
 	}
+	
 	public function page_load_mapel_guru($pg = 1) {
 		$post = $this->input->post();
 		$limit = $post['limit'];
 		$where = [];
-		$where['dmapel.id_guru'] = $post['id'];
+		// $where['dmapel.id_guru'] = $post['id'];
 		// $where['is_verify'] = 1;
 		$where['id_instansi'] = $this->akun->instansi;
 		if (!empty($post['search'])) {

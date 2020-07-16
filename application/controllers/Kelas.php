@@ -18,6 +18,8 @@ class Kelas extends MY_Controller
 
     $this->load->model('m_detail_kelas_mapel');
 
+    $this->load->model('m_detail_mapel');
+
 	$this->load->model('m_instansi');
 
 	$this->load->model('m_guru');
@@ -334,7 +336,7 @@ class Kelas extends MY_Controller
   	$limit = $post['limit'];
   	$where = [];
 
-  	$where['dmapel.id_kelas'] = $post['id_kelas'];
+  	// $where['dmapel.id_kelas'] = $post['id_kelas'];
   	$where['mapel.id_instansi'] = $this->akun->instansi;
   	if(!empty($post['search'])) {
   		switch($post['filter']) {
