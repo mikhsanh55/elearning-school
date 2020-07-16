@@ -81,7 +81,8 @@ class Import extends MY_Controller {
                         $alamat = empty($row['H']) ? '-' : $row['H'];
                         $data = array(
                             'nama'  => $row['B'],
-                            'username'  => $username,
+                            // 'username'  => $username,
+                            'username' => $row['C'],
                             'nrp' => $row['D'], // NIS
                             'id_jurusan' => 0,
                             'no_telpon' => $row['E'],
