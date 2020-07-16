@@ -666,7 +666,7 @@ class Ujian_real extends MY_Controller {
 			$data[$idx2] = $iidata;
 
 		}
-		print_r($data);exit;
+		// print_r($data);exit;
 		
 
 		$a['id_ujian'] = decrypt_url($id_ujian);
@@ -688,7 +688,7 @@ class Ujian_real extends MY_Controller {
 
 
 			$p = $this->input->post();
-			print_r($p);exit;
+			// print_r($p);exit;
 
 			$pembuat_soal = ($this->log_lvl == "admin") ? $p['id_guru'] : $this->log_id;
 
@@ -899,7 +899,8 @@ class Ujian_real extends MY_Controller {
 			// Masukan data opsinya a, b, ... e ke data soal yang tadi sudah di insert
 			$a['huruf_opsi'] = array("a","b","c","d","e");
 
-			$a['jml_opsi'] = $this->config->item('jml_opsi');
+			// $a['jml_opsi'] = $this->config->item('jml_opsi');
+			$a['jml_opsi'] = count($a['huruf_opsi']);
 
 			for ($t = 0; $t < $a['jml_opsi']; $t++) {
 				$idx 	= "opsi_".$a['huruf_opsi'][$t];
