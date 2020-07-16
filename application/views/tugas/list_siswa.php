@@ -174,7 +174,7 @@
 			};
 		}
 
-		$(document).on('keyup','.beri-nilai',delay(function(evt){
+		$(document).on('keydown','.beri-nilai',delay(function(evt){
 			var nilai = $(this).val();
 
 			if(nilai > 100){
@@ -183,19 +183,22 @@
 				nilai = 0;
 			}
 
-			$.ajax({
-				type : 'post',
-				url  : base_url + 'tugas/beri_nilai',
-				dataType : 'json',
-				data : {
-					nilai : nilai,
-					id_siswa : $(this).data('siswa'),
-					id_tugas : $(this).data('tugas')
-				},
-				success:function(response){
-
-				}
-			});
+			if(evt.keyCode == 13) {
+				$.ajax({
+					type : 'post',
+					url  : base_url + 'tugas/beri_nilai',
+					dataType : 'json',
+					data : {
+						nilai : nilai,
+						id_siswa : $(this).data('siswa'),
+						id_tugas : $(this).data('tugas')
+					},
+					success:function(response){
+						alert('Nilai Siswa berhasil dimasukan')
+					}
+				});
+			}
+				
 
 			$(this).val(nilai);
 		}, 500))

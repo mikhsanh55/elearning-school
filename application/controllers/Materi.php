@@ -472,12 +472,12 @@ class Materi extends MY_Controller
     public function update_pdf()
     {
        
-        if ($this->input->post('video') != '' && strpos($this->input->post('video'), "?v=") != false) {
-            $expl = explode('?v=', $this->input->post('video'));
-            $v    = 'https://www.youtube.com/embed/' . end($expl);
-        } else {
-            $v = $this->input->post('video');
-        }
+        // if ($this->input->post('video') != '' && strpos($this->input->post('video'), "?v=") != false) {
+        //     $expl = explode('?v=', $this->input->post('video'));
+        //     $v    = 'https://www.youtube.com/embed/' . end($expl);
+        // } else {
+        //     $v = $this->input->post('video');
+        // }
 
         $data = [
             'id_mapel'   => $this->input->post('imapel'),
@@ -486,13 +486,7 @@ class Materi extends MY_Controller
             'req_delete' => 0,
         ];
 
-        if ($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') {
             $data['is_verify'] = 1;
-        } else {
-            $data['is_verify'] = 0;
-        }
-
-     
         if (isset($_FILES['file']['name'])) {
 
             $file     = stripcslashes($_FILES['file']['name']);
@@ -554,7 +548,7 @@ class Materi extends MY_Controller
 
             $data = [
                 'id_mapel'   => $this->input->post('imapel'),
-                'is_verify'  => 0,
+                'is_verify'  => 1,
                 'req_add'    => 0,
                 'req_edit'   => 1,
                 'req_delete' => 0,
@@ -603,11 +597,7 @@ class Materi extends MY_Controller
             'req_delete' => 0,
         ];
 
-        if ($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') {
             $data['is_verify'] = 1;
-        } else {
-            $data['is_verify'] = 0;
-        }
         if (isset($_FILES['file']['name'])) {
 
             $file     = stripcslashes($_FILES['file']['name']);
@@ -648,7 +638,7 @@ class Materi extends MY_Controller
             if ($update) {
                 $d = [
                     'status' => true,
-                    'msg'    => 'Sub Modul updated!',
+                    'msg'    => 'Materi berhasil diupdate!',
                     'res'    => $this->input->post(),
                 ];
                 echo json_encode($d);
@@ -656,7 +646,7 @@ class Materi extends MY_Controller
             } else {
                 $d = [
                     'status' => false,
-                    'msg'    => 'Sub Modul not updated!',
+                    'msg'    => 'Materi gagal diupdate!',
                 ];
                 echo json_encode($d);
                 http_response_code(500);
@@ -665,7 +655,7 @@ class Materi extends MY_Controller
 
             $data = [
                 'id_mapel'   => $this->input->post('imapel'),
-                'is_verify'  => 0,
+                'is_verify'  => 1,
                 'req_add'    => 0,
                 'req_edit'   => 1,
                 'req_delete' => 0,
@@ -675,7 +665,7 @@ class Materi extends MY_Controller
             if ($update) {
                 $d = [
                     'status' => true,
-                    'msg'    => 'Sub Modul updated!',
+                    'msg'    => 'Materi berhasil diupdate!',
                     'res'    => $this->input->post(),
                 ];
                 echo json_encode($d);
@@ -683,7 +673,7 @@ class Materi extends MY_Controller
             } else {
                 $d = [
                     'status' => false,
-                    'msg'    => 'Sub Modul not updated!',
+                    'msg'    => 'Materi gagal diupdate!',
                 ];
                 echo json_encode($d);
                 http_response_code(500);
@@ -1914,7 +1904,7 @@ class Materi extends MY_Controller
 
         $id = decrypt_url($post['id_materi']);
         $materi = $this->m_materi->get_by(['id'=>$id]);
-
+        // print_r($materi);exit;
         $filePdf = $materi->file_pdf;
         $filePpt = $materi->file_ppt;
         

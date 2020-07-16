@@ -472,8 +472,8 @@ class Export extends MY_Controller {
 		$this->load->model('m_ujian');
 		$this->load->model('m_siswa');
 		$id = decrypt_url($md5_id_ujian);
-		$this->excelDatas = $this->m_ikut_ujian->get_many_by(['id' => $id, 'status' => 'N']);
-
+		$this->excelDatas = $this->m_ikut_ujian->get_many_by(['id_ujian' => $id, 'status' => 'N']);
+		// print_r($this->excelDatas);exit;
 		// Initialize excel object
 		$this->excelInitialize();
 
