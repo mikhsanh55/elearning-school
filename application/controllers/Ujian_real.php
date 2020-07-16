@@ -33,6 +33,7 @@ class Ujian_real extends MY_Controller {
 		
 
         $this->opsi = array("a","b","c","d","e");
+        $this->config->jml_opsi = 5;
 
 	}
 
@@ -612,8 +613,8 @@ class Ujian_real extends MY_Controller {
 
 		$a['huruf_opsi'] = array("a","b","c","d","e");
 
-		// $a['jml_opsi'] = $this->config->item('jml_opsi');
-		$a['jml_opsi'] = count($a['huruf_opsi']);
+		$a['jml_opsi'] = $this->config->item('jml_opsi');
+		// $a['jml_opsi'] = count($a['huruf_opsi']);
 		// print_r($this->config);exit;
 
 
