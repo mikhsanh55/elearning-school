@@ -656,7 +656,7 @@ class Ujian_real extends MY_Controller {
 
 
 			$pc_opsi_edit = explode("#####", $a['d'][$idx]);
-			print_r($pc_opsi_edit);exit;
+			// print_r($pc_opsi_edit);exit;
 
 			$iidata['opsi'] = $pc_opsi_edit[1];
 
