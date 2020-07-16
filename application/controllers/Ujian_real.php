@@ -656,6 +656,7 @@ class Ujian_real extends MY_Controller {
 
 
 			$pc_opsi_edit = explode("#####", $a['d'][$idx]);
+			print_r($pc_opsi_edit);exit;
 
 			$iidata['opsi'] = $pc_opsi_edit[1];
 
@@ -669,6 +670,7 @@ class Ujian_real extends MY_Controller {
 
 		$a['id_ujian'] = decrypt_url($id_ujian);
 		$a['data_pc'] = $data;
+		// print_r($a['data_pc']);exit;
 
 		// Check Bobot Soal
 		$this->load->model('m_setting_instansi');
