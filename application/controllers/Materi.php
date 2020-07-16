@@ -127,12 +127,14 @@ class Materi extends MY_Controller
 
     }
 
-    public function lists($id_mapel = NULL)
+    public function lists($id_mapel = NULL,$id_guru=NULL,$id_kelas=NULL)
     {
 
         $data = [
             'title' => 'Daftar Materi',
             'mapel' => $this->m_mapel->get_by(['md5(id)' => $id_mapel]),
+            'id_guru' => $id_guru,
+            'id_kelas' => $id_kelas
         ];
         // print_r($data);exit;
         // print_r($this->m_mapel->get_by(['md5(id)' => $id_mapel]));exit;
@@ -151,6 +153,12 @@ class Materi extends MY_Controller
             $where['mt.id_trainer'] = $this->akun->id;
         }
 
+        if ($this->log_lvl == 'siswa') {
+            $where['mt.id_trainer'] = decrypt_url($post['id_guru']);
+            $where['jdwl.id_kelas'] = decrypt_url($post['id_kelas']);
+        }
+        
+
        
         if($this->log_lvl != 'admin'){
 			$where['gur.instansi'] = $this->akun->instansi;
@@ -160,7 +168,7 @@ class Materi extends MY_Controller
         
         $paginate         = $this->m_materi->paginate_materi($pg,$where,$limit);
         // print_r($paginate);exit;
-       
+      
         $data['paginate'] = $paginate;
 		$data['paginate']['url']	= 'materi/page_load';
 		$data['paginate']['search'] = 'lookup_key';

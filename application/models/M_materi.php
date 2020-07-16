@@ -36,6 +36,7 @@ class m_materi extends MY_Model {
 	{
 		$get = $this->db->select('
 							mt.*,
+							jdwl.id_kelas,
 							jdwl.start_date,
 							jdwl.end_date,
 							gur.nama as nama_guru

@@ -385,7 +385,9 @@
 				limit : $('#limit').val(),
 				filter : $('#filter').val(),
 				search : $('#search').val(),
-				id_mapel : '<?=$mapel->id;?>'
+				id_mapel : '<?=$mapel->id;?>',
+				id_guru : '<?=$id_guru;?>',
+				id_kelas : '<?=$id_kelas;?>'
 			},
 			success:function(response){
 				$('#content-view').html(response);
