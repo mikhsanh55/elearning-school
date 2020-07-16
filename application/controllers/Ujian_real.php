@@ -613,7 +613,7 @@ class Ujian_real extends MY_Controller {
 		$a['huruf_opsi'] = array("a","b","c","d","e");
 
 		$a['jml_opsi'] = $this->config->item('jml_opsi');
-		// print_r($this->config);exit;
+		print_r($this->config);exit;
 
 
 		$a['opsij'] = array(""=>"Jawaban","A"=>"A","B"=>"B","C"=>"C","D"=>"D","E"=>"E");
