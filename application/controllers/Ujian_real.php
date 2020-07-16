@@ -51,9 +51,6 @@ class Ujian_real extends MY_Controller {
 		$this->render('ujian/list',$data);
 
 	}
-
-
-
 	public function data_soal($id_ujian=null){
 
 
