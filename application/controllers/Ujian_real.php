@@ -636,7 +636,7 @@ class Ujian_real extends MY_Controller {
 		}
 
 
-
+		// print_r($a['d']);exit;
 		
 
 
@@ -656,20 +656,20 @@ class Ujian_real extends MY_Controller {
 
 
 			$pc_opsi_edit = explode("#####", $a['d'][$idx]);
+			// print_r($pc_opsi_edit);exit;
 
-			$iidata['opsi'] = $pc_opsi_edit[1];
+			$iidata['opsi'] = end($pc_opsi_edit);
 
 			$iidata['gambar'] = $pc_opsi_edit[0];
 
 			$data[$idx2] = $iidata;
 
 		}
-
+		// print_r($data);exit;
 		
 
 		$a['id_ujian'] = decrypt_url($id_ujian);
 		$a['data_pc'] = $data;
-		// print_r($a['data_pc']);exit;
 
 		// Check Bobot Soal
 		$this->load->model('m_setting_instansi');
@@ -687,6 +687,7 @@ class Ujian_real extends MY_Controller {
 
 
 			$p = $this->input->post();
+			// print_r($p);exit;
 
 			$pembuat_soal = ($this->log_lvl == "admin") ? $p['id_guru'] : $this->log_id;
 
@@ -897,7 +898,8 @@ class Ujian_real extends MY_Controller {
 			// Masukan data opsinya a, b, ... e ke data soal yang tadi sudah di insert
 			$a['huruf_opsi'] = array("a","b","c","d","e");
 
-			$a['jml_opsi'] = $this->config->item('jml_opsi');
+			// $a['jml_opsi'] = $this->config->item('jml_opsi');
+			$a['jml_opsi'] = count($a['huruf_opsi']);
 
 			for ($t = 0; $t < $a['jml_opsi']; $t++) {
 				$idx 	= "opsi_".$a['huruf_opsi'][$t];
@@ -938,108 +940,6 @@ class Ujian_real extends MY_Controller {
 			redirect(base_url('ujian_real/data_soal/'.encrypt_url($p['id_ujian']).'/'.encrypt_url($p['id_instansi']).'/'.encrypt_url($p['id_mapel']).'/'.encrypt_url($p['id_guru']).''));
 
 				
-
-		}
-
-
-
-
-
-		public function file_hapus_ujian($id=0,$no){
-
-
-
-			$nama_gambar = $this->m_soal_ujian->get_by(array('id'=>$id));
-
-
-
-			$pc_opsi_a = explode("#####", $nama_gambar->opsi_a);
-
-			$pc_opsi_b = explode("#####", $nama_gambar->opsi_b);
-
-			$pc_opsi_c = explode("#####", $nama_gambar->opsi_c);
-
-			$pc_opsi_d = explode("#####", $nama_gambar->opsi_d);
-
-			$pc_opsi_e = explode("#####", $nama_gambar->opsi_e);
-
-
-
-			$num = $nama_gambar->id + $no;
-
-
-
-			$link1 =1 + $nama_gambar->id;
-
-			$link2 =2 + $nama_gambar->id;
-
-			$link3 =3 + $nama_gambar->id;
-
-			$link4 =4 + $nama_gambar->id;
-
-			$link5 =5 + $nama_gambar->id;
-
-			$link6 =6 + $nama_gambar->id;
-
-
-
-			if($link1 == $num){
-
-				unlink("./upload/file_ujian_soal/".$nama_gambar->file);
-
-				$update['file'] = NULL;
-
-				$update['type_file'] = NULL;
-
-			}else if($link2 == $num){
-
-				$pc_opsi_a = explode("#####", $nama_gambar->opsi_a);
-
-				unlink("./upload/file_ujian_opsi/".$pc_opsi_a[0]);
-
-				$update['opsi_a'] = "#####".$pc_opsi_a[1];
-
-			}else if($link3 == $num){
-
-				$pc_opsi_b = explode("#####", $nama_gambar->opsi_b);
-
-				unlink("./upload/file_ujian_opsi/".$pc_opsi_b[0]);
-
-				$update['opsi_b'] = "#####".$pc_opsi_b[1];
-
-			}else if($link4 == $num){
-
-				$pc_opsi_c = explode("#####", $nama_gambar->opsi_c);
-
-				unlink("./upload/file_ujian_opsi/".$pc_opsi_c[0]);
-
-				$update['opsi_c'] = "#####".$pc_opsi_c[1];
-
-			}else if($link5 == $num){
-
-				$pc_opsi_d = explode("#####", $nama_gambar->opsi_d);
-
-				unlink("./upload/file_ujian_opsi/".$pc_opsi_d[0]);
-
-				$update['opsi_d'] = "#####".$pc_opsi_d[1];
-
-			}else if($link6 == $num){
-
-				$pc_opsi_e = explode("#####", $nama_gambar->opsi_e);
-
-				unlink("./upload/file_ujian_opsi/".$pc_opsi_e[0]);
-
-				$update['opsi_e'] = "#####".$pc_opsi_e[1];
-
-			}
-
-
-
-			$this->m_soal_ujian->update($update,['id'=>$id]);
-
-
-
-			exit;
 
 		}
 
