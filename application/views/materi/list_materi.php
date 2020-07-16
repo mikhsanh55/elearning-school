@@ -75,7 +75,7 @@
                     <?php if($this->log_lvl != 'admin' && $this->log_lvl != 'instansi') : ?>
                     <a href="<?= base_url('Materi/diskusi') . '/'.$materi->id?>"  data-href="" class="m-2 btn btn-primary btn-sm">
 
-                                <i class="fas fa-comments" title="Edit materi"></i> Diskusi <?=$materi->id_kelas;?>
+                                <i class="fas fa-comments" title="Edit materi"></i> Diskusi
 
                             </a>
                     <?php endif; ?>        

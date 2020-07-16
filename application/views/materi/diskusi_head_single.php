@@ -128,7 +128,10 @@
 <!--/.row-box End-->
 <script type="text/javascript">
 	$(document).ready(function(){
-		load_page();
+		var auto_refresh = setInterval(
+              function () {
+				load_page();
+            }, 5000);
 	})
 
 	$('#formKomentar').submit(function(e){
