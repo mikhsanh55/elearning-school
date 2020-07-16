@@ -33,7 +33,7 @@ class Ujian_real extends MY_Controller {
 		
 
         $this->opsi = array("a","b","c","d","e");
-        $this->config->jml_opsi = 5;
+        $this->config->item('jml_opsi') = 5;
 
 	}
 
