@@ -81,8 +81,11 @@
                     <!-- <br><br> -->
                         <div class="row container mx-auto">
                             <div class="col-sm-12">
-                                <h4><label for="title" class="text-success">File</label></h4>
+                                <h3><label for="title" class="text-success">File</label></h3>
                                 <input type="file" name="file" id="file" class="form-control" value="<?= $materi->file_pdf; ?>" required /><span><?= $materi->file_pdf; ?></span>
+                                <p id="passwordHelpBlock" class="form-text text-muted">
+                                  File PDF yang akan diupload maksimal memiliki ukuran 20 MB.
+                                </p>
                             </div>
                         </div>
                     <br>

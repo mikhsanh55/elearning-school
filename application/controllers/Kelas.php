@@ -511,7 +511,7 @@ class Kelas extends MY_Controller
 
 		$where["akun.instansi"] = $this->akun->instansi;
 		$where["akun.is_graduated"] = 0;
-		$where["(dkls.id_kelas = ".$post['id_kelas']." OR dkls.id_kelas is null)"] = NULL;
+		// $where["(dkls.id_kelas = ".$post['id_kelas']." OR dkls.id_kelas is null)"] = NULL;
 
 
  
@@ -550,7 +550,7 @@ class Kelas extends MY_Controller
 		$data['id_kelas'] = $post['id_kelas'];
 
 
-
+		// print_r($this->db->last_query());exit;
 
 
 		$this->load->view('kelas/table_peserta',$data);

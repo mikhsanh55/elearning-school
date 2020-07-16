@@ -49,7 +49,7 @@
             <div class="inner-box">
                 <div class="row align-items-center">
                     <div class="col-sm-12 col-md-6 col-lg-6">
-                        <h2 class="ml-4">Edit Materi</h2>
+                        <h2 class="ml-4">Upload PPT</h2>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-6 text-right">
                         <button class="btn btn-light" onclick="back_page('materi', true)">Kembali</button>
@@ -73,9 +73,12 @@
                     </div> -->
                     <br>
                         <div class="row container mx-auto">
-                            <div class="col-sm-12">
-                                <h4><label for="title" class="text-success">File PPT</label></h4>
+                            <div class="col-sm-12 form-group">
+                                <label for="title" class="text-success"><h3>File PPT</h3></label>
                                 <input type="file" class="form-control" name="file" id="file" value="<?= $materi->file_ppt; ?>" required /><span><?= $materi->file_ppt; ?></span>
+                                <p id="passwordHelpBlock" class="form-text text-muted">
+                                  File PPT yang akan diupload maksimal memiliki ukuran 50 MB.
+                                </p>
                             </div>
                         </div>
                     <br>
