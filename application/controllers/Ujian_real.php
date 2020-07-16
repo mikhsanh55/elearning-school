@@ -666,7 +666,7 @@ class Ujian_real extends MY_Controller {
 			$data[$idx2] = $iidata;
 
 		}
-
+		print_r($data);exit;
 		
 
 		$a['id_ujian'] = decrypt_url($id_ujian);
