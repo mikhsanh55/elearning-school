@@ -179,19 +179,11 @@ class Jadwal extends MY_Controller {
 
 		}
 
-
-
-
-
 		$json = array('result' => true, 'select' => $select );
 
 		echo json_encode($json);
 
 	}
-
-
-
-
 
 	public function get_materi(){
 
@@ -287,15 +279,17 @@ class Jadwal extends MY_Controller {
 		echo json_encode(array('result' => true, 'url' => $url));
 	}
 
-
-
-
-
 	public function update(){
 
 		$post = $this->input->post();
 
-
+		$url = '';
+		if($this->log_lvl == 'lembaga' || $this->log_lvl == 'admin' || $this->log_lvl == 'admin_lembaga') {
+			$url = '/jadwal';
+		}
+		else {
+			$url = '/jadwal/kalender';
+		}
 
 		$data = array(
 
@@ -315,7 +309,7 @@ class Jadwal extends MY_Controller {
 
 
 
-		$this->m_jadwal->update($data,array('id'=>$post['id']));
+		$this->m_jadwal->update($data,array('id'=>$post['id'], 'url' => $url));
 
 		echo json_encode(array('result'=>true));
 

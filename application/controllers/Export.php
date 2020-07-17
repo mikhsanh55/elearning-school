@@ -517,11 +517,79 @@ class Export extends MY_Controller {
 		$this->excelColumnNo = 1;
 	}
 
+	public function list_tugas_siswa($encrypt_id) {
+		$this->load->model('m_detail_kelas');
+		$this->load->model('m_tugas');
+		$this->load->model('m_tugas_nilai');
+		$this->load->model('m_tugas_attach_siswa');
+		$id = decrypt_url($encrypt_id);
+		$this->excelDatas = $this->m_detail_kelas->get_all(['id_kelas' => $id]);
+
+		// Initialize excel object
+		$this->excelInitialize();
+
+		$this->excelCellsHeading = [
+			['cell' => 'A', 'label' => 'No'],
+			['cell' => 'B', 'label' => 'Siswa'],
+			['cell' => 'C', 'label' => 'NIS'],
+			['cell' => 'D', 'label' => 'Terkumpul'],
+			['cell' => 'E', 'label' => 'Nilai']
+		];
+
+		// Write heading excel use method on MY_Controller.php
+		$this->excelWriteHeading();
+
+		$this->excelDataStart = 2;
+
+		foreach($this->excelDatas as $data) {
+			$id_tugas = $this->m_tugas->get_by(['id_kelas' => $id])->id;
+			$count = $this->m_tugas_attach_siswa->count_by(array('id_tugas'=>$id_tugas,'id_siswa'=>$data->id_peserta));
+			$countNilai = $this->m_tugas_nilai->count_by(array('id_tugas'=>$id_tugas,'id_siswa'=>$data->id_peserta));
+			if($count > 0 && $countNilai > 0) {
+				$status = 'Sudah';
+				$nilai =  $this->m_tugas_nilai->get_by(array('id_tugas'=>$id_tugas,'id_siswa'=>$data->id_peserta))->nilai;
+			}
+			else {
+				$status = 'Belum';
+				$nilai = 0;
+			}
+
+			$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, $this->excelColumnNo);
+			$this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $data->nama_siswa);
+			$this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $data->nrp);
+			$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $status);
+			$this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $nilai);
+
+			$this->excelDataStart++;
+			$this->excelColumnNo++;
+
+			// Create Filename and output as .xlsx
+			$this->excelFileName = "Data Hasil Tugas Siswa - " . date('m-d-Y') . ".xlsx";
+			$this->excelDisplayOutput();
+
+			// Set No Column back to 1 for reuse
+			$this->excelColumnNo = 1;
+		}
+	}
+
 	/**
 	 * PDF Export Section
 	 */
 
-	
+	public function pdf_list_tugas_siswa($encrypt_id) {
+		$this->load->library('dpdf');
+		$this->load->model('m_detail_kelas');
+		$this->load->model('m_tugas');
+		$this->load->model('m_tugas_nilai');
+		$this->load->model('m_tugas_attach_siswa');
+		$id = decrypt_url($encrypt_id);
+		$result['datas'] = $this->m_detail_kelas->get_all(['id_kelas' => $id]);
+
+		// $this->sendPdf('rekaptulasi/rekap_pdf', 'A4', 'potrait', 'Rekapitulasi.pdf');
+		$this->dpdf->setPaper('A4', 'potrait');
+		$this->dpdf->filename = 'Data Hasil Tugas.pdf';
+		$this->dpdf->view('tugas/siswa_pdf', $result);
+	}
 
 	//  Rekapitulasi
 	public function pdf_rekapitulasi() {
@@ -533,7 +601,7 @@ class Export extends MY_Controller {
 			'datas' => $this->m_kelas->rekaptulasi([])
 		];
 
-		$this->sendPdf('rekaptulasi/rekap_pdf', 'A4', 'landscape', 'Rekapitulasi.pdf');
+		// $this->sendPdf('rekaptulasi/rekap_pdf', 'A4', 'landscape', 'Rekapitulasi.pdf');
 		$this->dpdf->setPaper('A4', 'landscape');
 		$this->dpdf->filename = 'Rekapitulasi.pdf';
 		$this->dpdf->view('rekaptulasi/rekap_pdf', $result);

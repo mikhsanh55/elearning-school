@@ -92,7 +92,7 @@
 							</div>
 							<div class="row">
 							<div class="col-md-6 form-group">
-								<label><?=$this->transTheme->guru;?></label>
+								<label>Wali Kelas</label>
 								<div class="label-isi" >
 									<?=$kelas->nama_guru;?>
 									<div class="select-dropdown"></div>
@@ -135,7 +135,12 @@
 					<option value="50">50</option>
 					<option value="100">100</option>
 				</select>
-
+				<a href="<?= base_url('export/pdf_list_tugas_siswa/') . encrypt_url($kelas->id); ?>" class="btn btn-sm btn-danger">
+					<i class="fas fa-file-pdf-o"></i>&nbsp; Export ke PDF
+				</a>
+				<a href="<?= base_url('export/list_tugas_siswa/') . encrypt_url($kelas->id); ?>" class="btn btn-sm btn-success">
+					<i class="fas fa-file-excel-o"></i>&nbsp; Export ke Excel
+				</a>
 				<div id="content-view"></div>
 			</div>
 		</div>
