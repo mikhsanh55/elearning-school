@@ -170,10 +170,8 @@ class Ujian_real extends MY_Controller {
 			'back_url' => base_url('ujian_real/data_soal/'.$id_ujian.''),
 
 			'url_import' => base_url('import/ujian/'.$id_ujian.''),
-
+			'id_ujian' => decrypt_url($id_ujian)
 		);
-
-
 
 		$this->render('ujian/form_import',$data);
 
@@ -693,7 +691,9 @@ class Ujian_real extends MY_Controller {
 
 
 			$p = $this->input->post();
-			// print_r($p);exit;
+			// $data_ujian = $this->m_ujian->get_by(['uji.id' => $p['id_ujian']]);
+			// $jumlah_soal = count( $this->m_soal_ujian->get_many_by(['id_ujian' => $p['id_ujian']]) );
+			// print_r([$data_ujian, $jumlah_soal]);exit;
 
 			$pembuat_soal = ($this->log_lvl == "admin") ? $p['id_guru'] : $this->log_id;
 
@@ -924,9 +924,10 @@ class Ujian_real extends MY_Controller {
 			// Update jumlah soal di tb_ujian
 			$data_ujian = $this->m_ujian->get_by(['uji.id' => $p['id_ujian']]);
 			$jumlah_soal = count( $this->m_soal_ujian->get_many_by(['id_ujian' => $p['id_ujian']]) );
-
+			$x = 1;
+			// Update Jumlah Soal untuk keterangan ujian
 			$this->m_ujian->update([
-				'jumlah_soal' => $data_ujian->jumlah_soal + $jumlah_soal
+				'jumlah_soal' => $data_ujian->jumlah_soal + $x
 			], ['id' => $p['id_ujian']]);
 
 			$teks_gagal = "";
@@ -1152,7 +1153,7 @@ class Ujian_real extends MY_Controller {
 								->get()
 
 								->row_array();
-			// print_r($a['du']);exit;
+								// print_r($a['du']);exit;
 			// print_r($this->m_ujian->get_by(['uji.id' => decrypt_url($id_ujian)]));exit;
 
 			$a['dp'] = $this->m_siswa->get_by(['id' =>$this->log_id]);

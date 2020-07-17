@@ -331,14 +331,15 @@ class Import extends MY_Controller {
             }else{
                 $last_id = 1;
             }
-
+            $x = 1;
             foreach($sheet as $index => $row){
 
                 if($index > 1){
                     $data[$index] = array(
                         'id_guru'   => $p['id_guru'],
                         'id_mapel'  => $p['id_mapel'],
-                        'bobot'     => (int)$row['A'],
+                        // 'bobot'     => (int)$row['A'],
+                        'bobot'     => 1,
                         'soal'      => '<p>'.$row['B'].'</p>',
                         'opsi_a'    => '#####<p>'.$row['C'].'</p>',
                         'opsi_b'    => '#####<p>'.$row['D'].'</p>',
@@ -350,7 +351,15 @@ class Import extends MY_Controller {
                         'jml_benar' => 0,
                         'jml_salah' => 0
                     );
+
+                    // Update Jumlah Soal
+                    $data_ujian = $this->m_ujian->get_by(['uji.id' => $p['id_ujian']]);
+                    $this->m_ujian->update(['jumlah_soal' => $data_ujian->jumlah_soal + $x], [
+                        'id' => $p['id_ujian']
+                    ]);
+                    $x++;
                 }
+                
             }
 
             $this->db->insert_batch('m_soal', $data);

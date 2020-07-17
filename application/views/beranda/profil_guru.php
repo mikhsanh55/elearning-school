@@ -111,35 +111,72 @@
                     <!-- <div class="col-sm-6 col-md-4">
                         <img src="http://placehold.it/380x500" alt="" class="img-rounded img-responsive" />
                     </div> -->
+                    
                     <div class="col-sm-12 col-md-12">
-                        <h4><?= (empty($this->akun->nama)) ? NULL : $this->akun->nama ;?></h4>
-                        <small><cite title="<?= (empty($this->akun->alamat)) ? NULL : $this->akun->alamat ;?>"><?= (empty($this->akun->alamat)) ? NULL : $this->akun->alamat ;?><i class="glyphicon glyphicon-map-marker">
-                        </i></cite></small>
-                        <p>
-                            <i class="title-profile">Username</i><?= (empty($this->akun->username)) ? NULL : $this->akun->username ;?>
-                            <br />
-                            <i class="title-profile">Pangkat</i><?= (empty($this->akun->pangkat)) ? NULL : $this->akun->pangkat ;?>
-                            <br />
-                            <i class="title-profile">NIP</i><?= (empty($this->akun->nrp)) ? NULL : $this->akun->nrp ;?>
-                            <br />
-                            <i class="title-profile">NUPTK</i><?= (empty($this->akun->nidn)) ? NULL : $this->akun->nidn ;?>
-                            <br />
-                            <i class="title-profile">Jabatan</i><?= (empty($this->akun->jabatan_akademik)) ? NULL : $this->akun->jabatan_akademik ;?>
-                            <br />
-                            <i class="title-profile">No.Telp/Hp</i><?= (empty($this->akun->no_telpon)) ? NULL : $this->akun->no_telpon ;?>
-                            <br />
-                            <i class="title-profile">Email</i><?= (empty($this->akun->email)) ? NULL : $this->akun->email ;?>
-                            <br />
-                            <i class="title-profile">Tempat Lahir</i><?= (empty($this->akun->tempat_lahir)) ? NULL : $this->akun->tempat_lahir ;?>
-                            <br />
-                            <i class="title-profile">Tanggal Lahir</i><?= (empty($this->akun->tanggal_lahir)) ? NULL : longdate_indo($this->akun->tanggal_lahir) ;?>
-                            <br />
-                            <i class="title-profile">Pendidikan Terakhir : </i>
-                            <br>
-                            <i class="title-profile">Umum</i><?= (empty($this->akun->pendidikan_umum_terakhir)) ? NULL : $this->akun->pendidikan_umum_terakhir ;?>
-                            <br />
-                            <i class="title-profile">Militer</i><?= (empty($this->akun->pendidikan_militer_terakhir)) ? NULL : $this->akun->pendidikan_militer_terakhir ;?>
-                            <br />
+                        <br><br>
+                        <table class="table">
+                            <tr>
+                                <th colspan="3" class="text-center text-uppercase font-weight-bold">
+                                    <h3>Profil</h3>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th class="text-secondary text-uppercase">Nama</th>
+                                <td class="text-uppercase font-weight-bold">
+                                    <?= (empty($this->akun->nama)) ? NULL : $this->akun->nama ;?>
+                                </td>
+                                <td class="text-right text-primary font-weight-bold">
+                                    <i class="fas fa-check"></i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-secondary text-uppercase">NUPTK/NIP</th>
+                                <td class="text-uppercase font-weight-bold">
+                                    <?= $this->akun->nrp . '/' . $this->akun->nidn; ;?>
+                                </td>
+                                <td class="text-right text-primary font-weight-bold">
+                                    <i class="fas fa-check"></i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-secondary text-uppercase">Username</th>
+                                <td class="text-lowercase font-weight-bold">
+                                    <?= (empty($this->akun->username)) ? NULL : $this->akun->username ;?>
+                                </td>
+                                <td class="text-right text-primary font-weight-bold">
+                                    <i class="fas fa-check"></i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-secondary text-uppercase">Email</th>
+                                <td class="font-weight-bold">
+                                    <?= (empty($this->akun->email)) ? NULL : $this->akun->email  ?>
+                                </td>
+                                <td class="text-right text-primary font-weight-bold">
+                                    <i class="fas fa-check"></i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-secondary text-uppercase">Telpon</th>
+                                <td class="text-uppercase font-weight-bold">
+                                    <?= (empty($this->akun->no_telpon)) ? NULL : $this->akun->no_telpon  ?>
+                                </td>
+                                <td class="text-right text-primary font-weight-bold">
+                                    <i class="fas fa-check"></i>
+                                </td>
+                            </tr>
+                            <tr class="m-3">
+                                <th class="text-secondary text-uppercase">
+                                    <span class="badge badge-pill badge-light d-block p-1"></span>
+                                </th>
+                                <td class="text-uppercase">
+                                    <span class="badge badge-pill badge-light d-block p-1"></span>
+                                </td>
+                                <td class="text-right text-primary font-weight-bold">
+                                    <span class="badge badge-pill badge-light d-block p-1"></span>
+                                </td>
+                            </tr>
+                        </table>
 
                     </div>
                 </div>

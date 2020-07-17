@@ -122,65 +122,76 @@
             <div class="well well-sm mt-4 container">
                 <div class="row">
                     <div class="col-sm-12 col-md-12">
-                        <h4><?= (empty($this->akun->nama)) ? NULL : $this->akun->nama ;?></h4>
-                        <small><cite title="<?= (empty($this->akun->alamat)) ? NULL : $this->akun->alamat ;?>"><?= (empty($this->akun->alamat)) ? NULL : $this->akun->alamat ;?><i class="glyphicon glyphicon-map-marker">
-                        </i></cite></small>
-                        <table class="table table-borderless">
+                      <table class="table">
                             <tr>
-                                <th>Username</th>
-                                <td><?= (empty($this->akun->username)) ? NULL : $this->akun->username ;?></td>
+                                <th colspan="3" class="text-center text-uppercase font-weight-bold">
+                                    <h3>Profil</h3>
+                                </th>
                             </tr>
                             <tr>
-                                <th>Pangkat</th>
-                                <td><?= (empty($this->akun->pangkat)) ? NULL : $this->akun->pangkat ;?></td>
-                            </tr>
-                            <tr>
-                                <th>NISN</th>
-                                <td>
-                                    <?= (empty($this->akun->nrp)) ? NULL : $this->akun->nrp ;?>
+                                <th class="text-secondary text-uppercase">Nama</th>
+                                <td class="text-uppercase font-weight-bold">
+                                    <?= (empty($this->akun->nama)) ? NULL : $this->akun->nama ;?>
+                                </td>
+                                <td class="text-right text-primary font-weight-bold">
+                                    <i class="fas fa-check"></i>
                                 </td>
                             </tr>
                             <tr>
-                                <th>Tahun Angkatan Masuk</th>
-                                <td>
-                                    <?= (empty($this->akun->tahun_angkatan_masuk)) ? NULL : $this->akun->tahun_angkatan_masuk ;?>
+                                <th class="text-secondary text-uppercase">Jenis Kelamin</th>
+                                <td class="text-uppercase font-weight-bold">
+                                    <?= $this->akun->nik ;?>
+                                </td>
+                                <td class="text-right text-primary font-weight-bold">
+                                    <i class="fas fa-check"></i>
                                 </td>
                             </tr>
                             <tr>
-                                <th>Angkatan</th>
-                                <td>
-                                    <?= (empty($this->akun->angkatan)) ? NULL : $this->akun->angkatan ;?>
+                                <th class="text-secondary text-uppercase">NIS</th>
+                                <td class="text-uppercase font-weight-bold">
+                                    <?= $this->akun->nrp ;?>
+                                </td>
+                                <td class="text-right text-primary font-weight-bold">
+                                    <i class="fas fa-check"></i>
                                 </td>
                             </tr>
                             <tr>
-                                <th>No Telpon</th>
-                                <td>
-                                    <?= (empty($this->akun->no_telpon)) ? NULL : $this->akun->no_telpon ;?>
+                                <th class="text-secondary text-uppercase">Username</th>
+                                <td class="text-lowercase font-weight-bold">
+                                    <?= (empty($this->akun->username)) ? NULL : $this->akun->username ;?>
+                                </td>
+                                <td class="text-right text-primary font-weight-bold">
+                                    <i class="fas fa-check"></i>
                                 </td>
                             </tr>
                             <tr>
-                                <th>NIP</th>
-                                <td><?= (empty($this->akun->nim)) ? NULL : $this->akun->nim ;?></td>
+                                <th class="text-secondary text-uppercase">Email</th>
+                                <td class="font-weight-bold">
+                                    <?= (empty($this->akun->email)) ? NULL : $this->akun->email  ?>
+                                </td>
+                                <td class="text-right text-primary font-weight-bold">
+                                    <i class="fas fa-check"></i>
+                                </td>
                             </tr>
                             <tr>
-                                <th>Jenis Kelamin</th>
-                                <td><?= (empty($this->akun->nik)) ? NULL : $this->akun->nik ;?></td>
+                                <th class="text-secondary text-uppercase">Telpon</th>
+                                <td class="text-uppercase font-weight-bold">
+                                    <?= (empty($this->akun->no_telpon)) ? NULL : $this->akun->no_telpon  ?>
+                                </td>
+                                <td class="text-right text-primary font-weight-bold">
+                                    <i class="fas fa-check"></i>
+                                </td>
                             </tr>
-                            <tr>
-                                <th>Jurusan</th>
-                                <td><?= (empty($this->akun->jurusan)) ? NULL : $this->akun->jurusan ;?></td>
-                            </tr>
-                            <tr>
-                                <th>Email</th>
-                                <td><?= (empty($this->akun->email)) ? NULL : $this->akun->email ;?></td>
-                            </tr>
-                            <tr>
-                                <th>Tempat Lahir</th>
-                                <td><?= (empty($this->akun->tempat_lahir)) ? NULL : $this->akun->tempat_lahir ;?></td>
-                            </tr>
-                            <tr>
-                                <th>Tanggal Lahir</th>
-                                <td><?= (empty($this->akun->tanggal_lahir)) ? NULL : longdate_indo($this->akun->tanggal_lahir) ;?></td>
+                            <tr class="m-3">
+                                <th class="text-secondary text-uppercase">
+                                    <span class="badge badge-pill badge-light d-block p-1"></span>
+                                </th>
+                                <td class="text-uppercase">
+                                    <span class="badge badge-pill badge-light d-block p-1"></span>
+                                </td>
+                                <td class="text-right text-primary font-weight-bold">
+                                    <span class="badge badge-pill badge-light d-block p-1"></span>
+                                </td>
                             </tr>
                         </table>
                         
