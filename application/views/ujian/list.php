@@ -126,9 +126,9 @@
 				<?php if ($this->log_lvl != 'siswa'): ?>
 					<a class="btn btn-success btn-sm tombol-kanan" href="<?=base_url('ujian_real/add');?>"><i class="fa fa-user-plus"></i> &nbsp;Tambah</a>
 					<a href="javascript:void(0);" title="edit" id="edited" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> &nbsp;Edit</a>
-					<?php if($this->log_lvl !='guru' && $this->log_lvl != 'siswa') : ?>
+
 					<a href="javascript:void(0);" id="deleted" title="Hapus" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> &nbsp;Hapus</a>
-					<?php endif; ?>
+
 					<a href="<?= base_url('export/ujian'); ?>" class="btn btn-sm btn-success tombol-kanan">
 						<i class="fas fa-file-excel-o"></i> &nbsp;Export
 					</a>

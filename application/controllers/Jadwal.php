@@ -34,7 +34,7 @@ class Jadwal extends MY_Controller {
 
 		$data = array(
 
-			'searchFilter' => array('Pengajar','Mata Pelajaran','Materi','Keterangan'),
+			'searchFilter' => array('Guru','Mata Pelajaran','Materi','Keterangan'),
 
 		);
 
@@ -179,23 +179,13 @@ class Jadwal extends MY_Controller {
 
 		}
 
-
-
-
-
 		$json = array('result' => true, 'select' => $select );
 
 		echo json_encode($json);
 
 	}
 
-
-
-
-
 	public function get_materi(){
-
-
 
 		$kelas = $this->m_kelas->get_by(['kls.id'=>$this->input->post('id_kelas')]);
 		$detail_mapel_kelas = $this->m_detail_kelas_mapel->get_many_by(['id_kelas' => $this->input->post('id_kelas')]);
@@ -217,11 +207,6 @@ class Jadwal extends MY_Controller {
 				$data->nama_mapel = 'Mapel Kosong';
 			}
 		}
-
-		// print_r($get);exit;
-		// print_r($get);
-
-
 
 		$post = $this->input->post();
 
@@ -251,16 +236,11 @@ class Jadwal extends MY_Controller {
 
 		}
 
-
-
-
-
 		$json = array('result' => true, 'select' => $select );
 
 		echo json_encode($json);
 
 	}
-
 
 
 	public function insert(){
@@ -289,46 +269,27 @@ class Jadwal extends MY_Controller {
 		// }
 
 		$this->m_jadwal->insert($data);
-
-		// if($this->log_lvl == 'guru') {
-		// 	$this->insertCalendar( 
-		// 		$this->session->admin_konid,
-		// 		, 
-		// 		$post['keterangan'], 
-		// 		$post['color'], 
-		// 		$post['start_date'], 
-		// 		$post['start_time'], 
-		// 		$post['end_date'], 
-		// 		$post['end_time'], 
-		// 		$post['materi']
-		// 	);
-		// }
-		// else {
-		// 	$this->insertCalendar( 
-		// 		NULL,
-		// 		$post['id_kelas'], 
-		// 		$post['keterangan'], 
-		// 		$post['color'], 
-		// 		$post['start_date'], 
-		// 		$post['start_time'], 
-		// 		$post['end_date'], 
-		// 		$post['end_time'], 
-		// 		$post['materi']
-		// 	);	
-		// }
-			
-		echo json_encode(array('result' => true));
+		$url = '';
+		if($this->log_lvl == 'lembaga' || $this->log_lvl == 'admin' || $this->log_lvl == 'admin_lembaga') {
+			$url = '/jadwal';
+		}
+		else {
+			$url = '/jadwal/kalender';
+		}
+		echo json_encode(array('result' => true, 'url' => $url));
 	}
-
-
-
-
 
 	public function update(){
 
 		$post = $this->input->post();
 
-
+		$url = '';
+		if($this->log_lvl == 'lembaga' || $this->log_lvl == 'admin' || $this->log_lvl == 'admin_lembaga') {
+			$url = '/jadwal';
+		}
+		else {
+			$url = '/jadwal/kalender';
+		}
 
 		$data = array(
 
@@ -348,7 +309,7 @@ class Jadwal extends MY_Controller {
 
 
 
-		$this->m_jadwal->update($data,array('id'=>$post['id']));
+		$this->m_jadwal->update($data,array('id'=>$post['id'], 'url' => $url));
 
 		echo json_encode(array('result'=>true));
 
@@ -400,7 +361,7 @@ class Jadwal extends MY_Controller {
 
 		$post = $this->input->post();
 
-		$limit = $post['limit'];
+		$limit = 10;
 
 		$where = [];
 
@@ -491,19 +452,20 @@ class Jadwal extends MY_Controller {
 		}else{
 			$data['filter'] = array(
 
-				'searchFilter' => array('Pengajar','Mata Pelajaran','Materi','keterangan'),
+				'searchFilter' => array('Guru','Mata Pelajaran','Materi','Keterangan'),
 
 			);
-			$data_calendar = $this->m_jadwal->get_kalender(array('klsmpl.id_guru'=>$this->akun->id));
+			$data_calendar = $this->m_jadwal->get_all(array('jwl.id_guru'=>$this->akun->id));
 		}
 		
 	
-		
+
 
 		foreach ($data_calendar as $key => $val) 
 
 		{
-
+			$keterangan = $text = str_replace("\r\n",'', $val->keterangan);
+			
 			$calendar[] = array(
 
 				'id' 	=> intval($val->id), 
@@ -514,7 +476,7 @@ class Jadwal extends MY_Controller {
 
 				'time' => $val->nama_mp, 
 
-				'description' => trim($val->keterangan), 
+				'description' => trim($keterangan), 
 
 				'start' => $val->start_date,
 
@@ -525,8 +487,16 @@ class Jadwal extends MY_Controller {
 			);
 
 		}
+		
 		$data['get_data'] = json_encode($calendar);
-		$this->render('jadwal/kalender', $data);
+		
+	
+		if($this->log_lvl == 'guru'){
+			$this->render('jadwal/kalender', $data);
+		}else{
+			$this->render('jadwal/kalender_siswa', $data);
+		}
+		
 
 	}
 

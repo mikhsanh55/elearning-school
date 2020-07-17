@@ -21,7 +21,7 @@ $uri4 = $this->uri->segment(4);
                 <?php echo $this->session->flashdata('notif') ?>
             </p>
             <form name="f_siswa" action="<?php echo $url_import;?>" id="f_siswa" enctype="multipart/form-data" method="post">
-                <input type="hidden" name="id" id="id" value="0">
+                <input type="hidden" name="id_ujian" id="id" value="<?= $id_ujian; ?>">
                 <table class="table table-form">
     
                     <tr><td>File</td><td><input type="file" class="form-control col-md-12" name="userfile" required></td></tr>

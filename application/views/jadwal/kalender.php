@@ -101,7 +101,7 @@
                   </select>
                   <div class="select-dropdown"></div>
                 </div>
-                <input type="text" style="width: 50%;height:30px;" class="form-control input-sm" id="search" placeholder="ketikan yang anda cari" name="search">
+                <input type="text" style="width: 50%;height:30px;" class="form-control input-sm" id="search" placeholder="Ketikan yang anda cari" name="search">
               </div>
             </from>
             <br>

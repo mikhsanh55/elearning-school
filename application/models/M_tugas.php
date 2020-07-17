@@ -103,17 +103,9 @@ class M_tugas extends MY_Model {
 		// 				->where($where)
 		// 				->get()
 		// 				->result();
-		$get = $this->db->select('tugas.*, kls.nama AS kelas, mapel.nama AS nama_mapel')
-						->from('tb_tugas tugas')
-						->join('tb_kelas kls', 'tugas.id_kelas = kls.id', 'left')
-						->join('m_mapel mapel', 'tugas.id_mapel = mapel.id', 'left')
-						// ->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'left')
-						->where($where)
-						->get()
-						->result();
 	
       
-		return count($get);
+		return count($this->get_many_by($where));
 	}
 
 	public function get_many_by($where = []) {

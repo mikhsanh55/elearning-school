@@ -75,7 +75,7 @@
                 <br><br><br><br>
                 <div class="row container mx-auto">
                      <div class="col-sm-12 mx-auto">
-                         <button class="btn btn-primary  mb-4 " type="submit">Buat Sub Modul! <i class="fas fa-spinner ml-2 spin-icon d-none"></i> </button>       
+                         <button class="btn btn-primary btn-block mb-4 " type="submit">Tambah Materi <i class="fas fa-spinner ml-2 spin-icon d-none"></i> </button>       
                          <br>
                          <!-- Progress Bar -->
                          <div class="progress d-none mt-4" id="progress-container">

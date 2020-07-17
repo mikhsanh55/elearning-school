@@ -5,7 +5,7 @@
 		font-family: sans-serif;
 	}
 
-	table {
+	.table-kalender {
 		margin-top: 10px;
 		font-family: Arial, Helvetica, sans-serif;
 
@@ -17,7 +17,7 @@
 		border-radius: 25px;
 	}
 
-	table th {
+	.table-kalender th {
 		padding: 2px 5px;
 		border:1px solid #337ab7;
 		background: #337ab7;;
@@ -25,11 +25,11 @@
 		color: #fff;
 	}
 
-	table th:first-child{  
+	.table-kalender th:first-child{  
 		border-left:none;  
 	}
 
-	table tr {
+	.table-kalender tr {
 		padding-left: 20px;
 	}
 
@@ -38,7 +38,7 @@
     white-space: nowrap;
 }
 
-	table td {
+	.table-kalender td {
 		padding: 5px 5px;
 		border-top: 1px solid #ffffff;
 		border-bottom: 1px solid #e0e0e0;
@@ -48,23 +48,23 @@
 		background: -moz-linear-gradient(top, #fbfbfb, #fafafa);
 	}
 
-	table tr:last-child td {
+	.table-kalender tr:last-child td {
 		border-bottom: 0;
 	}
 
-	table tr:last-child td:first-child {
+	.table-kalender tr:last-child td:first-child {
 		-moz-border-radius-bottomleft: 3px;
 		-webkit-border-bottom-left-radius: 3px;
 		border-bottom-left-radius: 3px;
 	}
 
-	table tr:last-child td:last-child {
+	.table-kalender tr:last-child td:last-child {
 		-moz-border-radius-bottomright: 3px;
 		-webkit-border-bottom-right-radius: 3px;
 		border-bottom-right-radius: 3px;
 	}
 
-	table tr:hover td {
+	.table-kalender tr:hover td {
 		background: #f2f2f2;
 		background: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#f0f0f0));
 		background: -moz-linear-gradient(top, #f2f2f2, #f0f0f0);
@@ -96,7 +96,7 @@
 								</select>
 								<div class="select-dropdown"></div>
 							</div>
-							<input type="text" style="width: 50%;height:30px;" class="form-control input-sm" id="search" placeholder="ketikan yang anda cari" name="search">
+							<input type="text" style="width: 50%;height:30px;" class="form-control input-sm" id="search" placeholder="Ketikan yang anda cari" name="search">
 						</div>
 					</from>
 					<br>
@@ -112,7 +112,7 @@
 					<option value="100">100</option>
 				</select>
 				<button type="button" class="btn btn-sm btn-primary ml-2" onclick="return window.location = '<?=base_url('jadwal/add');?>' ">Tambah</button>
-				<a href="<?= base_url('export/jadwal') ?>" class="btn btn-sm btn-success ml-2">Cetak Dokumen</a>
+				<a href="<?= base_url('export/jadwal') ?>" class="btn btn-sm btn-success ml-2">Export</a>
 				<div id="content-view"></div>
 			</div>
 		</div>

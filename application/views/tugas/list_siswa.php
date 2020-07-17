@@ -92,7 +92,7 @@
 							</div>
 							<div class="row">
 							<div class="col-md-6 form-group">
-								<label><?=$this->transTheme->guru;?></label>
+								<label>Wali Kelas</label>
 								<div class="label-isi" >
 									<?=$kelas->nama_guru;?>
 									<div class="select-dropdown"></div>
@@ -135,7 +135,12 @@
 					<option value="50">50</option>
 					<option value="100">100</option>
 				</select>
-
+				<a href="<?= base_url('export/pdf_list_tugas_siswa/') . encrypt_url($kelas->id); ?>" class="btn btn-sm btn-danger">
+					<i class="fas fa-file-pdf-o"></i>&nbsp; Export ke PDF
+				</a>
+				<a href="<?= base_url('export/list_tugas_siswa/') . encrypt_url($kelas->id); ?>" class="btn btn-sm btn-success">
+					<i class="fas fa-file-excel-o"></i>&nbsp; Export ke Excel
+				</a>
 				<div id="content-view"></div>
 			</div>
 		</div>
@@ -174,7 +179,7 @@
 			};
 		}
 
-		$(document).on('keyup','.beri-nilai',delay(function(evt){
+		$(document).on('keydown','.beri-nilai',delay(function(evt){
 			var nilai = $(this).val();
 
 			if(nilai > 100){
@@ -183,19 +188,22 @@
 				nilai = 0;
 			}
 
-			$.ajax({
-				type : 'post',
-				url  : base_url + 'tugas/beri_nilai',
-				dataType : 'json',
-				data : {
-					nilai : nilai,
-					id_siswa : $(this).data('siswa'),
-					id_tugas : $(this).data('tugas')
-				},
-				success:function(response){
-
-				}
-			});
+			if(evt.keyCode == 13) {
+				$.ajax({
+					type : 'post',
+					url  : base_url + 'tugas/beri_nilai',
+					dataType : 'json',
+					data : {
+						nilai : nilai,
+						id_siswa : $(this).data('siswa'),
+						id_tugas : $(this).data('tugas')
+					},
+					success:function(response){
+						alert('Nilai Siswa berhasil dimasukan')
+					}
+				});
+			}
+				
 
 			$(this).val(nilai);
 		}, 500))

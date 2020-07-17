@@ -24,7 +24,7 @@
 
             <div class="col-sm-12 col-md-6 col-lg-6">
 
-                <h2><?=(empty($edit->id)) ? 'Tambah' : 'Update' ;?> <?= $this->name; ?></h2>
+                <h2>Daftar Siswa</h2>
 
 
 
@@ -37,7 +37,7 @@
             </div>
 
         </div>
-
+		<br>
 		<div id="accordion" class="panel-group">
 
 			<div class="row">
@@ -102,7 +102,7 @@
 								<?php endforeach ?>
 							</select>
 
-							<input type="text" style="width: 50%;" class="form-control input-sm" id="search-murid" placeholder="ketikan nama yang anda cari" name="search">
+							<input type="text" style="width: 50%;" class="form-control input-sm" id="search-murid" placeholder="Ketikan apa yang ingin anda cari" name="search">
 
 						</div>
 

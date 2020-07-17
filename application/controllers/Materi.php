@@ -127,12 +127,14 @@ class Materi extends MY_Controller
 
     }
 
-    public function lists($id_mapel = NULL)
+    public function lists($id_mapel = NULL,$id_guru=NULL,$id_kelas=NULL)
     {
 
         $data = [
             'title' => 'Daftar Materi',
             'mapel' => $this->m_mapel->get_by(['md5(id)' => $id_mapel]),
+            'id_guru' => $id_guru,
+            'id_kelas' => $id_kelas
         ];
         // print_r($data);exit;
         // print_r($this->m_mapel->get_by(['md5(id)' => $id_mapel]));exit;
@@ -151,6 +153,12 @@ class Materi extends MY_Controller
             $where['mt.id_trainer'] = $this->akun->id;
         }
 
+        if ($this->log_lvl == 'siswa') {
+            $where['mt.id_trainer'] = decrypt_url($post['id_guru']);
+            $where['jdwl.id_kelas'] = decrypt_url($post['id_kelas']);
+        }
+        
+
        
         if($this->log_lvl != 'admin'){
 			$where['gur.instansi'] = $this->akun->instansi;
@@ -160,6 +168,7 @@ class Materi extends MY_Controller
         
         $paginate         = $this->m_materi->paginate_materi($pg,$where,$limit);
         // print_r($paginate);exit;
+      
         $data['paginate'] = $paginate;
 		$data['paginate']['url']	= 'materi/page_load';
 		$data['paginate']['search'] = 'lookup_key';
@@ -463,12 +472,12 @@ class Materi extends MY_Controller
     public function update_pdf()
     {
        
-        if ($this->input->post('video') != '' && strpos($this->input->post('video'), "?v=") != false) {
-            $expl = explode('?v=', $this->input->post('video'));
-            $v    = 'https://www.youtube.com/embed/' . end($expl);
-        } else {
-            $v = $this->input->post('video');
-        }
+        // if ($this->input->post('video') != '' && strpos($this->input->post('video'), "?v=") != false) {
+        //     $expl = explode('?v=', $this->input->post('video'));
+        //     $v    = 'https://www.youtube.com/embed/' . end($expl);
+        // } else {
+        //     $v = $this->input->post('video');
+        // }
 
         $data = [
             'id_mapel'   => $this->input->post('imapel'),
@@ -477,13 +486,7 @@ class Materi extends MY_Controller
             'req_delete' => 0,
         ];
 
-        if ($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') {
             $data['is_verify'] = 1;
-        } else {
-            $data['is_verify'] = 0;
-        }
-
-     
         if (isset($_FILES['file']['name'])) {
 
             $file     = stripcslashes($_FILES['file']['name']);
@@ -545,7 +548,7 @@ class Materi extends MY_Controller
 
             $data = [
                 'id_mapel'   => $this->input->post('imapel'),
-                'is_verify'  => 0,
+                'is_verify'  => 1,
                 'req_add'    => 0,
                 'req_edit'   => 1,
                 'req_delete' => 0,
@@ -594,11 +597,7 @@ class Materi extends MY_Controller
             'req_delete' => 0,
         ];
 
-        if ($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') {
             $data['is_verify'] = 1;
-        } else {
-            $data['is_verify'] = 0;
-        }
         if (isset($_FILES['file']['name'])) {
 
             $file     = stripcslashes($_FILES['file']['name']);
@@ -639,7 +638,7 @@ class Materi extends MY_Controller
             if ($update) {
                 $d = [
                     'status' => true,
-                    'msg'    => 'Sub Modul updated!',
+                    'msg'    => 'Materi berhasil diupdate!',
                     'res'    => $this->input->post(),
                 ];
                 echo json_encode($d);
@@ -647,7 +646,7 @@ class Materi extends MY_Controller
             } else {
                 $d = [
                     'status' => false,
-                    'msg'    => 'Sub Modul not updated!',
+                    'msg'    => 'Materi gagal diupdate!',
                 ];
                 echo json_encode($d);
                 http_response_code(500);
@@ -656,7 +655,7 @@ class Materi extends MY_Controller
 
             $data = [
                 'id_mapel'   => $this->input->post('imapel'),
-                'is_verify'  => 0,
+                'is_verify'  => 1,
                 'req_add'    => 0,
                 'req_edit'   => 1,
                 'req_delete' => 0,
@@ -666,7 +665,7 @@ class Materi extends MY_Controller
             if ($update) {
                 $d = [
                     'status' => true,
-                    'msg'    => 'Sub Modul updated!',
+                    'msg'    => 'Materi berhasil diupdate!',
                     'res'    => $this->input->post(),
                 ];
                 echo json_encode($d);
@@ -674,7 +673,7 @@ class Materi extends MY_Controller
             } else {
                 $d = [
                     'status' => false,
-                    'msg'    => 'Sub Modul not updated!',
+                    'msg'    => 'Materi gagal diupdate!',
                 ];
                 echo json_encode($d);
                 http_response_code(500);
@@ -1897,6 +1896,37 @@ class Materi extends MY_Controller
         }
 
         echo json_encode(array('result' => true));
+
+    }
+
+    function deleteMapel(){
+        $post = $this->input->post();
+
+        $id = decrypt_url($post['id_materi']);
+        $materi = $this->m_materi->get_by(['id'=>$id]);
+        // print_r($materi);exit;
+        $filePdf = $materi->file_pdf;
+        $filePpt = $materi->file_ppt;
+        
+        $delete = $this->m_materi->delete(['id'=>$id]);
+        if($delete){
+            if(isset($filePdf)){
+                $lokasi = 'assets/materi/pdf/' .$filePdf;
+                if (file_exists($lokasi)) {
+                    unlink($lokasi);
+                }
+            }
+
+            if(isset($filePpt)){
+                $lokasi    ='assets/materi/ppt/'.$filePpt;
+                if (file_exists($lokasi)) {
+                    unlink($lokasi);
+                }
+            }
+        }
+
+        $json = ['status' => true , 'delete' => $delete];
+        echo json_encode($json);
 
     }
 }

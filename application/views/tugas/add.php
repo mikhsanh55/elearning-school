@@ -44,7 +44,7 @@
 				<textarea  class="form-control" id="keterangan" placeholder="Masukan Keterangan" name="keterangan" ></textarea>
 			</div>
 			<div class="form-group">
-				<label for="username">Lampiran<span class="text-danger">*</span></label>
+				<label for="username">Tugas Lampiran<span class="text-danger">*</span></label>
 				<div class="custom-file mb-3">
 					<input type="file" class="custom-file-input" id="attach" name="attach[]" multiple>
 					<label class="custom-file-label" for="customFile">Choose file</label>

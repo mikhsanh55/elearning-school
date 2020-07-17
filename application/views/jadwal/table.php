@@ -1,6 +1,6 @@
 
 
-<table class="table table-bordered table-striped table-hovered">
+<table class="table table-bordered table-striped table-hovered" id="table-kalender">
 
 	<thead>
 
@@ -8,13 +8,13 @@
 
 			<th class="frist">No</th>
 
-			<th><?= $this->transTheme->guru;?></th>
+			<th>Guru</th>
 
 			<th>Mata Pelajaran</th>
 
 			<th>Materi</th>
 
-			<th>Keterangan/Materi</th>
+			<th>Keterangan</th>
 
 			<th>Mulai</th>
 

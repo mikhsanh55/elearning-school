@@ -171,10 +171,8 @@ class Ujian_real extends MY_Controller {
 			'back_url' => base_url('ujian_real/data_soal/'.$id_ujian.''),
 
 			'url_import' => base_url('import/ujian/'.$id_ujian.''),
-
+			'id_ujian' => decrypt_url($id_ujian)
 		);
-
-
 
 		$this->render('ujian/form_import',$data);
 
@@ -418,7 +416,7 @@ class Ujian_real extends MY_Controller {
 
 
 
-		if (!empty($post['tipe_ujian'])) {
+		if (!empty($post['tipe_ujian_real'])) {
 
 			$where['uji.type_ujian'] = $post['tipe_ujian_real'];
 
@@ -432,6 +430,12 @@ class Ujian_real extends MY_Controller {
 		if ($this->log_lvl == 'guru') {
 
 			$where['uji.id_guru'] = $this->akun->id;
+			$id_kelas = $this->m_kelas->get_data_mapel(['dkmapel.id_guru' => $this->akun->id, 'kls.id_instansi' => $this->akun->instansi]);
+			if(empty($id_kelas)) {
+				die("Kelas kosong");
+			}
+			// print_r($id_kelas);exit;
+			$where['uji.id_kelas'] = $id_kelas[0]->id_kelas;
 
 		}
 
@@ -461,7 +465,7 @@ class Ujian_real extends MY_Controller {
 
 		$data['page_start'] = $paginate['counts']['from_num'];
 
-
+		// print_r($this->db->last_query());exit;
 
 		$this->load->view('ujian/table',$data);
 
@@ -688,7 +692,13 @@ class Ujian_real extends MY_Controller {
 
 
 			$p = $this->input->post();
+<<<<<<< HEAD
 			// print_r($p);exit;
+=======
+			// $data_ujian = $this->m_ujian->get_by(['uji.id' => $p['id_ujian']]);
+			// $jumlah_soal = count( $this->m_soal_ujian->get_many_by(['id_ujian' => $p['id_ujian']]) );
+			// print_r([$data_ujian, $jumlah_soal]);exit;
+>>>>>>> production
 
 			$pembuat_soal = ($this->log_lvl == "admin") ? $p['id_guru'] : $this->log_id;
 
@@ -919,9 +929,10 @@ class Ujian_real extends MY_Controller {
 			// Update jumlah soal di tb_ujian
 			$data_ujian = $this->m_ujian->get_by(['uji.id' => $p['id_ujian']]);
 			$jumlah_soal = count( $this->m_soal_ujian->get_many_by(['id_ujian' => $p['id_ujian']]) );
-
+			$x = 1;
+			// Update Jumlah Soal untuk keterangan ujian
 			$this->m_ujian->update([
-				'jumlah_soal' => $data_ujian->jumlah_soal + $jumlah_soal
+				'jumlah_soal' => $data_ujian->jumlah_soal + $x
 			], ['id' => $p['id_ujian']]);
 
 			$teks_gagal = "";
@@ -941,108 +952,6 @@ class Ujian_real extends MY_Controller {
 			redirect(base_url('ujian_real/data_soal/'.encrypt_url($p['id_ujian']).'/'.encrypt_url($p['id_instansi']).'/'.encrypt_url($p['id_mapel']).'/'.encrypt_url($p['id_guru']).''));
 
 				
-
-		}
-
-
-
-
-
-		public function file_hapus_ujian($id=0,$no){
-
-
-
-			$nama_gambar = $this->m_soal_ujian->get_by(array('id'=>$id));
-
-
-
-			$pc_opsi_a = explode("#####", $nama_gambar->opsi_a);
-
-			$pc_opsi_b = explode("#####", $nama_gambar->opsi_b);
-
-			$pc_opsi_c = explode("#####", $nama_gambar->opsi_c);
-
-			$pc_opsi_d = explode("#####", $nama_gambar->opsi_d);
-
-			$pc_opsi_e = explode("#####", $nama_gambar->opsi_e);
-
-
-
-			$num = $nama_gambar->id + $no;
-
-
-
-			$link1 =1 + $nama_gambar->id;
-
-			$link2 =2 + $nama_gambar->id;
-
-			$link3 =3 + $nama_gambar->id;
-
-			$link4 =4 + $nama_gambar->id;
-
-			$link5 =5 + $nama_gambar->id;
-
-			$link6 =6 + $nama_gambar->id;
-
-
-
-			if($link1 == $num){
-
-				unlink("./upload/file_ujian_soal/".$nama_gambar->file);
-
-				$update['file'] = NULL;
-
-				$update['type_file'] = NULL;
-
-			}else if($link2 == $num){
-
-				$pc_opsi_a = explode("#####", $nama_gambar->opsi_a);
-
-				unlink("./upload/file_ujian_opsi/".$pc_opsi_a[0]);
-
-				$update['opsi_a'] = "#####".$pc_opsi_a[1];
-
-			}else if($link3 == $num){
-
-				$pc_opsi_b = explode("#####", $nama_gambar->opsi_b);
-
-				unlink("./upload/file_ujian_opsi/".$pc_opsi_b[0]);
-
-				$update['opsi_b'] = "#####".$pc_opsi_b[1];
-
-			}else if($link4 == $num){
-
-				$pc_opsi_c = explode("#####", $nama_gambar->opsi_c);
-
-				unlink("./upload/file_ujian_opsi/".$pc_opsi_c[0]);
-
-				$update['opsi_c'] = "#####".$pc_opsi_c[1];
-
-			}else if($link5 == $num){
-
-				$pc_opsi_d = explode("#####", $nama_gambar->opsi_d);
-
-				unlink("./upload/file_ujian_opsi/".$pc_opsi_d[0]);
-
-				$update['opsi_d'] = "#####".$pc_opsi_d[1];
-
-			}else if($link6 == $num){
-
-				$pc_opsi_e = explode("#####", $nama_gambar->opsi_e);
-
-				unlink("./upload/file_ujian_opsi/".$pc_opsi_e[0]);
-
-				$update['opsi_e'] = "#####".$pc_opsi_e[1];
-
-			}
-
-
-
-			$this->m_soal_ujian->update($update,['id'=>$id]);
-
-
-
-			exit;
 
 		}
 
@@ -1249,7 +1158,7 @@ class Ujian_real extends MY_Controller {
 								->get()
 
 								->row_array();
-			// print_r($a['du']);exit;
+								// print_r($a['du']);exit;
 			// print_r($this->m_ujian->get_by(['uji.id' => decrypt_url($id_ujian)]));exit;
 
 			$a['dp'] = $this->m_siswa->get_by(['id' =>$this->log_id]);
@@ -2226,7 +2135,32 @@ class Ujian_real extends MY_Controller {
 
 		}
 
-		
+	public function delete() {
+		$post = $this->input->post();
+
+		$this->db->trans_begin();
+		$deleted = $this->db->where('id', $post['id'])->delete('tb_ujian');
+		if ($this->db->trans_status() === FALSE) {
+			$this->db->trans_rollback();
+		}
+		else {
+			$this->db->trans_commit();
+		}
+
+		if($deleted) {
+			$this->sendAjaxResponse([
+				'status' => TRUE,
+				'msg' => 'Data Ujian Berhasil dihapus'
+			], 200);
+		}
+		else {
+			$this->sendAjaxResponse([
+				'status' => FALSE,
+				'msg' => 'Data Ujian Gagal dihapus'
+			], 500);	
+		}
+
+	}
 
 	public function multi_delete(){
 

@@ -260,6 +260,25 @@
 			pageLoad(1,'materi/page_load');
 		}, 500));
 
+		$(document).on('click','.hapus-materi',function(){
+			$.ajax({
+				type : 'post',
+				url  : '<?=base_url('materi/deleteMapel');?>',
+				dataType : 'json',
+				data : {
+					id_materi : $(this).data('materi')
+				},
+				success:function(response){
+					if(response.delete == true){
+						alert('Berhasil Menghapus Materi');
+					}else{
+						alert('Gagal Menghapus Materi');
+					}
+					pageLoad(1,'materi/page_load');
+				}
+			})
+		});
+
 		
 	})
 	/* Function Declarations */
@@ -366,7 +385,9 @@
 				limit : $('#limit').val(),
 				filter : $('#filter').val(),
 				search : $('#search').val(),
-				id_mapel : '<?=$mapel->id;?>'
+				id_mapel : '<?=$mapel->id;?>',
+				id_guru : '<?=$id_guru;?>',
+				id_kelas : '<?=$id_kelas;?>'
 			},
 			success:function(response){
 				$('#content-view').html(response);

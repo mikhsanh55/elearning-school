@@ -53,7 +53,7 @@
 
 
 
-						<label for="id_kelas">Kelas:</label>
+						<label for="id_kelas">Kelas<span class="text-danger">*</span></label>
 
 						<select id="id_kelas" name="id_kelas" class="form-control">
 
@@ -77,7 +77,7 @@
 
 				<div class="form-group">
 
-					<label for="pwd">Materi:</label>
+					<label for="pwd">Materi<span class="text-danger">*</span></label>
 
 					<select id="materi" name="materi" class="form-control">
 
@@ -89,7 +89,7 @@
 
 				<div class="form-group">
 
-					<label for="pwd">Warna:</label>
+					<label for="pwd">Warna<span class="text-danger">*</span></label>
 
 					<select name="color" class="form-control">
 
@@ -117,7 +117,7 @@
 
 				<div class="form-group">
 
-					<label for="pwd">Keterangan:</label>
+					<label for="pwd">Keterangan</label>
 
 					<textarea name="keterangan" class="form-control"></textarea>
 
@@ -125,13 +125,13 @@
 
 				<div class="form-group">
 
-					<label for="pwd">Mulai:</label>
+					<label for="pwd">Waktu Mulai<span class="text-danger">*</span></label>
 
 					<input type="date" class="" id="start_date" name="start_date">
 
 					<input type="time" class="" id="start_time" name="start_time">
 
-					<label for="pwd">Selesai:</label>
+					<label for="pwd">Waktu Selesai<span class="text-danger">*</span></label>
 
 					<input type="date" class="" id="end_date" name="end_date">
 					<input type="time" class="" id="end_time" name="end_time">
@@ -220,7 +220,7 @@
 
 				success:function(response){
 
-					window.location = '<?=base_url('jadwal');?>'
+					window.location = '<?=base_url();?>' + response.url
 
 				}
 

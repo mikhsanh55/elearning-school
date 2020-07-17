@@ -81,7 +81,7 @@ class Kelas extends MY_Controller
 
 		$data = array(
 
-			'searchFilter' => array( 'Nama Kelas')
+			'searchFilter' => array('Kelas', 'Wali Kelas', 'Mata Pelajaran')
 
 		);
 
@@ -232,15 +232,29 @@ class Kelas extends MY_Controller
   	$where = [];
 
   	$where['dmapel.id_guru'] = $this->session->admin_konid;
+  	
+	if(!empty($post['search'])) {
+		switch($post['filter']) {
+			case 0:
+				$where["(lower(kls.nama) like '%" . strtolower($post['search']) . "%' )"] = null;
+			break;
+			case 1: 
+				$where["(lower(gr.nama) like '%" . strtolower($post['search']) . "%' )"] = null;
+			break;
+			case 2: 
+				$where["(lower(mp.nama) like '%" . strtolower($post['search']) . "%' )"] = null;
+			break;
+		}	
+	}
 
-  	// print_r($this->session->admin_konid);exit;
-  	$paginate = $this->m_kelas->paginate_guru(1, $limit, $where);
-  	// print_r($paginate);exit;
-  	$data['paginate'] = $paginate;
+	$paginate = $this->m_kelas->paginate_guru(1, $limit, $where);
+
+	$data['paginate'] = $paginate;
 
 	$data['paginate']['url']	= 'kelas/page_load_guru/1';
 
 	$data['paginate']['search'] = 'lookup_key';
+
 
 	$data['page_start'] = $paginate['counts']['from_num'];
 
@@ -404,6 +418,7 @@ class Kelas extends MY_Controller
 		}
 
 		$paginate = $this->m_kelas->paginate_siswa($pg,$where,$limit);
+	
 		// print_r($paginate);exit;
 		$data['paginate'] = $paginate;
 
@@ -444,7 +459,7 @@ class Kelas extends MY_Controller
   		
 		$data = array(
 
-			'searchFilter' 	=> array('Nama','NIS', 'Kelas'),
+			'searchFilter' 	=> array('Nama','NIS'),
 
 			'kelas' 		=> $this->m_kelas->get_join_by(['kls.id'=>$post['id']]),
 
@@ -496,7 +511,7 @@ class Kelas extends MY_Controller
 
 		$where["akun.instansi"] = $this->akun->instansi;
 		$where["akun.is_graduated"] = 0;
-		$where["(dkls.id_kelas = ".$post['id_kelas']." OR dkls.id_kelas is null)"] = NULL;
+		// $where["(dkls.id_kelas = ".$post['id_kelas']." OR dkls.id_kelas is null)"] = NULL;
 
 
  
@@ -535,7 +550,7 @@ class Kelas extends MY_Controller
 		$data['id_kelas'] = $post['id_kelas'];
 
 
-
+		// print_r($this->db->last_query());exit;
 
 
 		$this->load->view('kelas/table_peserta',$data);

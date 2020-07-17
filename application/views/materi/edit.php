@@ -118,7 +118,7 @@
                     <br><br><br><br>
                     <div class="row container mx-auto">
                         <div class="col-sm-12 mx-auto">
-                            <button class="btn btn-primary mb-4" id="update-materi-btn" type="submit">Update Materi! <i id="spin-icon" class="ml-2 hide fas fa-spinner"></i></button>
+                            <button class="btn btn-primary bnt-block mb-4" id="update-materi-btn" type="submit">Update Materi <i id="spin-icon" class="ml-2 hide fas fa-spinner"></i></button>
                             <br>
                              <div class="progress d-none mt-4" id="progress-container">
                                  <div id="progressBar" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
