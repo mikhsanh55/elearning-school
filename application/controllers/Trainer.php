@@ -590,4 +590,25 @@ class Trainer extends MY_Controller {
 
 	}
 
+	public function update_profile() {
+		$post = $this->input->post();
+		$update = $this->m_guru->update([
+			$post['key'] => $post['value']
+		], ['id' => $post['id']]);		
+
+		if($update) {
+			$this->sendAjaxResponse([
+				'status' => TRUE,
+				'msg' => 'Update data profile berhasil',
+				'value' => $post['value']
+			], 200);
+		}
+		else {
+			$this->sendAjaxResponse([
+				'status' => FALSE,
+				'msg' => 'Update data profile gagal'
+			], 500);
+		}
+	}
+
 }
