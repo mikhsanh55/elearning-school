@@ -831,4 +831,78 @@ class Pengusaha extends MY_Controller {
 			], 500);
 		}
 	}
+
+	public function update_profile() {
+		$post = $this->input->post();
+		$update = $this->m_siswa->update([
+			$post['key'] => $post['value']
+		], ['id' => $post['id']]);		
+
+		if($update) {
+			$this->sendAjaxResponse([
+				'status' => TRUE,
+				'msg' => 'Update data profile berhasil',
+				'value' => $post['value']
+			], 200);
+		}
+		else {
+			$this->sendAjaxResponse([
+				'status' => FALSE,
+				'msg' => 'Update data profile gagal'
+			], 500);
+		}
+	}
+
+	public function update_photo() {
+		$post = $this->input->post();
+		if($_FILES['photo']['name'] == NULL) {
+			$this->sendAjaxResponse([
+				'status' => FALSE,
+				'msg' => 'Harap upload photo!'
+			], 400);
+		}
+		else {
+			$config['upload_path']          = './upload/siswa_photo/';
+		    $config['allowed_types']        = 'gif|jpg|png|jpeg|svg';
+		    $config['file_name']            = 'avatar-' . uniqid();
+		    $config['overwrite']			= true;
+		    $config['max_size']             = 6024; // 1MB
+			$this->load->library('upload', $config);
+
+			if(!$this->upload->do_upload('photo')) {
+				$this->sendAjaxResponse([
+					'status' => FALSE,
+					'msg' => 'Gagal upload photo!',
+					'data' => $this->upload->display_errors()
+				], 500);		
+			}
+			else {
+				// Get data photo
+				$data = $this->m_siswa->get_by(['id' => $post['id']]);
+				
+				if(file_exists($data->photo) && !empty($data->photo)) {
+					unlink($data->photo);
+				}
+
+				$path = 'upload/siswa_photo/'.$this->upload->data('file_name');
+				$update = $this->m_siswa->update(['photo' => $path], ['id' => $post['id']]);
+
+				if($update) {
+					$this->sendAjaxResponse([
+					'status' => TRUE,
+						'msg' => 'Update data profile berhasil',
+						'url' => base_url('upload/siswa_photo/').$this->upload->data('file_name')
+					], 200);
+				}
+				else {
+					unlink($path);
+					$this->sendAjaxResponse([
+						'status' => FALSE,
+						'msg' => $this->upload->display_errors(),
+					], 500);				
+				}
+			}
+		}
+	}
+
 }

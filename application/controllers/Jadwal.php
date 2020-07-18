@@ -309,9 +309,9 @@ class Jadwal extends MY_Controller {
 
 
 
-		$this->m_jadwal->update($data,array('id'=>$post['id'], 'url' => $url));
+		$this->m_jadwal->update($data,array('id'=>$post['id']));
 
-		echo json_encode(array('result'=>true));
+		echo json_encode(array('result'=>true,'url' => $url));
 
 	}
 
