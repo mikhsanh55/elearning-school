@@ -190,7 +190,8 @@ class Jadwal extends MY_Controller {
 		$kelas = $this->m_kelas->get_by(['kls.id'=>$this->input->post('id_kelas')]);
 		$detail_mapel_kelas = $this->m_detail_kelas_mapel->get_many_by(['id_kelas' => $this->input->post('id_kelas')]);
 
-
+		// print_r($this->akun->id);
+		// print_r($kelas);exit;
 		if($this->log_lvl == 'guru') {
 			$get = $this->m_materi->get_many_by(array('id_trainer'=>$this->akun->id));
 		}

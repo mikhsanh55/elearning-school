@@ -28,8 +28,26 @@ class M_detail_kelas extends MY_Model {
 		->where($where)
 		->get()
 		->result();
-	
-      
+
+		return $get;
+	}
+
+	public function get_siswa($where = []) {
+		$get = $this->db->select('
+							dk.*,
+							sis.nama as nama_siswa,
+							sis.nrp,
+							sis.email,
+							kls.nama as nama_kelas
+						')
+		->from('tb_detail_kelas dk')
+		->join('tb_kelas kls', 'dk.id_kelas = kls.id', 'inner')
+		->join('m_siswa sis','sis.id=dk.id_peserta','left')
+		->order_by('sis.nama','asc')
+		->where($where)
+		->get()
+		->row();
+
 		return $get;
 	}
 

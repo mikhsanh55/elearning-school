@@ -57,7 +57,7 @@ class Kelas extends MY_Controller
 
 		$data = array(
 
-			'searchFilter' => array('Kelas','Mata Pelajaran'),
+			'searchFilter' => array('Kelas','Wali Kelas'),
 
 
 		);
@@ -283,7 +283,7 @@ class Kelas extends MY_Controller
 
 				case 1:
 
-					$where["(lower(mp.nama) like '%".strtolower($post['search'])."%' )"] = null;
+					$where["(lower(gr.nama) like '%".strtolower($post['search'])."%' )"] = null;
 
 					break;
 
