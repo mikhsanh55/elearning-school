@@ -236,7 +236,7 @@
 			pageLoad(1,'kelas/page_load');
 		});
 
-		$('#search').keyup(delay(function (e) {
+		$('#modal-search').keyup(delay(function (e) {
 			pageLoad(1,'kelas/page_load');
 		}, 500));
 
