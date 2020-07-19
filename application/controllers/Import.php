@@ -7,6 +7,7 @@ class Import extends MY_Controller {
         $this->load->model('m_guru');
         $this->load->model('m_ujian');
         $this->load->model('m_soal_ujian');
+        $this->load->model('m_soal_ujian_essay');
         $this->load->model('m_jurusan');
         $this->load->model('m_mapel');
         $this->load->model('m_kelas');
@@ -457,61 +458,78 @@ class Import extends MY_Controller {
         }
 
     }
+
+    public function soal_ujian_essay() {
+        $post = $this->input->post();
+        $id_ujian = $post['id_ujian'];
+        $back_url = base_url('ujian_essay/data_soal/') . $id_ujian;
+        include APPPATH.'third_party/PHPExcel/PHPExcel.php';
+
+        $config['upload_path'] = realpath('./upload/temp');
+        $config['allowed_types'] = 'xlsx|xls|csv';
+        $config['max_size'] = '10000';
+        $config['encrypt_name'] = true;
+
+        $p = $this->input->post();
+        $uri3 = $this->uri->segment(3);
+
+        $this->load->library('upload', $config);
+
+        if (!$this->upload->do_upload()) {
+            //upload gagal
+            $this->session->set_flashdata('notif', '<div class="alert alert-danger"><b>PROSES IMPORT GAGAL!</b> '.$this->upload->display_errors().'</div>');
+            //redirect halaman
+            redirect($back_url);
+        } else {
+
+            $data_upload = $this->upload->data();
+
+            $excelreader     = new PHPExcel_Reader_Excel2007();
+            $loadexcel         = $excelreader->load('./upload/temp/'.$data_upload['file_name']); // Load file yang telah diupload ke folder excel
+            $sheet             = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
+
+            $data = array();
+
+            $last_id = $this->db->order_by('id','desc')->limit(1)->get('m_soal_ujian_essay')->row();
+
+            if (!empty($last_id->id)) {
+                $last_id = $last_id->id;
+            }else{
+                $last_id = 1;
+            }
+
+            foreach($sheet as $index => $row){
+
+                if($index > 1){
+                    $data[$index] = array(
+                        'id_ujian'  => decrypt_url($post['id_ujian']),
+                        'bobot'     => (int)$row['C'],
+                        'soal'      => '<p>'.$row['B'].'</p>'
+                    );
+                }
+            }
+            // print_r(count($data));exit;
+
+            $this->db->insert_batch('m_soal_ujian_essay', $data);
+
+            // Update jumlah soal di tb_ujian
+            $data_ujian = $this->m_ujian->get_by(['uji.id' => decrypt_url($id_ujian)] );
+            $jumlah_soal = count( $this->m_soal_ujian_essay->get_many_by(['id_ujian' => decrypt_url($id_ujian)]) );
+            
+            $this->m_ujian->update([
+                'jumlah_soal' => $data_ujian->jumlah_soal + count($data)
+            ], ['id' => decrypt_url($id_ujian)]);
+
+            //delete file from server
+            unlink(realpath('./upload/temp/'.$data_upload['file_name']));
+
+            //upload success
+            $this->session->set_flashdata('notif', '<div class="alert alert-success"><b>PROSES IMPORT BERHASIL!</b> Data berhasil diimport!</div>');
+            //redirect halaman
+            redirect($back_url);
+
+        }
+   
+    }
     
 }
-
-
-
-
-// $p = $this->input->post();
-
-// $idx_baris_mulai = 3;
-// $idx_baris_selesai = 106;
-
-// $target_file = './upload/temp/';
-// $buat_folder_temp = !is_dir($target_file) ? @mkdir("./upload/temp/") : false;
-
-// move_uploaded_file($_FILES["import_excel"]["tmp_name"], $target_file.$_FILES['import_excel']['name']);
-
-// $file   = explode('.',$_FILES['import_excel']['name']);
-// $length = count($file);
-
-// if($file[$length -1] == 'xlsx' || $file[$length -1] == 'xls') {
-
-//     $tmp    = './upload/temp/'.$_FILES['import_excel']['name'];
-//     //Baca dari tmp folder jadi file ga perlu jadi sampah di server :-p
-    
-//     $this->load->library('excel');//Load library excelnya
-//     $read   = PHPExcel_IOFactory::createReaderForFile($tmp);
-//     $read->setReadDataOnly(true);
-//     $excel  = $read->load($tmp);
-
-//     $_sheet = $excel->setActiveSheetIndexByName('data');
-    
-//     $data = array();
-//     for ($j = $idx_baris_mulai; $j <= $idx_baris_selesai; $j++) {
-//         $bobot = $_sheet->getCell("A".$j)->getCalculatedValue();
-//         $soal = $_sheet->getCell("B".$j)->getCalculatedValue();
-//         $opsi_a = $_sheet->getCell("C".$j)->getCalculatedValue();
-//         $opsi_b = $_sheet->getCell("D".$j)->getCalculatedValue();
-//         $opsi_c = $_sheet->getCell("E".$j)->getCalculatedValue();
-//         $opsi_d = $_sheet->getCell("F".$j)->getCalculatedValue();
-//         $opsi_e = $_sheet->getCell("G".$j)->getCalculatedValue();
-//         $kunci = $_sheet->getCell("H".$j)->getCalculatedValue();
-
-//         if ($soal != "") {
-//             $data[] = "('".$p['id_guru']."', '".$p['id_mapel']."', '".$bobot."', '".$soal."', '#####".$opsi_a."', '#####".$opsi_b."', '#####".$opsi_c."', '#####".$opsi_d."', '#####".$opsi_e."', '".$kunci."', NOW(), 0, 0)"; 
-//         }
-//     }
-
-//     $strq = "INSERT INTO m_soal (id_guru, id_mapel, bobot, soal, opsi_a, opsi_b, opsi_c, opsi_d, opsi_e, jawaban, tgl_input, jml_benar, jml_salah) VALUES ";
-   
-//     $strq .= implode(",", $data).";";
-//     //echo $strq;
-//     //exit;
-
-//     $this->db->query($strq);
-// } else {
-//     exit('Bukan File Excel...');//pesan error tipe file tidak tepat
-// }
-// redirect('adm/m_soal');

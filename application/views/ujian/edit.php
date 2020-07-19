@@ -83,13 +83,13 @@
 							
 									<?php foreach ($kelas as $rows): ?>
 
-										<?php if ($edit->id_kelas == $rows->id): ?>
+										<?php if ($edit->id_kelas == $rows->id_kelas): ?>
 
-											<option value="<?=$rows->id;?>" selected><?= $rows->nama; ?></option>
+											<option value="<?=$rows->id_kelas;?>" selected><?= $rows->nama; ?></option>
 
 										<?php else: ?>
 
-											<option value="<?=$rows->id;?>"><?= $rows->nama; ?></option>
+											<option value="<?=$rows->id_kelas;?>"><?= $rows->nama; ?></option>
 
 
 										<?php endif ?>
@@ -110,7 +110,7 @@
 					<label for="">Mata Pelajaran</label>
 					<div class="rs-select2 js-select-simple select--no-search">
 						<select name="id_mapel" id="id_mapel" style="width: 100%;" required>
-				
+							<option value="<?= $edit->id_mapel ?>"><?= $edit->nama_mapel; ?></option>
 						</select>
 						<div class="select-dropdown"></div>
 					</div>
