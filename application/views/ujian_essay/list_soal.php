@@ -102,21 +102,21 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-4 form-group">
-							<label>Modul Pelatihan</label>
+						<div class="col-md-6 form-group">
+							<label>Mata Pelajaran</label>
 							<div class="label-isi" >
 								<?=$ujian->nama_mapel;?>
 								<div class="select-dropdown"></div>
 							</div>
 						</div>
-						<div class="col-md-4 form-group">
+						<!-- <div class="col-md-4 form-group">
 							<label>Trainer</label>
 							<div class="label-isi">
 								<?=$ujian->nama_guru;?>
 								<div class="select-dropdown"></div>
 							</div>
-						</div>
-						<div class="col-md-4 form-group">
+						</div> -->
+						<div class="col-md-6 form-group">
 							<label>Tipe Ujian</label>
 							<div class="label-isi">
 								<?=strtoupper($ujian->type_ujian);?>

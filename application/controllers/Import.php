@@ -97,12 +97,12 @@ class Import extends MY_Controller {
 
                         $this->db->insert('m_siswa', $data);
                         $inserted_id = $this->db->insert_id();
-
+                        $password = (!empty($row['I']) && $row['I'] != '') ? $this->encryption->encrypt($row['I']) : $this->encryption->encrypt($username);
                         $data_admin = [
                             // 'user_id'  => $username,
                             'user_id' => $row['C'],
                             'username' => $email,
-                            'password'  => empty($row['I']) ? $this->encryption->encrypt($username) : $this->encryption->encrypt($row['I']),
+                            'password'  => $password,
                             'level'    => 'siswa',
                             'kon_id'   => $inserted_id
                         ];

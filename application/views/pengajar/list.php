@@ -183,7 +183,7 @@
 							<td style="width: 25%">Username<span class="text-danger">*</span></td>
 							<td style="width: 75%"><input type="text" class="form-control" name="username" id="username" required></td>
 						</tr>
-						<tr>
+						<!-- <tr>
 							<td style="width: 25%">Mata Pelajaran<span class="text-danger">*</span></td>
 							<td style="width: 75%">
 								<div class="dropdown show">
@@ -199,14 +199,14 @@
 										<?php endforeach; ?>
 									</div>
 								</div>
-								<!-- <select name="mapel" id="mapel" required class="form-control">
+								<select name="mapel" id="mapel" required class="form-control">
 									<option value="0">Belum Ada</option>
 									<?php foreach($mapel as $row) : ?>
 										<option value="<?= $row->id; ?>"><?= ucwords($row->nama); ?></option>
 									<?php endforeach; ?>
-								</select> -->
+								</select> 
 							</td>
-						</tr>
+						</tr>-->
 						
 						
 						

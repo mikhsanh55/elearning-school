@@ -220,7 +220,6 @@ class Export extends MY_Controller {
 	    	['cell' => 'C', 'label' => 'NIP'],
 	    	['cell' => 'D', 'label' => 'Nama Guru'],
 	    	['cell' => 'E', 'label' => 'Username'],
-	    	['cell' => 'F', 'label' => 'Mata Pelajaran'],
 	    	['cell' => 'G', 'label' => 'Email'],
 	    	['cell' => 'H', 'label' => 'No Telpon'],
 	    	['cell' => 'I', 'label' => 'Password'],
@@ -238,7 +237,6 @@ class Export extends MY_Controller {
 
 	      $this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $data->nama);
 	      $this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $data->username);
-	      $this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, $data->nama_mapel == '' ? 'Belum Ada' : $data->nama_mapel);
 	      $this->excelObject->getActiveSheet()->SetCellValue('G' . $this->excelDataStart, $data->email);
 	      $this->excelObject->getActiveSheet()->SetCellValue('H' . $this->excelDataStart, $data->no_telpon);
 	      $this->excelObject->getActiveSheet()->SetCellValue('I' . $this->excelDataStart, $this->encryption->decrypt($data->password));
@@ -273,30 +271,31 @@ class Export extends MY_Controller {
 			['cell' => 'C', 'label' => 'Username'],
 			['cell' => 'D', 'label' => 'NIS'],
 			['cell' => 'E', 'label' => 'Kelas'],
-			['cell' => 'F', 'label' => 'Wali Kelas'],
-			['cell' => 'G', 'label' => 'Jenis Kelamin'],
-			['cell' => 'H', 'label' => 'Email'],
-			['cell' => 'I', 'label' => 'Alamat'],
+			['cell' => 'F', 'label' => 'Jenis Kelamin'],
+			['cell' => 'G', 'label' => 'Email'],
+			['cell' => 'H', 'label' => 'Alamat'],
 			// ['cell' => 'I', 'label' => 'Angkatan'],
-			['cell' => 'J', 'label' => 'No Telpon'],
-			['cell' => 'K', 'label' => 'Password'],
+			['cell' => 'I', 'label' => 'No Telpon'],
+			['cell' => 'J', 'label' => 'Password'],
 		];
 
 		// Write heading excel use method on MY_Controller.php
     	$this->excelWriteHeading();
-
+    	// print_r($this->excelDatas);exit;
 		$this->excelDataStart = 2;
 		foreach($this->excelDatas as $i => $data) {
+			$detail_kelas = $this->m_detail_kelas->get_siswa(['dk.id_peserta' => $data->id]);
+			$kelas = !empty($detail_kelas->nama_kelas) ? $detail_kelas->nama_kelas : NULL;
 			$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, $this->excelColumnNo);
 			$this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $data->nama);
 			$this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $data->username);
 			$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $data->nrp);
-			$this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $data->nama_kelas);
-			$this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, $data->nama_guru);
-			$this->excelObject->getActiveSheet()->SetCellValue('H' . $this->excelDataStart, $data->email);
-			$this->excelObject->getActiveSheet()->SetCellValue('I' . $this->excelDataStart, $data->alamat);
-			$this->excelObject->getActiveSheet()->SetCellValue('J' . $this->excelDataStart, $data->no_telpon);
-			$this->excelObject->getActiveSheet()->SetCellValue('K' . $this->excelDataStart, $this->encryption->decrypt($data->password));
+			$this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $kelas);
+			$this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, $data->nik);
+			$this->excelObject->getActiveSheet()->SetCellValue('G' . $this->excelDataStart, $data->email);
+			$this->excelObject->getActiveSheet()->SetCellValue('H' . $this->excelDataStart, $data->alamat);
+			$this->excelObject->getActiveSheet()->SetCellValue('I' . $this->excelDataStart, $data->no_telpon);
+			$this->excelObject->getActiveSheet()->SetCellValue('J' . $this->excelDataStart, $this->encryption->decrypt($data->password));
 			$this->excelDataStart++;
 			$this->excelColumnNo++;
 		}
@@ -324,12 +323,10 @@ class Export extends MY_Controller {
 
 		$this->excelCellsHeading = [
 			['cell' => 'A', 'label' => 'No'],
-			['cell' => 'B', 'label' => 'Nama Pengajar'],
-			['cell' => 'C', 'label' => 'Room'],
-			['cell' => 'D', 'label' => 'Mata Kuliah'],
-			['cell' => 'E', 'label' => 'Keterangan'],
-			['cell' => 'F', 'label' => 'Total Siswa'],
-			['cell' => 'G', 'label' => 'Lembaga'],
+			['cell' => 'B', 'label' => 'Wali Kelas'],
+			['cell' => 'C', 'label' => 'Kelas'],
+			['cell' => 'D', 'label' => 'Keterangan'],
+			['cell' => 'E', 'label' => 'Total Siswa'],
 		];
 
 		// Write heading excel use method on MY_Controller.php
@@ -343,17 +340,15 @@ class Export extends MY_Controller {
 			$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, $this->excelColumnNo);
 			$this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $data->nama_guru);
 			$this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $data->nama);
-			$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $data->nama_mapel);
-			$this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $data->keterangan);
-			$this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, $jml_siswa);
-			$this->excelObject->getActiveSheet()->SetCellValue('G' . $this->excelDataStart, $data->instansi);
+			$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $data->keterangan);
+			$this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $jml_siswa);
 
 			$this->excelDataStart++;
 			$this->excelColumnNo++;
 		}
 
 		// Create New File use method on MY_Controller.php
-		$this->excelFileName = "Data Room - " . date('m-d-Y') . ".xlsx";
+		$this->excelFileName = "Data Kelas - " . date('m-d-Y') . ".xlsx";
 		$this->excelDisplayOutput();
 
 		$this->excelColumnNo = 1;
