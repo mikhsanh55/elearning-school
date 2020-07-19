@@ -31,11 +31,14 @@
 				<td>
 					<?= $rows->type_ujian == 'uas' ? 'UAS' : ($rows->type_ujian == 'uts' ? 'UTS' : 'Ujian Harian') ?>		
 				</td>
-				<td><?=$rows->kelas;?></td>
+				<td></td>
 				<td><?=$rows->nama_ujian;?></td>
 				<td><?=$date;?></td>
 				<td class="opsi text-center" >
 					<?php if ($this->log_lvl != 'siswa'): ?>
+						<a href="javascript:void(0);" class="btn btn-primary btn-sm ml-2 mr-2 mb-2 show-kelas" data-guru="<?=$rows->id_guru;?>" data-ujian="<?=$rows->id;?>">
+							Tambah Kelas
+						</a>
 						<a href="<?=base_url('ujian_real/data_soal/'.encrypt_url($rows->id));?>" class="btn btn-primary btn-sm ml-2 mr-2 mb-2">
 							Soal PG
 						</a>

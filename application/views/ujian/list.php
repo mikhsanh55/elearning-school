@@ -147,6 +147,25 @@
 </div>
 </div>
 
+<div class="modal fade" id="list_kelas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-target=".bd-example-modal-sm">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Daftar Siswa</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="daftar-kelas"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!--/.row-box End-->
 <script src="<?= base_url(); ?>assets/js/jquery/jquery-3.3.1.min.js"></script>
@@ -175,6 +194,21 @@
 
 
 	})
+
+	$(document).on('click','.show-kelas',function(){
+		$.ajax({
+			type: 'POST',
+			url  : '<?php echo base_url() ?>' + 'ujian_real/daftar_kelas/',
+			data : {
+				id_ujian : $(this).data('ujian'),
+				id_guru : $(this).data('guru'),
+			},
+			success: function(res) {
+				$('#daftar-kelas').html(res)		;
+				$('#list_kelas').modal('show');
+			}			
+		});
+	});
 
 	function pageLoad(pg, url, search){
 		$.ajax({

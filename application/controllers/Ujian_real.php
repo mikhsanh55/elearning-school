@@ -26,6 +26,10 @@ class Ujian_real extends MY_Controller {
 		$this->load->model('m_ikut_ujian');
 		$this->load->model('m_ikut_ujian_essay');
 		$this->load->model('m_jurusan');
+
+		$this->load->model('m_detail_mapel');
+		
+		$this->load->model('m_kelas_ujian');
 		
 
 		$this->load->model('m_kelas');
@@ -88,10 +92,10 @@ class Ujian_real extends MY_Controller {
 		$tipe_ujian = array('uts'=>'UTS','uas'=>'UAS', 'harian' => 'Ulangan Harian');
 
 		if($this->log_lvl == 'admin' || $this->log_lvl == 'instansi' || $this->log_lvl == 'admin_instansi') {
-			$kelas = $this->m_kelas->get_many_by(['kls.id_instansi'=>$this->akun->instansi]);
+			$mapel = $this->m_detail_mapel->get_many_by(['guru.id_instansi'=>$this->akun->instansi]);
 		}
 		else if($this->log_lvl == 'guru') {
-			$kelas = $this->m_kelas->get_many_by(['kls.id_instansi'=>$this->akun->instansi]);
+			$mapel = $this->m_detail_mapel->get_many_by(['guru.id'=>$this->akun->id]);
 		}
 		
 		
@@ -101,7 +105,7 @@ class Ujian_real extends MY_Controller {
 
 			'tipe_ujian' => $tipe_ujian, 
 
-			'kelas' => $kelas
+			'mapel' => $mapel
 
 		);
 
@@ -134,12 +138,12 @@ class Ujian_real extends MY_Controller {
 		// 	$kelas = $this->m_kelas->get_all();
 
 		// }
+		
 		if($this->log_lvl == 'admin' || $this->log_lvl == 'instansi' || $this->log_lvl == 'admin_instansi') {
-			$kelas = $this->m_kelas->get_all(['kls.id_instansi' => $this->akun->instansi]);
+			$mapel = $this->m_detail_mapel->get_many_by(['guru.id_instansi'=>$this->akun->instansi]);
 		}
 		else if($this->log_lvl == 'guru') {
-			$kelas = $this->m_kelas->get_data_mapel(['kls.id_instansi' => $this->akun->instansi, 'dkmapel.id_guru' => $this->akun->id]);
-
+			$mapel = $this->m_detail_mapel->get_many_by(['guru.id'=>$this->akun->id]);
 		}
 		// print_r($mapel);exit;
 
@@ -149,7 +153,7 @@ class Ujian_real extends MY_Controller {
 
 			'tipe_ujian' => $tipe_ujian, 
 
-			'kelas' => $kelas,
+			'mapel' => $mapel,
 
 			'edit' => $this->m_ujian->get_by(['uji.id'=>$id])
 
@@ -255,12 +259,10 @@ class Ujian_real extends MY_Controller {
 	public function insert(){
 
 		$post = $this->input->post();
-		$mapel = explode('-',$post['id_mapel']);
-		$data = [
 
-			'id_kelas'		=> $post['id_kelas'],
-			'id_guru'		=> $mapel[1],
-			'id_mapel'		=> $mapel[0],
+		$data = [
+			'id_guru'		=> 0,
+			'id_mapel'		=> $post['id_mapel'],
 			'type_ujian'  	=> $post['type_ujian'],
 			'nama_ujian'  	=> $post['nama_ujian'],
 			'jumlah_soal'  	=> 0,
@@ -274,7 +276,7 @@ class Ujian_real extends MY_Controller {
 
 		];
 		$data['id_instansi'] = $this->akun->instansi;
-		if($post['type_ujian'] == 'uts') {
+		if($post['type_ujian'] == 'harian') {
 			$data['izin'] = 1;
 		}
 		if ($this->log_lvl == 'guru') {
@@ -314,13 +316,12 @@ class Ujian_real extends MY_Controller {
 		$post = $this->input->post();
 
 
-		$mapel = explode('-',$post['id_mapel']);
+	
 		$data = [
 
-			'id_kelas'		=> $post['id_kelas'],
 
-			'id_guru'		=> $mapel[1],
-			'id_mapel'		=> $mapel[0],
+			'id_guru'		=> 0,
+			'id_mapel'		=> $post['id_mapel'],
 
 			'type_ujian'  	=> $post['type_ujian'],
 
@@ -343,10 +344,6 @@ class Ujian_real extends MY_Controller {
 			'izin'			=> 1
 
 		];
-
-		if($post['type_ujian'] == 'uts') {
-			$data['izin'] = 1;
-		}
 
 		if ($this->log_lvl == 'guru') {
 
@@ -425,19 +422,23 @@ class Ujian_real extends MY_Controller {
 
 		$where['uji.id_instansi'] = $this->akun->instansi;
 
-
-
 		if ($this->log_lvl == 'guru') {
 
 			$where['uji.id_guru'] = $this->akun->id;
-			$id_kelas = $this->m_kelas->get_data_mapel(['dkmapel.id_guru' => $this->akun->id, 'kls.id_instansi' => $this->akun->instansi]);
-			if(empty($id_kelas)) {
-				die("Kelas kosong");
-			}
-			// print_r($id_kelas);exit;
-			$where['uji.id_kelas'] = $id_kelas[0]->id_kelas;
 
 		}
+
+		// if ($this->log_lvl == 'guru') {
+
+		// 	$where['uji.id_guru'] = $this->akun->id;
+		// 	$id_kelas = $this->m_kelas->get_data_mapel(['dkmapel.id_guru' => $this->akun->id, 'kls.id_instansi' => $this->akun->instansi]);
+		// 	if(empty($id_kelas)) {
+		// 		die("Kelas kosong");
+		// 	}
+		// 	// print_r($id_kelas);exit;
+		// 	$where['uji.id_kelas'] = $id_kelas[0]->id_kelas;
+
+		// }
 
 		
 
@@ -692,13 +693,9 @@ class Ujian_real extends MY_Controller {
 
 
 			$p = $this->input->post();
-<<<<<<< HEAD
-			// print_r($p);exit;
-=======
 			// $data_ujian = $this->m_ujian->get_by(['uji.id' => $p['id_ujian']]);
 			// $jumlah_soal = count( $this->m_soal_ujian->get_many_by(['id_ujian' => $p['id_ujian']]) );
-			// print_r([$data_ujian, $jumlah_soal]);exit;
->>>>>>> production
+			// print_r([$data_ujian, $ju>>>>>>> production
 
 			$pembuat_soal = ($this->log_lvl == "admin") ? $p['id_guru'] : $this->log_id;
 
@@ -1148,8 +1145,8 @@ class Ujian_real extends MY_Controller {
 										")
 
 								->from('tb_ujian a')
-
-								->join('tb_kelas kls', 'kls.id = a.id_kelas', 'left')
+								->join('tb_kelas_ujian klsuji', 'klsuji.id_ujian = a.id', 'left')
+								->join('tb_kelas kls', 'kls.id = klsuji.id_kelas', 'left')
 
 								->join(' m_mapel c','a.id_mapel = c.id', 'left')
 
@@ -2245,6 +2242,113 @@ class Ujian_real extends MY_Controller {
 
 		
 	}
+
+	public function daftar_kelas(){
+		$post = $this->input->post();
+		
+			
+		  $data = array(
+  
+			  'searchFilter' 	=> array('Kelas'),
+  
+			  'id_ujian' 		=> $post['id_ujian']
+  
+		  );
+  
+
+			$this->load->view('ujian/setting_kelas',$data);
+		  
+  
+	  }
+
+	  public function page_load_kelas($pg = 1){
+
+		$post = $this->input->post();
+
+		$limit = $post['limit'];
+
+		$where = [];
+
+		if ($post['search']) {
+			switch($post['filter']) {
+				case 0:
+					$where["(lower(kls.nama) like '%".strtolower($post['search'])."%' )"] = null;
+				break;
+			}
+
+		}
+
+		if($this->log_lvl == 'guru'){
+			$where['klsmp.id_guru'] = $this->akun->id;
+		}
+
+		$where['kls.id_instansi'] = $this->akun->instansi;
+
+		$paginate = $this->m_kelas_ujian->paginate_join_kelas($pg,$where,$limit);
+
+		$data['paginate'] = $paginate;
+
+		$data['paginate']['url']	= 'ujian_real/page_load_kelas';
+
+		$data['paginate']['search'] = 'lookup_key';
+
+    	$data['page_start'] = $paginate['counts']['from_num'];
+
+    
+
+		$data['id_ujian'] = $post['id_ujian'];
+
+
+		//print_r($this->db->last_query());exit;
+
+
+		$this->load->view('ujian/table_kelas',$data);
+
+		$this->generate_page($data);
+
+  }
+  
+
+  public function update_kelas_ikut(){
+
+	$post = $this->input->post(null,true);
+
+
+
+	$data = array(
+
+		'id_ujian'    => $post['id_ujian'], 
+		'id_kelas'    => $post['id_kelas'], 
+	);
+
+
+
+	if ($post['aktif'] == 1) {
+
+		$this->m_kelas_ujian->insert($data);
+
+	}else{
+
+		$this->m_kelas_ujian->delete($data);
+
+	}
+
+
+
+	$json = array(
+
+		'id_ujian'    => $post['id_ujian'], 
+		'kelas'         => $post['id_kelas'], 
+
+	);
+
+
+
+	echo json_encode($json);
+
+
+
+}
 
 
 

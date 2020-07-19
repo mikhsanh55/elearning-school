@@ -73,50 +73,25 @@
 
 				<div class="col-md-6 form-group">
 
-					<label for="lembaga">Kelas</label>
-
+				<label for="">Mata Pelajaran</label>
 					<div class="rs-select2 js-select-simple select--no-search">
-
-						<select name="id_kelas" id="id_kelas" style="width: 100%;" required>
-
-							<option disabled="disabled" selected="selected">Pilih</option>
-							
-									<?php foreach ($kelas as $rows): ?>
-
-										<?php if ($edit->id_kelas == $rows->id_kelas): ?>
-
-											<option value="<?=$rows->id_kelas;?>" selected><?= $rows->nama; ?></option>
-
-										<?php else: ?>
-
-											<option value="<?=$rows->id_kelas;?>"><?= $rows->nama; ?></option>
-
-
-										<?php endif ?>
-
-								<?php endforeach ?>
-
-						</select>
-
-						<div class="select-dropdown"></div>
-
-					</div>
+							<select name="id_mapel" id="id_mapel" style="width: 100%;" required>
+							<?php foreach ($mapel as $rows): ?>
+								<?php if($rows->id_mapel == $edit->id_mapel) : ?>
+									<option value="<?=$rows->id_mapel;?>" selected><?=$rows->nama_mapel;?></option>
+								<?php else: ?>
+									<option value="<?=$rows->id_mapel;?>"><?=$rows->nama_mapel;?></option>
+								<?php endif; ?>
+								
+							<?php endforeach;?>
+							</select>
+							<div class="select-dropdown"></div>
+						</div>
 
 				</div>
 
 			</div>
-			<div class="row">
-				<div class="col-md-6 col-sm-12 form-group">
-					<label for="">Mata Pelajaran</label>
-					<div class="rs-select2 js-select-simple select--no-search">
-						<select name="id_mapel" id="id_mapel" style="width: 100%;" required>
-							<option value="<?= $edit->id_mapel ?>"><?= $edit->nama_mapel; ?></option>
-						</select>
-						<div class="select-dropdown"></div>
-					</div>
-				</div>
-			</div>
-
+		
 
 
 			<div class="form-group">

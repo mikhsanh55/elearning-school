@@ -65,42 +65,21 @@
 				</div>
 
 				<div class="col-md-6 form-group">
-
-					<label for="lembaga">Kelas</label>
-
-					<div class="rs-select2 js-select-simple select--no-search">
-
-						<select name="id_kelas" id="id_kelas" style="width: 100%;" required>
-
-							<option disabled="disabled" selected="selected">Pilih</option>
-							
-								<?php foreach ($kelas as $rows): ?>
-
-									<option value="<?=$rows->id;?>"><?= $rows->nama;?></option>
-
-
-								<?php endforeach ?>
-							
-
-						</select>
-
-						<div class="select-dropdown"></div>
-
-					</div>
-
-				</div>
-
-			</div>
-			<div class="row">
-				<div class="col-md-6 col-sm-12 form-group">
 					<label for="">Mata Pelajaran</label>
 					<div class="rs-select2 js-select-simple select--no-search">
-						<select name="id_mapel" id="id_mapel" style="width: 100%;" required>
-						</select>
-						<div class="select-dropdown"></div>
-					</div>
+							<select name="id_mapel" id="id_mapel" style="width: 100%;" required>
+							<?php foreach ($mapel as $rows): ?>
+									<option value="<?=$rows->id_mapel;?>"><?=$rows->nama_mapel;?></option>
+							<?php endforeach;?>
+							</select>
+							<div class="select-dropdown"></div>
+						</div>
+
+
 				</div>
+
 			</div>
+
 
 
 
