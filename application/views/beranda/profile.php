@@ -4,8 +4,8 @@
 			<h2 class="p-title mt-2	">Profil Akun</h2>
 			<div class="row" id="profile-wrapper">
 				<div class="col-sm-12 col-md-6 col-lg-6 mt-2">
-					<?php if(!is_null($data->image) && file_exists($data->image)) { ?>
-						<img src="<?= $data->image; ?>" alt="Foto" class="img-thumbnail">
+					<?php if(!is_null($data->photo) && file_exists($data->photo)) { ?>
+						<img src="<?= $data->photo; ?>" alt="Foto" class="img-thumbnail">
 					<?php } else { ?>
 						<img src="<?= base_url('assets/img/avatar.jpeg') ?>" alt="Foto" class="img-thumbnail">
 					<?php } ?>
