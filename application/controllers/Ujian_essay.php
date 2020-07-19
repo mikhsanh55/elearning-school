@@ -2138,4 +2138,10 @@ class Ujian_essay extends MY_Controller {
 		}
 	}
 
+	public function import_soal($id_ujian) {
+		$data = [ 'id_ujian' => $id_ujian, 'back_url' => base_url('ujian_essay/data_soal/') . $id_ujian];
+
+		$this->render('ujian_essay/import_soal', $data);
+	}
+
 }

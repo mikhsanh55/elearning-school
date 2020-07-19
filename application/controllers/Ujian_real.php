@@ -154,7 +154,7 @@ class Ujian_real extends MY_Controller {
 
 		);
 		
-
+		// print_r($data);exit;
 		$this->render('ujian/edit',$data);
 
 	}

@@ -20,14 +20,14 @@ $uri4 = $this->uri->segment(4);
             <p class="mb-3">
                 <?php echo $this->session->flashdata('notif') ?>
             </p>
-            <form name="f_siswa" action="<?php echo $url_import;?>" id="f_siswa" enctype="multipart/form-data" method="post">
+            <form action="<?= $url_import;?>" id="form-soal-ujian-essay" enctype="multipart/form-data" method="post">
                 <input type="hidden" name="id_ujian" id="id" value="<?= $id_ujian; ?>">
                 <table class="table table-form">
     
                     <tr><td>File</td><td><input type="file" class="form-control col-md-12" name="userfile" required></td></tr>
                     <tr><td></td><td>
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Simpan</button>
-                        <a href="<?=$back_url;?>"  class="btn btn-default"><i class="fa fa-minus-circle"></i> Kembali</a>
+                        <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-upload"></i> Upload</button>
+                        <a href="<?=$back_url;?>"  class="btn btn-default btn-block"><i class="fa fa-minus-circle"></i> Kembali</a>
                     </td></tr>
                 </table>
             </form>
