@@ -1020,7 +1020,7 @@ class Ujian_essay extends MY_Controller {
 										")
 
 								->from('tb_ujian a')
-								->join(' m_mapel c','dmkls.id_mapel = c.id', 'left')
+								->join(' m_mapel c','a.id_mapel = c.id', 'left')
 								->where('a.id',decrypt_url($id_ujian))
 								->get()
 								->row_array();
