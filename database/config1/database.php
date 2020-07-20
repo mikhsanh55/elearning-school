@@ -75,9 +75,9 @@ $query_builder = TRUE;
 
 $db['development'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
+	'hostname' => 'db.dianglobal-tech.net',
 	'username' => 'globaltech_dev',
-	'password' => 'Globaltech_devadmin22-',
+	'password' => 'Dw1Sur@2020-sql=root&J4nG4nd18uk4nt4rd1C1dUk+password>Gl0bd-sql',
 	'database' => 'globaltech_dev',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

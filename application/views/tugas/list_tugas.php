@@ -119,7 +119,34 @@
 
 </div>
 </div>
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="disclaimer-tugas">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+		<!-- Head -->
+       	<div class="modal-header">
+	      <h5 class="modal-title" id="exampleModalLabel">Saya Berjanji</h5>
+	      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	        <span aria-hidden="true">&times;</span>
+	      </button>
+	    </div>
 
+    	<!-- Body -->
+    	<div class="modal-body">
+    		<p>
+    			Saya mengerjakan tugas ini dengan penuh kejujuran dan tanggung jawab. 
+Bila suatu saat diketahui tugas saya merupakan hasil plagiarisme atau menyontek, maka saya akan menerima segala konsekuensi/sanksi yang diberikan oleh bapak/ibu guru.
+    		</p>
+    	</div>
+    	<!-- Footer -->
+    	<div class="modal-footer">
+	       <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+	       <a href="" id="link-tugas" class="btn btn-primary">Saya Berjanji</a>
+	    </div>
+
+    </div>
+  </div>
+</div>
 
 <!--/.row-box End-->
 <script src="<?= base_url(); ?>assets/js/jquery/jquery-3.3.1.min.js"></script>
@@ -244,8 +271,10 @@
 		
 	})
 
-	$(document).on('click','.kirim-tugas',function(){
-			window.location = base_url + 'tugas/lampiran_siswa/' + $(this).data('id_tugas');
+	$(document).on('click','.kirim-tugas',function(self){
+		var urlTugas = base_url + 'tugas/lampiran_siswa/' + $(this).data('id_tugas')
+		$('#link-tugas').attr('href', urlTugas)
+		$('#disclaimer-tugas').modal('show')
 	})
 
 </script>
