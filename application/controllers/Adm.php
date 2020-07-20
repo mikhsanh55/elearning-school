@@ -97,7 +97,10 @@ class Adm extends MY_Controller {
 			$p1_md5 = $p->p1;
 			$p2_md5 = $p->p2;
 			$p3_md5 = $p->p3;
-			$cek_pass_lama = $this->m_admin->get_by(array('id'=>$this->session->userdata('admin_id'));
+			$cek_pass_lama = $this->m_admin->get_by(
+				array('id'=>$this->session->userdata('admin_id'))
+			);
+
 			if ($this->encryption->decrypt($cek_pass_lama->password) != $p1_md5) {
 				$ret['status'] = "error";
 				$ret['msg'] = "Password lama tidak sama...";
