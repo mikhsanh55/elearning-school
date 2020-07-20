@@ -507,6 +507,10 @@ class Jadwal extends MY_Controller {
 
 		$get = $this->m_jadwal->get_by(array('jwl.id'=>$this->input->post('id')));
 
+		$id_mapel = $get->mt_id_mapel;
+		$id_guru = $get->id_guru;
+		$id_kelas = $get->id_kelas;
+		$link_materi = base_url('Materi/lists/') . md5($id_mapel) . '/' . encrypt_url($id_guru) . '/' . encrypt_url($id_kelas);
 
 
 		if (!empty($get->start_date)) {
@@ -560,7 +564,7 @@ class Jadwal extends MY_Controller {
 			'waktu_mulai' => $time,
 
 			'waktu_selesai' => $time2, 
-
+			'link_materi' => $link_materi
 		);
 
 

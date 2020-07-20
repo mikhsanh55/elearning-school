@@ -11,6 +11,18 @@ class M_komen_materi extends MY_Model {
 		
 	}
 
+    public function get_join_jadwal($where = []) {
+        $get = $this->db->select('komen.*, IF(komen.id_trainer <> 0,(SELECT nama FROM m_guru WHERE id = komen.id_trainer),(SELECT nama FROM m_siswa WHERE id = komen.id_siswa)) as nama_lengkap, dk.id_peserta, dk.id_kelas
+            ')
+                        ->from('tb_komen_materi komen')
+                        ->join('tb_detail_kelas dk', 'komen.id_siswa = dk.id_peserta')
+                        ->where($where)
+                        ->order_by($this->order_by[0],$this->order_by[1])
+                        ->get()
+                        ->result();
+        return $get;
+    }
+
 	 public function get_all($where=array()){
         $get = $this->db->select('
 					        *,

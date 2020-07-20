@@ -999,8 +999,6 @@ class Ujian_essay extends MY_Controller {
 
 				WHERE a.id = '$id_ujian'")->row_array();*/
 
-
-
 			$a['du'] = $this->db->select("	
 
 										a.id, a.tgl_mulai, a.terlambat,a.izin, 
@@ -1022,17 +1020,9 @@ class Ujian_essay extends MY_Controller {
 										")
 
 								->from('tb_ujian a')
-
-								->join('tb_kelas kls','kls.id = a.id_kelas', 'left')
-
-								->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'left')
-
 								->join(' m_mapel c','dmkls.id_mapel = c.id', 'left')
-
 								->where('a.id',decrypt_url($id_ujian))
-
 								->get()
-
 								->row_array();
 
 

@@ -153,7 +153,7 @@
 		var auto_refresh = setInterval(
               function () {
 				load_page();
-            }, 5000);
+            }, 3000);
 	})
 
 	$('#file-start').change(function() {

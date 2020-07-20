@@ -1501,15 +1501,23 @@ class Materi extends MY_Controller
             $where['id'] = (!empty($get->id)) ? $get->id : null;
         }
 
-        $where['id_materi'] = $id;
+        $where['komen.id_materi'] = $id;
         $where['id_head']   = 0;
-
+        // print_r($this->log_id);exit;
         if ($this->log_lvl == 'siswa') {
             $id_trainer = null;
             $id_siswa   = $this->log_id;
+            $data_detail_kelas = $this->m_detail_kelas->get_siswa(['dk.id_peserta' => $this->log_id]);
+            $id_kelas = $data_detail_kelas->id_kelas;
+            $where['dk.id_kelas'] = $id_kelas;
+            $datas = $this->m_komen_materi->get_join_jadwal($where);
+            // print_r($this->db->last_query());exit;
+            
         } else {
             $id_trainer = $this->log_id;
             $id_siswa   = null;
+            // $data_detail_kelas = $this->m_detail_mapel->get_by(['id_guru' =>])
+            $datas = $this->m_komen_materi->get_many_by($where);
         }
         $cari = array(
             'id_materi'     => $id,
@@ -1520,12 +1528,12 @@ class Materi extends MY_Controller
 
         $data = array(
             'materi'     => $this->m_materi->get_by(array('id' => $id)),
-            'komentar'   => $this->m_komen_materi->get_many_by($where),
+            'komentar'   => $datas,
             'jadwal'     => $this->m_jadwal->get_by($cari),
             'id_trainer' => $id_trainer,
             'id_siswa'   => $id_siswa,
         );
-
+        // print_r($data['komentar']);exit;
         $this->load->view('materi/isi_konten_komen', $data);
     }
 

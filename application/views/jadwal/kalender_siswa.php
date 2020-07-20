@@ -195,6 +195,8 @@
                     
                     
                   </table>
+                  <div class="mt-3">
+                    <a href="${response.custom.link_materi}" class="btn btn-primary btn-sm btn-block">Mulai Belajar</a>
                 `;
                 $('#detail-kalendar').html(content);
           }
@@ -206,3 +208,20 @@
 
 </script>
 </body>
+<div class="modal" id="detail"  tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm" style="max-width: 400px !important;" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="head">Jadwal Kegiatan</h5>
+          
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="detail-kalendar">Modal body text goes here</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

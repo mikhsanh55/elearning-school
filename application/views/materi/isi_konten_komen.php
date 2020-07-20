@@ -120,7 +120,7 @@
 									<?php endif ?>
 								</div>
 							<?php $ke++; endforeach; endif;?>
-							<?php if (!empty($jadwal)): ?>
+							<!-- <?php if (!empty($jadwal)): ?>
 							<span class="balas">Balas</span>
 							<span class="errors errors-<?=$rows->id;?>"></span>
 							
@@ -142,7 +142,7 @@
 									</div>
 								</form>
 							</div>
-						<?php endif;?>
+						<?php endif;?> -->
 							<?php if ($cek == 0): ?>
 						<!-- 		<div class="balas">
 									<form class="form-balas" method="post" action="">
