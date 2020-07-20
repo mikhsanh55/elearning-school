@@ -97,10 +97,7 @@ class Adm extends MY_Controller {
 			$p1_md5 = $p->p1;
 			$p2_md5 = $p->p2;
 			$p3_md5 = $p->p3;
-			$cek_pass_lama = $this->m_admin->get_by(
-				array('id'=>$this->session->userdata('admin_id'))
-			);
-
+			$cek_pass_lama = $this->m_admin->get_by(array('id'=>$this->session->userdata('admin_id')));
 			if ($this->encryption->decrypt($cek_pass_lama->password) != $p1_md5) {
 				$ret['status'] = "error";
 				$ret['msg'] = "Password lama tidak sama...";
@@ -111,14 +108,17 @@ class Adm extends MY_Controller {
 				$ret['status'] = "error";
 				$ret['msg'] = "Password baru minimal terdiri dari 6 huruf..";
  			} else {
-				$this->m_admin->update(array('password'=>$this->encryption->encrypt($p3_md5)),array('id'=>$this->session->userdata('admin_id'));
+				$this->m_admin->update(
+					array('password'=>$this->encryption->encrypt($p3_md5)),
+					['id'=>$this->session->userdata('admin_id')]
+				);
 				$ret['status'] = "ok";
 				$ret['msg'] = "Password berhasil diubah...";
 			}
 			j($ret);
 			exit;
 		} else {
-			$data = $this->m_admin->get_by(array('id'=>$this->session->userdata('admin_id'));
+			$data = $this->m_admin->get_by(array('id'=>$this->session->userdata('admin_id')));
 			j($data);
 			exit;
 		}
