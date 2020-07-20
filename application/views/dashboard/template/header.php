@@ -104,6 +104,7 @@
    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
    <![endif]-->
   <script>
+    var base_url = "<?php echo base_url(); ?>";
     const createSess = {
       setItem:function(key, value) {
         return Promise.resolve().then(function() {
