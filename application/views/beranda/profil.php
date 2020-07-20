@@ -16,6 +16,7 @@
 
 		margin:auto;
 	}
+
 	.errors{
 
 		background: #ffc8bb;
@@ -31,12 +32,7 @@
 		width: 500px;
 
 		margin:auto;
-
-
-
 	}
-
-
 
 	.center {
 
@@ -63,37 +59,22 @@
         border:0px solid #000;
     }
 
-    .img-thumbnail{
-        width:100%;
-    }
-
-    .modal-content{
-        pointer-events: none;
-        width:50% !important;
-    }
-    .lSAction{
-        background : #000 !important;
-    }
-
     .fa-edit:hover {
         cursor:pointer;
     }
-    img.round {
-        border-radius:50%;
-        position: relative;
-    }
 
-    .img-wrapper.round:hover:after {
-        content:'';
-        position: absolute;
-        top:100px;
-        left: 100px;
-        display: block;
-        height: 100%;
-        width:100%;
-        background: rgba(0, 0, 0, 0.85);
-        z-index: 100;
-    }
+    @keyframes rot {
+      0% {
+          transform:rotate(0deg);
+      }
+      100% {
+          transform:rotate(360deg);
+      }
+  }
+  .spin-icon {
+      animation:rot 1s linear infinite;   
+  }
+
 </style>
 
 <div class="col-md-9 page-content">
@@ -117,7 +98,7 @@
 					<div class="panel-body">
 					<div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="container">
+        <div class="container">
             <ul id="lightslider">
             <?php foreach ($slide as $rows):?>
               <li data-thumb="<?=$patch.$rows->file;?>" data-src="<?=$patch.$rows->file;?>">
@@ -129,12 +110,16 @@
               </li> -->
             </ul>  
             </div>      
-            <br><br>
-            <div class="well well-sm mt-4 container">
+            <div class="well well-sm">
                 <div class="row">
+                    <!-- <div class="col-sm-6 col-md-4">
+                        <img src="http://placehold.it/380x500" alt="" class="img-rounded img-responsive" />
+                    </div> -->
+                    
                     <div class="col-sm-12 col-md-12">
-                        <input type="hidden" value="<?= $this->akun->id; ?>" id="id">
-                      <table class="table" id="info-user">
+                        <br><br>
+                            <input type="hidden" value="<?= $this->akun->id; ?>" id="id">
+                            <table class="table" id="info-user">
                             <tr>
                                 <th colspan="3" class="text-center text-uppercase font-weight-bold">
                                     <h3>Profil</h3>
@@ -235,7 +220,6 @@
                                 </td>
                             </tr>
                         </table>
-                        
 
                     </div>
                 </div>
@@ -262,8 +246,8 @@
 </div>
 
 <script type="text/javascript">
-    var imgObject, ext, size, enableExt
 	$(document).ready(function(){
+        var self
         $('#lightslider').lightSlider({
             item:1,
             slideMargin:0,
@@ -279,67 +263,7 @@
             $('#sliderModal').modal('show')
         })
 
-        $('#photo-file').change(function() {
-                imgObject = $(this)[0].files[0]
-                ext = imgObject.type.split('/')
-                size = imgObject.size
-                enableExt = ['jpeg', 'jpg', 'png', 'svg', 'gif']
-
-                ext = ext[ext.length - 1]
-
-                if(!enableExt.includes(ext)) {
-                    alert('Harap upload gambar!')
-                    $(this).val('')
-                    return false
-                }
-
-                if(size > 5000000) {
-                    alert('Gambar terlalu besar! maksimal 5 mb')
-                    $(this).val('')
-                    return false
-                }
-        })
-
-        $('#upload-photo').click(function(e) {
-            e.preventDefault()
-            var formData = new FormData(), self = this
-
-            if($('#photo-file').val() == '') {
-                alert('Harap upload photo terlebih dahulu')
-                return false
-            }
-
-            // Display loading
-            $(this).find('.fa-spinner').toggleClass('d-none')
-            $(this).find('.fa-upload').toggleClass('d-none')
-
-            // Set data image
-            formData.append('photo', imgObject)
-            formData.append('id', '<?= $this->akun->id; ?>')
-
-            $.ajax({
-                type: 'post',
-                url: "<?= base_url('pengusaha/update_photo') ?>",
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(res) {
-                    res = JSON.parse(res)
-                    $(self).find('.fa-spinner').toggleClass('d-none')
-                    $(self).find('.fa-upload').toggleClass('d-none')
-                    $('#avatar').prop('src', res.url)
-                },
-                error: function(e) {
-                    $(self).find('.fa-spinner').toggleClass('d-none')
-                    $(self).find('.fa-upload').toggleClass('d-none')
-                    alert('Upload Photo gagal!')
-                    console.error(e.responseText)
-                    return false
-                }
-            })
-        })
-
-         $('#info-user tr td:last-child ').on('click', function() {
+        $('#info-user tr td:last-child ').on('click', function() {
             $(this).children(':first').toggleClass('d-none')
             $(this).children(':last').toggleClass('d-none')
 
@@ -359,7 +283,7 @@
                 $(this).parent().next().find('.spin-icon').toggleClass('d-none')
                 $.ajax({
                     type: 'post',
-                    url: "<?= base_url('pengusaha/update_profile') ?>",
+                    url: "<?= base_url('trainer/update_profile') ?>",
                     data: {
                         id: $('#id').val(),
                         key: $(this).data('key'),

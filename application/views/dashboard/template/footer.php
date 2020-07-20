@@ -211,7 +211,7 @@ if ($this->uri->segment(2) == "m_soal" && $this->uri->segment(3) == "edit") {
     </div>
   </div>
 </div>
-
+<div id="siswa-modal"></div>
 </body>
 
 </html>

@@ -118,7 +118,7 @@ class Adm extends MY_Controller {
 			j($ret);
 			exit;
 		} else {
-			$data = $this->m_admin->get_by(array('id'=>$this->session->userdata('admin_id')));
+			$data = $this->m_admin->get_data_by(array('admin.id'=>$this->session->userdata('admin_id')));
 			j($data);
 			exit;
 		}
