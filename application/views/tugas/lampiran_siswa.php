@@ -55,12 +55,12 @@
             </div>
             <div class="col-md-4" style="border: 2px solid #f7f7f7; padding: 10px;">
                 <table border="0" style="padding: 5px;">
-                    <tr>
+                    <!-- <tr>
                         <th>Modul Pelatihan</th>
                     </tr>
                     <tr>
                         <td><?=$detail->nama_mapel;?></td>
-                    </tr>
+                    </tr> -->
                     <tr>
                         <th><?=$this->transTheme->guru;?></th>
                     </tr>

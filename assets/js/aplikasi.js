@@ -205,7 +205,7 @@ function timer4() {
 	var id_ujian = $("#id_ujian").val();
 	var statuse = $("#_statuse").val();
 	statuse = parseInt(statuse);
-
+	console.warn(id_ujian)
 	if (statuse == 1) {
 		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-success btn-sm" id="tbl_mulai" onclick="return konfirmasi_token4('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
 		
