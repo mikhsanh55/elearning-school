@@ -92,6 +92,7 @@ class Adm extends MY_Controller {
 		$uri4 = $this->uri->segment(4);
 		//var post from json
 		$p = json_decode(file_get_contents('php://input'));
+		$post = $this->input->post();
 		$ret = array();
 		if ($uri3 == "simpan") {
 			$p1_md5 = $p->p1;
@@ -108,12 +109,26 @@ class Adm extends MY_Controller {
 				$ret['status'] = "error";
 				$ret['msg'] = "Password baru minimal terdiri dari 6 huruf..";
  			} else {
-				$this->m_admin->update(
-					array('password'=>$this->encryption->encrypt($p3_md5)),
-					['id'=>$this->session->userdata('admin_id')]
-				);
-				$ret['status'] = "ok";
-				$ret['msg'] = "Password berhasil diubah...";
+				if(!is_null($p->id) && $p->id != FALSE) {
+					$update = $this->m_admin->update(
+						array('password'=>$this->encryption->encrypt($p3_md5)),
+						['id'=> (int)$p->id]
+					);
+					if($update) {
+						$ret['status'] = "ok";
+						$ret['msg'] = "Password berhasil diubah...";
+					}
+					else {
+						$ret['status'] = "error";
+						$ret['msg'] = "Gagal mengubah password - 500";
+					}
+					
+				} 
+				else {
+					$ret['status'] = "error";
+					$ret['msg'] = "Data User tidak ada";
+				}
+				
 			}
 			j($ret);
 			exit;
