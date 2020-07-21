@@ -1531,8 +1531,9 @@ class Materi extends MY_Controller
             $id_siswa   = $this->log_id;
             $data_detail_kelas = $this->m_detail_kelas->get_siswa(['dk.id_peserta' => $this->log_id]);
             $id_kelas = $data_detail_kelas->id_kelas;
-            $where['dk.id_kelas'] = $id_kelas;
-            $datas = $this->m_komen_materi->get_join_jadwal($where);
+            // $where['dk.id_kelas'] = $id_kelas;
+            // $datas = $this->m_komen_materi->get_join_jadwal($where);
+            $datas = $this->m_komen_materi->get_many_by($where);   
             // print_r($this->db->last_query());exit;
             
         } else {
