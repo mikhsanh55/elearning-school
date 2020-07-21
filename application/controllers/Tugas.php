@@ -109,7 +109,7 @@ class Tugas extends MY_Controller {
 		$post = $this->input->post();
 		$files = $_FILES;
 
-
+		print_r($_FILES['file']);exit;
 			$qty_attach = $_FILES['file']['name'];
 
 			$data = array(
