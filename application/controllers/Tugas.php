@@ -106,163 +106,175 @@ class Tugas extends MY_Controller {
 
 
 	public function insert(){
-		$post = $this->input->post();
-		$files = $_FILES;
-		print_r($post);exit;
-		// print_r('FILE');
-		// print_r($_FILES);exit;
-			$qty_attach = $_FILES['file']['name'];
+		try {
+			$post = $this->input->post();
+			$files = $_FILES;
+			// print_r($post);exit;
+			// print_r('FILE');
+			// print_r($_FILES);exit;
+				$qty_attach = $_FILES['file']['name'];
 
-			$data = array(
-				'id_kelas' => $post['kelas'], 
-				'id_mapel' => $post['mapel'],
-				'id_guru' => $post['guru'],
-				'keterangan' => $post['keterangan'],
-				'end_date' => date_default($post['end_date']).' '.$post['end_time'],
-			);
+				$data = array(
+					'id_kelas' => $post['kelas'], 
+					'id_mapel' => $post['mapel'],
+					'id_guru' => $post['guru'],
+					'keterangan' => $post['keterangan'],
+					'end_date' => date_default($post['end_date']).' '.$post['end_time'],
+				);
 
-			// if($this->log_lvl == 'guru') {
-			// 	$data['id_guru'] = $this->akun->id;
-			// }
-			$this->db->trans_start();
-			$kirim = $this->m_tugas->insert($data);
-			$last_id = $this->db->insert_id();
-
-
-			// if(!empty($qty_attach[0])) {
+				// if($this->log_lvl == 'guru') {
+				// 	$data['id_guru'] = $this->akun->id;
+				// }
+				$this->db->trans_start();
+				$kirim = $this->m_tugas->insert($data);
+				$last_id = $this->db->insert_id();
 
 
-			// 	for($i=0; $i < count($qty_attach); $i++)
-			// 	{           
+				// if(!empty($qty_attach[0])) {
 
-					$namafile = 'tugas-'.DATE('d-m-Y')."-".time().'-';
 
-					$config['upload_path']   = 'assets/tugas/attach/';
-					$config['allowed_types'] = 'xlsx|xls|pdf|pdfx|doc|docx|jpeg|jpg|png|zip|rar|ppt|pptx';
-					$config['max_size']      = 222220480;
-					$config['file_name']     = $namafile;
+				// 	for($i=0; $i < count($qty_attach); $i++)
+				// 	{           
 
-					$this->load->library('upload', $config);
-					$this->upload->initialize($config);
-					
+						$namafile = 'tugas-'.DATE('d-m-Y')."-".time().'-';
 
-					$_FILES['file']['name'] 		= $files['file']['name'];
-					$_FILES['file']['type']  		= $files['file']['type'];
-					$_FILES['file']['tmp_name']	= $files['file']['tmp_name'];
-					$_FILES['file']['error']		= $files['file']['error'];
-					$_FILES['file']['size']		= $files['file']['size'];    
-					$this->upload->initialize($config);
-					if ( ! $this->upload->do_upload('file') ){
-						$json = [
-							'status' => 0,
-							'msg'    => 'Upload file gagal!',
-							'info' => $this->upload->display_errors()
-						];
-						echo json_encode($json);
-						exit;
-					}else{
-						$upload_data = $this->upload->data();
-						$file_name = $upload_data['file_name'];
+						$config['upload_path']   = 'assets/tugas/attach/';
+						$config['allowed_types'] = 'xlsx|xls|pdf|pdfx|doc|docx|jpeg|jpg|png|zip|rar|ppt|pptx';
+						$config['max_size']      = 222220480;
+						$config['file_name']     = $namafile;
 
-						$attach = array(
-							'id_tugas' => $last_id,
-							'file'     => $upload_data['file_name'],
-							'format'   => $upload_data['file_ext']
-						);
-					}
+						$this->load->library('upload', $config);
+						$this->upload->initialize($config);
+						
+
+						$_FILES['file']['name'] 		= $files['file']['name'];
+						$_FILES['file']['type']  		= $files['file']['type'];
+						$_FILES['file']['tmp_name']	= $files['file']['tmp_name'];
+						$_FILES['file']['error']		= $files['file']['error'];
+						$_FILES['file']['size']		= $files['file']['size'];    
+						$this->upload->initialize($config);
+						if ( ! $this->upload->do_upload('file') ){
+							$json = [
+								'status' => 0,
+								'msg'    => 'Upload file gagal!',
+								'info' => $this->upload->display_errors()
+							];
+							echo json_encode($json);
+							exit;
+						}else{
+							$upload_data = $this->upload->data();
+							$file_name = $upload_data['file_name'];
+
+							$attach = array(
+								'id_tugas' => $last_id,
+								'file'     => $upload_data['file_name'],
+								'format'   => $upload_data['file_ext']
+							);
+						}
+					// }
+
+					$this->db->insert('tb_tugas_attachment',$attach);
 				// }
 
-				$this->db->insert('tb_tugas_attachment',$attach);
-			// }
+				$this->db->trans_complete();
 
-			$this->db->trans_complete();
+				$json = [
+					'status' => true,
+					'msg'    => 'success',
+					'info' => NULL
+				];
+				echo json_encode($json);
+				exit;
+					
+			} catch (Exception $e) {
+				$this->sendAjaxResponse(['error' => $e], 500);
+			}
+		}
 
-			$json = [
-				'status' => true,
-				'msg'    => 'success',
-				'info' => NULL
-			];
-			echo json_encode($json);
-			exit;
-	}
+		public function update(){
+			try {
+				$post = $this->input->post();
+				$files = $_FILES;
+				// print_r($post);exit;
+				
+				$qty_attach = $_FILES['file']['name'];
 
-	public function update(){
-		$post = $this->input->post();
-		$files = $_FILES;
-		print_r($post);exit;
-		
-		$qty_attach = $_FILES['file']['name'];
-
-		
-
-		$data = array(
-			'id_kelas' => $post['kelas'], 
-			'keterangan' => $post['keterangan'],
-			'end_date' => date_default($post['end_date']).' '.$post['end_time'],
-		);
-
-		// if($this->log_lvl == 'guru') {
-		// 	$data['id_guru'] = $this->akun->id;
-		// }
-		$this->db->trans_start();
-		$kirim = $this->m_tugas->update($data,array('id'=>$post['id']));
-
-		// if(!empty($qty_attach[0])) {
-
-
-		// 	for($i=0; $i < count($qty_attach); $i++)
-		// 	{           
-
-				$namafile = 'tugas-'.DATE('d-m-Y')."-".time().'-';
-
-				$config['upload_path']   = 'assets/tugas/attach/';
-				$config['allowed_types'] = 'pdf|pdfx|doc|docx|jpeg|jpg|png|zip|rar|ppt|pptx|xlsx|xls';
-				$config['max_size']      = 22222220480;
-				$config['file_name']     = $namafile;
-
-				$this->load->library('upload', $config);
-				$this->upload->initialize($config);
 				
 
-				$_FILES['file']['name'] 		= $files['file']['name'];
-				$_FILES['file']['type']  		= $files['file']['type'];
-				$_FILES['file']['tmp_name']	= $files['file']['tmp_name'];
-				$_FILES['file']['error']		= $files['file']['error'];
-				$_FILES['file']['size']		= $files['file']['size'];    
+				$data = array(
+					'id_kelas' => $post['kelas'], 
+					'keterangan' => $post['keterangan'],
+					'end_date' => date_default($post['end_date']).' '.$post['end_time'],
+				);
 
-				$this->upload->initialize($config);
-				if ( ! $this->upload->do_upload('file') ){
-					$json = [
-						'status' => FALSE,
-						'msg'    => 'Upload file gagal!',
-						'info' => $this->upload->display_errors()
-					];
-					echo json_encode($json);
-					exit;
-				}else{
-					$upload_data = $this->upload->data();
-					$file_name = $upload_data['file_name'];
+				// if($this->log_lvl == 'guru') {
+				// 	$data['id_guru'] = $this->akun->id;
+				// }
+				$this->db->trans_start();
+				$kirim = $this->m_tugas->update($data,array('id'=>$post['id']));
 
-					$attach = array(
-						'id_tugas' => $post['id'],
-						'file'     => $upload_data['file_name'],
-						'format'   => $upload_data['file_ext']
-					);
-				}
-			// }
+				// if(!empty($qty_attach[0])) {
 
-			$this->db->insert('tb_tugas_attachment',$attach);
-		// }
 
-		$this->db->trans_complete();
+				// 	for($i=0; $i < count($qty_attach); $i++)
+				// 	{           
 
-		$json = [
-			'status' => true,
-			'msg'    => 'success',
-			'info' => NULL
-		];
-		echo json_encode($json);
-		exit;
+						$namafile = 'tugas-'.DATE('d-m-Y')."-".time().'-';
+
+						$config['upload_path']   = 'assets/tugas/attach/';
+						$config['allowed_types'] = 'pdf|pdfx|doc|docx|jpeg|jpg|png|zip|rar|ppt|pptx|xlsx|xls';
+						$config['max_size']      = 22222220480;
+						$config['file_name']     = $namafile;
+
+						$this->load->library('upload', $config);
+						$this->upload->initialize($config);
+						
+
+						$_FILES['file']['name'] 		= $files['file']['name'];
+						$_FILES['file']['type']  		= $files['file']['type'];
+						$_FILES['file']['tmp_name']	= $files['file']['tmp_name'];
+						$_FILES['file']['error']		= $files['file']['error'];
+						$_FILES['file']['size']		= $files['file']['size'];    
+
+						$this->upload->initialize($config);
+						if ( ! $this->upload->do_upload('file') ){
+							$json = [
+								'status' => FALSE,
+								'msg'    => 'Upload file gagal!',
+								'info' => $this->upload->display_errors()
+							];
+							echo json_encode($json);
+							exit;
+						}else{
+							$upload_data = $this->upload->data();
+							$file_name = $upload_data['file_name'];
+
+							$attach = array(
+								'id_tugas' => $post['id'],
+								'file'     => $upload_data['file_name'],
+								'format'   => $upload_data['file_ext']
+							);
+						}
+					// }
+
+					$this->db->insert('tb_tugas_attachment',$attach);
+				// }
+
+				$this->db->trans_complete();
+
+				$json = [
+					'status' => true,
+					'msg'    => 'success',
+					'info' => NULL
+				];
+				echo json_encode($json);
+				exit;
+			} catch (Exception $e) {
+				$this->sendAjaxResponse(['error' => $e], 500);
+			}
+			
+		
+
 
 	}
 
