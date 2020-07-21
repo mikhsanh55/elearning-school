@@ -108,94 +108,97 @@ class Tugas extends MY_Controller {
 	public function insert(){
 		$post = $this->input->post();
 		$files = $_FILES;
-		$qty_attach = $_FILES['attach']['name'];
-		
-		$this->db->trans_start();
 
-		$data = array(
-			'id_kelas' => $post['kelas'], 
-			'id_mapel' => $post['mapel'],
-			'id_guru' => $post['guru'],
-			'keterangan' => $post['keterangan'],
-			'end_date' => date_default($post['end_date']).' '.$post['end_time'],
-		);
-
-		// if($this->log_lvl == 'guru') {
-		// 	$data['id_guru'] = $this->akun->id;
-		// }
-
-		$kirim = $this->m_tugas->insert($data);
-		$last_id = $this->db->insert_id();
+		if(isset($_FILES['attach'])) {
 
 
-		if(!empty($qty_attach[0])) {
+			$qty_attach = $_FILES['attach']['name'];
+
+			$data = array(
+				'id_kelas' => $post['kelas'], 
+				'id_mapel' => $post['mapel'],
+				'id_guru' => $post['guru'],
+				'keterangan' => $post['keterangan'],
+				'end_date' => date_default($post['end_date']).' '.$post['end_time'],
+			);
+
+			// if($this->log_lvl == 'guru') {
+			// 	$data['id_guru'] = $this->akun->id;
+			// }
+			$this->db->trans_start();
+			$kirim = $this->m_tugas->insert($data);
+			$last_id = $this->db->insert_id();
 
 
-			for($i=0; $i < count($qty_attach); $i++)
-			{           
+			if(!empty($qty_attach[0])) {
 
-				$namafile = 'tugas-'.DATE('d-m-Y')."-".time().'-'.$i;
 
-				$config['upload_path']   = 'assets/tugas/attach/';
-				$config['allowed_types'] = 'xlsx|xls|pdf|pdfx|doc|docx|jpeg|jpg|png|zip|rar|ppt|pptx';
-				$config['max_size']      = 222220480;
-				$config['file_name']     = $namafile;
+				for($i=0; $i < count($qty_attach); $i++)
+				{           
 
-				$this->load->library('upload', $config);
-				$this->upload->initialize($config);
-				
+					$namafile = 'tugas-'.DATE('d-m-Y')."-".time().'-'.$i;
 
-				$_FILES['attach']['name'] 		= $files['attach']['name'][$i];
-				$_FILES['attach']['type']  		= $files['attach']['type'][$i];
-				$_FILES['attach']['tmp_name']	= $files['attach']['tmp_name'][$i];
-				$_FILES['attach']['error']		= $files['attach']['error'][$i];
-				$_FILES['attach']['size']		= $files['attach']['size'][$i];    
-				$this->upload->initialize($config);
-				if ( ! $this->upload->do_upload('attach') ){
-					$json = [
-						'status' => 0,
-						'msg'    => 'Upload file gagal!',
-						'info' => $this->upload->display_errors()
-					];
-					echo json_encode($json);
-					exit;
-				}else{
-					$upload_data = $this->upload->data();
-					$file_name = $upload_data['file_name'];
+					$config['upload_path']   = 'assets/tugas/attach/';
+					$config['allowed_types'] = 'xlsx|xls|pdf|pdfx|doc|docx|jpeg|jpg|png|zip|rar|ppt|pptx';
+					$config['max_size']      = 222220480;
+					$config['file_name']     = $namafile;
 
-					$attach[$i] = array(
-						'id_tugas' => $last_id,
-						'file'     => $upload_data['file_name'],
-						'format'   => $upload_data['file_ext']
-					);
+					$this->load->library('upload', $config);
+					$this->upload->initialize($config);
+					
+
+					$_FILES['attach']['name'] 		= $files['attach']['name'][$i];
+					$_FILES['attach']['type']  		= $files['attach']['type'][$i];
+					$_FILES['attach']['tmp_name']	= $files['attach']['tmp_name'][$i];
+					$_FILES['attach']['error']		= $files['attach']['error'][$i];
+					$_FILES['attach']['size']		= $files['attach']['size'][$i];    
+					$this->upload->initialize($config);
+					if ( ! $this->upload->do_upload('attach') ){
+						$json = [
+							'status' => 0,
+							'msg'    => 'Upload file gagal!',
+							'info' => $this->upload->display_errors()
+						];
+						echo json_encode($json);
+						exit;
+					}else{
+						$upload_data = $this->upload->data();
+						$file_name = $upload_data['file_name'];
+
+						$attach[$i] = array(
+							'id_tugas' => $last_id,
+							'file'     => $upload_data['file_name'],
+							'format'   => $upload_data['file_ext']
+						);
+					}
 				}
+
+				$this->db->insert_batch('tb_tugas_attachment',$attach);
 			}
 
-			$this->db->insert_batch('tb_tugas_attachment',$attach);
+			$this->db->trans_complete();
+
+			$json = [
+				'status' => true,
+				'msg'    => 'success',
+				'info' => NULL
+			];
+			echo json_encode($json);
+			exit;
 		}
-
-		$this->db->trans_complete();
-
-		$json = [
-			'status' => true,
-			'msg'    => 'success',
-			'info' => NULL
-		];
-		echo json_encode($json);
-		exit;
-
 	}
 
 	public function update(){
 		$post = $this->input->post();
 		$files = $_FILES;
+
+		
 		$qty_attach = $_FILES['attach']['name'];
 
-		$this->db->trans_start();
+		
 
 		$data = array(
 			'id_kelas' => $post['kelas'], 
-			// 'id_mapel' => $post['mapel'],
 			'keterangan' => $post['keterangan'],
 			'end_date' => date_default($post['end_date']).' '.$post['end_time'],
 		);
@@ -203,7 +206,7 @@ class Tugas extends MY_Controller {
 		// if($this->log_lvl == 'guru') {
 		// 	$data['id_guru'] = $this->akun->id;
 		// }
-
+		$this->db->trans_start();
 		$kirim = $this->m_tugas->update($data,array('id'=>$post['id']));
 
 		if(!empty($qty_attach[0])) {
