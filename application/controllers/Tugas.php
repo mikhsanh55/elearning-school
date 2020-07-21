@@ -218,7 +218,7 @@ class Tugas extends MY_Controller {
 
 				$config['upload_path']   = 'assets/tugas/attach/';
 				$config['allowed_types'] = 'pdf|pdfx|doc|docx|jpeg|jpg|png|zip|rar|ppt|pptx|xlsx|xls';
-				$config['max_size']      = 222220480;
+				$config['max_size']      = 22222220480;
 				$config['file_name']     = $namafile;
 
 				$this->load->library('upload', $config);
