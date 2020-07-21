@@ -123,6 +123,7 @@
 									<input type="hidden" name="id_head">
 									<input type="hidden" name="id_trainer" value="<?=$id_trainer;?>">
 									<input type="hidden" name="id_siswa" value="<?=$id_siswa;?>">
+									<input type="hidden" name="id_kelas" value="<?=$id_kelas;?>">
 									<div>
 									<textarea name="komentar" id="komentartext" rows="10" placeholder="Pertanyaan atau Diskusi Baru" required=""></textarea>
 									</div>
@@ -194,6 +195,9 @@
 		$.ajax({
 			type : 'post',
 			url  : '<?=base_url('Materi/page_komen');?>' + '/<?=$materi->id;?>',
+			data: {
+				id_kelas: "<?= $id_kelas; ?>"
+			},
 			success:function(html){
 				$('#kontent-komentar').html(html);
 			}

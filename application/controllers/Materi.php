@@ -1502,6 +1502,7 @@ class Materi extends MY_Controller
             'jadwal_by'  => $this->m_jadwal->get_by(array('id_materi' => $id)),
             'id_trainer' => $id_trainer,
             'id_siswa'   => $id_siswa,
+            'id_kelas' => $this->uri->segment(4)
         );
 
         $this->render('materi/diskusi_head', $data);
@@ -1509,6 +1510,7 @@ class Materi extends MY_Controller
 
     public function page_komen($id = null, $id_koment = null)
     {
+        $post = $this->input->post();
 
         $where = array();
 
@@ -1525,6 +1527,7 @@ class Materi extends MY_Controller
 
         $where['komen.id_materi'] = $id;
         $where['id_head']   = 0;
+        $where['komen.id_kelas'] = $post['id_kelas'];
         // print_r($this->log_id);exit;
         if ($this->log_lvl == 'siswa') {
             $id_trainer = null;
