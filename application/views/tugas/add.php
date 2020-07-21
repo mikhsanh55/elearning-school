@@ -194,6 +194,7 @@
 
 					},
 					error: function(res) {
+						$("#save").prop('disabled', false).html('Simpan');
 						$('#progressBar').text('Something wrong when create Tugas').addClass('bg-danger');
 					}
 				})

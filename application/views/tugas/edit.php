@@ -192,7 +192,6 @@
 				url  : '<?=base_url('tugas/update');?>',
 				processData: false,
 				contentType: false,
-				cache: false,
 				dataType : 'json',
 				data : data,
 				success:function(response) {
@@ -201,7 +200,9 @@
 						$('#errors-file').html(response.info);
 						$('#progressBar').text('Something wrong when create Tugas').addClass('bg-danger');
 						$('input[type=file]').val('')
+						$("#save").prop('disabled', false).html('Simpan');
 					}else{
+						$("#save").prop('disabled', false).html('Simpan');
 						window.location = '<?=base_url('tugas');?>'
 					}
 				}

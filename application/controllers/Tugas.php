@@ -108,9 +108,9 @@ class Tugas extends MY_Controller {
 	public function insert(){
 		$post = $this->input->post();
 		$files = $_FILES;
-		print_r($_POST);
-		print_r('FILE');
-		print_r($_FILES);exit;
+		print_r($post);exit;
+		// print_r('FILE');
+		// print_r($_FILES);exit;
 			$qty_attach = $_FILES['file']['name'];
 
 			$data = array(
@@ -189,9 +189,7 @@ class Tugas extends MY_Controller {
 	public function update(){
 		$post = $this->input->post();
 		$files = $_FILES;
-		print_r('POST');
-		print_r($_POST);
-		print_r($_FILES);exit;
+		print_r($post);exit;
 		
 		$qty_attach = $_FILES['file']['name'];
 
