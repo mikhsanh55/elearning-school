@@ -45,7 +45,7 @@
 			</div>
 			<div class="form-group">
 				<label for="username">Tugas Lampiran<span class="text-danger">*</span></label>
-				<input type="file" name="file" id="attach" class="form-control">
+				<input type="file" name="file" id="attach[]" multiple class="form-control">
 				<!-- <div class="custom-file mb-3">
 					<input type="file" class="custom-file-input" id="attach" name="file">
 					<label class="custom-file-label" for="customFile">Choose file</label>
@@ -172,6 +172,7 @@
 				        return xhr;
 				    },
 					type : 'post',
+					method: 'post',
 					url  : '<?=base_url('tugas/insert');?>',
 					processData: false,
 					contentType: false,

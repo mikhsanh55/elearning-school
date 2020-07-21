@@ -51,7 +51,7 @@
 			<div class="form-group">
 				<label for="username">Lampiran Tugas:</label>
 				<div class="custom-file mb-3">
-					<input type="file" class="custom-file-input" id="attach" name="file">
+					<input type="file" class="custom-file-input" id="attach[]" multiple name="file">
 					<label class="custom-file-label" for="customFile">Choose file</label>
 				</div>
 				<span id="errors-username" class="errors"></span>
