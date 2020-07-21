@@ -152,10 +152,17 @@
 
 		if (error == 0) {
 
-		var form = $('#form-akun-lembaga')[0];
-
 		// Create an FormData object 
-		var data = new FormData(form);
+		var data = new FormData();
+		data.append('id', $('#id').val())
+		data.append('kelas', $('#kelas').val())
+		data.append('mapel', $('#mapel').val())
+		data.append('keterangan', $('#keterangan').val())
+		if($('#attach').val() != '') {
+			data.append('file', $('#attach').val())	
+		}
+		data.append('end_date', $('#end_date').val())
+		data.append('end_time', $('#end_time').val())
 
 		// If you want to add an extra field for the FormData
 		//data.append("CustomField", "This is some extra data, testing");
@@ -182,7 +189,6 @@
 			    },
 				type : 'post',
 				url  : '<?=base_url('tugas/update');?>',
-				enctype: 'multipart/form-data',
 				processData: false,
 				contentType: false,
 				cache: false,
