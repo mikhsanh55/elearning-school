@@ -1577,7 +1577,7 @@ class Materi extends MY_Controller
         );
 
         $jadwal = $this->m_jadwal->get_by($cari);
-
+        $error = [];
         if (!empty($jadwal)) {
 
             $post['create_date'] = $this->create_date;
@@ -1603,38 +1603,38 @@ class Materi extends MY_Controller
                 }
                 else {
                     $result = false;
-                    $data   = $this->upload->display_errors();
+                    $error['upload_diskusi']   = $this->upload->display_errors();
                 }
                 
             }
 
             // Upload file section untuk Balas Komentar
-            if($replyFile !== NULL) {
-                // Set file configuration
-                $config['upload_path'] = 'assets/materi/diskusi';
-                $config['allowed_types'] = 'jpg|jpeg|png|pdf|docx|xls|xlsx';
-                $config['max_size'] = 50000;
-                $config['encrypt_name'] = TRUE;
+            // if($replyFile !== NULL) {
+            //     // Set file configuration
+            //     $config['upload_path'] = 'assets/materi/diskusi';
+            //     $config['allowed_types'] = 'jpg|jpeg|png|pdf|docx|xls|xlsx';
+            //     $config['max_size'] = 50000;
+            //     $config['encrypt_name'] = TRUE;
 
-                // Load upload library
-                $this->load->library('upload', $config);
+            //     // Load upload library
+            //     $this->load->library('upload', $config);
 
-                if($this->upload->do_upload('reply-file')) {
-                    $uploadedFileData = $this->upload->data();
-                    $uploadedFileName = $uploadedFileData['file_name'];
+            //     if($this->upload->do_upload('reply-file')) {
+            //         $uploadedFileData = $this->upload->data();
+            //         $uploadedFileName = $uploadedFileData['file_name'];
 
-                    // Set filepath for file that uploaded in komentar
-                    $post['file'] = $config['upload_path'] . '/' .$uploadedFileName;    
-                }
-                else {
-                    $result = false;
-                    $data   = $this->upload->display_errors();
-                }
+            //         // Set filepath for file that uploaded in komentar
+            //         $post['file'] = $config['upload_path'] . '/' .$uploadedFileName;    
+            //     }
+            //     else {
+            //         $result = false;
+            //         $data   = $this->upload->display_errors();
+            //     }
                 
-            }
-            else {
-                $post['file'] = 0;
-            }
+            // }
+            // else {
+            //     $post['file'] = 0;
+            // }
 
             $komentar = $this->m_komen_materi->check_komen_all(array('km1.id' => $post['id_head']), array('km1.id_siswa', 'km2.id_siswa'));
             $kirim_notif = '';
@@ -1776,7 +1776,7 @@ class Materi extends MY_Controller
             $data   = array();
         }
 
-        echo json_encode(array('result' => $result, 'status' => $data));
+        echo json_encode(array('result' => $result, 'status' => $data, 'error' => $error));
     }
 
     public function update_koment()
@@ -1793,9 +1793,13 @@ class Materi extends MY_Controller
     }
 
     public function updateSumDiskusi() {
-        $data_update = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
-        $this->db->where('id', $this->session->admin_konid);
-        $this->db->update('m_guru', ['sum_diskusi' => $data_update->sum_diskusi + 1]);
+        if($this->log_lvl == 'guru') {
+            $data_update = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
+            // print_r($data_update);exit;
+            $this->db->where('id', $this->session->admin_konid);
+            $this->db->update('m_guru', ['sum_diskusi' => $data_update->sum_diskusi + 1]);
+        }
+        
     }
 
     public function updateSumUploadMateri() {

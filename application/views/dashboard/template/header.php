@@ -41,8 +41,8 @@
   /*Style in diskusi page*/
   .diskusi-img {
     cursor: pointer;
-    width:30%;
-    height: 30%;
+    width:10%;
+    height: 10%;
     transition: .5s;
   }
   .view-diskusi-img {
@@ -50,7 +50,7 @@
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(.8);
+    transform: translate(-50%, -50%) scale(.5);
   }
   @keyframes rot {
       0% {

@@ -39,14 +39,14 @@
 										$pathinfo = explode('/', $rows->file);
 										$pathinfo = end($pathinfo);
 										$pathinfo = pathinfo($pathinfo, PATHINFO_EXTENSION);
-										$image_ext = ['jpg', 'png', 'jpeg'];
+										$image_ext = ['jpg', 'png', 'jpeg', 'gif', 'svg'];
 										if(in_array($pathinfo, $image_ext)) {
 									 ?>
-										<div><span class="img-upload-wrapper"><img class=" ml-2 mt-4 diskusi-img" src="<?= base_url($rows->file); ?>" alt="image uploaded"></span>
+										<div><span class="img-upload-wrapper"><img class=" ml-2 mt-4 diskusi-img img-thumbnail" src="<?= base_url($rows->file); ?>" alt="image uploaded"></span>
 											</div>
 									<?php } else { ?>
-										<div>
-											<a href="<?= base_url($rows->file); ?>" download >
+										<div class="mt-3">
+											<a href="<?= base_url($rows->file); ?>" download class="btn btn-primary btn-sm" >
 												Download File
 											</a>
 										</div>
