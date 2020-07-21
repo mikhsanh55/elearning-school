@@ -12,7 +12,7 @@
 		<h2>Tambah Tugas</h2>
 		<form id="form-akun-lembaga" method="post" enctype="multipart/form-data">
 			<!-- <input type="hidden" name="mapel" value="" id="mapel" /> -->
-			<input type="hidden" name="guru" value="<?= $this->akun->id; ?>">
+			<input type="hidden" id="guru" name="guru" value="<?= $this->akun->id; ?>">
 			<div class="form-group">
 				<label for="lembaga">Kelas<span class="text-danger">*</span></label>
 				<div class="rs-select2 js-select-simple select--no-search">
@@ -134,10 +134,17 @@
 
 			if (error == 0) {
 
-			var form = $('#form-akun-lembaga')[0];
-
 			// Create an FormData object 
-			var data = new FormData(form);
+			var data = new FormData();
+			data.append('guru', $('#guru').val())
+			data.append('kelas', $('#kelas').val())
+			data.append('mapel', $('#mapel').val())
+			data.append('keterangan', $('#keterangan').val())
+			if($('#attach').val() != '') {
+				data.append('file', $('#attach').val())	
+			}
+			data.append('end_date', $('#end_date').val())
+			data.append('end_time', $('#end_time').val())
 
 			// Set default length for progress bar
 			$('#progress-container').removeClass('d-none');

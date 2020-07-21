@@ -190,83 +190,83 @@ class Tugas extends MY_Controller {
 	public function update(){
 		$post = $this->input->post();
 		$files = $_FILES;
-		print_r('POST');
-		print_r($_POST);
-		print_r($_FILES);exit;
-		
-		$qty_attach = $_FILES['file']['name'];
+		// print_r('POST');
+		// print_r($_POST);
+		// print_r($_FILES);exit;
+		if(isset($_FILES['file'])) {
+			$qty_attach = $_FILES['file']['name'];
 
-		
+			
 
-		$data = array(
-			'id_kelas' => $post['kelas'], 
-			'keterangan' => $post['keterangan'],
-			'end_date' => date_default($post['end_date']).' '.$post['end_time'],
-		);
+			$data = array(
+				'id_kelas' => $post['kelas'], 
+				'keterangan' => $post['keterangan'],
+				'end_date' => date_default($post['end_date']).' '.$post['end_time'],
+			);
 
-		// if($this->log_lvl == 'guru') {
-		// 	$data['id_guru'] = $this->akun->id;
-		// }
-		$this->db->trans_start();
-		$kirim = $this->m_tugas->update($data,array('id'=>$post['id']));
+			// if($this->log_lvl == 'guru') {
+			// 	$data['id_guru'] = $this->akun->id;
+			// }
+			$this->db->trans_start();
+			$kirim = $this->m_tugas->update($data,array('id'=>$post['id']));
 
-		// if(!empty($qty_attach[0])) {
+			// if(!empty($qty_attach[0])) {
 
 
-		// 	for($i=0; $i < count($qty_attach); $i++)
-		// 	{           
+			// 	for($i=0; $i < count($qty_attach); $i++)
+			// 	{           
 
-				$namafile = 'tugas-'.DATE('d-m-Y')."-".time().'-';
+					$namafile = 'tugas-'.DATE('d-m-Y')."-".time().'-';
 
-				$config['upload_path']   = 'assets/tugas/attach/';
-				$config['allowed_types'] = 'pdf|pdfx|doc|docx|jpeg|jpg|png|zip|rar|ppt|pptx|xlsx|xls';
-				$config['max_size']      = 22222220480;
-				$config['file_name']     = $namafile;
+					$config['upload_path']   = 'assets/tugas/attach/';
+					$config['allowed_types'] = 'pdf|pdfx|doc|docx|jpeg|jpg|png|zip|rar|ppt|pptx|xlsx|xls';
+					$config['max_size']      = 22222220480;
+					$config['file_name']     = $namafile;
 
-				$this->load->library('upload', $config);
-				$this->upload->initialize($config);
-				
+					$this->load->library('upload', $config);
+					$this->upload->initialize($config);
+					
 
-				$_FILES['file']['name'] 		= $files['file']['name'];
-				$_FILES['file']['type']  		= $files['file']['type'];
-				$_FILES['file']['tmp_name']	= $files['file']['tmp_name'];
-				$_FILES['file']['error']		= $files['file']['error'];
-				$_FILES['file']['size']		= $files['file']['size'];    
+					$_FILES['file']['name'] 		= $files['file']['name'];
+					$_FILES['file']['type']  		= $files['file']['type'];
+					$_FILES['file']['tmp_name']	= $files['file']['tmp_name'];
+					$_FILES['file']['error']		= $files['file']['error'];
+					$_FILES['file']['size']		= $files['file']['size'];    
 
-				$this->upload->initialize($config);
-				if ( ! $this->upload->do_upload('file') ){
-					$json = [
-						'status' => FALSE,
-						'msg'    => 'Upload file gagal!',
-						'info' => $this->upload->display_errors()
-					];
-					echo json_encode($json);
-					exit;
-				}else{
-					$upload_data = $this->upload->data();
-					$file_name = $upload_data['file_name'];
+					$this->upload->initialize($config);
+					if ( ! $this->upload->do_upload('file') ){
+						$json = [
+							'status' => FALSE,
+							'msg'    => 'Upload file gagal!',
+							'info' => $this->upload->display_errors()
+						];
+						echo json_encode($json);
+						exit;
+					}else{
+						$upload_data = $this->upload->data();
+						$file_name = $upload_data['file_name'];
 
-					$attach = array(
-						'id_tugas' => $post['id'],
-						'file'     => $upload_data['file_name'],
-						'format'   => $upload_data['file_ext']
-					);
-				}
+						$attach = array(
+							'id_tugas' => $post['id'],
+							'file'     => $upload_data['file_name'],
+							'format'   => $upload_data['file_ext']
+						);
+					}
+				// }
+
+				$this->db->insert('tb_tugas_attachment',$attach);
 			// }
 
-			$this->db->insert('tb_tugas_attachment',$attach);
-		// }
+			$this->db->trans_complete();
 
-		$this->db->trans_complete();
-
-		$json = [
-			'status' => true,
-			'msg'    => 'success',
-			'info' => NULL
-		];
-		echo json_encode($json);
-		exit;
-
+			$json = [
+				'status' => true,
+				'msg'    => 'success',
+				'info' => NULL
+			];
+			echo json_encode($json);
+			exit;
+		}
 	}
 
 	public function page_load($pg = 1){

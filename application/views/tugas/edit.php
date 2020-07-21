@@ -12,7 +12,7 @@
 	<div class="inner-box">
 		<h2>Edit Tugas</h2>
 		<form id="form-akun-lembaga" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="id" value="<?=$edit->id;?>">
+			<input type="hidden" name="id" id="id" value="<?=$edit->id;?>">
 			<div class="form-group">
 				<label for="lembaga">Kelas</label>
 				<div class="rs-select2 js-select-simple select--no-search">
