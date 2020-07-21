@@ -110,6 +110,7 @@ class Tugas extends MY_Controller {
 		$files = $_FILES;
 		print_r('FILE');
 		print_r($_FILES);exit;
+		if(isset($_FILES['file'])) {
 			$qty_attach = $_FILES['file']['name'];
 
 			$data = array(
@@ -183,6 +184,7 @@ class Tugas extends MY_Controller {
 			];
 			echo json_encode($json);
 			exit;
+		}
 	}
 
 	public function update(){
