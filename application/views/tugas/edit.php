@@ -159,7 +159,8 @@
 		data.append('mapel', $('#mapel').val())
 		data.append('keterangan', $('#keterangan').val())
 		if($('#attach').val() != '') {
-			data.append('file', $('#attach').val())	
+
+			data.append('file', $("#attach")[0].files[0])	
 		}
 		data.append('end_date', $('#end_date').val())
 		data.append('end_time', $('#end_time').val())
