@@ -109,8 +109,6 @@ class Tugas extends MY_Controller {
 		$post = $this->input->post();
 		$files = $_FILES;
 
-		if(isset($_FILES['file'])) {
-
 
 			$qty_attach = $_FILES['file']['name'];
 
@@ -185,7 +183,6 @@ class Tugas extends MY_Controller {
 			];
 			echo json_encode($json);
 			exit;
-		}
 	}
 
 	public function update(){
