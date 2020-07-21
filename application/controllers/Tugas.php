@@ -109,10 +109,10 @@ class Tugas extends MY_Controller {
 		$post = $this->input->post();
 		$files = $_FILES;
 
-		if(isset($_FILES['attach'])) {
+		if(isset($_FILES['file'])) {
 
 
-			$qty_attach = $_FILES['attach']['name'];
+			$qty_attach = $_FILES['file']['name'];
 
 			$data = array(
 				'id_kelas' => $post['kelas'], 
@@ -130,13 +130,13 @@ class Tugas extends MY_Controller {
 			$last_id = $this->db->insert_id();
 
 
-			if(!empty($qty_attach[0])) {
+			// if(!empty($qty_attach[0])) {
 
 
-				for($i=0; $i < count($qty_attach); $i++)
-				{           
+			// 	for($i=0; $i < count($qty_attach); $i++)
+			// 	{           
 
-					$namafile = 'tugas-'.DATE('d-m-Y')."-".time().'-'.$i;
+					$namafile = 'tugas-'.DATE('d-m-Y')."-".time().'-';
 
 					$config['upload_path']   = 'assets/tugas/attach/';
 					$config['allowed_types'] = 'xlsx|xls|pdf|pdfx|doc|docx|jpeg|jpg|png|zip|rar|ppt|pptx';
@@ -147,13 +147,13 @@ class Tugas extends MY_Controller {
 					$this->upload->initialize($config);
 					
 
-					$_FILES['attach']['name'] 		= $files['attach']['name'][$i];
-					$_FILES['attach']['type']  		= $files['attach']['type'][$i];
-					$_FILES['attach']['tmp_name']	= $files['attach']['tmp_name'][$i];
-					$_FILES['attach']['error']		= $files['attach']['error'][$i];
-					$_FILES['attach']['size']		= $files['attach']['size'][$i];    
+					$_FILES['file']['name'] 		= $files['file']['name'];
+					$_FILES['file']['type']  		= $files['file']['type'];
+					$_FILES['file']['tmp_name']	= $files['file']['tmp_name'];
+					$_FILES['file']['error']		= $files['file']['error'];
+					$_FILES['file']['size']		= $files['file']['size'];    
 					$this->upload->initialize($config);
-					if ( ! $this->upload->do_upload('attach') ){
+					if ( ! $this->upload->do_upload('file') ){
 						$json = [
 							'status' => 0,
 							'msg'    => 'Upload file gagal!',
@@ -165,16 +165,16 @@ class Tugas extends MY_Controller {
 						$upload_data = $this->upload->data();
 						$file_name = $upload_data['file_name'];
 
-						$attach[$i] = array(
+						$attach = array(
 							'id_tugas' => $last_id,
 							'file'     => $upload_data['file_name'],
 							'format'   => $upload_data['file_ext']
 						);
 					}
-				}
+				// }
 
-				$this->db->insert_batch('tb_tugas_attachment',$attach);
-			}
+				$this->db->insert('tb_tugas_attachment',$attach);
+			// }
 
 			$this->db->trans_complete();
 
