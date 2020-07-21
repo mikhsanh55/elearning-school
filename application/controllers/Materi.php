@@ -296,6 +296,7 @@ class Materi extends MY_Controller
     public function update()
     {
         $post = $this->input->post();
+        
 
         $before_materi = $this->m_materi->get_by(['id' => $this->input->post('imateri')]);
 
@@ -418,14 +419,26 @@ class Materi extends MY_Controller
                 http_response_code(500);
             }
         }
+
         else if($post['id_type_video'] == 2){
+            
+            $gdrive = $this->input->post('video-gdrive');
+            if( !empty($this->input->post('video-gdrive')) ) {
+                $embedVideo = explode('/', $this->input->post('video-gdrive'));
+                array_pop($embedVideo);
+                $embedVideo = implode('/', $embedVideo);
+                $embedVideo = $embedVideo . '/preview';
+            }
+            else {
+                $embedVideo = '1';
+            }
 
             $data = [
                 'id_mapel'      => $this->input->post('mapel'),
                 'id_trainer'    => $this->akun->id,
                 'title'         => $this->input->post('title'),
                 'content'       => $this->input->post('content'),
-                'video'      => !empty($this->input->post('video-gdrive')) ?  $this->input->post('video-gdrive') : 1,
+                'video'      => $embedVideo,
                 'path_video'      => !empty($this->input->post('video-gdrive')) ?  $this->input->post('video-gdrive') : 1,
                 'upload_manual' => 0,
                 'req_edit'      => 1,
@@ -1003,13 +1016,22 @@ class Materi extends MY_Controller
             }
         }
         else {
+            if( !empty($this->input->post('video-gdrive')) ) {
+                $embedVideo = explode('/', $this->input->post('video-gdrive'));
+                array_pop($embedVideo);
+                $embedVideo = implode('/', $embedVideo);
+                $embedVideo = $embedVideo . '/preview';
+            }
+            else {
+                $embedVideo = '1';
+            }
             $data = [
                 'id_mapel'   => $this->input->post('mapel'),
                 'id_trainer' => $this->akun->id,
                 'id_type_video' => 2,
                 'title'      => $this->input->post('title'),
                 'content'    => $this->input->post('content'),
-                'video'      => !empty($this->input->post('video-gdrive')) ?  $this->input->post('video-gdrive') : 1,
+                'video'      => $embedVideo,
                 'path_video'      => !empty($this->input->post('video-gdrive')) ?  $this->input->post('video-gdrive') : 1,
                 'req_add'    => 1,
             ];
