@@ -173,7 +173,6 @@
 				    },
 					type : 'post',
 					url  : '<?=base_url('tugas/insert');?>',
-					enctype: 'multipart/form-data',
 					processData: false,
 					contentType: false,
 					cache: false,
