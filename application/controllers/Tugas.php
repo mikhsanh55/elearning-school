@@ -108,8 +108,8 @@ class Tugas extends MY_Controller {
 	public function insert(){
 		$post = $this->input->post();
 		$files = $_FILES;
-		print_r('FILE');
-		print_r($_FILES);exit;
+		// print_r('FILE');
+		// print_r($_FILES);exit;
 		if(isset($_FILES['file'])) {
 			$qty_attach = $_FILES['file']['name'];
 
