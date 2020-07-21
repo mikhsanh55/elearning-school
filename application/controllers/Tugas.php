@@ -109,10 +109,6 @@ class Tugas extends MY_Controller {
 		try {
 			$post = $this->input->post();
 			$files = $_FILES;
-			print_r('POSt');
-			print_r($post['kelas']);
-			print_r('FILE');
-			print_r($_FILES);exit;
 				$qty_attach = $_FILES['file']['name'];
 
 				$data = array(
@@ -196,13 +192,8 @@ class Tugas extends MY_Controller {
 			try {
 				$post = $this->input->post();
 				$files = $_FILES;
-				print_r($post['kelas']);
-				print_r($files);
-				exit;
 				
 				$qty_attach = $_FILES['file']['name'];
-
-				
 
 				$data = array(
 					'id_kelas' => $post['kelas'], 

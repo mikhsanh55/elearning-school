@@ -484,15 +484,6 @@ class Materi extends MY_Controller
 
     public function update_pdf()
     {
-       
-        // if ($this->input->post('video') != '' && strpos($this->input->post('video'), "?v=") != false) {
-        //     $expl = explode('?v=', $this->input->post('video'));
-        //     $v    = 'https://www.youtube.com/embed/' . end($expl);
-        // } else {
-        //     $v = $this->input->post('video');
-        // }
-        print_r($_POST);
-        print_r($_FILES);exit;
         $data = [
             'id_mapel'   => $this->input->post('imapel'),
             'req_add'    => 0,
