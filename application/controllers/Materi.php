@@ -491,7 +491,8 @@ class Materi extends MY_Controller
         // } else {
         //     $v = $this->input->post('video');
         // }
-
+        print_r($_POST);
+        print_r($_FILES);exit;
         $data = [
             'id_mapel'   => $this->input->post('imapel'),
             'req_add'    => 0,
