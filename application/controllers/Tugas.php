@@ -109,9 +109,10 @@ class Tugas extends MY_Controller {
 		try {
 			$post = $this->input->post();
 			$files = $_FILES;
-			// print_r($post);exit;
-			// print_r('FILE');
-			// print_r($_FILES);exit;
+			print_r('POSt');
+			print_r($post);
+			print_r('FILE');
+			print_r($_FILES);exit;
 				$qty_attach = $_FILES['file']['name'];
 
 				$data = array(
@@ -185,7 +186,7 @@ class Tugas extends MY_Controller {
 				];
 				echo json_encode($json);
 				exit;
-					
+
 			} catch (Exception $e) {
 				$this->sendAjaxResponse(['error' => $e], 500);
 			}
@@ -272,10 +273,6 @@ class Tugas extends MY_Controller {
 			} catch (Exception $e) {
 				$this->sendAjaxResponse(['error' => $e], 500);
 			}
-			
-		
-
-
 	}
 
 	public function page_load($pg = 1){
