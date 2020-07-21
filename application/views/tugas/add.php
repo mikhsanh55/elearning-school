@@ -45,7 +45,7 @@
 			</div>
 			<div class="form-group">
 				<label for="username">Tugas Lampiran<span class="text-danger">*</span></label>
-				<input type="file" name="file" id="attach[]" multiple class="form-control">
+				<input type="file" name="file" id="attach" class="form-control">
 				<!-- <div class="custom-file mb-3">
 					<input type="file" class="custom-file-input" id="attach" name="file">
 					<label class="custom-file-label" for="customFile">Choose file</label>
@@ -142,8 +142,8 @@
 			data.append('mapel', $('#mapel').val())
 			data.append('keterangan', $('#keterangan').val())
 			if($('#attach').val() != '') {
-
-				data.append('file', $("#attach")[0].files[0])	
+				
+				data.append('file', $("#attach")[0].files)	
 			}
 			data.append('end_date', $('#end_date').val())
 			data.append('end_time', $('#end_time').val())
