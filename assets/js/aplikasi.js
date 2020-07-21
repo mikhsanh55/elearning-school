@@ -136,7 +136,7 @@ function timer2() {
 	var statuse = $("#_statuse").val();
 	statuse = parseInt(statuse);
 	if (statuse == 1) {
-		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-primary btn-sm" id="tbl_mulai" onclick="return konfirmasi_token2('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
+		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-primary btn-block" id="tbl_mulai" onclick="return konfirmasi_token2('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
 		
 		$('#waktu_akhir_ujian').countdowntimer({
 	        startDate : tgl_sekarang,
@@ -207,7 +207,7 @@ function timer4() {
 	statuse = parseInt(statuse);
 	console.warn(id_ujian)
 	if (statuse == 1) {
-		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-success btn-sm" id="tbl_mulai" onclick="return konfirmasi_token4('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
+		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-success btn-block" id="tbl_mulai" onclick="return konfirmasi_token4('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
 		
 		$('#waktu_akhir_ujian').countdowntimer({
 	        startDate : tgl_sekarang,
@@ -217,7 +217,7 @@ function timer4() {
 	 		timeUp : hilangkan_tombol,
 	    });
 	} else if (statuse == 0) {
-		$("#btn_mulai").addClass("btn btn-success btn-lg");
+		$("#btn_mulai").addClass("btn btn-success btn-block");
 		$("#waktu_").hide();
 		$('#akan_mulai').countdowntimer({
 	        startDate : tgl_sekarang,
@@ -333,10 +333,14 @@ function konfirmasi_token2(id) {
 		alert("Token salah..!");
 		return false;
 	} else {
-		
+		$('#disclaimer-tugas').modal('show')
 		/*var stateObj = { foo: "bar" };
   		history.replaceState(stateObj,'base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna' ,base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna);*/
-		OpenWindow(base_url+"ujian_real/ikut_ujian/"+id); //window.location.assign(base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna); 
+		  $('#link-tugas').on('click', function(e) {
+			e.preventDefault()
+			OpenWindow(base_url+"ujian_real/ikut_ujian/"+id); 
+		  })
+		//window.location.assign(base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna); 
 	}
 }
 
@@ -363,10 +367,14 @@ function konfirmasi_token4(id) {
 		alert("Token salah..!");
 		return false;
 	} else {
-		
+		$('#disclaimer-tugas').modal('show')
 		/*var stateObj = { foo: "bar" };
   		history.replaceState(stateObj,'base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna' ,base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna);*/
-		OpenWindow(base_url+"ujian_essay/ikut_ujian/"+id); //window.location.assign(base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna); 
+		  $('#link-tugas').on('click', function(e) {
+			e.preventDefault()
+			OpenWindow(base_url+"ujian_essay/ikut_ujian/"+id);
+		  })
+		   //window.location.assign(base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna); 
 	}
 }
 

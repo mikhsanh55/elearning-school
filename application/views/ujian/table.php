@@ -10,7 +10,7 @@
 			<th class="frist"><input type="checkbox" name="checkall" id="checkall"></th>
 			<th class="frist">No</th>
 			<th>Tipe Ujian</th>
-			<th>Kelas</th>
+			
 			<th>Nama Ujian</th>
 			<th>Waktu Mulai</th>
 			<th class="frist">Opsi</th>
@@ -31,7 +31,7 @@
 				<td>
 					<?= $rows->type_ujian == 'uas' ? 'UAS' : ($rows->type_ujian == 'uts' ? 'UTS' : 'Ujian Harian') ?>		
 				</td>
-				<td></td>
+				
 				<td><?=$rows->nama_ujian;?></td>
 				<td><?=$date;?></td>
 				<td class="opsi text-center" >
