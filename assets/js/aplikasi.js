@@ -266,7 +266,7 @@ function getFormData($form){
     return indexed_array;
 }
 
-function pagination(indentifier, url, config) {
+function pagination(indentifier, url, config, prop = {}) {
     $('#'+indentifier).DataTable({
         "language": {
             "url": base_url+"assets/plugin/datatables/Indonesian.json"
@@ -278,7 +278,10 @@ function pagination(indentifier, url, config) {
         "bDestroy" : true,
         "ajax":{
             url : url, // json datasource
-            type: "post",  // type of method  , by default would be get
+			type: "post",  // type of method  , by default would be get
+			data: {
+				prop
+			},
             error: function(){  // error handling code
                 $("#"+indentifier).css("display","none");
             }

@@ -44,7 +44,7 @@
       </div>
 
       <div class="panel-body">
-
+		
          <table class="table table-bordered table-striped w-100 mx-auto" style="width: 300% !important;" id="datatabel">
 
             <thead>
@@ -152,8 +152,6 @@
 </footer>
 
 <!--/.footer-->
-
-
 
 </div>
 

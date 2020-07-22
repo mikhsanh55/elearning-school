@@ -44,7 +44,22 @@
       </div>
 
       <div class="panel-body">
-
+	  <form action="">
+			<div class="row">
+				<div class="col-md-6 col-sm-12 form-group">
+					<label for="">Filter Kelas</label>
+					<select name="kelas" id="kelas" class="form-control">
+						<option value="0">Pilih Kelas</option>	
+					<?php if(count($kelas) > 0) : ?>
+						
+						<?php foreach($kelas as $kls) : ?>
+							<option value="<?= $kls->id; ?>"><?= $kls->nama; ?></option>
+						<?php endforeach; ?>
+					<?php endif; ?>
+					</select>
+				</div>
+			</div>
+		</form>
          <table class="table table-bordered table-striped w-100 mx-auto" style="width: 300% !important;" id="datatabel">
 
             <thead>
@@ -164,9 +179,17 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){
-
+		var data
 		pagination("datatabel", base_url+"aktivitas/data", []);
 
+		$('#kelas').change(function(e) {
+			e.preventDefault()
+			$("#datatabel").DataTable().destroy()
+			data = {
+				kelas: $(this).val()
+			}
+			pagination("datatabel", base_url + "aktivitas/data", [], data)
+		})
 	})
 
 </script>
