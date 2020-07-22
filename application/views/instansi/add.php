@@ -29,6 +29,8 @@
 				</div>
 			</div>
 			<form action="<?=base_url('instansi/insert');?>" method="post" enctype="multipart/form-data" >
+			<input type="hidden" name="file_format_guru" value="0">
+				<input type="hidden" name="file_format_siswa" value="0">
 				<div class="form-group">
 					<label for="email">Instansi<span class="text-danger">*</span></label>
 					<input type="text" class="form-control" id="instansi" name="instansi" required="">

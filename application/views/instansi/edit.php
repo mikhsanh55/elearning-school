@@ -28,6 +28,8 @@
 				</div>
 			</div>
 			<form action="<?=base_url('instansi/update');?>" method="post">
+				<input type="hidden" name="file_format_guru" value="0">
+				<input type="hidden" name="file_format_siswa" value="0">
 				<div class="form-group">
 					<label for="email">Instansi:</label>
 					<input type="hidden" name="id" value="<?=$edit->id;?>">
@@ -47,6 +49,7 @@
 				</div>
 				<button type="submit" class="btn btn-default">Simpan</button>
 				<button type="button" class="btn btn-default" onclick="window.location='<?=base_url('instansi');?>'">List</button>
+				
 			</form> 
 		</div>
 	</div>
