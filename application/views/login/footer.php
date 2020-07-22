@@ -1,7 +1,9 @@
 <!-- /.modal -->
 <!-- Placed at the end of the document so the pages load faster -->
+
 <script src="../../../../cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
+ 
 	window.jQuery || document.write('<script src="<?= base_url(); ?>assets/js/jquery/jquery-3.3.1.min.js">\x3C/script>')
 </script>
 <script src="<?= base_url(); ?>assets/js/vendors.min.js"></script>
@@ -11,6 +13,7 @@
 <script type="text/javascript">
 	base_url = "<?= base_url(); ?>";
 	uri_js = "<?= $this->config->item('uri_js'); ?>";
+	
 </script>
 <script src="<?= base_url(); ?>assets/js/aplikasi.js"></script>
 <script>

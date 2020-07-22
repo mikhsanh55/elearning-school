@@ -459,12 +459,23 @@ class Jadwal extends MY_Controller {
 			$data_calendar = $this->m_jadwal->get_all(array('jwl.id_guru'=>$this->akun->id));
 		}
 		
-	
+		
 
 
 		foreach ($data_calendar as $key => $val) 
 
 		{
+			// Materi
+			$materi = $this->m_materi->get_by(['id' => $val->id_materi]);
+			$nama_materi = !empty($materi) ? $materi->title : '';
+			// Mapel
+			if($nama_materi != '') {
+				$mapel = $this->m_mapel->get_by(['id' => $materi->id_mapel]);
+				$nama_mapel = !empty($mapel) ? $mapel->nama : '';
+			}
+			else {
+				$nama_mapel = '';
+			}
 			$keterangan = $text = str_replace("\r\n",'', $val->keterangan);
 			
 			$calendar[] = array(
@@ -473,9 +484,9 @@ class Jadwal extends MY_Controller {
 
 				'time' => 01,
 
-				'title' => $val->nama_materi, 
+				'title' => $nama_materi, 
 
-				'time' => $val->nama_mp, 
+				'time' => $nama_mapel, 
 
 				'description' => trim($keterangan), 
 
@@ -490,7 +501,7 @@ class Jadwal extends MY_Controller {
 		}
 		
 		$data['get_data'] = json_encode($calendar);
-		
+		// print_r($data['get_data']);exit;
 	
 		if($this->log_lvl == 'guru'){
 			$this->render('jadwal/kalender', $data);

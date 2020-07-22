@@ -74,18 +74,9 @@ class M_jadwal extends MY_Model {
      public function get_kalender($where=array()){
         $get = $this->db->select("
                 jwl.*,
-                gr.nama as nama_guru,
-                mp.nama as nama_mp,
-                mt.title as nama_materi
             ")
             ->from('`tb_jadwal` jwl')
-            ->join('tb_kelas kls','kls.id=jwl.id_kelas','left')
-            ->join('tb_detail_kelas dekls','kls.id=dekls.id_kelas','left')
-            ->join('tb_detail_kelas_mapel klsmpl','kls.id=klsmpl.id_kelas')
-            ->join('m_guru gr','gr.id = klsmpl.id_guru')
-            ->join('m_mapel mp','mp.id = kls.id_mapel','left')
-            ->join('m_materi mt','mt.id = jwl.id_materi','left')
-          
+            ->join('tb_detail_kelas dekls','jwl.id_kelas=dekls.id_kelas','inner')
             ->where($where)
             ->get()
             ->result();

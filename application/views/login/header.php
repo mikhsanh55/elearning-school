@@ -33,6 +33,9 @@
 	</script>
 	<script src="<?= base_url(); ?>assets/js/pace.min.js"></script>
 	<script src="<?= base_url(); ?>assets/plugins/modernizr/modernizr-custom.js"></script>
+	<style>
+	
+	</style>
 </head>
 
 <body>
