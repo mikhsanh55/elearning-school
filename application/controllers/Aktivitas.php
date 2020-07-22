@@ -91,12 +91,6 @@ class Aktivitas extends MY_Controller {
 
 		$uri4 = $this->uri->segment(4);
 
-
-
-
-
-		//var def session
-
 		$a['sess_level'] = $this->session->userdata('admin_level');
 
 		$a['sess_user'] = $this->session->userdata('admin_user');
@@ -104,12 +98,6 @@ class Aktivitas extends MY_Controller {
 		$a['sess_konid'] = $this->session->userdata('admin_konid');
 
 		$a['menu'] = $this->menu;
-
-		// $a['link'] = $this->db->query("SELECT link FROM rule_users JOIN menu ON rule_users.id_menu = menu.id JOIN level ON rule_users.id_level = level.id WHERE link = '".$uri1."/".$uri2."' AND level = '".$a['sess_level']."' ")->result_array();
-
-		
-
-
 
 		$this->load->view('dashboard/template/header', $a);
 
@@ -189,13 +177,7 @@ class Aktivitas extends MY_Controller {
 	        $draw = $this->input->post('draw');
 
 	        $search = $this->input->post('search');
-
-
-
 	        if ($this->log_lvl == 'guru') {
-
-
-
 	        	$where = array(
 
 	        		'kls.id_trainer' => $this->log_id,

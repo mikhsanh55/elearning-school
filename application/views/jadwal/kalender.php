@@ -193,7 +193,12 @@
                     detail(event);
                   
                 },
-                events: JSON.parse(get_data)
+                eventSources: [
+                  {
+                    events: <?= $get_data; ?>,
+                    textColor: 'yellow'
+                  }
+                ]
             });
     });
 
@@ -219,6 +224,11 @@
                       <td>Pengajar</td>
                       <td>:</td>
                       <td>`+response.custom.nama_guru+`</td>
+                    </tr>
+                    <tr>
+                      <td>Kelas</td>
+                      <td>:</td>
+                      <td>${response.data.kelas}</td>
                     </tr>
                      <tr>
                       <td>Mata Pelajaran</td>

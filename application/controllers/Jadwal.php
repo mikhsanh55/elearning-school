@@ -458,7 +458,7 @@ class Jadwal extends MY_Controller {
 			);
 			$data_calendar = $this->m_jadwal->get_all(array('jwl.id_guru'=>$this->akun->id));
 		}
-		
+		// print_r($data_calendar);exit;
 		
 
 
@@ -499,7 +499,6 @@ class Jadwal extends MY_Controller {
 			);
 
 		}
-		
 		$data['get_data'] = json_encode($calendar);
 		// print_r($data['get_data']);exit;
 	
@@ -512,11 +511,13 @@ class Jadwal extends MY_Controller {
 
 	}
 
-
-
 	function get_data_kalender(){
 
 		$get = $this->m_jadwal->get_by(array('jwl.id'=>$this->input->post('id')));
+		
+		$kelas = $this->m_kelas->get_by(['kls.id' => $get->id_kelas]);
+		$get->kelas = !empty($kelas) ? $kelas->nama : '';
+
 
 		$id_mapel = $get->mt_id_mapel;
 		$id_guru = $get->id_guru;
@@ -563,24 +564,17 @@ class Jadwal extends MY_Controller {
 
 		} 
 
-
-
 		$custom = array(
 			'nama_mapel' => $nama_mapel,
 			'nama_guru' => $nama_guru,
 			'tgl_mulai' => $date, 
-
 			'tgl_selesai' => $date2,
-
 			'waktu_mulai' => $time,
-
 			'waktu_selesai' => $time2, 
 			'link_materi' => $link_materi
 		);
 
-
-
-		echo json_encode(array('data'=>$get,'custom'=>$custom));
+		echo json_encode(array('data' => $get, 'custom' => $custom));
 
 	}
 
