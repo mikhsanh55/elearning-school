@@ -237,7 +237,8 @@ class Import extends MY_Controller {
                         'username' => $row['F'],
                         'password'  => $this->encryption->encrypt($row['E']),
                         'level'    => 'guru',
-                        'kon_id'   => $inserted_id
+                        'kon_id'   => $inserted_id,
+                        'login_at' => date('Y-m-d H:i:s')
                     ];
 
                     $this->db->insert('m_admin', $data_admin);
