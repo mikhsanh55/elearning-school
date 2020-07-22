@@ -45,14 +45,14 @@
 					<label for="pwd">Alamat</label>
 					<input type="text" class="form-control" id="alamat" name="alamat">
 				</div>
-				<div class="form-group">
+				<!-- <div class="form-group">
 					<label for="">File Format Excel Guru</label>
 					<input type="file" class="form-control" name="excel_guru">
 				</div>
 				<div class="form-group">
 					<label for="">File Format Excel Siswa</label>
 					<input type="file" class="form-control" name="excel_siswa">
-				</div>
+				</div> -->
 
 				<button type="submit" class="btn btn-default">Simpan</button>
 				<button type="button" class="btn btn-default" onclick="window.location='<?=base_url('instansi');?>'">Kembali</button>
