@@ -258,7 +258,7 @@ input:checked + .kecil-slider:before {
 
 					<!-- <label for="email">Jumlah Pengulangan Latihan:</label> -->
 
-					<input type="hidden" class="form-control" id="jumlah_testing" name="jumlah_testing" required="" value="<?=(empty($setting->jumlah_testing)) ? NULL : $setting->jumlah_testing;?>">
+					<input type="hidden" class="form-control" id="jumlah_testing" name="jumlah_testing" required="" value="<?=(empty($setting->jumlah_testing)) ? 0 : $setting->jumlah_testing;?>">
 
 					<label for="email">Video Beranda:</label>
 
