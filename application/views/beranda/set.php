@@ -260,7 +260,7 @@ input:checked + .kecil-slider:before {
 
 					<input type="hidden" class="form-control" id="jumlah_testing" name="jumlah_testing" required="" value="<?=(empty($setting->jumlah_testing)) ? 0 : $setting->jumlah_testing;?>">
 
-					<label for="email">Video Beranda:</label>
+					<!-- <label for="email">Video Beranda:</label>
 
 					<div class="custom-file mb-3">
 
@@ -268,9 +268,10 @@ input:checked + .kecil-slider:before {
 
 						<label class="custom-file-label file-video" for="customFile">Choose file</label><label><?=(empty($setting->video)) ? NULL : $setting->video;?></label>
 
-						<input type="hidden" name="video_before" value="<?=(empty($setting->video)) ? NULL : $setting->video;?>">
+						
 
-					</div>
+					</div> -->
+					<input type="hidden" name="video_before" value="<?=(empty($setting->video)) ? NULL : $setting->video;?>">
 
 				</div>
 				<div class="form-group">

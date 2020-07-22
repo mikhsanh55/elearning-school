@@ -18,7 +18,9 @@ class Aktivitas extends MY_Controller {
 
         $this->waktu_sql = $waktu_sql['waktu'];
 
-        $this->opsi = array("a","b","c","d","e");
+		$this->opsi = array("a","b","c","d","e");
+		
+		$this->load->model('m_kelas');
 
 	}
 
@@ -179,26 +181,22 @@ class Aktivitas extends MY_Controller {
 	        $search = $this->input->post('search');
 	        if ($this->log_lvl == 'guru') {
 	        	$where = array(
-
-	        		'kls.id_trainer' => $this->log_id,
-
-	        		"sis.nama LIKE '%".$search['value']."%'" => null
-
-	        	);
+	        		'dkls.id_guru' => $this->log_id,
+				);
+				
+				if($search['value'] != '' && !is_null($search['value'])) {
+					$where["sis.nama LIKE '%".$search['value']."%'"] = NULL;
+				}
 
 	        	
 
-	        	$q_datanya = $this->db->select(
-
-	        							'sis.*'
-
-	        							)
+	        	$q_datanya = $this->db->select('sis.*, dkls.id_kelas')
 
 	        						  ->from('m_siswa sis')
 
-									  ->join('tb_detail_kelas dekls','dekls.id_peserta = sis.id','left')
+									  ->join('tb_detail_kelas dekls','dekls.id_peserta = sis.id','inner')
 
-									  ->join('tb_kelas kls','kls.id = dekls.id_kelas','left')
+									  ->join('tb_detail_kelas_mapel dkls','dkls.id_kelas = dekls.id_kelas','inner')
 
 	        						  ->group_by('sis.id','kls.id_trainer')
 
@@ -210,17 +208,32 @@ class Aktivitas extends MY_Controller {
 
 	        						  ->get()
 
+									  ->result_array();
+
+				// Set for pagination server side DataTable
+				$total_data =  $this->db->select('sis.*, dkls.id_kelas')
+
+	        						  ->from('m_siswa sis')
+
+									  ->join('tb_detail_kelas dekls','dekls.id_peserta = sis.id','inner')
+
+									  ->join('tb_detail_kelas_mapel dkls','dkls.id_kelas = dekls.id_kelas','inner')
+
+	        						  ->group_by('sis.id','kls.id_trainer')
+
+	        						  ->order_by(NULL,'sis.active_video + sis.active_read DESC')
+
+	        						  ->where($where)
+
+	        						  ->get()
+
 	        						  ->result_array();
-
-
-
-	        	$d_total_row = count($q_datanya);
+				
+	        	$d_total_row = count($total_data);
 
 
 
 	        }else if($this->log_lvl != 'admin'){
-
-
 
 	        	$d_total_row = $this->db->query("SELECT id FROM m_siswa a WHERE  a.instansi = ".$this->akun->instansi." AND a.nama LIKE '%".$search['value']."%'")->num_rows();
 
@@ -263,7 +276,8 @@ class Aktivitas extends MY_Controller {
 
 
 	        foreach ($q_datanya as $d) {
-
+				$kelas = $this->m_kelas->get_by(['kls.id' => $d['id_kelas']]);
+				$nama_kelas = !empty($kelas) ? $kelas->nama : 'Kosong';
 	            $data_ok = array();
 
 	            $data_ok[] = $no++;
@@ -272,7 +286,7 @@ class Aktivitas extends MY_Controller {
 
 	            $data_ok[] = $d['nrp'];
 
-	            $data_ok[] = $d['kelompok'];
+	            $data_ok[] = $nama_kelas;
 
 	            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-sm btn-primary ">' . $d['active_num'] . '</button></div>';
 
