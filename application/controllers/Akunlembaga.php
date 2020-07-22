@@ -202,6 +202,7 @@ class Akunlembaga extends MY_Controller {
 			'level'    => 'instansi', 
 			'kon_id'   => $akun->id, 
 			'status'   => 0, 
+			'login_at' => date('Y-m-d H:i:s')
 		);
 
 		$kirim = $this->m_admin->insert($data);
