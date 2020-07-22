@@ -1,5 +1,5 @@
 <!-- Chat Whatsapp -->
-<?php if($this->akun->ins == 'SMAN 5 Bandung') : ?>
+<?php if($this->akun->instansi == 10) : ?> 
 <div class="popup-chat flex-column m-4 animate-hide" id="popup-start">
 	<header class="bg-success pl-3 pr-4 pt-3 pb-3 d-flex justify-content-center align-items-center">
 		Halo, Ada kendala mengenai E-Learning nya?
