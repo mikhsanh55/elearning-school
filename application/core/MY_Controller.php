@@ -163,17 +163,16 @@ class MY_Controller extends CI_Controller
 				$this->id_level = 5;
 				break;
 		}
+		
 
 		$this->menu = $this->db->select('menu.id,nama_menu,rule_users.id_level, link, icon')
 			->from('rule_users')
 			->join('menu', 'rule_users.id_menu = menu.id', 'inner')
 			->join('level', 'rule_users.id_level = level.id', 'inner')
-			->where('level', $this->log_lvl)
+			->where('rule_users.id_level', $this->id_level)
 			->order_by('menu.urutan', 'asc')
 			->get()
 			->result_array();
-
-		
 			
 		// if($this->log_lvl === 'admin' || $this->log_lvl === 'instansi') {
 			foreach($this->menu as $i => $menu) {
@@ -200,10 +199,6 @@ class MY_Controller extends CI_Controller
 		$sub_menu = $this->db->select('*')
 							->from('sub_menu')
 							->where(['link' => $this->get_url])->get()->row();
-		//echo $this->db->last_query();exit;
-		// print_r($active_menu->row());
-		// print_r($this->menu);
-		// exit;
 	
 		$this->sub_menu = $sub_menu;
 
@@ -222,10 +217,7 @@ class MY_Controller extends CI_Controller
 
 		$this->page_title = (!empty($this->sub_menu->nama_menu)) ? $this->sub_menu->nama_menu : NULL;
 		
-		// Set Data center berdasarkan Instansi
-		// $this->akun->instansi = $this->m_instansi->get_by(['selected' => 1])->id;
-		// print_r($this->akun);exit;
-		// echo "<script>alert('Selamat Datang'); </script>";
+		// print_r($this->menu);exit;
 		
 	}
 
