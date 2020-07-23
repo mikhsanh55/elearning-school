@@ -430,7 +430,7 @@ class Import extends MY_Controller {
                         'opsi_d'    => '#####<p>'.$row['F'].'</p>',
                         'opsi_e'    => '#####<p>'.$row['G'].'</p>',
                         'jawaban'   => $row['H'],
-                        'tgl_input' => NOW(),
+                        'tgl_input' => date('Y-m-d h:i:s'),
                         'jml_benar' => 0,
                         'jml_salah' => 0
                     );
