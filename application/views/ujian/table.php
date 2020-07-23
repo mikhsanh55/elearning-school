@@ -27,11 +27,11 @@
 			$kelas = $this->m_ujian->kls_ujian(['uji.id'=>$rows->id]);
 			$kelasNama = NULL;
 			foreach ($kelas as $key => $value) {
-				$kelasNama .= $value->nama.','; 
+				$kelasNama .= $value->nama.', '; 
 			}
 			$kelasNama .= '#';
 
-			$kelasNama = str_replace(',#','',$kelasNama);
+			$kelasNama = str_replace(', #','',$kelasNama);
 		?>
 			<tr>
 				<td><input type="checkbox" name="checklist[]" class="checklist" data-id= "<?=encrypt_url($rows->id);?>" value="<?=$rows->id;?>"></td>
