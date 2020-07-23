@@ -252,7 +252,7 @@
 
 			// Store Data
 			let data = new FormData();
-            if(video.value != '' || videoYt.value != '') {
+            // if(video.value != '' || videoYt.value != '') {
                 switch(uploadType) {
                     case 'manual':
                     data.append('video_manual', file)
@@ -269,7 +269,7 @@
                     data.append('id_type_video', 3)
                     break
                 } 
-            }
+            // }
                     
 			data.append('title', title.val());
 			data.append('content', content);

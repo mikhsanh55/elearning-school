@@ -349,7 +349,7 @@ class Materi extends MY_Controller
             if ($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') {
                 $data['is_verify'] = 1;
             } else {
-                $data['is_verify'] = 0;
+                $data['is_verify'] = 1;
             }
 
             $update = $this->m_materi->update($data, ['id' => $this->input->post('imateri')]);
@@ -430,7 +430,7 @@ class Materi extends MY_Controller
                 $embedVideo = $embedVideo . '/preview';
             }
             else {
-                $embedVideo = '1';
+                $embedVideo = '';
             }
 
             $data = [
@@ -439,7 +439,7 @@ class Materi extends MY_Controller
                 'title'         => $this->input->post('title'),
                 'content'       => $this->input->post('content'),
                 'video'      => $embedVideo,
-                'path_video'      => !empty($this->input->post('video-gdrive')) ?  $this->input->post('video-gdrive') : 1,
+                'path_video'      => !empty($this->input->post('video-gdrive')) ?  $this->input->post('video-gdrive') : '',
                 'upload_manual' => 0,
                 'req_edit'      => 1,
                 'id_type_video' => 2
@@ -447,7 +447,7 @@ class Materi extends MY_Controller
             if ($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') {
                 $data['is_verify'] = 1;
             } else {
-                $data['is_verify'] = 0;
+                $data['is_verify'] = 1;
             }
 
             $this->db->where('id', $this->input->post('imateri'));
@@ -865,7 +865,7 @@ class Materi extends MY_Controller
                 if ($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') {
                     $data['is_verify'] = 1;
                 } else {
-                    $data['is_verify'] = 0;
+                    $data['is_verify'] = 1;
                 }
                 $insert = $this->db->insert('m_materi', $data);
 
@@ -928,7 +928,7 @@ class Materi extends MY_Controller
                 $embedVideo = $embedVideo . '/preview';
             }
             else {
-                $embedVideo = '1';
+                $embedVideo = '';
             }
             $data = [
                 'id_mapel'   => $this->input->post('mapel'),
@@ -937,13 +937,13 @@ class Materi extends MY_Controller
                 'title'      => $this->input->post('title'),
                 'content'    => $this->input->post('content'),
                 'video'      => $embedVideo,
-                'path_video'      => !empty($this->input->post('video-gdrive')) ?  $this->input->post('video-gdrive') : 1,
+                'path_video'      => !empty($this->input->post('video-gdrive')) ?  $this->input->post('video-gdrive') : '',
                 'req_add'    => 1,
             ];
             if ($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') {
                 $data['is_verify'] = 1;
             } else {
-                $data['is_verify'] = 0;
+                $data['is_verify'] = 1;
             }
 
             $insert = $this->db->insert('m_materi', $data);
