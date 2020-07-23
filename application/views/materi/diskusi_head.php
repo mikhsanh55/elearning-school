@@ -120,7 +120,7 @@
 								<legend>Pertanyaan atau Diskusi Baru</legend>
 								<form id="formKomentar" method="post" action="">
 									<input type="hidden" name="id_materi" value="<?=$materi->id;?>">
-									<input type="hidden" name="id_head">
+									<input type="hidden" name="id_head" value="0">
 									<input type="hidden" name="id_trainer" value="<?=$id_trainer;?>">
 									<input type="hidden" name="id_siswa" value="<?=$id_siswa;?>">
 									<input type="hidden" name="id_kelas" value="<?=$id_kelas;?>">
