@@ -24,6 +24,14 @@
 			}else{
 				$date = NULL;
 			}
+			$kelas = $this->m_ujian->kls_ujian(['uji.id'=>$rows->id]);
+			$kelasNama = NULL;
+			foreach ($kelas as $key => $value) {
+				$kelasNama .= $value->nama.','; 
+			}
+			$kelasNama .= '#';
+
+			$kelasNama = str_replace(',#','',$kelasNama);
 		?>
 			<tr>
 				<td><input type="checkbox" name="checklist[]" class="checklist" data-id= "<?=encrypt_url($rows->id);?>" value="<?=$rows->id;?>"></td>
@@ -31,7 +39,7 @@
 				<td>
 					<?= $rows->type_ujian == 'uas' ? 'UAS' : ($rows->type_ujian == 'uts' ? 'UTS' : 'Ujian Harian') ?>		
 				</td>
-				<td><?= $rows->nama; ?></td>
+				<td><?= $kelasNama; ?></td>
 				<td><?=$rows->nama_ujian;?></td>
 				<td><?=$date;?></td>
 				<td class="opsi text-center" >
@@ -103,7 +111,7 @@
 					</div>				
 				</td>	
 			</tr>
-		<?php $i++;endforeach ?>
+		<?php $kelasNama = NULL; $i++;endforeach ?>
 	</thead>
 <tbody>
 </tbody>

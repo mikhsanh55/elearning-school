@@ -138,21 +138,32 @@ class M_ujian extends MY_Model {
 	public function get_many_by($where=array()){
 		$get = $this->db->select('
 							uji.*,
-							kls.nama,
 							gr.nama as nama_guru,
 							mp.nama as nama_mapel,
 							ins.instansi as nama_instansi
 						')
 		->from('tb_ujian uji')
-		->join('tb_kelas_ujian klsuji', 'klsuji.id_ujian = uji.id', 'left')
-		->join('tb_kelas kls', 'kls.id = klsuji.id_kelas', 'left')
-		->join('tb_detail_kelas dkls', 'dkls.id_kelas = kls.id', 'left')
 		->join('m_guru gr','gr.id=uji.id_guru','left')
 		->join('m_mapel mp','mp.id=uji.id_mapel','left')
 		->join('tb_instansi ins','ins.id=uji.id_instansi','left')
 		->order_by('uji.id','asc')
 		->where($where)
-		->group_by('kls.id')
+		->get()
+		->result();
+	
+      
+		return $get;
+	}
+
+	public function kls_ujian($where=array()){
+		$get = $this->db->select('
+							kls.nama
+						')
+		->from('tb_ujian uji')
+		->join('tb_kelas_ujian klsuji', 'klsuji.id_ujian = uji.id', 'left')
+		->join('tb_kelas kls', 'kls.id = klsuji.id_kelas', 'left')
+		->order_by('uji.id','asc')
+		->where($where)
 		->get()
 		->result();
 	
