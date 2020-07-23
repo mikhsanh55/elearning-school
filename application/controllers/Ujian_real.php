@@ -37,7 +37,7 @@ class Ujian_real extends MY_Controller {
 		
 
         $this->opsi = array("a","b","c","d","e");
-        //$this->config->item('jml_opsi') = 5;
+        $this->jml_opsi = 5;
 
 	}
 
@@ -618,7 +618,7 @@ class Ujian_real extends MY_Controller {
 
 		$a['huruf_opsi'] = array("a","b","c","d","e");
 
-		// $a['jml_opsi'] = $this->config->item('jml_opsi');
+		// $a['jml_opsi'] = $this->jml_opsi;
 		$a['jml_opsi'] = count($a['huruf_opsi']);
 		// print_r($this->config);exit;
 
@@ -906,7 +906,7 @@ class Ujian_real extends MY_Controller {
 			// Masukan data opsinya a, b, ... e ke data soal yang tadi sudah di insert
 			$a['huruf_opsi'] = array("a","b","c","d","e");
 
-			// $a['jml_opsi'] = $this->config->item('jml_opsi');
+			// $a['jml_opsi'] = $this->jml_opsi;
 			$a['jml_opsi'] = count($a['huruf_opsi']);
 
 			for ($t = 0; $t < $a['jml_opsi']; $t++) {
@@ -1609,7 +1609,7 @@ class Ujian_real extends MY_Controller {
 
 
 
-				        for ($j = 0; $j < $this->config->item('jml_opsi'); $j++) {
+				        for ($j = 0; $j < $this->jml_opsi; $j++) {
 
 				            $opsi = "opsi_".$this->opsi[$j];
 
@@ -2069,7 +2069,7 @@ class Ujian_real extends MY_Controller {
 
 
 
-					for ($j = 0; $j < $this->config->item('jml_opsi'); $j++) {
+					for ($j = 0; $j < $this->jml_opsi; $j++) {
 
 						$opsi = "opsi_".$this->opsi[$j];
 
