@@ -13,14 +13,19 @@ class M_ujian extends MY_Model {
 
 	public function get_all($where=array()){
 		$get = $this->db->select('
+							kls.nama,
 							mp.nama as nama_mapel,
 							ins.instansi as nama_instansi
 						')
 		->from('tb_ujian uji')
+		->join('tb_kelas_ujian klsuji', 'klsuji.id_ujian = uji.id', 'left')
+		->join('tb_kelas kls', 'kls.id = klsuji.id_kelas', 'left')
+		->join('tb_detail_kelas dkls', 'dkls.id_kelas = kls.id', 'left')
 		->join('m_mapel mp','uji.id_mapel=mp.id','left')
 		->join('tb_instansi ins','ins.id=uji.id_instansi','left')
 		->order_by('uji.id','asc')
 		->where($where)
+		->group_by('kls.id')
 		->get()
 		->result();
 	
@@ -106,7 +111,7 @@ class M_ujian extends MY_Model {
 	}
 
 	public function count_by_cs($where=array()){
-		$get = $this->get_all($where);
+		$get = $this->get_many_by($where);
 		return count($get);
 	}
 
@@ -133,16 +138,21 @@ class M_ujian extends MY_Model {
 	public function get_many_by($where=array()){
 		$get = $this->db->select('
 							uji.*,
+							kls.nama,
 							gr.nama as nama_guru,
 							mp.nama as nama_mapel,
 							ins.instansi as nama_instansi
 						')
 		->from('tb_ujian uji')
+		->join('tb_kelas_ujian klsuji', 'klsuji.id_ujian = uji.id', 'left')
+		->join('tb_kelas kls', 'kls.id = klsuji.id_kelas', 'left')
+		->join('tb_detail_kelas dkls', 'dkls.id_kelas = kls.id', 'left')
 		->join('m_guru gr','gr.id=uji.id_guru','left')
 		->join('m_mapel mp','mp.id=uji.id_mapel','left')
 		->join('tb_instansi ins','ins.id=uji.id_instansi','left')
 		->order_by('uji.id','asc')
 		->where($where)
+		->group_by('kls.id')
 		->get()
 		->result();
 	
