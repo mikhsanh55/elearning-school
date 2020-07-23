@@ -1,5 +1,4 @@
 <style type="text/css">
-
 	.success{
 
 		background: #c4ffbb;
@@ -247,7 +246,9 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
-        var self
+        var self, photoUser = null, photoFileName, photoExt, formData;
+        const enableExtPictures = ['jpg', 'jpeg', 'png', 'gif', 'svg'];
+
         $('#lightslider').lightSlider({
             item:1,
             slideMargin:0,
@@ -319,13 +320,9 @@
 
             var fileName = e.target.files[0].name;
 
-  	
-
             var files = e.target.files; 
 
             var name = '';
-
-
 
             for (var i = 0, file; file = files[i]; i++) {
 
@@ -336,14 +333,61 @@
             }
 
             $('.file-logo').text(name)
-
-   
-
         });
 
-        
+        $('#photo-file').change(function(e) {
+            photoUser = e.target.files[0];
+            photoFileName = photoUser.name
+            photoFileName = photoFileName.split('.')
+            photoExt = photoFileName[ photoFileName.length - 1 ]
 
-        	$('#video').change(function(e){
+            if(!enableExtPictures.includes(photoExt)) {
+                alert('Harap upload photo');
+                photoUser = null;
+                $(this).val('');
+                return false;
+            }
+        });
+
+        $('#upload-photo').on('click', function() {
+            if(photoUser === null) {
+                alert('Harap upload photo');
+                return false;
+            }
+            // set loading button
+            $(this).prop('disabled', true);
+            $(this).find('.fa-upload').toggleClass('d-none');
+            $(this).find('.fa-spinner').toggleClass('d-none');
+            formData = new FormData();
+            formData.append('id', $('#id').val());
+            formData.append('photo', photoUser);
+            self = this;
+            $.ajax({
+                type: 'post',
+                url: "<?= base_url('pengusaha/update_photo'); ?>",
+                data: formData,
+                dataType: 'json',
+                contentType:false,
+                processData:false,
+                success:function(res) {
+                    $(self).prop('disabled', true);
+                    $(self).find('.fa-upload').toggleClass('d-none');
+                    $(self).find('.fa-spinner').toggleClass('d-none');
+
+                    $('#avatar').attr('src', res.url);
+                },
+                error:function(e) {
+                    $(self).prop('disabled', true);
+                    $(self).find('.fa-upload').toggleClass('d-none');
+                    $(self).find('.fa-spinner').toggleClass('d-none');
+                    alert('Something wrong when upload photo');
+                    console.error(e.responseText);             
+                    return false;       
+                }
+            })
+        });
+
+        $('#video').change(function(e){
 
             var fileName = e.target.files[0].name;
 
