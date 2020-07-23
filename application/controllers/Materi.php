@@ -1337,11 +1337,11 @@ class Materi extends MY_Controller
     {
 
         if ($this->log_lvl == 'siswa') {
-            $id_trainer = null;
+            $id_trainer = 0;
             $id_siswa   = $this->log_id;
         } else {
             $id_trainer = $this->log_id;
-            $id_siswa   = null;
+            $id_siswa   = 0;
         }
 
         $cari = array(
