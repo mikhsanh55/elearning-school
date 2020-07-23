@@ -67,7 +67,6 @@ class Pengusaha extends MY_Controller {
 		}
 	}
 
-
     public function get_provinsi() 
 	{
 	    $this->db->select('*')

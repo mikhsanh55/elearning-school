@@ -230,7 +230,7 @@
           }
         })
 
-         function load_notif() {
+        function load_notif() {
             $.ajax({
                 type: "POST",
                 url: "<?=base_url('materi/get_notif');?>",
