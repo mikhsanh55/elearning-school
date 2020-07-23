@@ -1357,8 +1357,10 @@ class Materi extends MY_Controller
             'jadwal_by'  => $this->m_jadwal->get_by(array('id_materi' => $id)),
             'id_trainer' => $id_trainer,
             'id_siswa'   => $id_siswa,
-            'id_kelas' => $this->uri->segment(4)
+            'id_kelas' => $this->uri->segment(4),
         );
+
+        // print_r($data['komentar']);exit;
 
         $this->render('materi/diskusi_head', $data);
     }

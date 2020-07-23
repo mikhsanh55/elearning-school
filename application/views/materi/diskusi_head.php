@@ -76,13 +76,14 @@
 							
 							<div class="row align-items-center mb-4">
 								<div class="col-sm-12 col-md-6 col-lg-6">
-									<h2><strong>Diskusi</strong></h2>		
+									<?php $kelas = $this->m_kelas->get_by(['kls.id' => $id_kelas])->nama;?>
+									<h2><strong>Diskusi Kelas <?= $kelas; ?> </strong></h2>		
 								</div>
 								<div class="col-sm-12 col-md-6 col-lg-6 text-right">
 									<button class="btn btn-light" onclick="back_page('materi', true)">Kembali</button>
 								</div>
 							</div>
-							<h3><?=$materi->title;?></h3>
+							<h3>Materi : <?=$materi->title;?></h3>
 							<h5>Tulis Pertanyaan atau Diskusi !</h5>
 							<?php
 								if (!empty($jadwal_by->start_date)) {
