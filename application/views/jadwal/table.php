@@ -8,6 +8,8 @@
 
 			<th class="frist">No</th>
 
+			<th>Kelas</th>
+
 			<th>Guru</th>
 
 			<th>Mata Pelajaran</th>
@@ -24,7 +26,8 @@
 		</tr>
 		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows): 
-
+			$kelas = $this->m_kelas->get_by(['kls.id' => $rows->id_kelas]);
+			$nama_kelas = !empty($kelas) ? $kelas->nama : 'Kosong';
 			if (!empty($rows->start_date)) {
 
 				$datetime1 = explode(' ', $rows->start_date);
@@ -68,6 +71,8 @@
 			<tr>
 
 				<td align="center" class="frist"><?=$i;?></td>
+
+				<td><?= $nama_kelas; ?></td>
 
 				<td><?=$nama_guru;?></td>
 
