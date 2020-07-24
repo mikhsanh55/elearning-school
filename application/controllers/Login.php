@@ -54,6 +54,16 @@ class Login extends MY_Controller
 		$this->load->view('login/footer');
 	}
 
+    // Update status login apakah online atau offline
+    public function setStatusActive($status = 0, $where = []) {
+        $update = $this->m_admin->update(['status' => $status], $where);
+        if(!$update) {
+            return FALSE;
+        }
+
+        return TRUE;
+    }
+
 	public function act_login()
 	{
 
@@ -91,6 +101,8 @@ class Login extends MY_Controller
         					$_log['log']['status']			= "0";
         					$_log['log']['keterangan']		= "Maaf, akun anda tidak terdaftar pada instansi mana pun, silahkan hubungi admin";
         					$_log['log']['detil_admin']		= null;
+
+                            
         					j($_log);exit;
         				}else if ($instansi->deleted == 1) {
         					$_log['log']['status']			= "0";
@@ -117,6 +129,9 @@ class Login extends MY_Controller
         					);
 
         					$this->m_siswa->update($data,array('id'=>$siswa->id));
+
+                            // Set as Online
+                            $this->setStatusActive(1, ['id' => $siswa->id]);
 
         					if (!empty($siswa)) {
         						$sess_nama_user = $siswa->nama;
@@ -187,6 +202,9 @@ class Login extends MY_Controller
                             ];
                             $this->db->where('id', $get_user->kon_id);
                             $this->db->update('m_guru', $data_update);
+
+                            // Set as Online
+                            $this->setStatusActive(1, ['id' => $get_user->id]);
 
         				}
         			} else {

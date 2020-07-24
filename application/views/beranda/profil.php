@@ -15,7 +15,6 @@
 
 		margin:auto;
 	}
-
 	.errors{
 
 		background: #ffc8bb;
@@ -135,6 +134,16 @@
                                     <i class="fas fa-edit"></i>
                                     <i class="d-none fas fa-spinner text-primary spin-icon"></i>
                                     <button class="d-none btn btn-sm btn-outline-danger"><i class="fas  fa-times"></i></button>
+                                </td>
+                            </tr>
+                             <tr>
+                                <th class="text-secondary text-uppercase">Kelas</th>
+                                <td class="text-lowercase font-weight-bold">
+
+                                    <?= $kelas->nama_kelas; ?>
+                                </td>
+                                <td class="text-right text-primary font-weight-bold">
+                                    <i class="fas fa-check"></i>
                                 </td>
                             </tr>
                             <tr>
