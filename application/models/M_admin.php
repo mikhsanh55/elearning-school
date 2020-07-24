@@ -31,6 +31,14 @@ class M_admin extends MY_Model
                             ->where($where)
                             ->get()
                             ->row();
+        }else{
+            $get = $this->db->select('*,user_id as usernames , username as email')
+                        ->from('m_admin admin')
+                        ->where($where)
+                        ->get()
+                        ->row();
+
+                      
         }
 
         return $get;
