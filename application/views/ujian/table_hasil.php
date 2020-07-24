@@ -19,11 +19,11 @@
 			$siswa = $this->m_siswa->get_by(['id'=>$rows->id_user]);
 			$keterangan = ($rows->nilai >= $ujian->min_nilai) ? 'LULUS' : 'BELUM LULUS';
 
-			if($rows->jml_benar > 90 && $rows->jml_benar < 101){
+			if($rows->nilai > 90 && $rows->nilai < 101){
 				$grade = 'A';
-			}else if($rows->jml_benar > 80 && $rows->jml_benar < 91){
+			}else if($rows->nilai > 80 && $rows->nilai < 91){
 				$grade = 'B';
-			} else if($rows->jml_benar > 70 && $rows->jml_benar < 81){
+			} else if($rows->nilai > 70 && $rows->nilai < 81){
 				$grade = 'C';
 			} else {
 				$grade = 'D';
