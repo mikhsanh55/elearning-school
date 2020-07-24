@@ -6,6 +6,7 @@
 			<th class="frist">No</th>
 			<th>Siswa</th>
 			<th>Nilai</th>
+			<th>Grade</th>
 			<th>Jumlah Benar</th>
 			<th>Keterangan</th>
 			<th>KKM</th>
@@ -17,12 +18,23 @@
 			$ujian = $this->m_ujian->get_by(['uji.id'=>$rows->id_ujian]);
 			$siswa = $this->m_siswa->get_by(['id'=>$rows->id_user]);
 			$keterangan = ($rows->nilai >= $ujian->min_nilai) ? 'LULUS' : 'BELUM LULUS';
+
+			if($rows->nilai > 90 && $rows->nilai < 101){
+				$grade = 'A';
+			}else if($rows->nilai > 80 && $rows->nilai < 91){
+				$grade = 'B';
+			} else if($rows->nilai > 70 && $rows->nilai < 81){
+				$grade = 'C';
+			} else {
+				$grade = 'D';
+			}
 		?>
 			<tr>
 				<!-- <td><input type="checkbox" name="checklist[]" class="checklist" data-id= "<?=encrypt_url($rows->id);?>" value="<?=$rows->id;?>"></td> -->
 				<td align="center" class="frist"><?=$i;?></td>
 				<td><?=$siswa->nama;?></td>
 				<td><?=$rows->nilai;?></td>
+				<td><?=$grade;?></td>
 				<td><?=$rows->jml_benar;?></td>
 				<td><?=$keterangan;?></td>
 				<td><?=$ujian->min_nilai;?></td>

@@ -78,7 +78,7 @@ class Import extends MY_Controller {
                         // $id_guru = $this->m_guru->get_by(['nama' => $row['F'], 'instansi' => $this->akun->instansi]);
                         // $jk = ( == 'L' || $row['G'] == 'Laki-Laki') ? 1 : 0;
                         $username = empty($row['C']) ? $this->createUsername($row['B']) : $row['B'];
-                        $email = empty($row['G']) ? 'example@gmail.com' : $row['G'];
+                        $email = $row['G'];
                         $alamat = empty($row['H']) ? '-' : $row['H'];
                         $data = array(
                             'nama'  => $row['B'],
@@ -430,7 +430,7 @@ class Import extends MY_Controller {
                         'opsi_d'    => '#####<p>'.$row['F'].'</p>',
                         'opsi_e'    => '#####<p>'.$row['G'].'</p>',
                         'jawaban'   => $row['H'],
-                        'tgl_input' => NOW(),
+                        'tgl_input' => date('Y-m-d h:i:s'),
                         'jml_benar' => 0,
                         'jml_salah' => 0
                     );

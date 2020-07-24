@@ -349,7 +349,7 @@ class Materi extends MY_Controller
             if ($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') {
                 $data['is_verify'] = 1;
             } else {
-                $data['is_verify'] = 0;
+                $data['is_verify'] = 1;
             }
 
             $update = $this->m_materi->update($data, ['id' => $this->input->post('imateri')]);
@@ -430,7 +430,7 @@ class Materi extends MY_Controller
                 $embedVideo = $embedVideo . '/preview';
             }
             else {
-                $embedVideo = '1';
+                $embedVideo = '';
             }
 
             $data = [
@@ -439,7 +439,7 @@ class Materi extends MY_Controller
                 'title'         => $this->input->post('title'),
                 'content'       => $this->input->post('content'),
                 'video'      => $embedVideo,
-                'path_video'      => !empty($this->input->post('video-gdrive')) ?  $this->input->post('video-gdrive') : 1,
+                'path_video'      => !empty($this->input->post('video-gdrive')) ?  $this->input->post('video-gdrive') : '',
                 'upload_manual' => 0,
                 'req_edit'      => 1,
                 'id_type_video' => 2
@@ -447,7 +447,7 @@ class Materi extends MY_Controller
             if ($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') {
                 $data['is_verify'] = 1;
             } else {
-                $data['is_verify'] = 0;
+                $data['is_verify'] = 1;
             }
 
             $this->db->where('id', $this->input->post('imateri'));
@@ -703,93 +703,6 @@ class Materi extends MY_Controller
 
     public function delete_using_php($id, $pdf = 0, $url_feed = null)
     {
-        // Jika materi bukan file pdf
-        // $id = $id;
-        // if($pdf == 0) {
-        //     $this->db->where('MD5(id)', $id);
-        //     $data = $this->db->get('m_materi')->row();
-
-        //     if($data->video != '') {
-        //         if(unlink($data->path_video)) {
-        //             $this->db->where('MD5(id)', $id);
-        //             $delete = $this->db->delete('m_materi');
-        //             if($delete) {
-        //                 echo json_encode(['status' => TRUE]);
-        //             }
-        //             else {
-        //                 die("Something Wrong");
-        //             }
-        //         }
-        //     }
-        //     else {
-        //         $this->db->where('MD5(id)', $id);
-        //         $delete = $this->db->delete('m_materi');
-        //         if($delete) {
-        //             echo json_encode(['status' => TRUE]);
-        //         }
-        //         else {
-        //             die("Something Wrong");
-        //         }
-        //     }
-
-        // }
-        // else {
-
-        //     // if($delete) {
-
-        //     $data = $this->get_list_materi_by_mapel($id, true);
-        //     $path = $data->content;
-        //     if(file_exists($path)) {
-        //         if(unlink($path)) {
-        //             if(file_exists($data->path_video)) {
-        //                 if(unlink($data->path_video)) {
-        //                     $this->db->where('MD5(id)', $id);
-        //                     $delete = $this->db->delete('m_materi');
-        //                     if($delete) {
-        //                         echo json_encode(['status' => TRUE]);
-        //                     }
-        //                     else {
-        //                         die("Something wrong");
-        //                     }
-        //                 }
-        //             }
-        //             else {
-        //                 $this->db->where('MD5(id)', $id);
-        //                 $delete = $this->db->delete('m_materi');
-        //                 if($delete) {
-        //                     echo json_encode(['status' => TRUE]);
-        //                 }
-        //                 else {
-        //                     die("Something wrong");
-        //                 }
-        //                 echo json_encode(['status' => TRUE]);
-        //             }
-
-        //         }
-        //         else {
-        //             die("Cannot delete file");
-        //         }
-
-        //     }
-        //     else {
-        //         if(file_exists($data->path_video)) {
-        //             if(unlink($data->path_video)) {
-        //                 $this->db->where('MD5(id)', $id);
-        //                 $delete = $this->db->delete('m_materi');
-        //                 if($delete) {
-        //                     echo json_encode(['status' => TRUE]);
-        //                 }
-        //             }
-        //         }
-        //         else {
-        //             $this->db->where('MD5(id)', $id);
-        //             $delete = $this->db->delete('m_materi');
-        //             if($delete) {
-        //                 echo json_encode(['status' => TRUE]);
-        //             }
-        //         }
-        //     }
-        // }
         $id = $id;
         if ($pdf == 0) {
             $this->db->where('MD5(id)', $id);
@@ -952,7 +865,7 @@ class Materi extends MY_Controller
                 if ($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') {
                     $data['is_verify'] = 1;
                 } else {
-                    $data['is_verify'] = 0;
+                    $data['is_verify'] = 1;
                 }
                 $insert = $this->db->insert('m_materi', $data);
 
@@ -1015,7 +928,7 @@ class Materi extends MY_Controller
                 $embedVideo = $embedVideo . '/preview';
             }
             else {
-                $embedVideo = '1';
+                $embedVideo = '';
             }
             $data = [
                 'id_mapel'   => $this->input->post('mapel'),
@@ -1024,13 +937,13 @@ class Materi extends MY_Controller
                 'title'      => $this->input->post('title'),
                 'content'    => $this->input->post('content'),
                 'video'      => $embedVideo,
-                'path_video'      => !empty($this->input->post('video-gdrive')) ?  $this->input->post('video-gdrive') : 1,
+                'path_video'      => !empty($this->input->post('video-gdrive')) ?  $this->input->post('video-gdrive') : '',
                 'req_add'    => 1,
             ];
             if ($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') {
                 $data['is_verify'] = 1;
             } else {
-                $data['is_verify'] = 0;
+                $data['is_verify'] = 1;
             }
 
             $insert = $this->db->insert('m_materi', $data);
@@ -1420,65 +1333,15 @@ class Materi extends MY_Controller
         echo json_encode(['url' => $url]);
     }
 
-    // public function get_youtube_video() {
-    //     $url = $this->input->get('url');
-    //     $handler = new YoutubeDownloader();
-
-    //     if(!empty($url) && !filter_var($url, FILTER_VALIDATE_URL) === false) {
-    //         $downloader = $handler->getDownloader($url);
-    //         $downloader->setUrl($url);
-    //         if($downloader->hasVideo()) {
-    //             $videoDownloadLink = $downloader->getVideoDownloadLink();
-
-    //             $title = $videoDownloadLink[0]['title'];
-    //             $quality = $videoDownloadLink[0]['quality'];
-    //             $format = $videoDownloadLink[0]['format'];
-    //             $fileName = strtolower(str_replace(' ', '_',  $title)) . '.' . $format;
-    //             $downloadUrl = $videoDownloadLink[0]['url'];
-
-    //             echo json_encode([
-    //               'filename' => $filename,
-    //               'url' => $downloadUrl
-    //             ]);
-    //             http_response_code(200);
-    //         }
-    //         else {
-    //             die('Harap masukan URL yang valid!');
-    //         }
-
-    //     }
-    //     else {
-    //         die('Harap masukan URL yang valid!');
-    //     }
-    // }
-
-    // public function forceDownloadVideo($filename, $url) {
-
-    //     if(!empty($filename) && !empty($url)) {
-    //         $fileName = preg_replace('/[^A-Za-z0-9.\_\-]/', '', basename($fileName));
-
-    //         // define header for force download
-    //         header("Cache-Control: public");
-    //         header("Content-Description: File Trasfer");
-    //         header("Content-Disposition: attachment; filename=$filename");
-    //         header("Content-Type: application/zip");
-    //         header("Content-Transfer-Encoding: binary");
-
-    //         // read file
-    //         readfile($url);
-    //     }
-    //     exit;
-    // }
-
     public function diskusi($id = null, $id_koment = null)
     {
 
         if ($this->log_lvl == 'siswa') {
-            $id_trainer = null;
+            $id_trainer = 0;
             $id_siswa   = $this->log_id;
         } else {
             $id_trainer = $this->log_id;
-            $id_siswa   = null;
+            $id_siswa   = 0;
         }
 
         $cari = array(
@@ -1494,8 +1357,10 @@ class Materi extends MY_Controller
             'jadwal_by'  => $this->m_jadwal->get_by(array('id_materi' => $id)),
             'id_trainer' => $id_trainer,
             'id_siswa'   => $id_siswa,
-            'id_kelas' => $this->uri->segment(4)
+            'id_kelas' => $this->uri->segment(4),
         );
+
+        // print_r($data['komentar']);exit;
 
         $this->render('materi/diskusi_head', $data);
     }
@@ -1522,7 +1387,7 @@ class Materi extends MY_Controller
         $where['komen.id_kelas'] = $post['id_kelas'];
         // print_r($this->log_id);exit;
         if ($this->log_lvl == 'siswa') {
-            $id_trainer = null;
+            $id_trainer = 0;
             $id_siswa   = $this->log_id;
             $data_detail_kelas = $this->m_detail_kelas->get_siswa(['dk.id_peserta' => $this->log_id]);
             $id_kelas = $data_detail_kelas->id_kelas;
@@ -1533,7 +1398,7 @@ class Materi extends MY_Controller
             
         } else {
             $id_trainer = $this->log_id;
-            $id_siswa   = null;
+            $id_siswa   = 0;
             // $data_detail_kelas = $this->m_detail_mapel->get_by(['id_guru' =>])
             $datas = $this->m_komen_materi->get_many_by($where);
         }
@@ -1648,7 +1513,7 @@ class Materi extends MY_Controller
                             'id_koment'   => $id_koment,
                             'id_materi'   => $post['id_materi'],
                             'id_siswa'    => $peserta,
-                            'id_trainer'  => null,
+                            'id_trainer'  => 0,
                             'keterangan'  => 'Trainer ikut berkomentar',
                             'see'         => 0,
                             'sender_id'   => $this->log_id,
@@ -1666,7 +1531,7 @@ class Materi extends MY_Controller
                             'id_koment'   => $id_koment,
                             'id_materi'   => $post['id_materi'],
                             'id_siswa'    => $cek->id_siswa,
-                            'id_trainer'  => null,
+                            'id_trainer'  => 0,
                             'keterangan'  => 'peserta lain ikut berkomentar',
                             'see'         => 0,
                             'sender_id'   => $this->log_id,
@@ -1685,7 +1550,7 @@ class Materi extends MY_Controller
                                     'id_koment'   => $id_koment,
                                     'id_materi'   => $post['id_materi'],
                                     'id_siswa'    => $rows->id_siswa,
-                                    'id_trainer'  => null,
+                                    'id_trainer'  => 0,
                                     'keterangan'  => 'peserta lain ikut berkomentar',
                                     'see'         => 0,
                                     'sender_id'   => $this->log_id,
@@ -1724,7 +1589,7 @@ class Materi extends MY_Controller
                         $data = array(
                             'id_koment'   => $id_koment,
                             'id_materi'   => $post['id_materi'],
-                            'id_siswa'    => null,
+                            'id_siswa'    => 0,
                             'id_trainer'  => $materi->id_guru,
                             'keterangan'  => 'Menulis sesuatu di materi yang anda tulis',
                             'see'         => 0,

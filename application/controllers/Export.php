@@ -613,7 +613,7 @@ class Export extends MY_Controller {
 		// print_r($result['datas']);exit;
 		$this->dpdf->setPaper('A4', 'landscape');
 		$this->dpdf->filename = 'Hasil Ujian.pdf';
-		$this->dpdf->view('ujian/hasil_ujian', $result);
+		$this->dpdf->view('ujian/hasil_ujian_pdf', $result);
 
 	}
 

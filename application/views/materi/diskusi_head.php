@@ -76,13 +76,14 @@
 							
 							<div class="row align-items-center mb-4">
 								<div class="col-sm-12 col-md-6 col-lg-6">
-									<h2><strong>Diskusi</strong></h2>		
+									<?php $kelas = $this->m_kelas->get_by(['kls.id' => $id_kelas])->nama;?>
+									<h2><strong>Diskusi Kelas <?= $kelas; ?> </strong></h2>		
 								</div>
 								<div class="col-sm-12 col-md-6 col-lg-6 text-right">
 									<button class="btn btn-light" onclick="back_page('materi', true)">Kembali</button>
 								</div>
 							</div>
-							<h3><?=$materi->title;?></h3>
+							<h3>Materi : <?=$materi->title;?></h3>
 							<h5>Tulis Pertanyaan atau Diskusi !</h5>
 							<?php
 								if (!empty($jadwal_by->start_date)) {
@@ -120,7 +121,7 @@
 								<legend>Pertanyaan atau Diskusi Baru</legend>
 								<form id="formKomentar" method="post" action="">
 									<input type="hidden" name="id_materi" value="<?=$materi->id;?>">
-									<input type="hidden" name="id_head">
+									<input type="hidden" name="id_head" value="0">
 									<input type="hidden" name="id_trainer" value="<?=$id_trainer;?>">
 									<input type="hidden" name="id_siswa" value="<?=$id_siswa;?>">
 									<input type="hidden" name="id_kelas" value="<?=$id_kelas;?>">

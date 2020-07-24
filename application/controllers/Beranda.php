@@ -133,6 +133,8 @@ class Beranda extends MY_Controller {
 
 			'patch'  => base_url('upload/slide/'),
 
+			'kelas' => $this->m_detail_kelas->get_siswa(['dk.id_peserta' => $this->akun->id])
+
 		];
 
 		$this->render('beranda/profil',$data);	

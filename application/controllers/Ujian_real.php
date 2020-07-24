@@ -37,7 +37,7 @@ class Ujian_real extends MY_Controller {
 		
 
         $this->opsi = array("a","b","c","d","e");
-        // $this->config->item('jml_opsi') = 5;
+        $this->jml_opsi = 5;
 
 	}
 
@@ -92,7 +92,7 @@ class Ujian_real extends MY_Controller {
 		$tipe_ujian = array('uts'=>'UTS','uas'=>'UAS', 'harian' => 'Ulangan Harian');
 
 		if($this->log_lvl == 'admin' || $this->log_lvl == 'instansi' || $this->log_lvl == 'admin_instansi') {
-			$mapel = $this->m_detail_mapel->get_many_by(['guru.id_instansi'=>$this->akun->instansi]);
+			$mapel = $this->m_detail_mapel->get_many_by(['guru.instansi'=>$this->akun->instansi]);
 		}
 		else if($this->log_lvl == 'guru') {
 			$mapel = $this->m_detail_mapel->get_many_by(['guru.id'=>$this->akun->id]);
@@ -140,7 +140,7 @@ class Ujian_real extends MY_Controller {
 		// }
 		
 		if($this->log_lvl == 'admin' || $this->log_lvl == 'instansi' || $this->log_lvl == 'admin_instansi') {
-			$mapel = $this->m_detail_mapel->get_many_by(['guru.id_instansi'=>$this->akun->instansi]);
+			$mapel = $this->m_detail_mapel->get_many_by(['guru.instansi'=>$this->akun->instansi]);
 		}
 		else if($this->log_lvl == 'guru') {
 			$mapel = $this->m_detail_mapel->get_many_by(['guru.id'=>$this->akun->id]);
@@ -618,7 +618,7 @@ class Ujian_real extends MY_Controller {
 
 		$a['huruf_opsi'] = array("a","b","c","d","e");
 
-		// $a['jml_opsi'] = $this->config->item('jml_opsi');
+		// $a['jml_opsi'] = $this->jml_opsi;
 		$a['jml_opsi'] = count($a['huruf_opsi']);
 		// print_r($this->config);exit;
 
@@ -906,7 +906,7 @@ class Ujian_real extends MY_Controller {
 			// Masukan data opsinya a, b, ... e ke data soal yang tadi sudah di insert
 			$a['huruf_opsi'] = array("a","b","c","d","e");
 
-			// $a['jml_opsi'] = $this->config->item('jml_opsi');
+			// $a['jml_opsi'] = $this->jml_opsi;
 			$a['jml_opsi'] = count($a['huruf_opsi']);
 
 			for ($t = 0; $t < $a['jml_opsi']; $t++) {
@@ -1294,15 +1294,15 @@ class Ujian_real extends MY_Controller {
 
 				$cek_detil_tes = $this->m_ujian->get_by(['uji.id'=>$id_ujian]);
 				$ikut_ujian = $this->m_ikut_ujian->get_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
-				// print_r($id_ujian);exit;
+				
 				$cek_sdh_ujian	= $this->m_ikut_ujian->count_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
 				$acakan = $cek_detil_tes->jenis == "ORDER BY id ASC";
 
 				$offset = 0;
 
-				$to = $cek_detil_tes->jumlah_soal;
+				$to = $this->m_soal_ujian->count_by(['id_ujian'=>$id_ujian]);
 
-				
+			
 				// print_r($cek_detil_tes);
 				// exit;
 
@@ -1321,12 +1321,11 @@ class Ujian_real extends MY_Controller {
 										->get()
 										->result();
 					// print_r($a_soal);
-					// print_r($q_soal);
+				
 					// exit;
 					// $q_soal	= $this->db->query("SELECT id, file, jawaban, tipe_file, soal, opsi_a, opsi_b, opsi_c, opsi_d, opsi_e, '' AS jawaban FROM m_soal_ujian WHERE id_ujian = '".$cek_detil_tes->id."' ".$acakan." LIMIT ".$offset.", ".$to)->result();
 
 
-					// print_r($cek_detil_tes);exit;
 
 
 					
@@ -1375,6 +1374,8 @@ class Ujian_real extends MY_Controller {
 
 					$list_jw_benar  = "";
 
+			
+
 					if (!empty($q_soal)) {
 
 						foreach ($q_soal as $d) {
@@ -1387,6 +1388,8 @@ class Ujian_real extends MY_Controller {
 
 						}
 
+						
+
 						foreach ($a_soal as $d) {
 
 							$list_jw_benar .= $d->id.":".$d->jawaban.":N,";
@@ -1394,6 +1397,8 @@ class Ujian_real extends MY_Controller {
 						}
 
 					}
+
+					
 
 					$list_id_soal = substr($list_id_soal, 0, -1);
 
@@ -1464,7 +1469,7 @@ class Ujian_real extends MY_Controller {
 						);
 
 
-						// print_r($insert_data);exit;
+				
 						$this->m_ikut_ujian->insert($insert_data);
 
 						
@@ -1586,7 +1591,7 @@ class Ujian_real extends MY_Controller {
 
 				    foreach ($soal_urut_ok as $d) { 
 
-				    	echo $d->id;
+				    	 $d->id;
 
 				        $tampil_media = tampil_media("./upload/file_ujian_soal/".$d->file, '250px','auto');
 
@@ -1604,7 +1609,7 @@ class Ujian_real extends MY_Controller {
 
 
 
-				        for ($j = 0; $j < $this->config->item('jml_opsi'); $j++) {
+				        for ($j = 0; $j < $this->jml_opsi; $j++) {
 
 				            $opsi = "opsi_".$this->opsi[$j];
 
@@ -2064,7 +2069,7 @@ class Ujian_real extends MY_Controller {
 
 
 
-					for ($j = 0; $j < $this->config->item('jml_opsi'); $j++) {
+					for ($j = 0; $j < $this->jml_opsi; $j++) {
 
 						$opsi = "opsi_".$this->opsi[$j];
 

@@ -93,7 +93,6 @@
 
                     <?php if($this->session->userdata('admin_level') == 'guru' || $this->session->userdata('admin_level') == 'admin' ) : ?>
 
-                    <?php if($materi->is_verify == 1) : ?>
 
                         <?php if($materi->pdf == 1){ ?>
 
@@ -126,11 +125,6 @@
                             </a>
 
                     <?php endif; ?>	
-
-                    <?php endif; ?>
-
-                    <?php if($materi->is_verify == 1){ ?>
-
                         
 
                         <?php if( $materi->video != null){?>
@@ -198,20 +192,6 @@
                             <i class="fas fa-eye mr-2" title="Mulai Baca"></i>Deskripsi
 
                         </a>
-
-
-
-                            
-
-                    
-
-
-
-                    <?php }else { ?>
-
-                        <p class="text-danger align-middle">Materi belum diverifikasi</p>
-
-                    <?php } ?>
 
                     <?php if($this->session->userdata('admin_level') == 'admin' || $this->log_lvl == 'guru') : ?>
 
@@ -279,10 +259,6 @@
 
                     <?php endif; ?>
 
-                    <?php if($materi->is_verify == 1){ ?>
-
-                        
-
                         <?php if( $materi->video != null){?>
 
 
@@ -349,23 +325,8 @@
 
                         </a>
 
-
-
-                            
-
-                    
-
-
-
-                    <?php }else { ?>
-
-                        <p class="text-danger align-middle">Materi belum diverifikasi</p>
-
-                    <?php } ?>
-
                     <?php if($this->log_lvl == 'admin' || $this->log_lvl == 'guru') : ?>
 
-                        <?php if($materi->is_verify == 1): ?>
 
                             <?php if($materi->pdf == 1) { ?>
 
@@ -380,8 +341,6 @@
                             <i class="fas fa-trash mr-2" title="Hapus materi"></i> Hapus</a>
 
                             <?php } ?>
-
-                        <?php endif; ?>
 
                     <?php endif; ?>
                     

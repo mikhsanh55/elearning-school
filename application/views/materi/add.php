@@ -53,7 +53,7 @@
                         	</div> -->
                         	<div class="mr-4">
                         		<label for="type-gdrive">Google Drive</label>
-                        		<input type="radio" name="typeVideo" id="type-gdrive" checked data-type="gdrive">
+                        		<input type="radio" name="typeVideo" id="type-gdrive" data-type="gdrive">
                         	</div>
                         	<div>
                         		<label for="type-youtube">Youtube Link</label>

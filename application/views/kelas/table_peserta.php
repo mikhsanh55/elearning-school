@@ -70,21 +70,24 @@ input:checked + .slider:before {
 		
 		</tr>
 		<?php 
-			if(count($paginate['data']) > 0) {
-			$i= $page_start; foreach ($paginate['data'] as $rows):
-			$check_kelas = $this->m_detail_kelas->count_by(['id_peserta'=>$rows->id,'id_kelas'=>$id_kelas]);
+			if(count($paginate) > 0) {
+			$i= $page_start; foreach ($paginate['data'] as $row):
+			$check_kelas = $this->m_detail_kelas->count_by(['id_peserta'=>$row->id,'id_kelas'=>$id_kelas]);
+			$kelas = $this->m_kelas->get_by(['kls.id' => $id_kelas]);
+			$nama_kelas = !empty($kelas) ? $kelas->nama : '';
+			// print_r($row->id);
 		?>
 			<tr>
 				<td align="center" class="frist"><?=$i;?></td>
-				<td><?=$rows->nama;?> </td>
+				<td><?=$row->nama;?> </td>
 				<td>
-					<?= $rows->nrp; ?>
+					<?= $row->nrp; ?>
 				</td>
-				<td><?= $rows->alamat; ?></td>
+				<td><?= $nama_kelas; ?></td>
 				
 				<td class="frist">
 					<label class="switch" data-toggle="tooltip">
-							<input type="checkbox" class="aktivasi"  data-peserta="<?=$rows->id;?>" <?=($check_kelas > 0) ? 'checked' : NULL ?>>
+							<input type="checkbox" class="aktivasi"  data-peserta="<?=$row->id;?>" <?=($check_kelas > 0) ? 'checked' : NULL ?>>
 						<span class="slider round"></span>
 					</label>
 				</td>

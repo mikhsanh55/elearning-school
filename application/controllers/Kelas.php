@@ -97,7 +97,7 @@ class Kelas extends MY_Controller
   		
 		$data = array(
 
-			'searchFilter' => array('Nama','Mata Pelajaran'),
+			'searchFilter' => array('Nama Guru','Mata Pelajaran'),
 			'id_kelas' => $siswa->id_kelas,
 			'nama_kelas' => $kelas->nama
 
@@ -401,7 +401,7 @@ class Kelas extends MY_Controller
 
 				case 0:
 
-					$where["(lower(kls.nama) like '%".strtolower($post['search'])."%' )"] = null;
+					$where["(lower(guru.nama) like '%".strtolower($post['search'])."%' )"] = null;
 
 					break;
 
@@ -459,7 +459,7 @@ class Kelas extends MY_Controller
   		
 		$data = array(
 
-			'searchFilter' 	=> array('Nama','NIS'),
+			'searchFilter' 	=> array('Nama','NIS', 'Kelas'),
 
 			'kelas' 		=> $this->m_kelas->get_join_by(['kls.id'=>$post['id']]),
 
@@ -528,7 +528,7 @@ class Kelas extends MY_Controller
 				break;
 
 				case 2: 
-					$where["(lower(akun.alamat) like '%".strtolower($post['search'])."%' )"] = null;
+					$where["(lower(kls.nama) like '%".strtolower($post['search'])."%' )"] = null;
 				break;
 
 			}
@@ -536,6 +536,17 @@ class Kelas extends MY_Controller
 		}
 
 		$paginate = $this->m_siswa->paginate_siswa_not_class($pg,$where,$limit);
+		$checked_siswa = [];
+		$unchecked_siswa = [];
+		foreach($paginate['data'] as $rows) {
+			$check_kelas = $this->m_detail_kelas->count_by(['id_peserta'=>$rows->id,'id_kelas'=>$post['id_kelas']]);
+			if($check_kelas > 0) {
+				$checked_kelas[] = $rows;
+			}
+			else {
+				$unchecked_kelas[] = $rows;
+			}
+		}
 
 		$data['paginate'] = $paginate;
 
@@ -556,6 +567,8 @@ class Kelas extends MY_Controller
 		$this->load->view('kelas/table_peserta',$data);
 
 		$this->generate_page($data);
+
+		
 
   }
 
