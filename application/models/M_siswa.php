@@ -37,19 +37,8 @@ class M_siswa extends MY_Model
 		return $query1;
     }
 
-    public function count_by_siswa_not_class($where = []) {
-
-        $query1 = $this->db->select('akun.*, in.instansi AS nama_instansi, user.id as user_id, user.password, dkls.id_kelas')
-                        ->from('m_siswa akun')
-                        ->join('tb_detail_kelas dkls', 'akun.id = dkls.id_peserta', 'left')
-                        ->join('tb_instansi in','akun.instansi = in.id','left')
-                        ->join('m_admin user', 'akun.id = user.kon_id', 'left')
-                        ->where($where)
-                        ->group_by('akun.id')
-                        ->get()
-                        ->result();
-        
-        return count($query1);
+    public function count_by_siswa_not_class($where = []) {        
+        return count($this->get_siswa_not_class($where));
     }
 
     /*
