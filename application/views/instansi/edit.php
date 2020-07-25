@@ -47,8 +47,12 @@
 					<label for="alamat">Alamat:</label>
 					<input type="text" class="form-control" id="alamat" name="alamat" required="" value="<?=$edit->alamat;?>">
 				</div>
+				<div class="form-group">
+					<label for="domain">Domain:</label>
+					<input type="text" class="form-control" id="domain" name="domain" value="<?=$edit->domain;?>">
+				</div>
 				<button type="submit" class="btn btn-default">Simpan</button>
-				<button type="button" class="btn btn-default" onclick="window.location='<?=base_url('instansi');?>'">List</button>
+				<button type="button" class="btn btn-default" onclick="window.location='<?=base_url('instansi');?>'">Kembali</button>
 				
 			</form> 
 		</div>

@@ -8,6 +8,7 @@
 			<th>Nama Pimpinan</th>
 			<th>No Telp</th>
 			<th>Alamat</td>
+			<th>Domain</th>
 			<th>Opsi</th>
 		</tr>
 		<?php if(count($paginate['data']) > 0) { ?>
@@ -19,6 +20,7 @@
 				<td><?=$rows->nama_pimpinan;?></td>
 				<td><?=$rows->no_telp;?></td>
 				<td><?=$rows->alamat;?></td>
+				<td><?= $rows->domain; ?></td>
 				<td class="frist">
 					<a href="<?=base_url('instansi/aktivasi_materi/'.md5($rows->id));?>" data-toggle="tooltip" title="setting materi" class="btn btn-default btn-sm"><i class="fas fa-cog" style="color:green"></i></a>
 					<?php if ($this->log_lvl == 'admin'): ?>

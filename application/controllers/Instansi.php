@@ -11,6 +11,7 @@ class Instansi extends MY_Controller {
 		$this->load->model('m_guru');
 		$this->load->model('m_materi_instansi');
 		$this->load->model('m_siswa');
+		$this->load->model('m_setting_instansi');
 		$this->load->model('m_kelas');
 	}
 

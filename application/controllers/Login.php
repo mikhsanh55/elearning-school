@@ -18,6 +18,11 @@ class Login extends MY_Controller
 		ob_start();
 	}
 
+    // Untuk check domain
+    public function checkDomain() {
+        
+    }
+
 	public function get_servertime()
 	{
 		$now = new DateTime();
@@ -49,6 +54,20 @@ class Login extends MY_Controller
 	    if($this->session->userdata('admin_konid') != NULL || $this->session->userdata('admin_konid') != '' ) {
             redirect('adm');
         }
+        $url = "http" . (($_SERVER['SERVER_PORT'] == 443) ? "s" : "") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+        $check_domain = $this->m_instansi->get_by(['domain' => $url]);
+
+        if(empty($check_domain)) {
+            $this->logo = base_url('assets/logo/') . '1587386003_logo_Sekolah20200420193323.png';
+            $this->title = 'E-Learning Sekolah';
+        }
+        else {
+            $data = $this->m_setting_instansi->get_by(['id_instansi' => $check_domain->id]);
+            $this->logo = base_url('assets/logo/') . $data->logo;
+            $this->title = $data->judul;
+        }
+
 		$this->load->view('login/header');
 		$this->load->view('login/index');
 		$this->load->view('login/footer');
@@ -131,7 +150,7 @@ class Login extends MY_Controller
         					$this->m_siswa->update($data,array('id'=>$siswa->id));
 
                             // Set as Online
-                            $this->setStatusActive(1, ['id' => $siswa->id]);
+                            $this->setStatusActive(1, ['id' => $get_user->id]);
 
         					if (!empty($siswa)) {
         						$sess_nama_user = $siswa->nama;
@@ -160,7 +179,7 @@ class Login extends MY_Controller
                             $_log['log']['detil_admin']     = null;
                             j($_log);exit;
                         }else{
-
+                            $this->setStatusActive(1, ['id' => $get_user->id]);
                             if (!empty($lembaga)) {
                                 $sess_nama_user = $lembaga->nama;
                             }
@@ -185,7 +204,7 @@ class Login extends MY_Controller
                             $_log['log']['detil_admin']     = null;
                             j($_log);exit;
                         }else{
-
+                            $this->setStatusActive(1, ['id' => $get_user->id]);
                             if (!empty($lembaga)) {
                                 $sess_nama_user = $lembaga->nama;
                             }
@@ -252,8 +271,7 @@ class Login extends MY_Controller
 	public function logout()
 	{	
 		$id = $this->session->userdata('admin_konid');
-		$this->db->update('m_admin',array('status'=>0),array('kon_id'=>$id));
-
+        $this->setStatusActive(0, ['id' => $id]);
 		$this->session->unset_userdata('admin_konid');
 
 		$this->load->driver('cache');
