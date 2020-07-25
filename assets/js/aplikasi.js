@@ -1287,55 +1287,62 @@ function __ambil_jumlah_soal(id_mapel) {
 function rubah_password() {
 	$.ajax({
 		type: "GET",
-		url: base_url+"adm/rubah_password/",
+		url: base_url + "adm/get_user_info",
+		dataType: 'json',
 		success: function(response) {
-			// var teks_modal = '<div class="modal fade" id="m_ubah_password" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header">&times;<h4 id="myModalLabel">Update password</h4></div><div class="modal-body"><form name="f_ubah_password" id="f_ubah_password" onsubmit="return rubah_password_s();" method="post"><input type="hidden" name="id" id="id" value="'+response.id+'"><div id="konfirmasi"></div><table class="table table-form"><tr><td style="width: 25%">Username</td><td style="width: 75%"><input type="text" class="form-control" name="u1" id="u1" required value="'+response.username+'" readonly></td></tr><tr><td style="width: 25%">Password lama</td><td style="width: 75%"><input type="password" class="form-control" name="p1" id="p1" required></td></tr><tr><td style="width: 25%">Password Baru</td><td style="width: 75%"><input type="password" class="form-control" name="p2" id="p2" required></td></tr><tr><td style="width: 25%">Ulangi Password</td><td style="width: 75%"><input type="password" class="form-control" name="p3" id="p3" required></td></tr></table></div><div class="modal-footer"><button class="btn btn-primary" onclick="return rubah_password_s();"><i class="fa fa-check"></i> Simpan</button><button class="btn" data-dismiss="modal" aria-hidden="true"><i class="fa fa-minus-circle"></i> Tutup</button></div></form></div></div></div>';
-			var teks_modal = `
-				<div class="modal fade" id="modalpassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					<div class="modal-dialog" role="document">
-						<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Ubah Password</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-						<form name="f_ubah_password" id="f_ubah_password" onsubmit="return rubah_password_s();" method="post">
-							${response.csrf}
-							<input type="hidden" name="id" id="id" value="${response.data.id}">
-							<div id="konfirmasi"></div>
-								<table class="table table-form">
-									<tr>
-										<td style="width: 25%">Username</td>
-										<td style="width: 75%"><input type="text" class="form-control" name="u1" id="u1" required value="${response.data.usernames}" readonly></td>
-									</tr>
-									<tr>
-										<td style="width: 25%">Password lama</td><td style="width: 75%"><input type="password" class="form-control" name="p1" id="p1" required></td>
+			if(response.status === true) {
+				var teks_modal = `
+					<div class="modal fade" id="modalpassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">Ubah Password</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+							<form name="f_ubah_password" id="f_ubah_password" onsubmit="return rubah_password_s();" method="post">
+								
+								<input type="hidden" name="id" id="id" value="${response.data.id}">
+								<div id="konfirmasi"></div>
+									<table class="table table-form">
+										<tr>
+											<td style="width: 25%">Username</td>
+											<td style="width: 75%"><input type="text" class="form-control" name="username" id="u1" required value="${response.data.user_id}" readonly></td>
 										</tr>
-										<tr><td style="width: 25%">Password Baru</td><td style="width: 75%">
-										<input type="password" class="form-control" name="p2" id="p2" required></td>
-									</tr>
-									<tr>
-										<td style="width: 25%">Ulangi Password</td>
-										<td style="width: 75%"><input type="password" class="form-control" name="p3" id="p3" required></td>
-									</tr>
-								</table>
+										<tr>
+											<td style="width: 25%">Password lama</td><td style="width: 75%"><input type="password" class="form-control" name="old_pwd" id="p1" required></td>
+											</tr>
+											<tr><td style="width: 25%">Password Baru</td><td style="width: 75%">
+											<input type="password" class="form-control" name="new_pwd" id="p2" required></td>
+										</tr>
+										<tr>
+											<td style="width: 25%">Ulangi Password</td>
+											<td style="width: 75%"><input type="password" class="form-control" name="confirm_new_pwd" id="p3" required></td>
+										</tr>
+									</table>
+								</div>
+								<div class="modal-footer">
+									<button class="btn btn-primary" onclick="return rubah_password_s();"><i class="fa fa-check"></i> Simpan</button>
+									<button class="btn" data-dismiss="modal" aria-hidden="true"><i class="fa fa-minus-circle"></i> Tutup</button>
+								</div>
+							</form>
 							</div>
-							<div class="modal-footer">
-								<button class="btn btn-primary" onclick="return rubah_password_s();"><i class="fa fa-check"></i> Simpan</button>
-								<button class="btn" data-dismiss="modal" aria-hidden="true"><i class="fa fa-minus-circle"></i> Tutup</button>
 							</div>
-						</form>
-						</div>
 						</div>
 					</div>
-				</div>
-			`;
-			
-			$("#tampilkan_modal").html(teks_modal);
-			$("#modalpassword").modal('show');
-			$("#p1").focus();
+				`;
+				
+				$("#tampilkan_modal").html(teks_modal);
+				$("#modalpassword").modal('show');
+				$("#p1").focus();
+			}
+			else {
+				alert(response.msg)
+				console.error(response)
+			}
+				
 		}
 	});
 	return false;
@@ -1344,20 +1351,32 @@ function rubah_password() {
 function rubah_password_s() {
 	var f_asal	= $("#f_ubah_password");
 	var form	= getFormData(f_asal);
+	var error = '';
+	console.log(form)
 	$.ajax({		
 		type: "POST",
-		url: base_url+"adm/rubah_password/simpan",
-		data: JSON.stringify(form),
+		url: `${base_url}adm/res_pwd`,
+		data: form,
 		dataType: 'json',
-		contentType: 'application/json; charset=utf-8'
-	}).done(function(response) {
-		if (response.status == "ok") {
-			$("#konfirmasi").html('<div class="alert alert-success">'+response.msg+'</div>');
-			$("#m_ubah_password").modal('hide');
-			alert(response.msg);
-		} else {
-			$("#konfirmasi").html('<div class="alert alert-danger">'+response.msg+'</div>');
+		success:function(res) {
+			if(res.status === true) {
+				alert(res.msg);
+				$("#modalpassword").modal('hide');
+			}
+			else {
+				alert(res.msg);
+				console.error(res);
+				return false;
+			}
+		},
+		error:function(e) {
+			console.error(e.responseJSON);
+			error = e.responseJSON;
+
+			alert(error.msg)
+			return false;
 		}
-	});
-	return false;
+	})
+	
+	return true;
 }
