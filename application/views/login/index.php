@@ -29,7 +29,11 @@
 			<div class="container">
 				<div class="navbar-identity">
 					<a href="<?= base_url('awal'); ?>" class="navbar-brand logo logo-title">
-					<span class="logo-icon mr-3"><img src="<?=$this->logo;?>" width="auto" height="40" /></span><?=$this->title;?></span> </a>
+					<span class="logo-icon mr-3"><img id="logo-elearning" src="<?=$this->logo;?>" width="auto" height="40" />
+					</span>
+							<strong id="title-elearning"><?=$this->title;?></strong>
+						</span> 
+					</a>
 				</div>
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-left">

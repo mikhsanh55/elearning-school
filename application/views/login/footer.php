@@ -13,7 +13,6 @@
 <script type="text/javascript">
 	base_url = "<?= base_url(); ?>";
 	uri_js = "<?= $this->config->item('uri_js'); ?>";
-	
 </script>
 <script src="<?= base_url(); ?>assets/js/aplikasi.js"></script>
 <script>
