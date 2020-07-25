@@ -20,6 +20,7 @@
                         
                         <div class=" panel-body">
                             <form name="f_siswa" action="<?php echo base_url(); ?>import/siswa" id="f_siswa" enctype="multipart/form-data" method="post">
+                                <input type="hidden" name="<?= $csrf['name'] ?>" value="<?= $csrf['token'] ?>" id="csrf_token">
                                 <input type="hidden" name="id" id="id" value="0">
                                 <table class="table table-form">
                                     <tr><td style="width: 25%">File</td><td style="width: 75%"><input type="file" class="form-control col-md-12" name="userfile" required></td></tr>

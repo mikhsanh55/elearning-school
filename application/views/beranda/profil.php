@@ -297,7 +297,8 @@
                     data: {
                         id: $('#id').val(),
                         key: $(this).data('key'),
-                        value: $(this).val()
+                        value: $(this).val(),
+                        '<?= $csrf['name'] ?>': '<?= $csrf['token'] ?>'
                     },
                     dataType: 'json',
                     success: function(res) {
@@ -370,6 +371,7 @@
             formData = new FormData();
             formData.append('id', $('#id').val());
             formData.append('photo', photoUser);
+            formData.append('<?= $csrf['name'] ?>', '<?= $csrf['token'] ?>')
             self = this;
             $.ajax({
                 type: 'post',

@@ -175,15 +175,13 @@ class MY_Controller extends CI_Controller
 			->get()
 			->result_array();
 			
-		// if($this->log_lvl === 'admin' || $this->log_lvl === 'instansi') {
-			foreach($this->menu as $i => $menu) {
-				$submenu = $this->m_submenu->get_many_by(['id_menu' => $menu['id'], 'id_level' => $this->id_level ]);
-				if(count($submenu) > 0) {
-					$this->menu[$i]['sub'] = $submenu;	
-				}
-			}	
-		// }
-		// print_r($this->menu)
+
+		foreach($this->menu as $i => $menu) {
+			$submenu = $this->m_submenu->get_many_by(['id_menu' => $menu['id'], 'id_level' => $this->id_level ]);
+			if(count($submenu) > 0) {
+				$this->menu[$i]['sub'] = $submenu;	
+			}
+		}	
 
 		if (!empty($this->uri->segment(1))) {
 			$this->get_url .= $this->uri->segment(1);
@@ -211,8 +209,6 @@ class MY_Controller extends CI_Controller
 			}
 		}
 		else {
-			// $this->db->where
-			// $active_menu = 
 			$this->active_menu = (!empty($sub_menu->id_menu)) ? $sub_menu->id_menu : NULL;	
 		}
 
@@ -220,6 +216,13 @@ class MY_Controller extends CI_Controller
 		
 		// print_r($this->menu);exit;
 		
+	}
+
+	public function generateCSRFToken() {
+		return [
+			'name'   => $this->security->get_csrf_token_name(),
+			'token' => $this->security->get_csrf_hash()
+		];
 	}
 
 	function checkactivemenu() {

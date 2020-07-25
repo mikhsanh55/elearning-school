@@ -36,7 +36,8 @@ class Adminlembaga extends MY_Controller {
 
 
 	public function add(){
-		$this->render('admin_lembaga/add');
+		$datas['csrf'] = $this->generateCSRFToken();
+		$this->render('admin_lembaga/add', $datas);
 	}
 
 
@@ -140,7 +141,8 @@ class Adminlembaga extends MY_Controller {
 	public function edit($id=0){
 		$data = array(
 			'instansi' => $this->m_instansi->get_all(),
-			'edit' => $this->m_admin_lembaga->get_by(array('sha1(id)'=>$id))
+			'edit' => $this->m_admin_lembaga->get_by(array('sha1(id)'=>$id)),
+			'csrf' => $this->generateCSRFToken()
 		);
 		$this->render('admin_lembaga/edit',$data);
 	}

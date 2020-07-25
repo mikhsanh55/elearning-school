@@ -40,15 +40,6 @@
 						<li class="flag-menu country-flag tooltipHere hidden-xs nav-item" data-toggle="tooltip" data-placement="bottom" title="Select Country">
 						</li>
 					</ul>
-
-					<!-- <ul class="nav navbar-nav ml-auto navbar-right">
-						<li class="dropdown no-arrow nav-item">
-							<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-						<li class="postadd nav-item"><a class="btn btn-block   btn-border btn-post btn-danger nav-link" href="post-ads.html">Daftar</a>
-						</li>
-						<li class="postadd nav-item"><a class="btn btn-block btn-border btn-post btn-danger1 nav-link" href="post-ads.html">Login</a>
-						</li>
-					</ul> -->
 				</div>
 				<!--/.nav-collapse -->
 			</div>
@@ -67,6 +58,7 @@
 						<div id="konfirmasi"></div>
 						<div class="card-body">
 							<form role="form" method="post" name="fl" id="f_login" onsubmit="return login();">
+								<input type="hidden" name="<?= $csrf['name'] ?>" value="<?= $csrf['token'] ?>" id="csrf_token">
 								<div class=" form-group">
 									<label for="sender-email" class="control-label">Username:</label>
 									<div class="input-icon"><i class="icon-user fa"></i>

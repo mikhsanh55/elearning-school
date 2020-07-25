@@ -68,8 +68,11 @@ class Login extends MY_Controller
             $this->title = $data->judul;
         }
 
+        $datas['csrf'] = $this->generateCSRFToken();
+        // print_r($datas);exit;
+
 		$this->load->view('login/header');
-		$this->load->view('login/index');
+		$this->load->view('login/index', $datas);
 		$this->load->view('login/footer');
 	}
 
@@ -270,7 +273,7 @@ class Login extends MY_Controller
 
 	public function logout()
 	{	
-		$id = $this->session->userdata('admin_konid');
+		$id = $this->session->userdata('admin_id');
         $this->setStatusActive(0, ['id' => $id]);
 		$this->session->unset_userdata('admin_konid');
 

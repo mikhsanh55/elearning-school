@@ -64,9 +64,8 @@ input:checked + .slider:before {
 		<tr>
 			<th class="frist">No</th>
 			<th class="text-left">Nama Siswa</th>
-
 			<th class="text-left">NIS</th>
-
+			<th class="text-center">Status</th>
 			
 		</tr>
 		<?php 
@@ -74,11 +73,12 @@ input:checked + .slider:before {
 			$i = $paginate['counts']['from_num']; foreach ($paginate['data'] as $rows):
 		?>
 			<tr>
-				<td align="center" class="frist"><?=$i;?></td>
+				<td class="frist text-center"><?=$i;?></td>
 				<td><?=$rows->nama_siswa;?> </td>
 				<td>
 					<?= $rows->nrp; ?>
 				</td>
+				<td class="text-center"><?= $rows->status == 0 ? '<strong class="text-danger">OFFLINE</strong>' : '<strong class="text-success">ONLINE</strong>'; ?></td>
 				
 				
 				

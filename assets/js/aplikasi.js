@@ -1295,19 +1295,20 @@ function rubah_password() {
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+							<h5 class="modal-title" id="exampleModalLabel">Ubah Password</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
 						<div class="modal-body">
 						<form name="f_ubah_password" id="f_ubah_password" onsubmit="return rubah_password_s();" method="post">
-							<input type="hidden" name="id" id="id" value="${response.id}">
+							${response.csrf}
+							<input type="hidden" name="id" id="id" value="${response.data.id}">
 							<div id="konfirmasi"></div>
 								<table class="table table-form">
 									<tr>
 										<td style="width: 25%">Username</td>
-										<td style="width: 75%"><input type="text" class="form-control" name="u1" id="u1" required value="${response.usernames}" readonly></td>
+										<td style="width: 75%"><input type="text" class="form-control" name="u1" id="u1" required value="${response.data.usernames}" readonly></td>
 									</tr>
 									<tr>
 										<td style="width: 25%">Password lama</td><td style="width: 75%"><input type="password" class="form-control" name="p1" id="p1" required></td>
