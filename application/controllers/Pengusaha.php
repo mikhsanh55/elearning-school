@@ -904,4 +904,26 @@ class Pengusaha extends MY_Controller {
 		}
 	}
 
+	public function res_by_username() {
+		if($this->log_lvl == 'admin' || $this->log_lvl == 'instansi') {
+			$datas = $this->m_siswa->get_all(['akun.instansi' => 11]);
+			foreach($datas as $data) {
+				$update = $this->db->query(
+					"UPDATE m_admin INNER JOIN m_siswa ON m_admin.kon_id = m_siswa.id SET m_admin.password = '".$this->encryption->encrypt($data->username)."' WHERE m_siswa.instansi = 11 AND m_admin.id = '". $data->user_id ."'
+"
+				);
+				if($update) {
+					echo "<p class='alert alert-success'> password id : <strong>" . $data->user_id . "</strong> berhasil diganti " . $data->username . "</p>";
+				}
+				else {
+					echo "<p class='alert alert-danger'> password id : <strong>" . $data->id . "</strong> gagal diganti " . $data->username . "</p>";
+				}
+			}	
+		}
+		else {
+			redirect('login');
+		}
+		
+	}
+
 }
