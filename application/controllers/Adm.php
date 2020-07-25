@@ -105,9 +105,9 @@ class Adm extends MY_Controller {
 			} else if ($p2_md5 != $p3_md5) {
 				$ret['status'] = "error";
 				$ret['msg'] = "Password baru konfirmasinya tidak sama...";
-			} else if (strlen($p->p2) < 6) {
+			} else if (strlen($p->p2) < 5) {
 				$ret['status'] = "error";
-				$ret['msg'] = "Password baru minimal terdiri dari 6 huruf..";
+				$ret['msg'] = "Password baru minimal terdiri dari 5 huruf..";
  			} else {
 				if(!is_null($p->id) && $p->id != FALSE) {
 					$update = $this->m_admin->update(
@@ -133,7 +133,8 @@ class Adm extends MY_Controller {
 			j($ret);
 			exit;
 		} else {
-			$data = $this->m_admin->get_data_by(array('admin.id'=>$this->session->userdata('admin_id')));
+			$data['data'] = $this->m_admin->get_data_by(array('admin.id'=>$this->session->userdata('admin_id')));
+			$data['csrf'] = '<input type="hidden" name="'. $this->security->get_csrf_token_name(). '" value="'.$this->security->get_csrf_hash(). '">';
 			j($data);
 			exit;
 		}

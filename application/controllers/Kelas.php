@@ -456,10 +456,10 @@ class Kelas extends MY_Controller
   public function daftar_murid(){
   	$post = $this->input->post();
   	
-  		
+  		$filter = $this->log_lvl == 'guru' ? ['Nama', 'NIS'] : ['Nama', 'NIS', 'Kelas'];
 		$data = array(
 
-			'searchFilter' 	=> array('Nama','NIS', 'Kelas'),
+			'searchFilter' 	=> $filter,
 
 			'kelas' 		=> $this->m_kelas->get_join_by(['kls.id'=>$post['id']]),
 
