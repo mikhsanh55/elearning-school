@@ -273,8 +273,8 @@ class Login extends MY_Controller
 
 	public function logout()
 	{	
-		$id = $this->session->userdata('admin_konid');
-        $this->setStatusActive(0, ['id' => $id]);
+		// $id = $this->session->userdata('admin_konid');
+        $this->setStatusActive(0, ['id' => $this->akun->id]);
 		$this->session->unset_userdata('admin_konid');
 
 		$this->load->driver('cache');
