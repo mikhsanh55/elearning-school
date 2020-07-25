@@ -511,7 +511,7 @@ class Kelas extends MY_Controller
 
 		$where["akun.instansi"] = $this->akun->instansi;
 		$where["akun.is_graduated"] = 0;
-		$where["(dkls.id_kelas = ".$post['id_kelas']." OR dkls.id_kelas is null)"] = NULL;
+		$where["(dkls.id_kelas = ".$post['id_kelas']." OR dkls.id_peserta is null)"] = NULL;
 
 
  
@@ -536,6 +536,7 @@ class Kelas extends MY_Controller
 		}
 
 		$paginate = $this->m_siswa->paginate_siswa_not_class($pg,$where,$limit);
+		// print_r($this->db->last_query());exit;
 		$checked_siswa = [];
 		$unchecked_siswa = [];
 		foreach($paginate['data'] as $rows) {

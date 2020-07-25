@@ -27,7 +27,7 @@ class M_siswa extends MY_Model
     	$query1 = $this->db->select('akun.*, in.instansi AS nama_instansi, user.id as user_id, user.password, dkls.id_kelas, kls.nama AS nama_kelass')
 				    	->from('m_siswa akun')
                         ->join('tb_detail_kelas dkls', 'akun.id = dkls.id_peserta', 'left')
-                        ->join('tb_kelas kls', 'kls.id = dkls.id_kelas', 'inner')
+                        ->join('tb_kelas kls', 'kls.id = dkls.id_kelas', 'left')
 				    	->join('tb_instansi in','akun.instansi = in.id','left')
                         ->join('m_admin user', 'akun.id = user.kon_id', 'left')
                         ->where($where)

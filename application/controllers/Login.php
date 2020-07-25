@@ -150,7 +150,7 @@ class Login extends MY_Controller
         					$this->m_siswa->update($data,array('id'=>$siswa->id));
 
                             // Set as Online
-                            $this->setStatusActive(1, ['id' => $siswa->id]);
+                            $this->setStatusActive(1, ['id' => $get_user->id]);
 
         					if (!empty($siswa)) {
         						$sess_nama_user = $siswa->nama;
@@ -179,7 +179,7 @@ class Login extends MY_Controller
                             $_log['log']['detil_admin']     = null;
                             j($_log);exit;
                         }else{
-
+                            $this->setStatusActive(1, ['id' => $get_user->id]);
                             if (!empty($lembaga)) {
                                 $sess_nama_user = $lembaga->nama;
                             }
@@ -204,7 +204,7 @@ class Login extends MY_Controller
                             $_log['log']['detil_admin']     = null;
                             j($_log);exit;
                         }else{
-
+                            $this->setStatusActive(1, ['id' => $get_user->id]);
                             if (!empty($lembaga)) {
                                 $sess_nama_user = $lembaga->nama;
                             }
@@ -271,8 +271,7 @@ class Login extends MY_Controller
 	public function logout()
 	{	
 		$id = $this->session->userdata('admin_konid');
-		$this->db->update('m_admin',array('status'=>0),array('kon_id'=>$id));
-
+        $this->setStatusActive(0, ['id' => $id]);
 		$this->session->unset_userdata('admin_konid');
 
 		$this->load->driver('cache');
