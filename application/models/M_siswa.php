@@ -24,7 +24,7 @@ class M_siswa extends MY_Model
     */
     public function get_siswa_not_class($where=array()){
         // Get siswa berdasarkan
-    	$query1 = $this->db->select('akun.*, in.instansi AS nama_instansi, user.id as user_id, user.password, dkls.id_kelas, kls.nama AS nama_kelass')
+    	$query1 = $this->db->select('akun.*, in.instansi AS nama_instansi, user.id as user_id, user.password, dkls.id_kelas, kls.nama AS nama_kelass, user.status')
 				    	->from('m_siswa akun')
                         ->join('tb_detail_kelas dkls', 'akun.id = dkls.id_peserta', 'left')
                         ->join('tb_kelas kls', 'kls.id = dkls.id_kelas', 'left')

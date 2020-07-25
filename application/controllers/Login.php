@@ -68,8 +68,11 @@ class Login extends MY_Controller
             $this->title = $data->judul;
         }
 
+        $datas['csrf'] = $this->generateCSRFToken();
+        // print_r($datas);exit;
+
 		$this->load->view('login/header');
-		$this->load->view('login/index');
+		$this->load->view('login/index', $datas);
 		$this->load->view('login/footer');
 	}
 

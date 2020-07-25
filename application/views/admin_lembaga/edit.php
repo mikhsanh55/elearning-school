@@ -19,6 +19,7 @@
 			</div>
 		</div>
 		<form id="form-akun-lembaga" method="post">
+			<input type="hidden" name="<?= $csrf['name'] ?>" value="<?= $csrf['token'] ?>" id="csrf_token">
 			<div class="form-group">
 				<input type="hidden" name="lembaga" id="lembaga" value="<?=$this->akun->instansi;?>">
 			</div>

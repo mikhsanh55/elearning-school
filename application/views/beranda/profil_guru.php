@@ -276,7 +276,8 @@
                     data: {
                         id: $('#id').val(),
                         key: $(this).data('key'),
-                        value: $(this).val()
+                        value: $(this).val(),
+                        '<?= $csrf['name'] ?>': '<?= $csrf['token'] ?>'
                     },
                     dataType: 'json',
                     success: function(res) {

@@ -73,7 +73,7 @@ class Import extends MY_Controller {
             foreach($sheet as $index => $row){
 
 
-                if ($index != 1) {
+                if ($index != 1 && $row['B'] != '') {
                         // $id_kelas = $this->m_jurusan->get_by(['jurusan' => $row['E'], 'id_instansi' => $this->akun->instansi]);
                         // $id_guru = $this->m_guru->get_by(['nama' => $row['F'], 'instansi' => $this->akun->instansi]);
                         // $jk = ( == 'L' || $row['G'] == 'Laki-Laki') ? 1 : 0;

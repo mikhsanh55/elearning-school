@@ -114,6 +114,7 @@ class Beranda extends MY_Controller {
 			'slide' => $this->m_slide->get_many_by(['id_instansi'=>$this->akun->instansi]),
 
 			'patch'  => base_url('upload/slide/'),
+			'csrf' => $this->generateCSRFToken()
 
 		);
 
@@ -133,7 +134,8 @@ class Beranda extends MY_Controller {
 
 			'patch'  => base_url('upload/slide/'),
 
-			'kelas' => $this->m_detail_kelas->get_siswa(['dk.id_peserta' => $this->akun->id])
+			'kelas' => $this->m_detail_kelas->get_siswa(['dk.id_peserta' => $this->akun->id]),
+			'csrf' => $this->generateCSRFToken()
 
 		];
 
@@ -151,6 +153,8 @@ class Beranda extends MY_Controller {
 			'slide' => $this->m_slide->get_many_by(['id_instansi'=>$this->akun->instansi]),
 
 			'patch'  => base_url('upload/slide/'),
+
+			'csrf' => $this->generateCSRFToken()
 
 		];
 		$this->render('beranda/profil_guru', $data);	
@@ -170,6 +174,7 @@ class Beranda extends MY_Controller {
 			'lembaga' => $this->m_instansi->get_all(),
 			'selected_lembaga'  => $this->m_instansi->get_by(['selected' => 1]),
 			'patch'  => base_url('upload/slide/'),
+			'csrf' => $this->generateCSRFToken()
 
 		);
 		// print_r($data);exit;

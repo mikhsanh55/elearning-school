@@ -20,10 +20,12 @@ class M_detail_kelas extends MY_Model {
 							dk.*,
 							sis.nama as nama_siswa,
 							sis.nrp,
-							sis.email
+							sis.email,
+							user.status
 						')
 		->from('tb_detail_kelas dk')
 		->join('m_siswa sis','sis.id=dk.id_peserta','left')
+		->join('m_admin user', 'user.kon_id = dk.id_peserta', 'inner')
 		->order_by('sis.nama','asc')
 		->where($where)
 		->get()

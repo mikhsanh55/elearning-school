@@ -194,6 +194,7 @@ input:checked + .kecil-slider:before {
 			</div>		 
 			<div class="col-md-12">
 			<form id="form-slide" action="<?=base_url('setting_client/update_slide');?>" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="<?= $csrf['name'] ?>" value="<?= $csrf['token'] ?>" id="csrf_token">
 			<div class="form-group">
 					<label for="email">Slide :</label>
 					<div class="custom-file mb-3">
@@ -215,7 +216,7 @@ input:checked + .kecil-slider:before {
 			</div>
 
 			<form action="<?=base_url('setting_client/update');?>" method="post" enctype="multipart/form-data">
-
+				<input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>" id="csrf_token">
 				<div class="form-group">
 
 					<?php
