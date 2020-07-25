@@ -25,7 +25,7 @@
 				NIS
 			</th>
 			<th>Jenis Kelamin</th>
-			<th>Password</th>
+			<!-- <th>Password</th> -->
 			<th>Opsi</th>
 		</tr>
 		<?php if(count($paginate['data']) > 0) { ?>
@@ -46,12 +46,12 @@
 				<td>
 					<?= $rows->nik; ?>
 				</td>
-				<td>
+				<!-- <td>
 					<div class="password-input">
 						<input type="password" value="<?= $rows->password; ?>" data-id="<?= $this->encryption->encrypt($rows->user_id); ?>" class="form-control password-reset">
 						<i class="fas fa-eye mata-kau" data-id="<?= $this->encryption->encrypt($rows->user_id); ?>"></i>
 						</div>
-				</td>
+				</td> -->
 				<td class="frist">
 					<?php
 
@@ -73,56 +73,5 @@
 <tbody>
 </tbody>
 </table>
-<script>
-	var encrypt_id, password
-	$('.mata-kau').on('click', function() {
-		encrypt_id = $(this).data('id')
-		console.log(encrypt_id)
-		if($(this).prev().prop('type') == 'text') {
-			$(this).prev().prop('type', 'password')	
-			$(this).removeClass('fa-eye-slash')
-			$(this).addClass('fa-eye')
-		}
-		else {
-			$(this).prev().prop('type', 'text')
-			$(this).addClass('fa-eye-slash')
-			$(this).removeClass('fa-eye')
-		}
-		
-	})
 
-	$('.password-reset').on('keypress', function(e) {
-		encrypt_id = $(this).data('id')
-		console.log(encrypt_id)
-		if(e.which == 13) {
-			if($(this).val() < 6) {
-				alert('Password minimal 6 karakter!')
-				return false
-			}
-			password = $(this).val()
-			$.ajax({
-				type: 'post',
-				url: "<?= base_url('pengusaha/reset_password') ?>",
-				data: {
-					encrypt_id,
-					password
-				},
-				dataType: 'json',
-				success:function(res) {
-					if(res.status) {
-						window.location.reload()
-					}
-					else {
-						console.error(res)
-						return false
-					}
-				},
-				error: function(e) {
-					console.error(e.responseText)
-					return false
-				}
-			})
-		}
-	})
-</script>
 
