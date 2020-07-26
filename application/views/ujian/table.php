@@ -10,8 +10,11 @@
 			<th class="frist"><input type="checkbox" name="checkall" id="checkall"></th>
 			<th class="frist">No</th>
 			<th>Tipe Ujian</th>
-			<th>Kelas</th>
 			<th>Nama Ujian</th>
+			<?php if($this->log_lvl === 'siswa') : ?>
+				<th>Guru</th>
+				<th>Mata Pelajaran</th>	
+			<?php endif; ?>
 			<th>Waktu Mulai</th>
 			<th class="frist">Opsi</th>
 		</tr>
@@ -24,14 +27,6 @@
 			}else{
 				$date = NULL;
 			}
-			$kelas = $this->m_ujian->kls_ujian(['uji.id'=>$rows->id]);
-			$kelasNama = NULL;
-			foreach ($kelas as $key => $value) {
-				$kelasNama .= $value->nama.', '; 
-			}
-			$kelasNama .= '#';
-
-			$kelasNama = str_replace(', #','',$kelasNama);
 		?>
 			<tr>
 				<td><input type="checkbox" name="checklist[]" class="checklist" data-id= "<?=encrypt_url($rows->id);?>" value="<?=$rows->id;?>"></td>
@@ -39,8 +34,15 @@
 				<td>
 					<?= $rows->type_ujian == 'uas' ? 'UAS' : ($rows->type_ujian == 'uts' ? 'UTS' : 'Ujian Harian') ?>		
 				</td>
-				<td><?= $kelasNama; ?></td>
+				
 				<td><?=$rows->nama_ujian;?></td>
+				<?php if($this->log_lvl === 'siswa') : 
+					$nama_guru = $this->m_guru->get_by(['id' => $rows->id_guru]);
+					$nama_guru = (!empty($nama_guru)) ? $nama_guru->nama : '';
+				?>	
+					<td><?= $nama_guru; ?></td>
+					<td><?= $rows->nama_mapel; ?></td>
+				<?php endif; ?>
 				<td><?=$date;?></td>
 				<td class="opsi text-center" >
 					<?php if ($this->log_lvl != 'siswa'): ?>
