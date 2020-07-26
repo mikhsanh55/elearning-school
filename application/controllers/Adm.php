@@ -112,7 +112,7 @@ class Adm extends MY_Controller {
 				if($update) {
 
 					$data = [
-						'id_user' => $post['id'],
+						'id_user' => $id_admin,
 						'level'   => $this->session->userdata('admin_level')
 					];
 					$this->db->insert('tb_log_password', $data);
@@ -133,7 +133,6 @@ class Adm extends MY_Controller {
 				}
 			}
 		}
-exit;
 		// Send response
 		$this->sendAjaxResponse($returned_data, $response_code);
 	}	
