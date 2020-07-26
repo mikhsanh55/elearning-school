@@ -55,7 +55,7 @@
 					<th class="text-center align-middle">Nama </th>
 					<th class="text-center align-middle">Username</th>
 					<th class="text-center align-middle">NUPTK</th>
-					<th class="text-center align-middle">NIS</th>
+					<th class="text-center align-middle">NISN</th>
 					<th class="text-center align-middle">Jumlah Login</th>
 					<th class="text-center align-middle">Jumlah Upload Materi</th>
 					<th class="text-center align-middle">Jumlah Diskusi</th>

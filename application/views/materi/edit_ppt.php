@@ -77,7 +77,7 @@
                                 <label for="title" class="text-success"><h3>File PPT</h3></label>
                                 <input type="file" class="form-control" name="file" id="file" value="<?= $materi->file_ppt; ?>" required /><span><?= $materi->file_ppt; ?></span>
                                 <p id="passwordHelpBlock" class="form-text text-muted">
-                                  File PPT yang akan diupload maksimal memiliki ukuran 50 MB.
+                                  File PPT yang akan diupload maksimal memiliki ukuran 100 MB.
                                 </p>
                             </div>
                         </div>
@@ -104,7 +104,7 @@
 <script type="text/javascript" src="<?= base_url('assets/plugin/ckeditor/ckeditor.js') ?>"></script>
 <script>
     $(document).ready(function() {
-        let file = undefined, filename, ext, uploadOk = 1;
+        let file = undefined, filename, ext, uploadOk = 1, maxSize = 104857600;
         let data = new FormData();
         
         // kontent
@@ -128,8 +128,8 @@
                this.value = '';
                return false;
            }
-           else if(file.size > 20746185) {
-               alert('File terlalu besar!');
+           else if(file.size > maxSize) {
+               alert('File terlalu besar! maksimal 100 MB');
                this.value = '';
                return false;
            }

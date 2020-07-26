@@ -1,4 +1,4 @@
-<div class="col-md-9 page-content">
+	<div class="col-md-9 page-content">
 	<div class="inner-box">
 		<div id="accordion" class="panel-group">
 			<h2 class="p-title mt-2	">Profil Akun</h2>

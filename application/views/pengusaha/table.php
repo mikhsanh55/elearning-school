@@ -22,7 +22,7 @@
 			<th>Nama</th>
 			<th>Username</th>
 			<th>
-				NIS
+				NISN
 			</th>
 			<th>Jenis Kelamin</th>
 			<th>Password</th>
