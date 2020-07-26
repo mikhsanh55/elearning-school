@@ -62,8 +62,10 @@ class Adm extends MY_Controller {
 
 		$post = $this->input->post();
 
+		$id_admin = $this->session->userdata('admin_id');
+
 		// Cek Ketersediaan password
-		$data = $this->m_admin->get_by(['id' => $post['id']]);
+		$data = $this->m_admin->get_by(['id' => $id_admin]);
 		$returned_data = [
 			'status' => FALSE,
 			'msg'	 => 'Password gagal diubah',
@@ -103,12 +105,14 @@ class Adm extends MY_Controller {
 				$new_pwd = $this->encryption->encrypt($post['new_pwd']);
 				$update = $this->m_admin->update([
 					'password' => $new_pwd
-				], ['id' => $post['id']]);
+				], ['id' => $id_admin]);
+
+			
 
 				if($update) {
 
 					$data = [
-						'id_user' => $post['id'],
+						'id_user' => $id_admin,
 						'level'   => $this->session->userdata('admin_level')
 					];
 					$this->db->insert('tb_log_password', $data);
@@ -129,7 +133,6 @@ class Adm extends MY_Controller {
 				}
 			}
 		}
-
 		// Send response
 		$this->sendAjaxResponse($returned_data, $response_code);
 	}	

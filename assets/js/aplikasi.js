@@ -1378,5 +1378,5 @@ function rubah_password_s() {
 		}
 	})
 	
-	return true;
+	return false;
 }
