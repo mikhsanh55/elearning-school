@@ -487,7 +487,7 @@ class Export extends MY_Controller {
 			$nama_mapel = '';	
 		}
 		// Initialize excel object
-		$this->excelInitialize(5);
+		$this->excelInitialize();
 
 		$this->excelCellsHeading = [
 			['cell' => 'A', 'label' => 'No'],
@@ -510,7 +510,7 @@ class Export extends MY_Controller {
 
 		$this->excelDataStart = 6;
 		// Write heading excel use method on MY_Controller.php
-		$this->excelWriteHeading();
+		$this->excelWriteHeading(5);
 
 
 		
