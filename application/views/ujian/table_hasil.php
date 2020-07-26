@@ -30,7 +30,7 @@
 				$grade = 'D';
 			}
 			$id_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $rows->id_user]);
-			$nama_kelas = $this->m_kelas->get_by(['id' => $id_kelas->id_kelas]);
+			$nama_kelas = $this->m_kelas->get_by(['kls.id' => $id_kelas->id_kelas]);
 			$nama_kelas = !empty($nama_kelas) ? $nama_kelas->nama : '';
 		?>
 			<tr>
