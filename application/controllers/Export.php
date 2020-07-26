@@ -470,11 +470,21 @@ class Export extends MY_Controller {
 		$this->load->model('m_detail_kelas');
 		$id = decrypt_url($md5_id_ujian);
 		$this->excelDatas = $this->m_ikut_ujian->get_many_by(['id_ujian' => $id, 'status' => 'N']);
-		$data_ujian = $this->m_ujian->get_by(['uji.id' => $this->excelDatas[0]->id_ujian ]);
-		$data_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $this->excelDatas[0]->id_user]);
-		$nama_kelas = !empty($data_kelas) ? $data_kelas->nama : '';
-		$nama_guru = $data_ujian->nama_guru;
-		$nama_mapel = $data_ujian->nama_mapel;
+
+		if(count($this->excelDatas) > 0) {
+			$data_ujian = $this->m_ujian->get_by(['uji.id' => $this->excelDatas[0]->id_ujian ]);
+			$data_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $this->excelDatas[0]->id_user]);
+			$nama_kelas = !empty($data_kelas) ? $data_kelas->nama : '';	
+
+			$result['nama_kelas'] = $nama_kelas;
+			$result['nama_guru'] = $data_ujian->nama_guru;
+			$result['nama_mapel'] = $data_ujian->nama_mapel;
+		}
+		else {
+			$result['nama_kelas'] = '';
+			$result['nama_guru'] = '';
+			$result['nama_mapel'] = '';	
+		}
 		// Initialize excel object
 		$this->excelInitialize();
 
@@ -646,14 +656,24 @@ class Export extends MY_Controller {
 		$id = decrypt_url($encrypt_id);
 
 		$data_hasil = $this->m_ikut_ujian->get_many_by(['id_ujian' => $id]);
-		// $data_ujian = $this->m_ujian->get_by(['uji.id' => $data_hasil[0]->id_ujian ]);
-		// $data_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $data_hasil[0]->id_user]);
-		// $nama_kelas = !empty($data_kelas) ? $data_kelas->nama : '';
 		$result = [
-			'datas' => $data_hasil,
+			'datas' => $data_hasil
 		];
+		if(count($data_hasil) > 0) {
+			$data_ujian = $this->m_ujian->get_by(['uji.id' => $data_hasil[0]->id_ujian ]);
+			$data_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $data_hasil[0]->id_user]);
+			$nama_kelas = !empty($data_kelas) ? $data_kelas->nama : '';	
 
-		print_r($result);exit;
+			$result['nama_kelas'] = $nama_kelas;
+			$result['nama_guru'] = $data_ujian->nama_guru;
+			$result['nama_mapel'] = $data_ujian->nama_mapel;
+		}
+		else {
+			$result['nama_kelas'] = '';
+			$result['nama_guru'] = '';
+			$result['nama_mapel'] = '';	
+		}
+		
 		$this->dpdf->setPaper('A4', 'landscape');
 		$this->dpdf->filename = 'Hasil Ujian.pdf';
 		$this->dpdf->view('ujian/hasil_ujian_pdf', $result);
