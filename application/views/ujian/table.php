@@ -40,8 +40,8 @@
 					$nama_guru = $this->m_guru->get_by(['id' => $rows->id_guru]);
 					$nama_guru = (!empty($nama_guru)) ? $nama_guru->nama : '';
 				?>	
-					<th><?= $nama_guru; ?></th>
-					<th><?= $rows->nama_mapel; ?></th>
+					<td><?= $nama_guru; ?></td>
+					<td><?= $rows->nama_mapel; ?></td>
 				<?php endif; ?>
 				<td><?=$date;?></td>
 				<td class="opsi text-center" >
