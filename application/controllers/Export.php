@@ -646,14 +646,11 @@ class Export extends MY_Controller {
 		$id = decrypt_url($encrypt_id);
 
 		$data_hasil = $this->m_ikut_ujian->get_many_by(['id' => $id, 'status' => 'N']);
-		$data_ujian = $this->m_ujian->get_by(['uji.id' => $data_hasil[0]->id_ujian ]);
-		$data_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $data_hasil[0]->id_user]);
-		$nama_kelas = !empty($data_kelas) ? $data_kelas->nama : '';
+		// $data_ujian = $this->m_ujian->get_by(['uji.id' => $data_hasil[0]->id_ujian ]);
+		// $data_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $data_hasil[0]->id_user]);
+		// $nama_kelas = !empty($data_kelas) ? $data_kelas->nama : '';
 		$result = [
 			'datas' => $data_hasil,
-			'nama_kelas' => $nama_kelas,
-			'nama_guru' => $data_ujian->nama_guru,
-			'nama_mapel' => $data_ujian->nama_mapel
 		];
 
 		print_r($result);exit;
