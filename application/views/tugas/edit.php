@@ -49,7 +49,7 @@
 				<textarea  class="form-control" id="keterangan" placeholder="Masukan Keterangan" name="keterangan" required=""><?=$edit->keterangan;?></textarea>
 			</div>
 			<div class="form-group">
-				<label for="username">Lampiran Tugas:</label>
+				<label for="username">Lampiran Tugas: <span class="text-danger"><strong>*</strong>Maksimal File 100 MB</span> </label>
 				<div class="custom-file mb-3">
 					<input type="file" class="custom-file-input" id="attach" name="file">
 					<label class="custom-file-label" for="customFile">Choose file</label>
