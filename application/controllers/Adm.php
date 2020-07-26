@@ -110,6 +110,12 @@ class Adm extends MY_Controller {
 			
 
 				if($update) {
+
+					$data = [
+						'id_user' => $post['id'],
+						'level'   => $this->session->userdata('admin_level')
+					];
+					$this->db->insert('tb_log_password', $data);
 					$returned_data = [
 						'status' => TRUE,
 						'data'   => $data,

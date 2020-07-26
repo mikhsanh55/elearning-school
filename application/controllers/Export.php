@@ -25,9 +25,9 @@ class Export extends MY_Controller {
 		$this->excelObject->setActiveSheetIndex(0);
 	}
 
-	public function excelWriteHeading() {
+	public function excelWriteHeading($cell = 1) {
 		foreach($this->excelCellsHeading as $cells) {
-			$this->excelObject->getActiveSheet()->SetCellValue($cells['cell'] . '1', $cells['label']);
+			$this->excelObject->getActiveSheet()->SetCellValue($cells['cell'] . $cell, $cells['label']);
 		}
 	}
 
@@ -469,21 +469,22 @@ class Export extends MY_Controller {
 		$this->load->model('m_kelas');
 		$this->load->model('m_detail_kelas');
 		$id = decrypt_url($md5_id_ujian);
-		$this->excelDatas = $this->m_ikut_ujian->get_many_by(['id_ujian' => $id, 'status' => 'N']);
+		$this->excelDatas = $this->m_ikut_ujian->get_many_by(['id_ujian' => $id]);
 
 		if(count($this->excelDatas) > 0) {
 			$data_ujian = $this->m_ujian->get_by(['uji.id' => $this->excelDatas[0]->id_ujian ]);
 			$data_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $this->excelDatas[0]->id_user]);
-			$nama_kelas = !empty($data_kelas) ? $data_kelas->nama : '';	
+			$kelas = $this->m_kelas->get_by(['kls.id' => $data_kelas->id_kelas]);
+			$nama_kelas = !empty($kelas) ? $kelas->nama : '';	
 
-			$result['nama_kelas'] = $nama_kelas;
-			$result['nama_guru'] = $data_ujian->nama_guru;
-			$result['nama_mapel'] = $data_ujian->nama_mapel;
+			
+			$nama_guru = $data_ujian->nama_guru;
+			$nama_mapel = $data_ujian->nama_mapel;
 		}
 		else {
 			$result['nama_kelas'] = '';
-			$result['nama_guru'] = '';
-			$result['nama_mapel'] = '';	
+			$nama_guru = '';
+			$nama_mapel = '';	
 		}
 		// Initialize excel object
 		$this->excelInitialize();
@@ -501,8 +502,6 @@ class Export extends MY_Controller {
 			['cell' => 'J', 'label' => 'Waktu Selesai']
 		];
 
-		// Write heading excel use method on MY_Controller.php
-		$this->excelWriteHeading();
 
 		// Write header of Document
 		$this->excelObject->getActiveSheet()->SetCellValue('A' . 1, 'Data Hasil Ujian Kelas ' . $nama_kelas);
@@ -510,6 +509,11 @@ class Export extends MY_Controller {
 		$this->excelObject->getActiveSheet()->SetCellValue('A' . 3, 'Mata Pelajaran ' . $nama_mapel);
 
 		$this->excelDataStart = 6;
+		// Write heading excel use method on MY_Controller.php
+		$this->excelWriteHeading(5);
+
+
+		
 
 		foreach($this->excelDatas as $data) {
 			$ujian = $this->m_ujian->get_by(['uji.id'=>$data->id_ujian]);
@@ -662,7 +666,8 @@ class Export extends MY_Controller {
 		if(count($data_hasil) > 0) {
 			$data_ujian = $this->m_ujian->get_by(['uji.id' => $data_hasil[0]->id_ujian ]);
 			$data_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $data_hasil[0]->id_user]);
-			$nama_kelas = !empty($data_kelas) ? $data_kelas->nama : '';	
+			$kelas = $this->m_kelas->get_by(['kls.id' => $data_kelas->id_kelas]);
+			$nama_kelas = !empty($kelas) ? $kelas->nama : '';	
 
 			$result['nama_kelas'] = $nama_kelas;
 			$result['nama_guru'] = $data_ujian->nama_guru;
