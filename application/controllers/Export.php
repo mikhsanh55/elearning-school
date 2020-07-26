@@ -466,38 +466,82 @@ class Export extends MY_Controller {
 		$this->load->model('m_ikut_ujian');
 		$this->load->model('m_ujian');
 		$this->load->model('m_siswa');
+		$this->load->model('m_kelas');
+		$this->load->model('m_detail_kelas');
 		$id = decrypt_url($md5_id_ujian);
 		$this->excelDatas = $this->m_ikut_ujian->get_many_by(['id_ujian' => $id, 'status' => 'N']);
-		// print_r($this->excelDatas);exit;
+
+		if(count($this->excelDatas) > 0) {
+			$data_ujian = $this->m_ujian->get_by(['uji.id' => $this->excelDatas[0]->id_ujian ]);
+			$data_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $this->excelDatas[0]->id_user]);
+			$nama_kelas = !empty($data_kelas) ? $data_kelas->nama : '';	
+
+			$result['nama_kelas'] = $nama_kelas;
+			$result['nama_guru'] = $data_ujian->nama_guru;
+			$result['nama_mapel'] = $data_ujian->nama_mapel;
+		}
+		else {
+			$result['nama_kelas'] = '';
+			$result['nama_guru'] = '';
+			$result['nama_mapel'] = '';	
+		}
 		// Initialize excel object
 		$this->excelInitialize();
 
 		$this->excelCellsHeading = [
 			['cell' => 'A', 'label' => 'No'],
 			['cell' => 'B', 'label' => 'Siswa'],
-			['cell' => 'C', 'label' => 'Jumlah Benar'],
-			['cell' => 'D', 'label' => 'Keterangan'],
-			['cell' => 'E', 'label' => 'KKM'],
-			['cell' => 'F', 'label' => 'Waktu Mulai'],
-			['cell' => 'G', 'label' => 'Waktu Selesai']
+			['cell' => 'C', 'label' => 'Kelas'],
+			['cell' => 'D', 'label' => 'Nilai'],
+			['cell' => 'E', 'label' => 'Grade'],
+			['cell' => 'F', 'label' => 'Jumlah Benar'],
+			['cell' => 'G', 'label' => 'Keterangan'],
+			['cell' => 'H', 'label' => 'KKM'],
+			['cell' => 'I', 'label' => 'Waktu Mulai'],
+			['cell' => 'J', 'label' => 'Waktu Selesai']
 		];
 
 		// Write heading excel use method on MY_Controller.php
 		$this->excelWriteHeading();
 
-		$this->excelDataStart = 2;
+		// Write header of Document
+		$this->excelObject->getActiveSheet()->SetCellValue('A' . 1, 'Data Hasil Ujian Kelas ' . $nama_kelas);
+		$this->excelObject->getActiveSheet()->SetCellValue('A' . 2, 'Guru ' . $nama_guru);
+		$this->excelObject->getActiveSheet()->SetCellValue('A' . 3, 'Mata Pelajaran ' . $nama_mapel);
+
+		$this->excelDataStart = 6;
 
 		foreach($this->excelDatas as $data) {
 			$ujian = $this->m_ujian->get_by(['uji.id'=>$data->id_ujian]);
 			$siswa = $this->m_siswa->get_by(['id'=>$data->id_user]);
 			$keterangan = ($data->nilai >= $ujian->min_nilai) ? 'LULUS' : 'BELUM LULUS';
+			if($data->nilai > 90 && $data->nilai < 101){
+				$grade = 'A';
+			}else if($data->nilai > 80 && $data->nilai < 91){
+				$grade = 'B';
+			} else if($data->nilai > 70 && $data->nilai < 81){
+				$grade = 'C';
+			} else {
+				$grade = 'D';
+			}
+			$id_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $data->id_user]);
+			$nama_kelas = $this->m_kelas->get_by(['kls.id' => $id_kelas->id_kelas]);
+			$nama_kelas = !empty($nama_kelas) ? $nama_kelas->nama : '';
+
 			$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, $this->excelColumnNo);
 			$this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $siswa->nama);
-			$this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $data->jml_benar);
-			$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $keterangan);
-			$this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $ujian->min_nilai);
-			$this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, $data->tgl_mulai);
-			$this->excelObject->getActiveSheet()->SetCellValue('G' . $this->excelDataStart, $data->tgl_selesai);
+
+			$this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $nama_kelas);
+
+			$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $data->nilai);
+
+			$this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $grade);
+
+			$this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, $data->jml_benar);
+			$this->excelObject->getActiveSheet()->SetCellValue('G' . $this->excelDataStart, $keterangan);
+			$this->excelObject->getActiveSheet()->SetCellValue('H' . $this->excelDataStart, $ujian->min_nilai);
+			$this->excelObject->getActiveSheet()->SetCellValue('I' . $this->excelDataStart, $data->tgl_mulai);
+			$this->excelObject->getActiveSheet()->SetCellValue('J' . $this->excelDataStart, $data->tgl_selesai);
 
 			$this->excelDataStart++;
 			  $this->excelColumnNo++;
@@ -605,12 +649,31 @@ class Export extends MY_Controller {
 	public function pdf_hasil_ujian($encrypt_id) {
 		$this->load->library('dpdf');
 		$this->load->model('m_ikut_ujian');
+		$this->load->model('m_ujian');
+		$this->load->model('m_siswa');
+		$this->load->model('m_kelas');
+		$this->load->model('m_detail_kelas');
 		$id = decrypt_url($encrypt_id);
-		$result = [
-			'datas' => $this->m_ikut_ujian->get_many_by(['id' => $id, 'status' => 'N'])
-		];
 
-		// print_r($result['datas']);exit;
+		$data_hasil = $this->m_ikut_ujian->get_many_by(['id_ujian' => $id]);
+		$result = [
+			'datas' => $data_hasil
+		];
+		if(count($data_hasil) > 0) {
+			$data_ujian = $this->m_ujian->get_by(['uji.id' => $data_hasil[0]->id_ujian ]);
+			$data_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $data_hasil[0]->id_user]);
+			$nama_kelas = !empty($data_kelas) ? $data_kelas->nama : '';	
+
+			$result['nama_kelas'] = $nama_kelas;
+			$result['nama_guru'] = $data_ujian->nama_guru;
+			$result['nama_mapel'] = $data_ujian->nama_mapel;
+		}
+		else {
+			$result['nama_kelas'] = '';
+			$result['nama_guru'] = '';
+			$result['nama_mapel'] = '';	
+		}
+		
 		$this->dpdf->setPaper('A4', 'landscape');
 		$this->dpdf->filename = 'Hasil Ujian.pdf';
 		$this->dpdf->view('ujian/hasil_ujian_pdf', $result);

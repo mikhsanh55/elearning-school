@@ -5,6 +5,7 @@
 			<!-- <th class="frist"><input type="checkbox" name="checkall" id="checkall"></th> -->
 			<th class="frist">No</th>
 			<th>Siswa</th>
+			<th>Kelas</th>
 			<th>Nilai</th>
 			<th>Grade</th>
 			<th>Jumlah Benar</th>
@@ -28,11 +29,14 @@
 			} else {
 				$grade = 'D';
 			}
+			$id_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $rows->id_user]);
+			$nama_kelas = $this->m_kelas->get_by(['kls.id' => $id_kelas->id_kelas]);
+			$nama_kelas = !empty($nama_kelas) ? $nama_kelas->nama : '';
 		?>
 			<tr>
-				<!-- <td><input type="checkbox" name="checklist[]" class="checklist" data-id= "<?=encrypt_url($rows->id);?>" value="<?=$rows->id;?>"></td> -->
 				<td align="center" class="frist"><?=$i;?></td>
 				<td><?=$siswa->nama;?></td>
+				<td><?= $nama_kelas; ?></td>
 				<td><?=$rows->nilai;?></td>
 				<td><?=$grade;?></td>
 				<td><?=$rows->jml_benar;?></td>
