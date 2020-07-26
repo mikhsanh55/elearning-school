@@ -502,13 +502,15 @@ class Export extends MY_Controller {
 			['cell' => 'J', 'label' => 'Waktu Selesai']
 		];
 
-		// Write heading excel use method on MY_Controller.php
-		$this->excelWriteHeading();
-
+		
 		// Write header of Document
 		$this->excelObject->getActiveSheet()->SetCellValue('A' . 1, 'Data Hasil Ujian Kelas ' . $nama_kelas);
 		$this->excelObject->getActiveSheet()->SetCellValue('A' . 2, 'Guru ' . $nama_guru);
 		$this->excelObject->getActiveSheet()->SetCellValue('A' . 3, 'Mata Pelajaran ' . $nama_mapel);
+
+		// Write heading excel use method on MY_Controller.php
+		$this->excelWriteHeading();
+
 
 		$this->excelDataStart = 6;
 
