@@ -314,11 +314,11 @@ class Pengusaha extends MY_Controller {
 					$inserted_id = $this->db->insert_id();
 
 					// Detail Kelas
-					$detail_kelas = [
-						'id_peserta' => $inserted_id,
-						'id_kelas' => $p->id_kelas
-					];
-					$this->db->insert('tb_detail_kelas', $detail_kelas);
+					// $detail_kelas = [
+					// 	'id_peserta' => $inserted_id,
+					// 	'id_kelas' => $p->id_kelas
+					// ];
+					// $this->db->insert('tb_detail_kelas', $detail_kelas);
 					$check_login = $this->m_admin->get_many_by(['kon_id' => $inserted_id]);
 					$kon_ids = [];
 					if(count($check_login) > 0) {
@@ -354,6 +354,7 @@ class Pengusaha extends MY_Controller {
 			exit();
 		} else if ($uri3 == "hapus") {
 			$this->db->query("DELETE FROM m_siswa WHERE id = '".$uri4."'");
+			$this->m_detail_kelas->delete(['id_peserta' => $uri4]);
 			$this->db->query("DELETE FROM m_admin WHERE level = 'siswa' AND kon_id = '".$uri4."'");			
 			$ret_arr['status'] 	= "ok";
 			$ret_arr['caption']	= "hapus sukses";

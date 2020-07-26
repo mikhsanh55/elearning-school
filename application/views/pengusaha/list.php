@@ -181,8 +181,8 @@
 							<td style="width: 25%">Jenis Kelamin<span class="text-danger">*</span></td>
 							<td style="width: 75%">
 								<select name="nik" id="nik" class="form-control" required>
-									<option value="1" selected>Laki-Laki</option>
-									<option value="0">Perempuan</option>
+									<option value="L" selected>Laki-Laki</option>
+									<option value="P">Perempuan</option>
 								</select>
 							</td>
 						</tr>
