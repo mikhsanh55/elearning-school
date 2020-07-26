@@ -84,7 +84,7 @@
                                 <h3><label for="title" class="text-success">File</label></h3>
                                 <input type="file" name="file" id="file" class="form-control" value="<?= $materi->file_pdf; ?>" required /><span><?= $materi->file_pdf; ?></span>
                                 <p id="passwordHelpBlock" class="form-text text-muted">
-                                  File PDF yang akan diupload maksimal memiliki ukuran 8 MB.
+                                  File PDF yang akan diupload maksimal memiliki ukuran 100 MB.
                                 </p>
                             </div>
                         </div>
@@ -111,7 +111,7 @@
 <script type="text/javascript" src="<?= base_url('assets/plugin/ckeditor/ckeditor.js') ?>"></script>
 <script>
     $(document).ready(function() {
-        let file = undefined, filename, ext, uploadOk = 1;
+        let file = undefined, filename, ext, uploadOk = 1, maxSize = 104857600;
         let data = new FormData();
         
         // kontent
@@ -124,8 +124,8 @@
                this.value = '';
                return false;
            }
-           else if(file.size > 20746185) {
-               alert('File terlalu besar! Maksimal 20 MB');
+           else if(file.size > maxSize) {
+               alert('File terlalu besar! Maksimal 100 MB');
                this.value = '';
                return false;
            }

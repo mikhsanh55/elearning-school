@@ -136,11 +136,23 @@
                                     <button class="d-none btn btn-sm btn-outline-danger"><i class="fas  fa-times"></i></button>
                                 </td>
                             </tr>
+                            <tr>
+                                <th class="text-secondary text-uppercase">Agama</th>
+                                <td class="text-uppercase font-weight-bold">
+                                    <span><?= (empty($this->akun->pangkat)) ? NULL : $this->akun->pangkat ;?></span>
+                                    <input data-key="pangkat" type="text" class="d-none in-edit form-control input-sm" name="pangkat" value="<?= (empty($this->akun->pangkat)) ? NULL : $this->akun->pangkat  ?>">
+                                </td>
+                                <td class="text-right text-primary font-weight-bold">
+                                    <i class="fas fa-edit"></i>
+                                    <i class="d-none fas fa-spinner text-primary spin-icon"></i>
+                                    <button class="d-none btn btn-sm btn-outline-danger"><i class="fas  fa-times"></i></button>
+                                </td>
+                            </tr>
                              <tr>
                                 <th class="text-secondary text-uppercase">Kelas</th>
                                 <td class="text-lowercase font-weight-bold">
 
-                                    <?= $kelas->nama_kelas; ?>
+                                    <?= ucwords($kelas->nama_kelas); ?>
                                 </td>
                                 <td class="text-right text-primary font-weight-bold">
                                     <i class="fas fa-check"></i>
@@ -159,7 +171,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th class="text-secondary text-uppercase">NIS</th>
+                                <th class="text-secondary text-uppercase">NISN</th>
                                 <td class="text-uppercase font-weight-bold">
                                     <span><?= $this->akun->nrp ;?></span>
                                     <input data-key="nrp" type="text" class="d-none in-edit form-control input-sm" name="nrp" value="<?= (empty($this->akun->nrp)) ? NULL : $this->akun->nrp  ?>">
@@ -219,11 +231,13 @@
                                 <th class="text-secondary text-uppercase">Photo</th>
                                 <td class="text-uppercase font-weight-bold ">
                                     <input type="file" id="photo-file" class="form-control" />
+                                    
+
                                 </td>
                                 <td class="text-right text-primary font-weight-bold">
                                     <button class="btn btn-sm btn-outline-primary" id="upload-photo" title="Update Photo">
-                                        <i class="fas fa-upload"></i>
-                                        <i class="fas fa-spinner spin-icon text-primary d-none"></i>
+                                        <i class="fas fa-upload" id="upload"></i>
+                                        <i class="fas fa-spinner spin-icon text-primary d-none" id="spinner"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -255,7 +269,7 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
-        var self, photoUser = null, photoFileName, photoExt, formData;
+        var self, photoUser = null, photoFileName, photoExt, photoSize, maxSize, formData;
         const enableExtPictures = ['jpg', 'jpeg', 'png', 'gif', 'svg'];
 
         $('#lightslider').lightSlider({
@@ -350,12 +364,21 @@
             photoFileName = photoUser.name
             photoFileName = photoFileName.split('.')
             photoExt = photoFileName[ photoFileName.length - 1 ]
+            photoSize = photoUser.size
+            maxSize = 3145728
 
+            // console.log(photoUser)
             if(!enableExtPictures.includes(photoExt)) {
                 alert('Harap upload photo');
                 photoUser = null;
                 $(this).val('');
                 return false;
+            }
+            else if(photoSize > maxSize) {
+                alert('Maksimal Foto 3 MB');
+                photoUser = null;
+                $(this).val('');
+                return false;   
             }
         });
 
@@ -382,16 +405,16 @@
                 processData:false,
                 success:function(res) {
                     $(self).prop('disabled', true);
-                    $(self).find('.fa-upload').toggleClass('d-none');
-                    $(self).find('.fa-spinner').toggleClass('d-none');
+                    $(self).find('#upload').toggleClass('d-none');
+                    $(self).find('#spinner').toggleClass('d-none');
 
                     $('#avatar').attr('src', res.url);
                 },
                 error:function(e) {
                     $(self).prop('disabled', true);
-                    $(self).find('.fa-upload').toggleClass('d-none');
-                    $(self).find('.fa-spinner').toggleClass('d-none');
-                    alert('Something wrong when upload photo');
+                    $(self).find('#upload').toggleClass('d-none');
+                    $(self).find('#spinner').toggleClass('d-none');
+                    alert(e.responseJSON.msg);
                     console.error(e.responseText);             
                     return false;       
                 }

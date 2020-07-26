@@ -156,7 +156,7 @@
 							<td style="width: 75%"><input type="text" class="form-control" name="username" id="username" required></td>
 						</tr>
 						<tr>
-							<td style="width: 25%">NIS<span class="text-danger">*</span></td>
+							<td style="width: 25%">NISN<span class="text-danger">*</span></td>
 							<td style="width: 75%"><input type="text" class="form-control" name="nrp" id="nrp" required></td>
 						</tr>
 						<!-- <tr>

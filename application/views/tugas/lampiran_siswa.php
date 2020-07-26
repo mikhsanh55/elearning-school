@@ -31,11 +31,12 @@
                 <h2>TUGAS</h2>
                 <form id="form-tugas" method="post" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label for="username">Upload File Tugas:</label>
+                        <label for="username">Upload File Tugas</label>
                         <div class="custom-file mb-3">
                             <input type="file" class="custom-file-input" id="attach" name="attach[]" multiple>
                             <label class="custom-file-label" for="customFile">Choose file</label>
                         </div>
+                        <p><strong> <span class="text-danger">*</span> Maksimal File 20 MB </strong></p>
                         <span id="errors-file" class="errors"></span>
                         <div id="attach-file">
 
@@ -120,11 +121,19 @@
 		listAttach();
 
 		$('input[type="file"]').change(function(e){
-            var fileName = e.target.files[0].name;
-            var extensions = ['pdf', 'pdfx', 'doc', 'docx', 'jpeg', 'jpg', 'png', 'zip', 'rar', 'ppt', 'pptx', 'xlsx', 'xls'];
+            var fileName = e.target.files[0].name,
+                extensions = ['pdf', 'pdfx', 'doc', 'docx', 'jpeg', 'jpg', 'png', 'zip', 'rar', 'ppt', 'pptx', 'xlsx', 'xls'],
+                maxSize = 20971520;
+
   	         if ($.inArray($(this).val().split('.').pop().toLowerCase(), extensions) == -1) {
                 alert("Format yang diperbolehkan : "+extensions.join(', '));
                 $(this).val('')
+                return false;
+            }
+            else if(e.target.files[0].size > maxSize) {
+                alert('File maksimal 20 MB');
+                $(this).val('')
+                return false;
             }
             var files = e.target.files; 
             var name = '';

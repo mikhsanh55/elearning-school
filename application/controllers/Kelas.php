@@ -456,7 +456,7 @@ class Kelas extends MY_Controller
   public function daftar_murid(){
   	$post = $this->input->post();
   	
-  		$filter = $this->log_lvl == 'guru' ? ['Nama', 'NIS'] : ['Nama', 'NIS', 'Kelas'];
+  		$filter = $this->log_lvl == 'guru' ? ['Nama', 'NISN'] : ['Nama', 'NISN', 'Kelas'];
 		$data = array(
 
 			'searchFilter' 	=> $filter,

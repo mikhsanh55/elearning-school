@@ -538,85 +538,6 @@ class Pengusaha extends MY_Controller {
 		return $last;
 	}
 
-	private function get_jenis_usaha() {
-		return $this->db->get('jenis_usaha')->result();	
-	}
-
-	public function get_jenis_usaha_ajax() {
-
-		$data = [
-			'status' => TRUE,
-			'data' => $this->db->get('jenis_usaha')->result()
-		];
-
-		echo json_encode($data);
-	}
-
-	public function put_jenis_usaha_ajax() {
-		$val = explode(' ', $this->input->post('nama'));
-		$val = strtolower(join('_', $val));
-		$id = $this->input->post('ju');
-		$data = [
-		  'nama' => $this->input->post('nama'),
-		  'value' => $val
-		];
-		
-		$update = $this->db->update('jenis_usaha', $data, array('id' => $id));
-        
-        if($update) {
-		    echo json_encode(['status' => TRUE, 'msg' => 'Data berhasil di update']);
-        }
-        else {
-            echo json_encode(['status' => FALSE, 'msg' => 'Cannot update']);
-            http_response_code(500);
-        }
-	}
-	
-	public function delete_jenis_usaha_ajax() {
-	    $this->db->where('id', $this->input->post('ju'));
-	    $del = $this->db->delete('jenis_usaha');
-	    if($del) {
-	        echo json_encode(['status' => TRUE, 'msg' => 'Data berhasil di hapus']);
-	    }
-	    else {
-	        echo json_encode(['status' => FALSE, 'msg' => 'Penghapusan gagal']);
-	        http_response_code(500);
-	    }
-	}
-	public function post_jenis_usaha_ajax() {
-		$val = explode(' ', $this->input->post('nama'));
-		$val = join('_', $val);
-		$data = [
-			'nama'  => $this->input->post('nama'),
-			'value' => strtolower($val)
-		];
-
-		$insert = $this->db->insert('jenis_usaha', $data);
-		if($insert) {
-			echo json_encode(['status' => TRUE]);
-		}
-		else {
-			echo json_encode(['status' => FALSE, 'msg' => 'An Error occured, contact your developer!']);	
-			http_response_code(500);
-		}
-	}
-    
-	public function jenis_usaha() {
-		$uri1 = $this->uri->segment(1);
-
-        $uri2 = $this->uri->segment(2);
-
-        $a['sess_level'] = $this->session->userdata('admin_level');
-        $a['menu'] = $this->db->query("SELECT `nama_menu`, `link`, `icon` FROM rule_users JOIN menu ON rule_users.id_menu = menu.id JOIN level ON rule_users.id_level = level.id WHERE level = '".$a['sess_level']."' ")->result_array();
-
-        $a['link'] = $this->db->query("SELECT link FROM rule_users JOIN menu ON rule_users.id_menu = menu.id JOIN level ON rule_users.id_level = level.id WHERE link = '".$uri1."/".$uri2."' AND level = '".$a['sess_level']."' ")->result_array();
-
-        $this->load->view('dashboard/template/header');
-        $this->load->view('dashboard/template/navbar', $a);
-        $this->load->view('dashboard/admin/jenis_usaha');
-        $this->load->view('dashboard/template/footer');
-	}
-
 	public function aktif_non($id,$kondisi){
 		$kondisi = ($kondisi == 1) ? 0 : 1 ;
 		$kirim = $this->m_siswa->update(array('deleted'=>$kondisi),array('id'=>$id));
@@ -637,7 +558,7 @@ class Pengusaha extends MY_Controller {
 			'instansi' => $instansi,
 			'kelas' => $kelas, 
 			'guru' => $guru,
-			'searchFilter' => array('Nama','Username','NIS')
+			'searchFilter' => array('Nama','Username','NISN')
 		);
 		$this->render('pengusaha/list',$data);
 	}
@@ -866,14 +787,13 @@ class Pengusaha extends MY_Controller {
 		    $config['allowed_types']        = 'gif|jpg|png|jpeg|svg';
 		    $config['file_name']            = 'avatar-' . uniqid();
 		    $config['overwrite']			= true;
-		    $config['max_size']             = 6024; // 1MB
+		    $config['max_size']             = 3072; // 3MB
 			$this->load->library('upload', $config);
 
 			if(!$this->upload->do_upload('photo')) {
 				$this->sendAjaxResponse([
 					'status' => FALSE,
-					'msg' => 'Gagal upload photo!',
-					'data' => $this->upload->display_errors()
+					'msg' => $this->upload->display_errors()
 				], 500);		
 			}
 			else {
