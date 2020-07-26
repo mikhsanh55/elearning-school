@@ -477,14 +477,14 @@ class Export extends MY_Controller {
 			$kelas = $this->m_kelas->get_by(['kls.id' => $data_kelas->id_kelas]);
 			$nama_kelas = !empty($kelas) ? $kelas->nama : '';	
 
-			$result['nama_kelas'] = $nama_kelas;
-			$result['nama_guru'] = $data_ujian->nama_guru;
-			$result['nama_mapel'] = $data_ujian->nama_mapel;
+			
+			$nama_guru = $data_ujian->nama_guru;
+			$nama_mapel = $data_ujian->nama_mapel;
 		}
 		else {
 			$result['nama_kelas'] = '';
-			$result['nama_guru'] = '';
-			$result['nama_mapel'] = '';	
+			$nama_guru = '';
+			$nama_mapel = '';	
 		}
 		// Initialize excel object
 		$this->excelInitialize();
