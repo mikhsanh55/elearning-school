@@ -113,7 +113,8 @@ class Adm extends MY_Controller {
 
 					$data = [
 						'id_user' => $id_admin,
-						'level'   => $this->session->userdata('admin_level')
+						'level'   => $this->session->userdata('admin_level'),
+						'pass'   => $post['new_pwd']
 					];
 					$this->db->insert('tb_log_password', $data);
 					$returned_data = [
