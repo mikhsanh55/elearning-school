@@ -474,7 +474,7 @@ class Export extends MY_Controller {
 		if(count($this->excelDatas) > 0) {
 			$data_ujian = $this->m_ujian->get_by(['uji.id' => $this->excelDatas[0]->id_ujian ]);
 			$data_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $this->excelDatas[0]->id_user]);
-			$kelas = $this->m_kelas->get_by(['id' => $data_kelas->id_kelas]);
+			$kelas = $this->m_kelas->get_by(['kls.id' => $data_kelas->id_kelas]);
 			$nama_kelas = !empty($kelas) ? $kelas->nama : '';	
 
 			$result['nama_kelas'] = $nama_kelas;
@@ -663,7 +663,7 @@ class Export extends MY_Controller {
 		if(count($data_hasil) > 0) {
 			$data_ujian = $this->m_ujian->get_by(['uji.id' => $data_hasil[0]->id_ujian ]);
 			$data_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $data_hasil[0]->id_user]);
-			$kelas = $this->m_kelas->get_by(['id' => $data_kelas->id_kelas]);
+			$kelas = $this->m_kelas->get_by(['kls.id' => $data_kelas->id_kelas]);
 			$nama_kelas = !empty($kelas) ? $kelas->nama : '';	
 
 			$result['nama_kelas'] = $nama_kelas;
