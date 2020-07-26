@@ -639,6 +639,10 @@ class Export extends MY_Controller {
 	public function pdf_hasil_ujian($encrypt_id) {
 		$this->load->library('dpdf');
 		$this->load->model('m_ikut_ujian');
+		$this->load->model('m_ujian');
+		$this->load->model('m_siswa');
+		$this->load->model('m_kelas');
+		$this->load->model('m_detail_kelas');
 		$id = decrypt_url($encrypt_id);
 
 		$data_hasil = $this->m_ikut_ujian->get_many_by(['id' => $id, 'status' => 'N']);
