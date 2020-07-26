@@ -25,9 +25,9 @@ class Export extends MY_Controller {
 		$this->excelObject->setActiveSheetIndex(0);
 	}
 
-	public function excelWriteHeading() {
+	public function excelWriteHeading($cell = 1) {
 		foreach($this->excelCellsHeading as $cells) {
-			$this->excelObject->getActiveSheet()->SetCellValue($cells['cell'] . '1', $cells['label']);
+			$this->excelObject->getActiveSheet()->SetCellValue($cells['cell'] . $cell, $cells['label']);
 		}
 	}
 
@@ -487,7 +487,7 @@ class Export extends MY_Controller {
 			$nama_mapel = '';	
 		}
 		// Initialize excel object
-		$this->excelInitialize();
+		$this->excelInitialize(5);
 
 		$this->excelCellsHeading = [
 			['cell' => 'A', 'label' => 'No'],
