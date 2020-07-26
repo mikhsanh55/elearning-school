@@ -1,3 +1,9 @@
+<h3>
+	Data Hasil Ujian Kelas : <?= $nama_kelas; ?>
+	Guru : <?= $nama_guru; ?>
+	Mata Pelajaran : <?= $nama_mapel; ?>
+</h3>
+<br>
 <style>
 	table {
 		border-collapse: collapse;

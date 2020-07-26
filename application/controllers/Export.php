@@ -470,7 +470,11 @@ class Export extends MY_Controller {
 		$this->load->model('m_detail_kelas');
 		$id = decrypt_url($md5_id_ujian);
 		$this->excelDatas = $this->m_ikut_ujian->get_many_by(['id_ujian' => $id, 'status' => 'N']);
-		// print_r($this->excelDatas);exit;
+		$data_ujian = $this->m_ujian->get_by(['uji.id' => $this->excelDatas[0]->id_ujian ]);
+		$data_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $this->excelDatas[0]->id_user]);
+		$nama_kelas = !empty($data_kelas) ? $data_kelas->nama : '';
+		$nama_guru = $data_ujian->nama_guru;
+		$nama_mapel = $data_ujian->nama_mapel;
 		// Initialize excel object
 		$this->excelInitialize();
 
@@ -490,7 +494,12 @@ class Export extends MY_Controller {
 		// Write heading excel use method on MY_Controller.php
 		$this->excelWriteHeading();
 
-		$this->excelDataStart = 2;
+		// Write header of Document
+		$this->excelObject->getActiveSheet()->SetCellValue('A' . 1, 'Data Hasil Ujian Kelas ' . $nama_kelas);
+		$this->excelObject->getActiveSheet()->SetCellValue('A' . 2, 'Guru ' . $nama_guru);
+		$this->excelObject->getActiveSheet()->SetCellValue('A' . 3, 'Mata Pelajaran ' . $nama_mapel);
+
+		$this->excelDataStart = 6;
 
 		foreach($this->excelDatas as $data) {
 			$ujian = $this->m_ujian->get_by(['uji.id'=>$data->id_ujian]);
@@ -631,8 +640,16 @@ class Export extends MY_Controller {
 		$this->load->library('dpdf');
 		$this->load->model('m_ikut_ujian');
 		$id = decrypt_url($encrypt_id);
+
+		$data_hasil = $this->m_ikut_ujian->get_many_by(['id' => $id, 'status' => 'N']);
+		$data_ujian = $this->m_ujian->get_by(['uji.id' => $data_hasil[0]->id_ujian ]);
+		$data_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $data_hasil[0]->id_user]);
+		$nama_kelas = !empty($data_kelas) ? $data_kelas->nama : '';
 		$result = [
-			'datas' => $this->m_ikut_ujian->get_many_by(['id' => $id, 'status' => 'N'])
+			'datas' => $data_hasil,
+			'nama_kelas' => $nama_kelas,
+			'nama_guru' => $data_ujian->nama_guru,
+			'nama_mapel' => $data_ujian->nama_mapel
 		];
 
 		// print_r($result['datas']);exit;
