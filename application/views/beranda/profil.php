@@ -152,7 +152,7 @@
                                 <th class="text-secondary text-uppercase">Kelas</th>
                                 <td class="text-lowercase font-weight-bold">
 
-                                    <?= ucwords($kelas->nama_kelas); ?>
+                                    <?= (isset($kelas->nama_kelas)) ? ucwords($kelas->nama_kelas) : NULL; ?>
                                 </td>
                                 <td class="text-right text-primary font-weight-bold">
                                     <i class="fas fa-check"></i>

@@ -110,8 +110,8 @@ class Login extends MY_Controller
 
         	if (!empty($get_user)) {
 
-        		$decrypt_pass = $this->encryption->decrypt($get_user->password);
-        		if ($decrypt_pass == $password) {
+        		$decrypt_pass = $get_user->password;
+        		if (password_verify($password, $decrypt_pass)) {
 
 
         			if ($get_user->level == "siswa") {

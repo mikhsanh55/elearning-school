@@ -301,7 +301,7 @@ class Pengusaha extends MY_Controller {
 					    'nik' => bersih($p, "nik"), // Jenis kelamin
 					    'email'  => bersih($p, "email"),
 					    'alamat'  => bersih($p, "alamat"),
-					    'instansi'  => empty($this->akun->instansi) ? 1 : $this->akun->instansi,
+					    'instansi'  => empty($this->akun->instansi) ? NULL : $this->akun->instansi,
 					    'pembuatan_akun' => time(),
 					    'verifikasi' => md5(time())
 					];  
@@ -333,7 +333,7 @@ class Pengusaha extends MY_Controller {
                     $data_admin = [
                         'user_id'  => bersih($p, "username"),
                         'username' => bersih($p, "email"),
-                        'password'  => $this->encryption->encrypt(bersih($p, "username")),
+                        'password'  => password_hash(bersih($p, "username"), PASSWORD_BCRYPT),
                         'level'    => 'siswa',
                         'kon_id'   => $inserted_id
                     ];

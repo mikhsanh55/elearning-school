@@ -198,7 +198,7 @@ class Akunlembaga extends MY_Controller {
 		$data = array(
 			'user_id'  => $akun->username,
 			'username' => $akun->email, 
-			'password' => $this->encryption->encrypt($akun->username), 
+			'password'  => password_hash($akun->username,PASSWORD_BCRYPT),
 			'level'    => 'instansi', 
 			'kon_id'   => $akun->id, 
 			'status'   => 0, 
@@ -226,7 +226,7 @@ class Akunlembaga extends MY_Controller {
 		$akun = $this->m_akun_lembaga->get_by(array('id'=>$post['id']));
 
 		$datas = array(
-			'password' => $this->encryption->encrypt($akun->username), 
+			'password'  => password_hash($akun->username,PASSWORD_BCRYPT),
 		);
 
 		$where = array(
