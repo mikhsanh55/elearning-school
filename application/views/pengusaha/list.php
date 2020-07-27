@@ -396,8 +396,8 @@
 							$("#tempat").val(response.data.tempat_lahir);
 							$("#tanggal").val(response.data.tanggal_lahir);
 							$("#nim").val(response.data.nim);
-							var jk = response.data.nik == 'L' ? 1 : 0;
-							$("#nik").val(jk);
+							// var jk =  == 'L' ? 1 : 0;
+							$("#nik").val(response.data.nik);
 							$("#email").val(response.data.email);
 							$("#alamat").val(response.data.alamat);
 							$("#instansi").val(response.data.instansi);

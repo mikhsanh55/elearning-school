@@ -162,7 +162,7 @@ class Adm extends MY_Controller {
 			if (empty($p1_md5)) {
 				$ret['status'] = "error";
 				$ret['msg'] = "Password sama harus di isi...";
-			} else if ($this->encryption->decrypt($cek_pass_lama->password) != $p1_md5) {
+			} else if (!password_verify($p1_md5, $cek_pass_lama->password)) {
 				$ret['status'] = "error";
 				$ret['msg'] = "Password lama tidak sama...";
 			} else if ($p2_md5 != $p3_md5) {
@@ -172,14 +172,15 @@ class Adm extends MY_Controller {
 				$ret['status'] = "error";
 				$ret['msg'] = "Password baru minimal terdiri dari 8 huruf..";
  			} else {
-				$kirim = $this->m_admin->update(array('password'=>$this->encryption->encrypt($p3_md5)),array('id'=>$a['sess_admin_id']));
+				$new_pass = password_hash($p3_md5, PASSWORD_BCRYPT);
+				$kirim = $this->m_admin->update(array('password'=>$new_pass),array('id'=>$a['sess_admin_id']));
 				if($kirim){
 					$data = [
-							'id_user' => $a['sess_admin_id'],
-							'level'   => $this->session->userdata('admin_level'),
-							'pass'   => $p3_md5
-						];
-						$this->db->insert('tb_log_password', $data);
+					 		'id_user' => $a['sess_admin_id'],
+					 		'level'   => $this->session->userdata('admin_level'),
+					 		'pass'   => $p3_md5
+					 	];
+					 	$this->db->insert('tb_log_password', $data);
 				}
 				$ret['status'] = "ok";
 				$ret['msg'] = "Password berhasil diubah...";
@@ -193,32 +194,31 @@ class Adm extends MY_Controller {
 		}
     }
 	
-	// public function reset(){
-	// 	exit;
-	// 	$where = [
-	// 		'sis.instansi' => 11,
-	// 		'pas.id' => null
-	// 	];
-	// 	$get = $this->db->select('adm.*')
-	// 				->from('m_admin adm')
-	// 				->join('tb_log_password pas','pas.id_user=adm.id','left')
-	// 				->join('m_siswa sis','sis.id=adm.kon_id','inner')
-	// 				->where($where)
-	// 				->get()
-	// 				->result();
-	// 				echo '<pre>';		
-	// 				echo '<br>';
-	// 				echo $this->db->last_query();
+	public function reset(){
+		exit;
+		$where = [
+			'sis.instansi' => 11,
+			'adm.level' => 'siswa'
+		];
+		$get = $this->db->select('adm.*')
+					->from('m_admin adm')
+					->join('m_siswa sis','sis.id=adm.kon_id','inner')
+					->where($where)
+					->get()
+					->result();
+					echo '<pre>';		
+					echo '<br>';
+					echo $this->db->last_query();
 
-	// 	foreach($get as $rows){
-	// 		$pass = $this->encryption->encrypt($rows->user_id);
-	// 		$this->db->update('m_admin',['password'=>$pass],['id'=>$rows->id]);
-	// 	}
+		foreach($get as $rows){
+			$pass = $this->encryption->encrypt($rows->user_id);
+			$this->db->update('m_admin',['password'=>$pass],['id'=>$rows->id]);
+		}
 		
-	// 	echo count($get).'<br>';
+		echo count($get).'<br>';
 
-	// 	print_r($get);
-	// }
+		print_r($get);
+	}
 	
 	public function reset_email(){
 		exit;
@@ -255,6 +255,9 @@ class Adm extends MY_Controller {
 	
 		return $last;
 	}
+
+
+	
 	
 	
 }

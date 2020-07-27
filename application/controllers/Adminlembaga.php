@@ -80,23 +80,18 @@ class Adminlembaga extends MY_Controller {
 			$kirim = $this->m_admin_lembaga->insert($data);
 			$inserted_id = $this->db->insert_id();
 
-			$check_login = $this->m_admin->get_many_by(['kon_id' => $inserted_id]);
-			$kon_ids = [];
-			if(count($check_login) > 0) {
-				foreach($check_login as $data) {
-					$kon_ids[] = $data->kon_id;
-				}
-			}
+			$check_login = $this->m_admin->count_by(['kon_id' => $inserted_id]);
 
 			if ($kirim) {
 				
-				if(count($kon_ids) > 0) {
+				if($check_login> 0) {
 					$this->db->where_in('kon_id',$kon_ids)->delete('m_admin');	
 				}
 				$data_admin = [
 					'user_id' => $post['username'],
 					'username' => $post['email'],
 					'kon_id' => $inserted_id,
+					'password'  => password_hash($post['username'],PASSWORD_BCRYPT),
 					'level'  => 'instansi'
 				];
 				$insert = $this->m_admin->insert($data_admin);
