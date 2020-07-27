@@ -135,7 +135,8 @@ class Beranda extends MY_Controller {
 			'patch'  => base_url('upload/slide/'),
 
 			'kelas' => $this->m_detail_kelas->get_siswa(['dk.id_peserta' => $this->akun->id]),
-			'csrf' => $this->generateCSRFToken()
+			'csrf' => $this->generateCSRFToken(),
+			'siswa' => $this->m_siswa->get_by(['id' => $this->session->userdata('admin_konid')])
 
 		];
 
