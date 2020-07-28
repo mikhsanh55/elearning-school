@@ -33,7 +33,7 @@
 										}
 										
 									?>
-									<i class="mr-2 <?=$type[$val->format];?>" style="color: <?=$color[$val->format];?>; font-size: 20px;"></i>
+									<i class="mr-2 <?=$type[strtolower($val->format)];?>" style="color: <?=$color[strtolower($val->format)];?>; font-size: 20px;"></i>
 									<a <?=$style;?> href="<?=base_url('tugas/get_file/?file='.encrypt_url('assets/tugas/attach_siswa/'.$val->file));?>">
 									<?=$val->file;?>
 									</a>

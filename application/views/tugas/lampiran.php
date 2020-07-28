@@ -12,7 +12,7 @@
 			<?php foreach ($attach as $key => $val):?>
 				<div class="col-md-6">
 					<a href="<?=base_url('tugas/get_file/?file='.encrypt_url('assets/tugas/attach/'.$val->file));?>">
-					<p><i class="<?=$type[$val->format];?>" style="color: <?=$color[$val->format];?>; font-size: 20px;"></i>
+					<p><i class="<?=$type[strtolower($val->format)];?>" style="color: <?=$color[strtolower($val->format)];?>; font-size: 20px;"></i>
 					<?=$val->file;?></p>
 				</a>
 				</div>
