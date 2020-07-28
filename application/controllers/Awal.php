@@ -26,14 +26,27 @@ class Awal extends MY_Controller
 	}
 
 	function test(){
-		exit;
-		$get = $this->db->select('*')->get('m_admin')->result();
+
+		$get = $this->db->select('*')->where(['username'=>''])->get('m_admin')->result();
+		echo '<br>';
+		echo count($get);
+		echo '<br>';
+	
+	
 		foreach($get as $rows){
+			$data = [
+				'username' => 'smanbdg_'.$rows->user_id.'@gmail.com',
+				'password' => password_hash($rows->user_id, PASSWORD_BCRYPT)
+			];
+		
 			$pass = password_hash($rows->user_id, PASSWORD_BCRYPT);
-			$this->db->update('m_admin',['password'=>$pass],['id'=>$rows->id]);
+			$this->db->update('m_admin',$data,['id'=>$rows->id]);
 		}
+
+		echo 'selesai . <br>';
+
 		$password = 'adminsman21bdg';
-		echo $encryt =  password_hash($password, PASSWORD_BCRYPT),'<br>';
+		$encryt =  password_hash($password, PASSWORD_BCRYPT).'<br>';
 		
 		if (password_verify('12345678', $encryt)) {
 			echo 'Password is valid!';
