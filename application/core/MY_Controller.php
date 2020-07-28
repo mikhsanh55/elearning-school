@@ -29,6 +29,32 @@ class MY_Controller extends CI_Controller
 	public $backButton;
 	public $id_level;
 
+	/*
+	* Untuk convert level ke int
+	*/
+	protected function convertLevel($level) {
+		$return_level = 1;
+		switch($level) {
+			case 'admin' :
+				$return_level = 1;
+			break;
+			case 'guru' :
+				$return_level = 2;
+			break;
+			case 'siswa' :
+				$return_level = 3;
+			break;
+			case 'instansi' :
+				$return_level = 4;
+			break;
+			case 'admin_instansi' :
+				$return_level = 5;
+			break;
+		}
+
+		return intval($return_level);
+	}
+
 	public function __construct()
 	{
 		parent::__construct();

@@ -50,7 +50,7 @@ class Trainer extends MY_Controller {
 	public function reset_password() {
 		$id = $this->encryption->decrypt($this->input->post('encrypt_id'));
 		$data = [
-			'password' => $this->encryption->encrypt($this->input->post('password'))
+			'password' => password_hash($this->input->post('password'), PASSWORD_BCRYPT)
 		];
 
 		$update = $this->m_admin->update($data, ['id' => $id]);
@@ -517,9 +517,6 @@ class Trainer extends MY_Controller {
 		}
 
 		$paginate = $this->m_guru->paginate($pg,$where,$limit);
-		foreach ($paginate['data'] as $key => $value) {
-			$value->password = $this->encryption->decrypt($value->password);
-		}
 		$data['paginate'] = $paginate;
 		$data['paginate']['url']	= 'trainer/page_load';
 		$data['paginate']['search'] = 'lookup_key';

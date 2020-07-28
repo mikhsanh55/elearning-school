@@ -62,7 +62,7 @@
 				<td><?=$rows->username;?></td>
 				<td>
 						<div class="password-input">
-						<input type="password" value="<?= $rows->password; ?>" data-id="<?= $this->encryption->encrypt($rows->user_id); ?>" class="form-control password-reset">
+						<input type="password" data-id="<?= $this->encryption->encrypt($rows->user_id); ?>" class="form-control password-reset">
 						<i class="fas fa-eye mata-kau" data-id="<?= $this->encryption->encrypt($rows->user_id); ?>"></i>
 						</div>
 					
