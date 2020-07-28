@@ -26,7 +26,7 @@ class Awal extends MY_Controller
 	}
 
 	function test(){
-
+exit;
 		$get = $this->db->select('*')->where(['username'=>''])->get('m_admin')->result();
 		echo '<br>';
 		echo count($get);
