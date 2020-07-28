@@ -11,17 +11,13 @@ class Login extends MY_Controller
 		$this->opsi = array("a", "b", "c", "d", "e");
 		$this->load->model('m_instansi');
 		$this->load->model('m_admin');
+        $this->load->model('m_admin_detail');
 		$this->load->model('m_siswa');
         $this->load->model('m_akun_lembaga');
         $this->load->model('m_admin_lembaga');
 		$this->load->model('m_guru');
 		ob_start();
 	}
-
-    // Untuk check domain
-    public function checkDomain() {
-        
-    }
 
 	public function get_servertime()
 	{
@@ -155,6 +151,9 @@ class Login extends MY_Controller
                             // Set as Online
                             $this->setStatusActive(1, ['id' => $get_user->id]);
 
+                            // Add Siswa Activity
+                            $this->insertActivity('siswa', $get_user->id, 'login');
+
         					if (!empty($siswa)) {
         						$sess_nama_user = $siswa->nama;
         					}
@@ -271,8 +270,32 @@ class Login extends MY_Controller
 		
 	}
 
+    /*
+    * Insert activity siswa to db for Menu Aktivitas Siswa
+    */
+    public function insertActivity($level = 'siswa', $id_user, $action) {
+        $level = $this->convertLevel($level);
+        $data = [
+            'id_user' => $id_user,
+            'level'   => $level,
+            'type'    => strval($action)
+        ];
+
+        $insert = $this->m_admin_detail->insert($data);
+
+        if(!$insert) {
+            return FALSE;
+        }
+
+        return TRUE;
+    }
+
 	public function logout()
 	{	
+        if($this->log_lvl === 'siswa') {
+            // Add Siswa Activity
+            $this->insertActivity('siswa', $this->session->userdata('admin_id'), 'logout');
+        }
 		$id = $this->session->userdata('admin_id');
         $this->setStatusActive(0, ['id' => $id]);
 		$this->session->unset_userdata('admin_konid');

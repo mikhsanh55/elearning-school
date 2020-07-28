@@ -78,6 +78,8 @@
 
                   <th class="text-center align-middle">Aktif Belajar</th>
 
+                  <th class="text-center align-middle">Detail</th>
+
                </tr>
 
             </thead>
