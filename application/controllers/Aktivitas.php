@@ -21,6 +21,9 @@ class Aktivitas extends MY_Controller {
 		$this->opsi = array("a","b","c","d","e");
 		
 		$this->load->model('m_kelas');
+		$this->load->model('m_admin');
+		$this->load->model('m_siswa');
+		$this->load->model('m_admin_detail');
 
 	}
 
@@ -299,6 +302,8 @@ class Aktivitas extends MY_Controller {
 
 	            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-success btn-sm">'.$total.'</button></div>';
 
+            	$data_ok[] = '<div class="d-flex justify-content-center"><a href="'.base_url('aktivitas/detail-siswa/') . $this->encryption->encrypt($d['id']).'" class="btn btn-sm btn-primary ">Lihat Aktivitas</a></div>';
+
 	            $data[] = $data_ok;
 
 			}
@@ -321,9 +326,56 @@ class Aktivitas extends MY_Controller {
 
     }
 
-    
+    /*
+    * Untuk melihat aktivitas siswa ( kapan dia login dan logout )
+    */
+    public function detail_siswa($encrypt_id) {
+    	$id = $this->encryption->decrypt($encrypt_id);
+    	$data_user = $this->m_admin->get_by(['kon_id' => $id]);
+    	$data_siswa = $this->m_siswa->get_by(['id' => $id]);
 
-    
+    	$activity = $this->m_admin_detail->get_many_by(['id_user' => $data_user->id]);
+    	$data = [
+    		'data_user' => $data_user,
+    		'datas' => $activity,
+    		'data_siswa' => $data_siswa
+    	];
 
+    	$this->render('aktivitas/detail_aktivitas', $data);
+    }
+
+    public function filter_aktivitas() {
+    	$post = $this->input->post();
+    	$html = '';
+    	$where = [];
+    	// From Date
+    	if(($post['date1']) !== '' && $post['date2'] === '') {
+    		$where["datetime > '" . $post['date1'] . "'"] = NULL;
+    	}
+
+    	if(($post['date1']) === '' && $post['date2'] !== '') {
+    		$where["datetime < '" . $post['date2'] . "'"] = NULL;
+    	}
+
+    	if($post['date1'] !== '' && $post['date2'] !== '') {
+    		$where["datetime BETWEEN '" . $post['date1'] . "' AND '" .$post['date2'] ."'"] = NULL;
+    	}
+
+    	$res = $this->m_admin_detail->get_many_by($where);
+    	if( count($res) > 0) {
+    		foreach($res as $data) {
+    			$type = $data->type === 'login' ? 'text-primary' : ($data->type === 'logout' ? 'text-danger' : '');
+    			$html .= '<tr> <td style="width: 3%;"> <i class="fas fa-circle '. $type .'"></i> </td> <td> '.ucfirst($data->type).' pada '. date_format(date_create($data->datetime), "d-m-Y") .' jam '. date_format(date_create($data->datetime), "H:i:s") .'</td> </tr>';
+    		}
+    	}
+    	else {
+    		$html .= '<tr> <td colspan="2" class="text-center">Tidak ada aktivitas</td> </tr>';
+    	}
+
+    	$this->sendAjaxResponse([
+    		'status' => TRUE,
+    		'data' => $html
+    	], 200);
+    }
 }
 

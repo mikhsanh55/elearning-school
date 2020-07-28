@@ -25,7 +25,7 @@
 				NISN
 			</th>
 			<th>Jenis Kelamin</th>
-			<th>Password</th>
+			<th>Reset Password</th>
 			<th>Opsi</th>
 		</tr>
 		<?php if(count($paginate['data']) > 0) { ?>
@@ -48,7 +48,7 @@
 				</td>
 				<td>
 					<div class="password-input">
-						<input type="password" value="<?= $rows->password; ?>" data-id="<?= $this->encryption->encrypt($rows->user_id); ?>" class="form-control password-reset">
+						<input type="password" value="" data-id="<?= $this->encryption->encrypt($rows->user_id); ?>" class="form-control password-reset">
 						<i class="fas fa-eye mata-kau" data-id="<?= $this->encryption->encrypt($rows->user_id); ?>"></i>
 						</div>
 				</td>
@@ -91,6 +91,38 @@
 		
 	})
 
-	
+	$('.password-reset').on('keypress', function(e) {
+		encrypt_id = $(this).data('id')
+		if(e.which == 13) {
+			if($(this).val() < 8) {
+				alert('Password minimal 8 karakter!');
+				return false;
+			}
+			password = $(this).val()
+			$.ajax({
+				type: 'post',
+				url: "<?= base_url('pengusaha/reset_password') ?>",
+				data: {
+					encrypt_id,
+					password
+				},
+				dataType: 'json',
+				success:function(res) {
+					if(res.status) {
+						window.location.reload()
+					}
+					else {
+						alert('Gagal mengubah password')
+						console.error(res)
+						return false
+					}
+				},
+				error: function(e) {
+					console.error(e.responseText)
+					return false
+				}
+			})
+		}
+	})
 </script>
 

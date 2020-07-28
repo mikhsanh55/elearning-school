@@ -121,14 +121,14 @@
                             <tr>
                                 <th colspan="3" class="text-center text-uppercase font-weight-bold">
                                     <h3>Profil</h3>
-                                    <img class="round" src="<?= empty($this->akun->photo) ? 'assets/img/avatar-default.jpg' : $this->akun->photo ?>" alt="" width="90" height="90" id="avatar">
+                                    <img class="round" src="<?= empty($siswa->photo) ? 'assets/img/avatar-default.jpg' : $siswa->photo ?>" alt="" width="90" height="90" id="avatar">
                                 </th>
                             </tr>
                             <tr>
                                 <th class="text-secondary text-uppercase">Nama</th>
                                 <td class="text-uppercase font-weight-bold">
-                                    <span><?= (empty($this->akun->nama)) ? NULL : $this->akun->nama ;?></span>
-                                    <input data-key="nama" type="text" class="d-none in-edit form-control input-sm" name="nama" value="<?= (empty($this->akun->nama)) ? NULL : $this->akun->nama  ?>">
+                                    <span><?= (empty($siswa->nama)) ? NULL : $siswa->nama ;?></span>
+                                    <input data-key="nama" type="text" class="d-none in-edit form-control input-sm" name="nama" value="<?= (empty($siswa->nama)) ? NULL : $siswa->nama  ?>">
                                 </td>
                                 <td class="text-right text-primary font-weight-bold">
                                     <i class="fas fa-edit"></i>
@@ -139,8 +139,8 @@
                             <tr>
                                 <th class="text-secondary text-uppercase">Agama</th>
                                 <td class="text-uppercase font-weight-bold">
-                                    <span><?= (empty($this->akun->pangkat)) ? NULL : $this->akun->pangkat ;?></span>
-                                    <input data-key="pangkat" type="text" class="d-none in-edit form-control input-sm" name="pangkat" value="<?= (empty($this->akun->pangkat)) ? NULL : $this->akun->pangkat  ?>">
+                                    <span><?= (empty($siswa->pangkat)) ? NULL : $siswa->pangkat ;?></span>
+                                    <input data-key="pangkat" type="text" class="d-none in-edit form-control input-sm" name="pangkat" value="<?= (empty($siswa->pangkat)) ? NULL : $siswa->pangkat  ?>">
                                 </td>
                                 <td class="text-right text-primary font-weight-bold">
                                     <i class="fas fa-edit"></i>
@@ -158,7 +158,7 @@
                                     <i class="fas fa-check"></i>
                                 </td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                                 <th class="text-secondary text-uppercase">Jenis Kelamin</th>
                                 <td class="text-uppercase font-weight-bold">
                                     <span><?= $this->akun->nik ;?></span>
@@ -169,12 +169,12 @@
                                     <i class="d-none fas fa-spinner text-primary spin-icon"></i>
                                     <button class="d-none btn btn-sm btn-outline-danger"><i class="fas  fa-times"></i></button>
                                 </td>
-                            </tr>
+                            </tr> -->
                             <tr>
                                 <th class="text-secondary text-uppercase">NISN</th>
                                 <td class="text-uppercase font-weight-bold">
-                                    <span><?= $this->akun->nrp ;?></span>
-                                    <input data-key="nrp" type="text" class="d-none in-edit form-control input-sm" name="nrp" value="<?= (empty($this->akun->nrp)) ? NULL : $this->akun->nrp  ?>">
+                                    <span><?= $siswa->nrp ;?></span>
+                                    <input data-key="nrp" type="text" class="d-none in-edit form-control input-sm" name="nrp" value="<?= (empty($siswa->nrp)) ? NULL : $siswa->nrp  ?>">
                                 </td>
                                 <td class="text-right text-primary font-weight-bold">
                                     <i class="fas fa-edit"></i>
@@ -194,8 +194,8 @@
                             <tr>
                                 <th class="text-secondary text-uppercase">Email</th>
                                 <td class="font-weight-bold">
-                                    <span><?= (empty($this->akun->email)) ? NULL : $this->akun->email  ?></span>
-                                    <input data-key="email" type="text" class="d-none in-edit form-control input-sm" name="email" value="<?= (empty($this->akun->email)) ? NULL : $this->akun->email  ?>">
+                                    <span><?= (empty($siswa->email)) ? NULL : $siswa->email  ?></span>
+                                    <input data-key="email" type="text" class="d-none in-edit form-control input-sm" name="email" value="<?= (empty($siswa->email)) ? NULL : $siswa->email  ?>">
                                 </td>
                                 <td class="text-right text-primary font-weight-bold">
                                     <i class="fas fa-edit"></i>
@@ -206,8 +206,8 @@
                             <tr>
                                 <th class="text-secondary text-uppercase">Telpon</th>
                                 <td class="text-uppercase font-weight-bold">
-                                    <span><?= (empty($this->akun->no_telpon)) ? NULL : $this->akun->no_telpon  ?></span>
-                                    <input data-key="no_telpon" type="text" class="d-none in-edit form-control input-sm" name="no_telpon" value="<?= (empty($this->akun->no_telpon)) ? NULL : $this->akun->no_telpon  ?>">
+                                    <span><?= (empty($siswa->no_telpon)) ? NULL : $siswa->no_telpon  ?></span>
+                                    <input data-key="no_telpon" type="text" class="d-none in-edit form-control input-sm" name="no_telpon" value="<?= (empty($siswa->no_telpon)) ? NULL : $siswa->no_telpon  ?>">
 
                                 </td>
                                 <td class="text-right text-primary font-weight-bold">
@@ -307,7 +307,7 @@
                 $(this).parent().next().find('.spin-icon').toggleClass('d-none')
                 $.ajax({
                     type: 'post',
-                    url: "<?= base_url('trainer/update_profile') ?>",
+                    url: "<?= base_url('pengusaha/update_profile') ?>",
                     data: {
                         id: $('#id').val(),
                         key: $(this).data('key'),
