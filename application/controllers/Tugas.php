@@ -560,8 +560,10 @@ class Tugas extends MY_Controller {
 
 			for($i=0; $i < count($qty_attach); $i++)
 			{           
-
-				$namafile = 'tugas-'.$this->akun->nama.'-'.DATE('d-m-Y')."-".time().'-'.$i;
+				$nama = $this->akun->nama;
+				$nama = str_replace('.', '_', $nama);
+				$nama = str_replace('', '_', $nama);
+				$namafile = 'tugas-'.$nama.'-'.DATE('d-m-Y')."-".time().'-'.$i;
 
 				$config['upload_path']   = 'assets/tugas/attach_siswa/';
 				$config['allowed_types'] = 'pdf|pdfx|doc|docx|jpeg|jpg|png|zip|rar|ppt|pptx|xlsx|xls';
