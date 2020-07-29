@@ -27,12 +27,12 @@ class Awal extends MY_Controller
 
 	function test(){
 exit;
-		$get = $this->db->select('*')->where(['username'=>''])->get('m_admin')->result();
+		$get = $this->db->select('*')->where(['level'=>'siswa','user_id'=>181910103])->get('m_admin')->result();
 		echo '<br>';
 		echo count($get);
 		echo '<br>';
 	
-	
+
 		foreach($get as $rows){
 			$data = [
 				'username' => 'smanbdg_'.$rows->user_id.'@gmail.com',
@@ -45,13 +45,6 @@ exit;
 
 		echo 'selesai . <br>';
 
-		$password = 'adminsman21bdg';
-		$encryt =  password_hash($password, PASSWORD_BCRYPT).'<br>';
 		
-		if (password_verify('12345678', $encryt)) {
-			echo 'Password is valid!';
-		} else {
-			echo 'Invalid password.';
-		}
 	}
 }
