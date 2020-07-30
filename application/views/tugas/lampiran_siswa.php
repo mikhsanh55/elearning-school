@@ -38,12 +38,13 @@
                         </div>
                         <p><strong> <span class="text-danger">*</span> Maksimal File 20 MB </strong></p>
                         <span id="errors-file" class="errors"></span>
+                        <p id="msg" class="alert alert-success d-none"></p>
                         <div id="attach-file">
 
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-sm" id="save">Upload</button>
-                    <button type="button" class="btn btn-danger btn-sm"
+                    <button type="submit" class="btn btn-primary btn-block mb-2" id="save">Upload</button>
+                    <button type="button" class="btn btn-danger btn-block"
                         onclick="back_page('tugas/daftar_tugas')">Kembali</button>
                     <!-- Progress Bar -->
                      <div class="progress d-none mt-4" id="progress-container">
@@ -117,6 +118,7 @@
 
 <<script src="<?= base_url(); ?>assets/js/jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
+
 	$(document).ready(function(){
 		listAttach();
 
@@ -203,11 +205,14 @@
 					if(response.status == 0){
 						$('#errors-file').html(response.info);
                         $('#progressBar').text('Something wrong when create Tugas').addClass('bg-danger');
-                        $('input[type=file]').val('')
-                        
-                        return false
+                        $('input[type=file]').val('');
+                        showMsg(false, `Tugas kamu gagal terupload!`);
+                        removeMsg(5000);
+                        return false;
 					}else{
 						$('#errors-file').html('');
+                        showMsg(true, `Tugas kamu berhasil terupload!`)
+                        removeMsg(5000);
 						 listAttach();
 					}
 				},
@@ -254,6 +259,26 @@
 
 		
 	})
+
+    function showMsg(status = true, html) {
+        if(status === true) {
+            $('#msg').removeClass('alert-danger');
+            $('#msg').addClass('alert-success');
+            $('#msg').toggleClass('d-none').html(html);
+        }
+        else {
+            $('#msg').addClass('alert-danger');
+            $('#msg').removeClass('alert-success');
+            $('#msg').toggleClass('d-none').html(html);
+        }
+        
+    }
+
+    function removeMsg(time) {
+        setTimeout(() => {
+            $('#msg').toggleClass('d-none');
+        }, time);
+    }
 
 	function listAttach(){
 			$.ajax({
