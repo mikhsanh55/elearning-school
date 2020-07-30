@@ -26,7 +26,7 @@
 				<h2>Form Edit <?=$this->page_title;?></h2>
 			</div>
 			<div class="col-sm-12 col-md-6 col-lg-6 text-right">
-				<?= $this->backButton; ?>
+				<button class="btn btn-light" onclick="back_page('ujian_real')">Kembali</button>
 			</div>
 		</div>
 		
