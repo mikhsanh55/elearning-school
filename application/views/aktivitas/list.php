@@ -70,7 +70,7 @@
 
                   <th class="text-center align-middle">Nama <?= $this->transTheme->siswa;?></th>
 
-                  <th class="text-center align-middle">NIP</th>
+                  <th class="text-center align-middle">NIS</th>
 
                   <th class="text-center align-middle">Kelas</th>
 
@@ -78,7 +78,13 @@
 
                   <th class="text-center align-middle">Aktif Belajar</th>
 
-                  <th class="text-center align-middle">Detail</th>
+                  <th class="text-center align-middle">Aktif Diskusi</th>
+
+                  <th class="text-center align-middle">Aktif Tugas</th>
+
+                  <th class="text-center align-middle">Total Nilai</th>
+
+                  <!-- <th class="text-center align-middle">Detail</th> -->
 
                </tr>
 
@@ -99,11 +105,6 @@
 </div>
 
 </div>
-
-
-
-
-
 						</div>
 
 					</div>

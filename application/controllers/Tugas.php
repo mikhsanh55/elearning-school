@@ -607,12 +607,14 @@ class Tugas extends MY_Controller {
 
 		$this->db->trans_complete();
 
-		$json = [
-			'status' => true,
-			'msg'    => 'success',
-			'info' => NULL
-		];
-		echo json_encode($json);
+		// $json = [
+		// 	'status' => true,
+		// 	'msg'    => 'success',
+		// 	'info' => NULL
+		// ];
+		// echo json_encode($json);
+		// Update Activity Siswa
+		$this->updateActiveUser($this->log_lvl, 'active_tugas');
 		exit;
 
 	}

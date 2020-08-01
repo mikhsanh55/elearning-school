@@ -46,7 +46,7 @@
 				<td><?=$rows->nrp;?></td>
 				<!-- <td><?=$rows->nama_kelas;?></td> -->
 				<td>
-					<?= $rows->nik == 1 ? 'Laki - laki' : 'Perempuan'; ?>
+					<?= $rows->nik; ?>
 				</td>
 				<td>
 					<div class="password-input">

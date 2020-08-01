@@ -18,6 +18,16 @@ class MY_Model extends CI_Model
         return $get;
     }
 
+    public function get_by_array($where = []) {
+        $get = $this->db->select('*')
+                        ->from($this->_table)
+                        ->where($where)
+                        ->order_by($this->order_by[0],$this->order_by[1])
+                        ->get()
+                        ->row_array();
+        return $get;   
+    }
+
      public function get_many_by($where=array())
     {
    

@@ -31,7 +31,7 @@ class Rekaptulasi extends MY_Controller {
 		    $where['sis.id'] = $this->log_id; // id di m_siswa
 		}
 		else if($this->log_lvl == 'guru') {
-		    $where['kls.id_trainer'] = $this->log_id;
+		    $where['dmkls.id_guru'] = $this->log_id;
 		}
 		
 		
@@ -46,6 +46,7 @@ class Rekaptulasi extends MY_Controller {
 			}
 		}
 		$paginate = $this->m_kelas->paginate_rekap($pg,$where,$limit);
+		// print_r($this->db->last_query());exit;
 		
 		$data['paginate'] = $paginate;
 		$data['paginate']['url']	= 'rekaptulasi/page_load';

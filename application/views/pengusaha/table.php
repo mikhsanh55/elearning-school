@@ -22,7 +22,7 @@
 			<th>Nama</th>
 			<th>Username</th>
 			<th>
-				NISN
+				Kelas
 			</th>
 			<th>Jenis Kelamin</th>
 			<th>Reset Password</th>
@@ -30,19 +30,15 @@
 		</tr>
 		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $x= 1; foreach ($paginate['data'] as $rows):
-			$get = $this->m_admin->get_by(array('level'=>'siswa','kon_id'=>$rows->id));
-			$length_pass = strlen($rows->password);
-			$pass = '';
-			for($i = 0;$i < $length_pass;$i++) {
-				$pass .= '*';
-			}
+			$id_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $rows->id]) ?? NULL;
+			$nama_kelas = !empty($id_kelas) ? $this->m_kelas->get_by(['kls.id' => $id_kelas->id_kelas])->nama : 'Kosong';
 		?>
 			<tr>
 				<td><input type="checkbox" name="checklist[]" class="checklist" value="<?=$rows->id;?>"></td>
 				<td align="center" class="frist"><?=$x;?></td>
 				<td><?=$rows->nama;?></td>
 				<td><?=$rows->username;?></td>
-				<td><?=$rows->nrp;?></td>
+				<td><?=$nama_kelas;?></td>
 				<td>
 					<?= $rows->nik; ?>
 				</td>

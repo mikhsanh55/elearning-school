@@ -64,7 +64,7 @@ input:checked + .slider:before {
 		<tr>
 			<th class="frist">No</th>
 			<th class="text-left">Nama Siswa</th>
-			<th class="text-left">NISN</th>
+			<th class="text-left">NIS</th>
 			<th class="text-center">Status</th>
 			
 		</tr>

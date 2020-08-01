@@ -55,14 +55,14 @@ class M_kelas extends MY_Model {
 		$get = $this->db->select('
 									dekls.id_peserta,
 									sis.nama as siswa,
-									(SELECT jurusan FROM tb_jurusan WHERE id = sis.id_jurusan) as jurusan,
-									mpl.semester,
+									kls.nama AS nama_kelas,
 									mpl.nama as mapel,
 									dekls.id_kelas
 						')
 		->from('tb_kelas kls')
+		->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'inner')
 		->join('tb_detail_kelas dekls','dekls.id_kelas = kls.id','inner')
-		->join('m_mapel mpl','mpl.id=kls.id_mapel','inner')
+		->join('m_mapel mpl','mpl.id=dmkls.id_mapel','inner')
 		->join('m_siswa sis','sis.id = dekls.id_peserta','inner')
 		->where($where)
 		->get()
