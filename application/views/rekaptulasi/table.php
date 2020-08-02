@@ -4,6 +4,9 @@
 			<th class="frist" rowspan="2">No</th>
 			<th rowspan="2"><?= $this->transTheme->siswa;?></th>
 			<th rowspan="2">Kelas</th>
+			<?php if($this->log_lvl == 'siswa') : ?>
+				<th rowspan="2">Guru</th>
+			<?php endif; ?>
 			<th rowspan="2">Mata Pelajaran</th>
 			<th colspan="5">Nilai</th>
 		</tr>
@@ -64,12 +67,16 @@
 			$total_uas = ($uasNilai + $uasNilaiEssay) / 2;
 		}
 
-		$tugas = $this->m_tugas->get_nilai([ 'id_mapel' => $rows->id_mapel, 'tgs.id_kelas'=>$rows->id_kelas,'id_siswa'=>$rows->id_peserta]);
+		$tugas = $this->m_tugas->get_nilai([ 'tgs.id_guru' => $rows->id_guru, 'id_mapel' => $rows->id_mapel, 'tgs.id_kelas'=>$rows->id_kelas,'id_siswa'=>$rows->id_peserta]);
+		$nama_guru = $this->m_guru->get_by(['id' => $rows->id_guru]);
 			?>
 				<tr>
 					<td align="center" class="frist"><?=$i;?></td>
 					<td><?=$rows->siswa;?></td>
 					<td><?=$rows->nama_kelas;?></td>
+					<?php if($this->log_lvl === 'siswa') : ?>
+						<td><?= $nama_guru->nama; ?></td>
+					<?php endif; ?>
 					<td><?=$rows->mapel;?></td>
 					<td><?=(isset($total_harian)) ? (int)$total_harian:0;?></td>
 					<td><?=(isset($total_uts)) ? (int)$total_uts:0;?></td>
