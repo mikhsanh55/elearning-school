@@ -151,7 +151,6 @@ class M_ujian extends MY_Model {
 		->get()
 		->result();
 	
-      
 		return $get;
 	}
 
