@@ -295,17 +295,18 @@ class Ujian_real extends MY_Controller {
 
 			$json['message'] = 'Tambah ujian berhasil';
 
+			if($this->log_lvl === 'guru') {
+				$this->updateActiveUser($this->log_lvl, 'sum_upload_ujian');
+			}
+
 		}else{
 
 			$json['status']  = 1;
 
 			$json['message'] = 'Tambah ujian gagal';
+			echo json_encode($json);
 
 		}
-
-
-
-		echo json_encode($json);
 
 	}
 
@@ -525,6 +526,7 @@ class Ujian_real extends MY_Controller {
 
 
 		$paginate = $this->m_soal_ujian->paginate($pg,$where,$limit);
+		// print_r($this->db->last_query());exit;
 
 		$data['paginate'] = $paginate;
 

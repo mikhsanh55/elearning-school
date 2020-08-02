@@ -34,25 +34,36 @@ class MY_Controller extends CI_Controller
 	*/
 	public function updateActiveUser($level, $type_active) {
 		$level = $this->convertLevel($level);
+		$update = NULL; $data_update = NULL;
 
 		if($level === 3) {
 			$data_update = $this->m_siswa->get_by_array(['id' => $this->session->userdata('admin_konid')]) ?? NULL;
 			$update = $this->m_siswa->update([
 					$type_active => $data_update[$type_active] + 1
 				], ['id' => $this->session->userdata('admin_konid')]);
-			if($update) {
-				$this->sendAjaxResponse([
-					'status' => TRUE,
-					'msg' => 'Data ' . $type_active . ' berhasil update'
-				], 200);
-			}
-			else {
-				$this->sendAjaxResponse([
-					'status' => FALSE,
-					'msg' => 'Data ' . $type_active . ' gagal update'
-				], 500);
-			}
+			
 
+		}
+		else if($level === 2) {
+			$data_update = $this->m_guru->get_by_array(['id' => $this->session->userdata('admin_konid')]) ?? NULL;
+			$update = $this->m_guru->update([
+				$type_active => $data_update[$type_active] + 1
+			], ['id' => $this->session->userdata('admin_konid')]);
+
+		}
+
+		// Check it works
+		if($update) {
+			$this->sendAjaxResponse([
+				'status' => TRUE,
+				'msg' => 'Data ' . $type_active . ' berhasil update'
+			], 200);
+		}
+		else {
+			$this->sendAjaxResponse([
+				'status' => FALSE,
+				'msg' => 'Data ' . $type_active . ' gagal update'
+			], 500);
 		}
 	}
 
