@@ -357,7 +357,7 @@ class Export extends MY_Controller {
 	// Data Ujian
 	public function ujian() {
 		$this->load->model('m_ujian');
-		$where['kls.id_instansi'] = $this->akun->instansi;
+		$where['uji.id_instansi'] = $this->akun->instansi;
 		$this->excelDatas = $this->m_ujian->get_many_by($where);
 		// print_r($this->excelDatas);	
 
@@ -365,11 +365,10 @@ class Export extends MY_Controller {
 			['cell' => 'A', 'label' => 'No'],
 			['cell' => 'B', 'label' => 'Tipe Ujian'],
 			['cell' => 'C', 'label' => 'Nama Ujian'],
-			['cell' => 'D', 'label' => 'Kelas'],
-			['cell' => 'E', 'label' => 'Tanggal Mulai'],
-			['cell' => 'F', 'label' => 'Tanggal Selesai'],
-			['cell' => 'G', 'label' => 'Waktu Ujian'],
-			['cell' => 'H', 'label' => 'Minimal Nilai Lulus'],
+			['cell' => 'D', 'label' => 'Tanggal Mulai'],
+			['cell' => 'E', 'label' => 'Tanggal Selesai'],
+			['cell' => 'F', 'label' => 'Waktu Ujian'],
+			['cell' => 'G', 'label' => 'Minimal Nilai Lulus'],
 		];
 
 		// Write heading excel use method on MY_Controller.php
@@ -381,11 +380,10 @@ class Export extends MY_Controller {
 			$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, $this->excelColumnNo);
 			$this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $data->type_ujian);			
 			$this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $data->nama_ujian);
-			$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $data->kelas);
-			$this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $data->tgl_mulai);
-			$this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, $data->terlambat);
-			$this->excelObject->getActiveSheet()->SetCellValue('G' . $this->excelDataStart, $data->waktu);
-			$this->excelObject->getActiveSheet()->SetCellValue('H' . $this->excelDataStart, $data->min_nilai);
+			$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $data->tgl_mulai);
+			$this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $data->terlambat);
+			$this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, $data->waktu);
+			$this->excelObject->getActiveSheet()->SetCellValue('G' . $this->excelDataStart, $data->min_nilai);
 
 			$this->excelDataStart++;
 			$this->excelColumnNo++;
