@@ -5,7 +5,6 @@
 			<th class="frist" rowspan="2">No</th>
 			<th rowspan="2"><?= $this->transTheme->siswa;?></th>
 			<th rowspan="2">Kelas</th>
-			<th rowspan="2">Semester</th>
 			<th rowspan="2">Mata Pelajaran</th>
 			<th colspan="5">Nilai</th>
 		</tr>
@@ -71,8 +70,7 @@
 				<tr>
 					<td align="center" class="frist"><?=$i;?></td>
 					<td><?=$rows->siswa;?></td>
-					<td><?=$rows->jurusan;?></td>
-					<td><?=$rows->semester;?></td>
+					<td><?=$rows->nama_kelas;?></td>
 					<td><?=$rows->mapel;?></td>
 					<td><?=(isset($total_harian)) ? (int)$total_harian:0;?></td>
 					<td><?=(isset($total_uts)) ? (int)$total_uts:0;?></td>

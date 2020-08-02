@@ -171,7 +171,7 @@
                                 </td>
                             </tr> -->
                             <tr>
-                                <th class="text-secondary text-uppercase">NISN</th>
+                                <th class="text-secondary text-uppercase">NIS</th>
                                 <td class="text-uppercase font-weight-bold">
                                     <span><?= $siswa->nrp ;?></span>
                                     <input data-key="nrp" type="text" class="d-none in-edit form-control input-sm" name="nrp" value="<?= (empty($siswa->nrp)) ? NULL : $siswa->nrp  ?>">
@@ -235,8 +235,8 @@
 
                                 </td>
                                 <td class="text-right text-primary font-weight-bold">
-                                    <button class="btn btn-sm btn-outline-primary" id="upload-photo" title="Update Photo">
-                                        <i class="fas fa-upload" id="upload"></i>
+                                    <button class="btn btn-outline-primary" id="upload-photo" title="Update Photo">
+                                        <span id="upload">Upload</span>
                                         <i class="fas fa-spinner spin-icon text-primary d-none" id="spinner"></i>
                                     </button>
                                 </td>
@@ -389,7 +389,7 @@
             }
             // set loading button
             $(this).prop('disabled', true);
-            $(this).find('.fa-upload').toggleClass('d-none');
+            $(this).find('#upload').toggleClass('d-none');
             $(this).find('.fa-spinner').toggleClass('d-none');
             formData = new FormData();
             formData.append('id', $('#id').val());

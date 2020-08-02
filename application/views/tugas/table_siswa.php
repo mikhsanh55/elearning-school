@@ -19,7 +19,7 @@
 					$textNilai = '<input type="text" value="'.$getNilai->nilai.'" maxlength="300" style="height:30px;" class="beri-nilai form-control input-sm only-number" data-siswa="'.$rows->id_peserta.'" data-tugas="'.$id_tugas.'">';	
 				}
 				else {
-					$textNilai = 0;
+					$textNilai = '<input type="text" value="'. 0 .'" maxlength="300" style="height:30px;" class="beri-nilai form-control input-sm only-number" data-siswa="'.$rows->id_peserta.'" data-tugas="'.$id_tugas.'">';
 				}
 				// print_r($getNilai);exit;
 				

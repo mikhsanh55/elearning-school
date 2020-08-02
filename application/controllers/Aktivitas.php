@@ -296,13 +296,21 @@ class Aktivitas extends MY_Controller {
 
 	            $data_ok[] = $nama_kelas;
 
-	            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-sm btn-primary ">' . $d['active_num'] . '</button></div>';
+	            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-sm btn-success ">' . $d['active_num'] . '</button></div>';
 
 	            $total = $d['active_video'] + $d['active_read'];
+	            $sum_all = $d['active_num'] + $d['active_video'] + $d['active_read'] + $d['active_diskusi'] + $d['active_tugas'];
 
 	            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-success btn-sm">'.$total.'</button></div>';
 
-            	$data_ok[] = '<div class="d-flex justify-content-center"><a href="'.base_url('aktivitas/detail-siswa/') . $this->encryption->encrypt($d['id']).'" class="btn btn-sm btn-primary ">Lihat Aktivitas</a></div>';
+	            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-success btn-sm">'.$d['active_diskusi'].'</button></div>';
+
+	            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-success btn-sm">'.$d['active_tugas'].'</button></div>';
+
+	            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-primary btn-sm">'.$sum_all.'</button></div>';
+
+            	// Detail AKtivitas siswa :
+            	// $data_ok[] = '<div class="d-flex justify-content-center"><a href="'.base_url('aktivitas/detail-siswa/') . $this->encryption->encrypt($d['id']).'" class="btn btn-sm btn-primary ">Lihat Aktivitas</a></div>';
 
 	            $data[] = $data_ok;
 

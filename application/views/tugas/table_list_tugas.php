@@ -6,17 +6,17 @@
 			<th>Kelas</th>
 			<th>Mata Pelajaran</th>
 			<th>Keterangan</th>
-			<th>Tanggal Selesai</th>
-			<th class="frist">Terkumpul</th>
+			<th>Waktu Pengumpulan</th>
+			<th class="frist">Status Tugas</th>
 
 		</tr>
 		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows):
 			$count = $this->m_tugas_attach_siswa->count_by(array('id_tugas'=>$rows->id,'id_siswa'=>$this->akun->id));
 			if ($count > 0) {
-				$status = '<button class="btn btn-success btn-sm kirim-tugas" data-id_tugas="'.encrypt_url($rows->id).'"><i class="fa fa-check"></i>Sudah</button>';
+				$status = '<button class="btn btn-success btn-sm kirim-tugas" data-id_tugas="'.encrypt_url($rows->id).'"><i class="fa fa-check"></i> Sudah</button>';
 			}else{
-				$status = '<button class="btn btn-danger btn-sm kirim-tugas" data-id_tugas="'.encrypt_url($rows->id).'">Tugas</button>';
+				$status = '<button class="btn btn-danger btn-sm kirim-tugas" data-id_tugas="'.encrypt_url($rows->id).'"> Kerjakan</button>';
 			}
 
 			if (!empty($rows->end_date) && $rows->end_date != '0000-00-00 00:00:00') {
@@ -34,7 +34,7 @@
 				<td><?=$rows->kelas;?></td>
 				<td><?= $nama_mapel; ?></td>
 				<td><?=$rows->keterangan;?></td>
-				<td><?=$date;?></td>
+				<td class="text-center"><?=$date;?></td>
 				<td>
 					<?=$status;?>
 				</td>

@@ -1465,34 +1465,6 @@ class Materi extends MY_Controller
                 
             }
 
-            // Upload file section untuk Balas Komentar
-            // if($replyFile !== NULL) {
-            //     // Set file configuration
-            //     $config['upload_path'] = 'assets/materi/diskusi';
-            //     $config['allowed_types'] = 'jpg|jpeg|png|pdf|docx|xls|xlsx';
-            //     $config['max_size'] = 50000;
-            //     $config['encrypt_name'] = TRUE;
-
-            //     // Load upload library
-            //     $this->load->library('upload', $config);
-
-            //     if($this->upload->do_upload('reply-file')) {
-            //         $uploadedFileData = $this->upload->data();
-            //         $uploadedFileName = $uploadedFileData['file_name'];
-
-            //         // Set filepath for file that uploaded in komentar
-            //         $post['file'] = $config['upload_path'] . '/' .$uploadedFileName;    
-            //     }
-            //     else {
-            //         $result = false;
-            //         $data   = $this->upload->display_errors();
-            //     }
-                
-            // }
-            // else {
-            //     $post['file'] = 0;
-            // }
-
             $komentar = $this->m_komen_materi->check_komen_all(array('km1.id' => $post['id_head']), array('km1.id_siswa', 'km2.id_siswa'));
             $kirim_notif = '';
             $materi = $this->m_materi->get_by_join(array('mt.id' => $post['id_materi']));
@@ -1626,8 +1598,10 @@ class Materi extends MY_Controller
             $data   = array('komentar' => $komentar, 'notif' => $komentar);
             $result = true;
             
-            // Update sum diskusi
-            $this->updateSumDiskusi();
+            // // Update sum diskusi
+            // $this->updateSumDiskusi();
+            // Update Activity Siswa
+            $this->updateActiveUser($this->log_lvl, 'active_diskusi');
         } else {
             $result = false;
             $data   = array();
@@ -1655,6 +1629,12 @@ class Materi extends MY_Controller
             // print_r($data_update);exit;
             $this->db->where('id', $this->session->admin_konid);
             $this->db->update('m_guru', ['sum_diskusi' => $data_update->sum_diskusi + 1]);
+        }
+        else if($this->log_lvl === 'siswa') {
+            $data_update = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
+            $this->m_siswa->update([
+                'active_diskusi' => $data_update->active_diskusi + 1
+            ], ['id' => $this->session->admin_konid]);
         }
         
     }
