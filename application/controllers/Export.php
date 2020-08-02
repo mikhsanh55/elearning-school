@@ -387,13 +387,8 @@ class Export extends MY_Controller {
 
 			$this->excelDataStart++;
 			$this->excelColumnNo++;
-
-			// Create New File use method on MY_Controller.php
-			$this->excelFileName = "Data Ujian - " . date('m-d-Y') . ".xlsx";
-			$this->excelDisplayOutput();
-
-			$this->excelColumnNo = 1;
 		}
+		$this->excelColumnNo = 1;
 		// Create New File use method on MY_Controller.php
 		$this->excelFileName = "Data Ujian - " . date('m-d-Y') . ".xlsx";
 		$this->excelDisplayOutput();

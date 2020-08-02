@@ -520,7 +520,7 @@ class Ujian_essay extends MY_Controller {
 
 
 
-		$this->load->view('ujian/table_soal',$data);
+		$this->load->view('ujian_essay/table_soal',$data);
 
 		$this->generate_page($data);
 
