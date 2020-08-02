@@ -57,7 +57,8 @@ class M_kelas extends MY_Model {
 									sis.nama as siswa,
 									kls.nama AS nama_kelas,
 									mpl.nama as mapel, mpl.id as id_mapel,
-									dekls.id_kelas
+									dekls.id_kelas,
+									dmkls.id_guru
 						')
 		->from('tb_kelas kls')
 		->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'inner')

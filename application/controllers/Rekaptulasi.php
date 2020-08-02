@@ -7,6 +7,7 @@ class Rekaptulasi extends MY_Controller {
 		parent::__construct();
 		$this->load->model('m_kelas');
 		$this->load->model('m_ujian');
+		$this->load->model('m_guru');
 		$this->load->model('m_tugas');
 	}
 
