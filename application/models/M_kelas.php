@@ -56,7 +56,7 @@ class M_kelas extends MY_Model {
 									dekls.id_peserta,
 									sis.nama as siswa,
 									kls.nama AS nama_kelas,
-									mpl.nama as mapel,
+									mpl.nama as mapel, mpl.id as id_mapel,
 									dekls.id_kelas
 						')
 		->from('tb_kelas kls')

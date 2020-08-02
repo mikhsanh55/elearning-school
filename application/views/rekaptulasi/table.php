@@ -1,4 +1,3 @@
-
 <table class="table table-bordered table-striped table-hovered">
 	<thead>
 		<tr>
@@ -65,7 +64,7 @@
 			$total_uas = ($uasNilai + $uasNilaiEssay) / 2;
 		}
 
-		$tugas = $this->m_tugas->get_nilai(['tgs.id_kelas'=>$rows->id_kelas,'id_siswa'=>$rows->id_peserta]);
+		$tugas = $this->m_tugas->get_nilai([ 'tgs.id_mapel' => $rows->id_mapel, 'tgs.id_kelas'=>$rows->id_kelas,'id_siswa'=>$rows->id_peserta]);
 			?>
 				<tr>
 					<td align="center" class="frist"><?=$i;?></td>
