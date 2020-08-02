@@ -250,7 +250,7 @@
                                     <strong class="text-info">`+item.nama_pengirim+ ` - </strong>
                                     <strong class="text-danger text-right">`+item.sender+`</strong>
                                     <div>
-                                     <a class="link-diskussi" href="`+item.url+`">`+item.keterangan+` - <strong>`+item.title+`</strong></a>
+                                     <a class="link-diskusi" href="`+item.url+`">`+item.keterangan+`</a>
                                  </div>
                                  <small class="text-warning"><span id="notif-date"></span></small>
                              </div>    

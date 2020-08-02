@@ -159,11 +159,11 @@ class Aktivitas extends MY_Controller {
             $data_ok[] = $d['nama'];
             $data_ok[] = $d['username'];
             $data_ok[] = $d['nidn'];
-            $data_ok[] = $d['nrp'];
 
             $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-sm btn-primary ">' . $d['active_num'] . '</button></div>';
-            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-sm btn-primary ">' . $d['sum_upload_materi'] . '</button></div>';
-            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-sm btn-primary ">' . $d['sum_diskusi'] . '</button></div>';
+            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-sm btn-success ">' . $d['sum_upload_ujian'] . '</button></div>';
+            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-sm btn-success ">' . $d['sum_upload_materi'] . '</button></div>';
+            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-sm btn-success ">' . $d['sum_diskusi'] . '</button></div>';
 
             $data[] = $data_ok;
         }

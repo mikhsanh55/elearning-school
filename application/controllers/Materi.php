@@ -16,6 +16,8 @@ class Materi extends MY_Controller
         $this->load->model('m_guru');
         $this->load->model('m_kelas');
         $this->load->model('m_instansi');
+        $this->load->model('m_detail_kelas');
+        $this->load->model('m_detail_kelas_mapel');
         
 
         if ($this->session->userdata('admin_level') == null) {
@@ -1485,7 +1487,7 @@ class Materi extends MY_Controller
                             'id_koment'   => $id_koment,
                             'id_materi'   => $post['id_materi'],
                             'id_siswa'    => $peserta,
-                            'id_trainer'  => 0,
+                            'id_trainer'  => $this->log_id,
                             'keterangan'  => 'Trainer ikut berkomentar',
                             'see'         => 0,
                             'sender_id'   => $this->log_id,
@@ -1503,7 +1505,7 @@ class Materi extends MY_Controller
                             'id_koment'   => $id_koment,
                             'id_materi'   => $post['id_materi'],
                             'id_siswa'    => $cek->id_siswa,
-                            'id_trainer'  => 0,
+                            'id_trainer'  => $this->log_id,
                             'keterangan'  => 'peserta lain ikut berkomentar',
                             'see'         => 0,
                             'sender_id'   => $this->log_id,
@@ -1558,10 +1560,12 @@ class Materi extends MY_Controller
                     if (empty($post['id_head'])) {
                         $materi = $this->m_materi->get_by_join(array('mt.id' => $post['id_materi']));
 
+
                         $data = array(
+                            'id_kelas'    => $post['id_kelas'],
                             'id_koment'   => $id_koment,
                             'id_materi'   => $post['id_materi'],
-                            'id_siswa'    => 0,
+                            'id_siswa'    => $this->log_id,
                             'id_trainer'  => $materi->id_guru,
                             'keterangan'  => 'Menulis sesuatu di materi yang anda tulis',
                             'see'         => 0,
@@ -1574,6 +1578,22 @@ class Materi extends MY_Controller
 
                     }
 
+                }
+                else if($this->log_lvl == 'guru') {
+                    $data = [
+                        'id_kelas'    => $post['id_kelas'],
+                        'id_koment' => $id_koment,
+                        'id_materi'   => $post['id_materi'],
+                        'id_siswa'  => 0,
+                        'id_trainer' => $this->log_id,
+                        'keterangan' => 'Guru menulis sesuatu di forum',
+                        'see' => 0,
+                        'sender_id'   => $this->log_id,
+                        'sender_lvl'  => $this->log_lvl,
+                        'create_date' => $post['create_date'] . ' ' . $post['create_time']
+                    ];
+
+                    $kirim_notif = $this->m_notif_forum->insert($data);
                 }
             }
 
@@ -1597,11 +1617,9 @@ class Materi extends MY_Controller
 
             $data   = array('komentar' => $komentar, 'notif' => $komentar);
             $result = true;
-            
-            // // Update sum diskusi
-            // $this->updateSumDiskusi();
+            $type = $this->log_lvl === 'siswa' ? 'active_diskusi' : 'sum_diskusi';
             // Update Activity Siswa
-            $this->updateActiveUser($this->log_lvl, 'active_diskusi');
+            $this->updateActiveUser($this->log_lvl, $type);
         } else {
             $result = false;
             $data   = array();
@@ -1683,12 +1701,41 @@ class Materi extends MY_Controller
     public function get_notif()
     {
         if ($this->log_lvl == 'siswa') {
-            $total = $this->m_notif_forum->count_by(array('id_siswa' => $this->log_id, 'see' => 0));
-            $list  = $this->m_notif_forum->get_many_by(array('id_siswa' => $this->log_id, 'see' => 0));
+            $id_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $this->log_id])->id_kelas;
+
+            $total = $this->m_notif_forum->count_by(array('id_kelas' => $id_kelas, 'see' => 0));
+            $list  = $this->m_notif_forum->get_many_by(array('id_kelas' => $id_kelas, 'see' => 0));
         } else {
-            $total = $this->m_notif_forum->count_by(array('nf.id_trainer' => $this->log_id, 'see' => 0));
-            $list  = $this->m_notif_forum->get_many_by(array('nf.id_trainer' => $this->log_id, 'see' => 0));
+            $id_kelas = $this->m_detail_kelas_mapel->get_many_by(['dklsmapel.id_guru' => $this->log_id]);
+
+            // For storing multi data in many kelas
+            $total = [];
+            $list = [];
+
+            if( count($id_kelas) > 0) {
+                foreach($id_kelas as $rows) :
+                    $total[] = $this->m_notif_forum->count_by(['nf.id_kelas' => $rows->id_kelas, 'see' => 0]);
+                    $list[] = $this->m_notif_forum->get_many_by(['nf.id_kelas' => $rows->id_kelas, 'see' => 0]);
+                endforeach;
+            }
+
+            // Extract multi array list to one array
+            $new_list = [];
+            foreach($list as $arr) :
+                foreach($arr as $data) :
+                    $new_list[] = $data;
+                endforeach;
+            endforeach;
+
+            
+            // Make to num
+            $total = array_sum($total);
+
+            // Make to one array in var List for foreach action
+            $list = $new_list;
+            
         }
+
 
         $notifNumber = ($total > 0) ? $total : null;
         $see_all     = ($total > 0) ? 'all_see' : null;
@@ -1711,7 +1758,7 @@ class Materi extends MY_Controller
 
             $data[$index]['nama_pengirim'] = $rows->nama_pengirim;
             $data[$index]['sender']        = $sender;
-            $data[$index]['url']           = base_url('materi/diskusi_single/' . $rows->id_materi . '/' . $rows->id_koment . '/' . $rows->id);
+            $data[$index]['url']           = base_url('Materi/diskusi/' . $rows->id_materi . '/' . $rows->id_kelas);
             $data[$index]['keterangan']    = $rows->keterangan;
             $data[$index]['title']         = $rows->title;
             $data[$index]['date']          = $date;
