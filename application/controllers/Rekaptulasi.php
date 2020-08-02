@@ -8,8 +8,6 @@ class Rekaptulasi extends MY_Controller {
 		$this->load->model('m_kelas');
 		$this->load->model('m_ujian');
 		$this->load->model('m_tugas');
-		
-		
 	}
 
 	public function index()
