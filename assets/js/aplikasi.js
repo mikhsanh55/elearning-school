@@ -156,7 +156,7 @@ function timer2() {
 	var statuse = $("#_statuse").val();
 	statuse = parseInt(statuse);
 	if (statuse == 1) {
-		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-primary btn-block" id="tbl_mulai" onclick="return konfirmasi_token2('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
+		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-primary btn-sm btn-block" id="tbl_mulai" onclick="return konfirmasi_token2('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
 		
 		$('#waktu_akhir_ujian').countdowntimer({
 	        startDate : tgl_sekarang,
@@ -191,7 +191,7 @@ function timer3() {
 	statuse = parseInt(statuse);
 
 	if (statuse == 1) {
-		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-success btn-sm" id="tbl_mulai" onclick="return konfirmasi_token3('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
+		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-success btn-sm btn-block" id="tbl_mulai" onclick="return konfirmasi_token3('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
 		
 		$('#waktu_akhir_ujian').countdowntimer({
 	        startDate : tgl_sekarang,
@@ -256,7 +256,7 @@ function timer4() {
 
 function timeIsUp() {
 	var id_ujian = $("#id_ujian").val();
-	$("#btn_mulai").html('<a href="#" class="btn btn-success btn-lg" id="tbl_mulai" onclick="return konfirmasi_token('+id_ujian+')"><i class="fa fa-check-circle"></i> MULAI</a>');
+	$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-success btn-block" id="tbl_mulai" onclick="return konfirmasi_token4('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
 
 	var tgl_sekarang = $("#_tgl_sekarang").val();
 	var tgl_mulai = $("#_tgl_mulai").val();
@@ -335,16 +335,19 @@ function login(e) {
 function konfirmasi_token(id) {
 	var token_asli = $("#_token").val();
 	var token_input = $("#token").val();
-	var id_pengguna = $("#penggunaan").val();
 
 	if (token_asli != token_input) {
 		alert("Token salah..!");
 		return false;
 	} else {
-		
+		$('#disclaimer-tugas').modal('show')
 		/*var stateObj = { foo: "bar" };
   		history.replaceState(stateObj,'base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna' ,base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna);*/
-		OpenWindow(base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna); //window.location.assign(base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna); 
+		  $('#link-tugas').on('click', function(e) {
+			e.preventDefault()
+			OpenWindow(base_url+"ujian_essay/ikut_ujian/"+id);
+		  })
+		   //window.location.assign(base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna); 
 	}
 }
 
@@ -361,9 +364,9 @@ function konfirmasi_token2(id) {
   		history.replaceState(stateObj,'base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna' ,base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna);*/
 		  $('#link-tugas').on('click', function(e) {
 			e.preventDefault()
-			OpenWindow(base_url+"ujian_real/ikut_ujian/"+id); 
+			OpenWindow(base_url+"ujian_essay/ikut_ujian/"+id);
 		  })
-		//window.location.assign(base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna); 
+		   //window.location.assign(base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna); 
 	}
 }
 
@@ -375,10 +378,14 @@ function konfirmasi_token3(id) {
 		alert("Token salah..!");
 		return false;
 	} else {
-		
+		$('#disclaimer-tugas').modal('show')
 		/*var stateObj = { foo: "bar" };
   		history.replaceState(stateObj,'base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna' ,base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna);*/
-		OpenWindow(base_url+"penilaian/ikut_ujian/"+id); //window.location.assign(base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna); 
+		  $('#link-tugas').on('click', function(e) {
+			e.preventDefault()
+			OpenWindow(base_url+"ujian_essay/ikut_ujian/"+id);
+		  })
+		   //window.location.assign(base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna); 
 	}
 }
 
