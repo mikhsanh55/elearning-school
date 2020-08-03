@@ -608,4 +608,55 @@ class Trainer extends MY_Controller {
 		}
 	}
 
+	public function update_photo() {
+		$post = $this->input->post();
+		if($_FILES['photo']['name'] == NULL) {
+			$this->sendAjaxResponse([
+				'status' => FALSE,
+				'msg' => 'Harap upload photo!'
+			], 400);
+		}
+		else {
+			$config['upload_path']          = './upload/guru_photo/';
+		    $config['allowed_types']        = 'gif|jpg|png|jpeg|svg';
+		    $config['file_name']            = 'avatar-' . uniqid();
+		    $config['overwrite']			= true;
+		    $config['max_size']             = 3072; // 3MB
+			$this->load->library('upload', $config);
+
+			if(!$this->upload->do_upload('photo')) {
+				$this->sendAjaxResponse([
+					'status' => FALSE,
+					'msg' => $this->upload->display_errors()
+				], 500);		
+			}
+			else {
+				// Get data photo
+				$data = $this->m_guru->get_by(['id' => $post['id']]);
+				
+				if(file_exists($data->photo) && !empty($data->photo)) {
+					unlink($data->photo);
+				}
+
+				$path = 'upload/siswa_photo/'.$this->upload->data('file_name');
+				$update = $this->m_guru->update(['photo' => $path], ['id' => $post['id']]);
+
+				if($update) {
+					$this->sendAjaxResponse([
+					'status' => TRUE,
+						'msg' => 'Update data profile berhasil',
+						'url' => base_url('upload/guru_photo/').$this->upload->data('file_name')
+					], 200);
+				}
+				else {
+					unlink($path);
+					$this->sendAjaxResponse([
+						'status' => FALSE,
+						'msg' => $this->upload->display_errors(),
+					], 500);				
+				}
+			}
+		}
+	}
+
 }

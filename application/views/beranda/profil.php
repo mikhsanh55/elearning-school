@@ -103,16 +103,10 @@
                   <img class="img-slider img-thumbnail rounded mx-auto d-block" src="<?=$patch.$rows->file;?>" alt="">
               </li>
             <?php endforeach;?>
-              <!-- <li data-thumb="https://images.pexels.com/photos/956999/milky-way-starry-sky-night-sky-star-956999.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" data-src="https://images.pexels.com/photos/956999/milky-way-starry-sky-night-sky-star-956999.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500">
-                    <img class="img-slider img-thumbnail rounded mx-auto d-block" src="https://images.pexels.com/photos/956999/milky-way-starry-sky-night-sky-star-956999.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="">
-              </li> -->
             </ul>  
             </div>      
             <div class="well well-sm">
                 <div class="row">
-                    <!-- <div class="col-sm-6 col-md-4">
-                        <img src="http://placehold.it/380x500" alt="" class="img-rounded img-responsive" />
-                    </div> -->
                     
                     <div class="col-sm-12 col-md-12">
                         <br><br>
@@ -121,7 +115,7 @@
                             <tr>
                                 <th colspan="3" class="text-center text-uppercase font-weight-bold">
                                     <h3>Profil</h3>
-                                    <img class="round" src="<?= empty($siswa->photo) ? 'assets/img/avatar-default.jpg' : $siswa->photo ?>" alt="" width="90" height="90" id="avatar">
+                                    <img class="round" src="<?= empty($guru->photo) ? 'assets/img/avatar-default.jpg' : $guru->photo ?>" alt="" width="90" height="90" id="avatar">
                                 </th>
                             </tr>
                             <tr>
@@ -158,18 +152,7 @@
                                     <i class="fas fa-check"></i>
                                 </td>
                             </tr>
-                            <!-- <tr>
-                                <th class="text-secondary text-uppercase">Jenis Kelamin</th>
-                                <td class="text-uppercase font-weight-bold">
-                                    <span><?= $this->akun->nik ;?></span>
-                                    <input data-key="nik" type="text" class="d-none in-edit form-control input-sm" name="nik" value="<?= (empty($this->akun->nik)) ? NULL : $this->akun->nik  ?>">
-                                </td>
-                                <td class="text-right text-primary font-weight-bold">
-                                    <i class="fas fa-edit"></i>
-                                    <i class="d-none fas fa-spinner text-primary spin-icon"></i>
-                                    <button class="d-none btn btn-sm btn-outline-danger"><i class="fas  fa-times"></i></button>
-                                </td>
-                            </tr> -->
+                           
                             <tr>
                                 <th class="text-secondary text-uppercase">NIS</th>
                                 <td class="text-uppercase font-weight-bold">
@@ -404,14 +387,14 @@
                 contentType:false,
                 processData:false,
                 success:function(res) {
-                    $(self).prop('disabled', true);
+                    $(self).prop('disabled', false);
                     $(self).find('#upload').toggleClass('d-none');
                     $(self).find('#spinner').toggleClass('d-none');
 
                     $('#avatar').attr('src', res.url);
                 },
                 error:function(e) {
-                    $(self).prop('disabled', true);
+                    $(self).prop('disabled', false);
                     $(self).find('#upload').toggleClass('d-none');
                     $(self).find('#spinner').toggleClass('d-none');
                     alert(e.responseJSON.msg);
