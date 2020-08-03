@@ -166,7 +166,8 @@ function timer2() {
 	 		timeUp : hilangkan_tombol,
 	    });
 	} else if (statuse == 0) {
-		$("#btn_mulai").addClass("btn btn-success btn-lg");
+		// $("#btn_mulai").addClass("btn btn-primary btn-sm btn-block");
+		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-primary btn-sm btn-block" id="tbl_mulai" onclick="return konfirmasi_token2('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
 		$("#waktu_").hide();
 		$('#akan_mulai').countdowntimer({
 	        startDate : tgl_sekarang,
@@ -201,7 +202,8 @@ function timer3() {
 	 		timeUp : hilangkan_tombol,
 	    });
 	} else if (statuse == 0) {
-		$("#btn_mulai").addClass("btn btn-success btn-lg");
+		// $("#btn_mulai").addClass("btn btn-success btn-lg");
+		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-primary btn-sm btn-block" id="tbl_mulai" onclick="return konfirmasi_token4('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
 		$("#waktu_").hide();
 		$('#akan_mulai').countdowntimer({
 	        startDate : tgl_sekarang,
@@ -239,7 +241,8 @@ function timer4() {
 	 		timeUp : hilangkan_tombol,
 	    });
 	} else if (statuse == 0) {
-		$("#btn_mulai").addClass("btn btn-success btn-block");
+		// $("#btn_mulai").addClass("btn btn-success btn-block");
+				$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-primary btn-sm btn-block" id="tbl_mulai" onclick="return konfirmasi_token4('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
 		$("#waktu_").hide();
 		$('#akan_mulai').countdowntimer({
 	        startDate : tgl_sekarang,
