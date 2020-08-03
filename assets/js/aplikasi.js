@@ -424,7 +424,6 @@ function OpenWindow(url){
   //checks to see if window is open
   if(MyPopUp && !MyPopUp.closed)
   {
-  	alert("ujian sedang buka  ..!");
     winPop.focus(); //If already Open Set focus
   }
   else
