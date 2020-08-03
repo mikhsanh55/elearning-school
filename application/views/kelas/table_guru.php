@@ -30,7 +30,7 @@
 				<td>
 					<button class="btn btn-primary btn-sm rekrut mb-2" data-id="<?= $rows->id; ?>" onclick="displaySiswa(this)">Daftar Siswa</button>
 
-					<a href="<?= base_url('Materi/lists/') . md5($rows->dmapel); ?>" class="btn btn-sm btn-primary">Materi</a>
+					<a href="<?= base_url('Materi/lists/') . md5($rows->dmapel) . '/' . encrypt_url($rows->dguru) . '/' . encrypt_url($rows->id); ?>" class="btn btn-sm btn-primary">Materi</a>
 				</td>
 			</tr>
 		<?php endforeach;?>

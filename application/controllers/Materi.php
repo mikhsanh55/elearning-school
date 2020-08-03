@@ -175,6 +175,7 @@ class Materi extends MY_Controller
 		$data['paginate']['url']	= 'materi/page_load';
 		$data['paginate']['search'] = 'lookup_key';
 		$data['page_start'] = $paginate['counts']['from_num'];
+        $data['id_kelas'] = decrypt_url($post['id_kelas']);
 
         $this->load->view('materi/list_materi',$data);
 		$this->generate_page($data);
@@ -1566,7 +1567,7 @@ class Materi extends MY_Controller
                             'id_koment'   => $id_koment,
                             'id_materi'   => $post['id_materi'],
                             'id_siswa'    => $this->log_id,
-                            'id_trainer'  => $materi->id_guru,
+                            'id_trainer'  => $materi->id_trainer,
                             'keterangan'  => 'Menulis sesuatu di materi yang anda tulis',
                             'see'         => 0,
                             'sender_id'   => $this->log_id,
@@ -1714,8 +1715,8 @@ class Materi extends MY_Controller
 
             if( count($id_kelas) > 0) {
                 foreach($id_kelas as $rows) :
-                    $total[] = $this->m_notif_forum->count_by(['nf.id_kelas' => $rows->id_kelas, 'see' => 0]);
-                    $list[] = $this->m_notif_forum->get_many_by(['nf.id_kelas' => $rows->id_kelas, 'see' => 0]);
+                    $total[] = $this->m_notif_forum->count_by(['nf.id_trainer' => $this->log_id,'nf.id_kelas' => $rows->id_kelas, 'see' => 0]);
+                    $list[] = $this->m_notif_forum->get_many_by([ 'nf.id_trainer' => $this->log_id, 'nf.id_kelas' => $rows->id_kelas, 'see' => 0]);
                 endforeach;
             }
 
@@ -1754,7 +1755,7 @@ class Materi extends MY_Controller
                 $gray = '';
             }
 
-            $sender = ($rows->sender_lvl == 'siswa') ? 'peserta' : 'trainer';
+            $sender = ($rows->sender_lvl == 'siswa') ? 'Siswa' : 'Guru';
 
             $data[$index]['nama_pengirim'] = $rows->nama_pengirim;
             $data[$index]['sender']        = $sender;
