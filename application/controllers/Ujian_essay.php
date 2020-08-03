@@ -762,7 +762,7 @@ class Ujian_essay extends MY_Controller {
 
 
 
-					$file_name = $k."_".$__id_soal.".".$ekstensi[1];
+					$file_name = $k."_".$__id_soal.".". end($ekstensi);
 					
 					@move_uploaded_file($file_tmp, $folder_gb_soal.$file_name);
 

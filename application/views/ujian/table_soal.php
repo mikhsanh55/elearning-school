@@ -87,7 +87,7 @@
 					</div>
 				</td>
 			</tr>
-		<?php $i++; endforeach; } else { echo '<tr><td colspan="3" align="center">DATA KOSONG</td></tr>';} ?>
+		<?php $i++; endforeach; } else { echo '<tr><td colspan="4" align="center">DATA KOSONG</td></tr>';} ?>
 	</thead>
 <tbody>
 </tbody>
