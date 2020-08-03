@@ -122,7 +122,7 @@ function timer() {
 	statuse = parseInt(statuse);
 
 	if (statuse == 1) {
-		$("#btn_mulai").html('<a href="javascript:void(0);" class="btn btn-primary btn-lg" id="tbl_mulai" onclick="return konfirmasi_token('+id_ujian+')"><i class="fa fa-check-circle"></i> Ashiap</a>');
+		$("#btn_mulai").html('<a href="javascript:void(0);" class="btn btn-primary btn-block" id="tbl_mulai" onclick="return konfirmasi_token('+id_ujian+')"><i class="fa fa-check-circle"></i> Ashiap</a>');
 		
 		$('#waktu_akhir_ujian').countdowntimer({
 	        startDate : tgl_sekarang,
@@ -217,7 +217,9 @@ function timer3() {
 	}
 }
 
-
+/*
+* Trigger untuk Ujian Essay
+*/
 function timer4() {
 	var tgl_sekarang = $("#_tgl_sekarang").val();
 	var tgl_mulai = $("#_tgl_mulai").val();
@@ -227,7 +229,7 @@ function timer4() {
 	statuse = parseInt(statuse);
 	console.warn(id_ujian)
 	if (statuse == 1) {
-		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-success btn-block" id="tbl_mulai" onclick="return konfirmasi_token4('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
+		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-primary btn-block" id="tbl_mulai" onclick="return konfirmasi_token4('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
 		
 		$('#waktu_akhir_ujian').countdowntimer({
 	        startDate : tgl_sekarang,
@@ -351,6 +353,9 @@ function konfirmasi_token(id) {
 	}
 }
 
+/*
+* Trigger untuk Ujian PG
+*/
 function konfirmasi_token2(id) {
 	var token_asli = $("#_token").val();
 	var token_input = $("#token").val();
@@ -364,7 +369,7 @@ function konfirmasi_token2(id) {
   		history.replaceState(stateObj,'base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna' ,base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna);*/
 		  $('#link-tugas').on('click', function(e) {
 			e.preventDefault()
-			OpenWindow(base_url+"ujian_essay/ikut_ujian/"+id);
+			OpenWindow(base_url+"ujian_real/ikut_ujian/"+id);
 		  })
 		   //window.location.assign(base_url+"ujian/ikut_ujian/_/"+id+"/"+id_pengguna); 
 	}
@@ -389,6 +394,9 @@ function konfirmasi_token3(id) {
 	}
 }
 
+/*
+* Trigger untuk Ujian Essay
+*/
 function konfirmasi_token4(id) {
 	var token_asli = $("#_token").val();
 	var token_input = $("#token").val();

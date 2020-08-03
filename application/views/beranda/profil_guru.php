@@ -112,24 +112,22 @@
             </div>      
             <div class="well well-sm">
                 <div class="row">
-                    <!-- <div class="col-sm-6 col-md-4">
-                        <img src="http://placehold.it/380x500" alt="" class="img-rounded img-responsive" />
-                    </div> -->
                     
                     <div class="col-sm-12 col-md-12">
                         <br><br>
-                            <input type="hidden" value="<?= $this->akun->id; ?>" id="id">
+                            <input type="hidden" value="<?= $guru->id; ?>" id="id">
                         <table class="table" id="info-user">
                             <tr>
                                 <th colspan="3" class="text-center text-uppercase font-weight-bold">
                                     <h3>Profil</h3>
+                                    <img class="round" src="<?= empty($siswa->photo) ? 'assets/img/avatar-default.jpg' : $siswa->photo ?>" alt="" width="90" height="90" id="avatar">
                                 </th>
                             </tr>
                             <tr>
                                 <th class="text-secondary text-uppercase">Nama</th>
                                 <td class="text-uppercase font-weight-bold">
-                                    <span><?= (empty($this->akun->nama)) ? NULL : $this->akun->nama ;?></span>
-                                    <input data-key="nama" type="text" class="d-none in-edit form-control input-sm" name="nama" value="<?= (empty($this->akun->nama)) ? NULL : $this->akun->nama  ?>">
+                                    <span><?= (empty($guru->nama)) ? NULL : $guru->nama ;?></span>
+                                    <input data-key="nama" type="text" class="d-none in-edit form-control input-sm" name="nama" value="<?= (empty($guru->nama)) ? NULL : $guru->nama  ?>">
                                 </td>
                                 <td class="text-right font-weight-bold">
                                     <i class="fas fa-edit edit text-primary"></i>
@@ -140,8 +138,8 @@
                             <tr>
                                 <th class="text-secondary text-uppercase">NIP</th>
                                 <td class="text-uppercase font-weight-bold">
-                                    <span><?= $this->akun->nidn ;?></span>
-                                    <input data-key="nidn" type="text" class="d-none in-edit form-control" name="nidn" value="<?= (empty($this->akun->nidn)) ? NULL : $this->akun->nidn  ?>">
+                                    <span><?= $guru->nidn ;?></span>
+                                    <input data-key="nidn" type="text" class="d-none in-edit form-control" name="nidn" value="<?= (empty($guru->nidn)) ? NULL : $guru->nidn  ?>">
                                 </td>
                                 <td class="text-right font-weight-bold">
                                     <i class="fas fa-edit edit text-primary"></i>
@@ -152,8 +150,8 @@
                             <tr>
                                 <th class="text-secondary text-uppercase">NUPTK</th>
                                 <td class="text-uppercase font-weight-bold">
-                                    <span><?= $this->akun->nrp ;?></span>
-                                    <input data-key="nrp" type="text" class="d-none in-edit form-control" name="nrp" value="<?= (empty($this->akun->nrp)) ? NULL : $this->akun->nrp  ?>">
+                                    <span><?= $guru->nrp ;?></span>
+                                    <input data-key="nrp" type="text" class="d-none in-edit form-control" name="nrp" value="<?= (empty($guru->nrp)) ? NULL : $guru->nrp  ?>">
                                 </td>
                                 <td class="text-right font-weight-bold">
                                     <i class="fas fa-edit edit text-primary"></i>
@@ -164,7 +162,7 @@
                             <tr>
                                 <th class="text-secondary text-uppercase">Username</th>
                                 <td class="text-lowercase font-weight-bold">
-                                    <?= (empty($this->akun->username)) ? NULL : $this->akun->username ;?>
+                                    <?= (empty($guru->username)) ? NULL : $guru->username ;?>
 
                                 </td>
                                 <td class="text-right font-weight-bold">
@@ -175,8 +173,8 @@
                             <tr>
                                 <th class="text-secondary text-uppercase">Email</th>
                                 <td class="font-weight-bold">
-                                    <span><?= (empty($this->akun->email)) ? NULL : $this->akun->email  ?></span>
-                                    <input data-key="email" type="text" class="d-none in-edit form-control" name="email" value="<?= (empty($this->akun->email)) ? NULL : $this->akun->email  ?>">
+                                    <span><?= (empty($guru->email)) ? NULL : $guru->email  ?></span>
+                                    <input data-key="email" type="text" class="d-none in-edit form-control" name="email" value="<?= (empty($guru->email)) ? NULL : $guru->email  ?>">
                                 </td>
                                 <td class="text-right font-weight-bold">
                                     <i class="fas fa-edit edit text-primary"></i>
@@ -187,8 +185,8 @@
                             <tr>
                                 <th class="text-secondary text-uppercase">Telpon</th>
                                 <td class="text-uppercase font-weight-bold">
-                                    <span><?= (empty($this->akun->no_telpon)) ? NULL : $this->akun->no_telpon  ?></span>
-                                    <input type="text" class="d-none in-edit form-control" data-key="no_telpon" name="telpon" value="<?= (empty($this->akun->no_telpon)) ? NULL : $this->akun->no_telpon  ?>">
+                                    <span><?= (empty($guru->no_telpon)) ? NULL : $guru->no_telpon  ?></span>
+                                    <input type="text" class="d-none in-edit form-control" data-key="no_telpon" name="telpon" value="<?= (empty($guru->no_telpon)) ? NULL : $guru->no_telpon  ?>">
                                 </td>
                                 <td class="text-right font-weight-bold">
                                     <i class="fas fa-edit edit text-primary "></i>
@@ -206,6 +204,20 @@
                                 </td>
                                 <td class="text-right text-primary font-weight-bold">
                                     <span class="badge badge-pill badge-light d-block p-1"></span>
+                                </td>
+                            </tr>
+                            <tr class="m-3">
+                                <th class="text-secondary text-uppercase">Photo</th>
+                                <td class="text-uppercase font-weight-bold ">
+                                    <input type="file" id="photo-file" class="form-control" />
+                                    
+
+                                </td>
+                                <td class="text-right text-primary font-weight-bold">
+                                    <button class="btn btn-outline-primary" id="upload-photo" title="Update Photo">
+                                        <span id="upload">Upload</span>
+                                        <i class="fas fa-spinner spin-icon text-primary d-none" id="spinner"></i>
+                                    </button>
                                 </td>
                             </tr>
                         </table>
@@ -237,6 +249,69 @@
 <script type="text/javascript">
 	$(document).ready(function(){
         var self
+
+         $('#photo-file').change(function(e) {
+            photoUser = e.target.files[0];
+            photoFileName = photoUser.name
+            photoFileName = photoFileName.split('.')
+            photoExt = photoFileName[ photoFileName.length - 1 ]
+            photoSize = photoUser.size
+            maxSize = 3145728
+
+            // console.log(photoUser)
+            if(!enableExtPictures.includes(photoExt)) {
+                alert('Harap upload photo');
+                photoUser = null;
+                $(this).val('');
+                return false;
+            }
+            else if(photoSize > maxSize) {
+                alert('Maksimal Foto 3 MB');
+                photoUser = null;
+                $(this).val('');
+                return false;   
+            }
+        });
+
+        $('#upload-photo').on('click', function() {
+            if(photoUser === null) {
+                alert('Harap upload photo');
+                return false;
+            }
+            // set loading button
+            $(this).prop('disabled', true);
+            $(this).find('#upload').toggleClass('d-none');
+            $(this).find('.fa-spinner').toggleClass('d-none');
+            formData = new FormData();
+            formData.append('id', $('#id').val());
+            formData.append('photo', photoUser);
+            formData.append('<?= $csrf['name'] ?>', '<?= $csrf['token'] ?>')
+            self = this;
+            $.ajax({
+                type: 'post',
+                url: "<?= base_url('trainer/update_photo'); ?>",
+                data: formData,
+                dataType: 'json',
+                contentType:false,
+                processData:false,
+                success:function(res) {
+                    $(self).prop('disabled', false);
+                    $(self).find('#upload').toggleClass('d-none');
+                    $(self).find('#spinner').toggleClass('d-none');
+
+                    $('#avatar').attr('src', res.url);
+                },
+                error:function(e) {
+                    $(self).prop('disabled', false);
+                    $(self).find('#upload').toggleClass('d-none');
+                    $(self).find('#spinner').toggleClass('d-none');
+                    alert(e.responseJSON.msg);
+                    console.error(e.responseText);             
+                    return false;       
+                }
+            })
+        });
+
         $('#lightslider').lightSlider({
             item:1,
             slideMargin:0,

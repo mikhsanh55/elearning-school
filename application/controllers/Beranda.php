@@ -9,11 +9,8 @@ class Beranda extends MY_Controller {
 	public function __construct()
 
 	{
-
 		parent::__construct();
-
 		$this->load->model('m_setting_instansi');
-
 		$this->load->model('m_slide');
 		$this->load->model('m_guru');
 		$this->load->model('m_detail_mapel');
@@ -155,9 +152,10 @@ class Beranda extends MY_Controller {
 
 			'patch'  => base_url('upload/slide/'),
 
-			'csrf' => $this->generateCSRFToken()
-
+			'csrf' => $this->generateCSRFToken(),
+			'guru' => $this->m_guru->get_by(['id' => $this->session->userdata('admin_konid')])
 		];
+		// print_r($data);exit;
 		$this->render('beranda/profil_guru', $data);	
 
 	}
