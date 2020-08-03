@@ -643,15 +643,7 @@ class Ujian_real extends MY_Controller {
 
 		}
 
-
-		// print_r($a['d']);exit;
-		
-
-
-
 		$data = array();
-
-
 
 		for ($e = 0; $e < $a['jml_opsi']; $e++) {
 
@@ -660,11 +652,7 @@ class Ujian_real extends MY_Controller {
 			$idx = "opsi_".$a['huruf_opsi'][$e];
 
 			$idx2 = $a['huruf_opsi'][$e];
-
-
-
 			$pc_opsi_edit = explode("#####", $a['d'][$idx]);
-			// print_r($pc_opsi_edit);exit;
 
 			$iidata['opsi'] = end($pc_opsi_edit);
 
@@ -673,8 +661,6 @@ class Ujian_real extends MY_Controller {
 			$data[$idx2] = $iidata;
 
 		}
-		// print_r($data);exit;
-		
 
 		$a['id_ujian'] = decrypt_url($id_ujian);
 		$a['data_pc'] = $data;
@@ -682,37 +668,22 @@ class Ujian_real extends MY_Controller {
 		// Check Bobot Soal
 		$this->load->model('m_setting_instansi');
 		$a['bobot'] = $this->m_setting_instansi->get_by(['id_instansi' => $this->akun->instansi]);
-		// print_r($a['bobot']);exit;
 
+		// print_r($a);exit;
 
 		$this->render('ujian/add_soal',$a);
-
 	}
 
 	// Method untuk menyimpan soal di add soal dan edit soal
 	function simpan_soal(){
-
-
-
 			$p = $this->input->post();
-			// $data_ujian = $this->m_ujian->get_by(['uji.id' => $p['id_ujian']]);
-			// $jumlah_soal = count( $this->m_soal_ujian->get_many_by(['id_ujian' => $p['id_ujian']]) );
-			// print_r([$data_ujian, $ju>>>>>>> production
-
 			$pembuat_soal = ($this->log_lvl == "admin") ? $p['id_guru'] : $this->log_id;
-
 			$pembuat_soal_u = ($this->log_lvl == "admin") ? ", id_guru = '".$p['id_guru']."'" : "";
 
 			//etok2nya config
-
 			$folder_gb_soal = "./upload/file_ujian_soal/";
-
 			$folder_gb_opsi = "./upload/file_ujian_opsi/";
-
-
-
 			$buat_folder_gb_soal = !is_dir($folder_gb_soal) ? @mkdir("./upload/file_ujian_soal/") : false;
-
 			$buat_folder_gb_opsi = !is_dir($folder_gb_opsi) ? @mkdir("./upload/file_ujian_opsi/") : false;
 
 
@@ -734,13 +705,8 @@ class Ujian_real extends MY_Controller {
 
 
 			//get mode
-
 			$__mode = $p['mode'];
-
 			$__id_soal = 0;
-
-			//ambil data post sementara
-
 
 			// Insert Data Soal : Bobot, Soalnya, Jawaban, sama Id Ujian
 			$pdata = array(
@@ -778,19 +744,8 @@ class Ujian_real extends MY_Controller {
 
 			}
 
-			
-
-
-
-			//mulai dari sini id soal diambil dari variabel $__id
-
-
-
 			//lakukan perulangan sejumlah file upload yang terdeteksi
-
 			foreach ($_FILES as $k => $v) {
-
-				//var file upload
 
 				//$k = nama field di form
 
@@ -807,18 +762,6 @@ class Ujian_real extends MY_Controller {
 				//kode ref file upload jika error
 
 				$kode_file_error = array("File berhasil diupload", "Ukuran file terlalu besar", "Ukuran file terlalu besar", "File upload error", "Tidak ada file yang diupload", "File upload error");
-
-				
-
-				//jika file error = 0 / tidak ada, tipe file ada di file yang diperbolehkan, dan nama file != kosong
-
-				//echo $file_error."<br>".$file_type;
-
-				//exit;
-
-				//echo var_dump($file_error == 0 || in_array($file_type, $allowed_type) || $file_name != "");
-
-				//exit;
 
 				if ($file_error != 0) {
 
@@ -847,13 +790,7 @@ class Ujian_real extends MY_Controller {
 				} else {
 
 					$ekstensi = explode(".", $file_name);
-
-
-
-					$file_name = $k."_".$__id_soal.".".$ekstensi[1];
-
-
-
+					$file_name = $k."_".$__id_soal.".". end($ekstensi);
 					if ($k == "file_ujian_soal") {
 
 						@move_uploaded_file($file_tmp, $folder_gb_soal.$file_name);
