@@ -3,14 +3,10 @@
 		<div id="accordion" class="panel-group">
 			<h2 class="p-title mt-2	">Profil Akun</h2>
 			<div class="row" id="profile-wrapper">
-				<div class="col-sm-12 col-md-6 col-lg-6 mt-2">
-				<!-- 	<?php if(!is_null($data->photo) && file_exists($data->photo)) { ?>
-						<img src="<?= $data->photo; ?>" alt="Foto" class="img-thumbnail">
-					<?php } else { ?> -->
-						<img src="<?= base_url('assets/img/avatar.jpeg') ?>" alt="Foto" class="img-thumbnail">
-<!-- 					<?php } ?> -->
+				<div class="col-sm-12 mt-2">
+					<img class="round img-thumbnail" src="<?= empty($data->photo) ? 'assets/img/avatar-default.jpg' : base_url($data->photo) ?>" alt="" width="90" height="90" id="avatar">
 				</div>
-				<div class="col-sm-12 col-md-6 col-lg-6 mt-4">
+				<div class="col-sm-12 mt-4">
 					<table class="table">
 						
 							<tr>
@@ -23,13 +19,6 @@
 							<tr>
 								<th class="text-secondary text-uppercase">NUPTK/NIP</th>
 								<td class="text-uppercase font-weight-bold"><?= $data->nrp . ' / ' . $data->nidn; ?></td>
-								<td class="text-right text-primary font-weight-bold">
-									<i class="fas fa-check"></i>
-								</td>
-							</tr>
-							<tr>
-								<th class="text-secondary text-uppercase">Username</th>
-								<td class="text-lowercase font-weight-bold"><?= $data->username; ?></td>
 								<td class="text-right text-primary font-weight-bold">
 									<i class="fas fa-check"></i>
 								</td>

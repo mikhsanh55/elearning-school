@@ -638,7 +638,7 @@ class Trainer extends MY_Controller {
 					unlink($data->photo);
 				}
 
-				$path = 'upload/siswa_photo/'.$this->upload->data('file_name');
+				$path = 'upload/guru_photo/'.$this->upload->data('file_name');
 				$update = $this->m_guru->update(['photo' => $path], ['id' => $post['id']]);
 
 				if($update) {
