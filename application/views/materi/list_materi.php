@@ -71,7 +71,7 @@
             <td class="materi-link text-secondary"><?= $materi->title; ?></a></td>
 
             <?php if($this->log_lvl == 'guru'): 
-                $kelas = $this->m_kelas->get_by(['kls.id' => $materi->id_kelas]);
+                $kelas = $this->m_kelas->get_by(['kls.id' => $id_kelas]);
                 $nama_kelas = !empty($kelas->nama) ? $kelas->nama : '';
             ?>
                 <th class="materi-link text-secondary">
@@ -84,7 +84,7 @@
             <td class="text-right">
                 <?php if(!empty($materi->start_date)) { ?>
                     <?php if($this->log_lvl != 'admin' && $this->log_lvl != 'instansi') : ?>
-                    <a href="<?= base_url('Materi/diskusi') . '/'.$materi->id . '/' . $materi->id_kelas; ?>"  data-href="" class="m-2 btn btn-primary btn-sm">
+                    <a href="<?= base_url('Materi/diskusi') . '/'.$materi->id . '/' . $id_kelas; ?>"  data-href="" class="m-2 btn btn-primary btn-sm">
 
                                 <i class="fas fa-comments" title="Edit materi"></i> Diskusi
 
@@ -215,7 +215,7 @@
 
                     <?php endif; ?>
                 <?php } else if($this->log_lvl != 'siswa') { ?>    
-                    <a href="<?= base_url('Materi/diskusi') . '/'.$materi->id . '/' . $materi->id_kelas; ?>"  data-href="" class="m-2 btn btn-primary btn-sm">
+                    <a href="<?= base_url('Materi/diskusi') . '/'.$materi->id . '/' . $id_kelas; ?>"  data-href="" class="m-2 btn btn-primary btn-sm">
 
                                 <i class="fas fa-comments" title="Edit materi"></i> Diskusi
 
