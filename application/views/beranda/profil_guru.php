@@ -248,7 +248,8 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
-        var self
+        var self, photoUser = null, photoFileName, photoExt, photoSize, maxSize, formData;
+        const enableExtPictures = ['jpg', 'jpeg', 'png', 'gif', 'svg'];
 
          $('#photo-file').change(function(e) {
             photoUser = e.target.files[0];
