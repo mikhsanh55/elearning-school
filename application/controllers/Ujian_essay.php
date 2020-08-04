@@ -1129,67 +1129,11 @@ class Ujian_essay extends MY_Controller {
 			//sekalian validasi waktu sudah berlalu...
 
 			if ($cek_sdh_selesai <= $this->total_ujian) {
-
-				//ini jika ujian belum tercatat, belum ikut
-
-				//ambil detil soal
-
-
-
 				$cek_detil_tes = $this->m_ujian->get_by(['uji.id'=>$id_ujian]);
-
-
-
-
-
 				$ikut_ujian = $this->m_ikut_ujian_essay->get_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
 			
 				$cek_sdh_ujian	= $this->m_ikut_ujian_essay->count_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
-
-				
-
 				$acakan = $cek_detil_tes->jenis == "ORDER BY id ASC";
-
-
-
-				// $total_session = $this->db->where(array('id_guru'=>$cek_detil_tes->id_guru,'id_mapel'=>$cek_detil_tes->id_mapel))->get('tb_ujian')->result();
-
-				// $nox=1;
-
-				/*if (count($total_session) > 1) {
-
-					foreach ($total_session as $row) {
-
-						$datas[$row->id] = $nox;
-
-						$nox++;
-
-					}
-
-					$offset = 0;
-
-					$counts = $this->db->select('jumlah_soal')->limit($datas[$cek_detil_tes->id])->get('tb_ujian')->result();
-
-					print_r($counts);
-
-					foreach ($counts as $rows) {
-
-						$offset += $rows->jumlah_soal;
-
-					}
-
-				
-
-				}else{
-
-					$offset = 0;
-
-				}*/
-
-
-
-				
-
 				if ($cek_sdh_ujian <= $this->total_ujian)	{		
 
 					$soal_urut_ok = array();
@@ -1444,7 +1388,7 @@ class Ujian_essay extends MY_Controller {
 
 				    	 $d->id;
 
-				        $tampil_media = tampil_media("./upload/file_ujian_soal/".$d->file, '250px','auto');
+				        $tampil_media = tampil_media("./upload/file_ujian_soal_essay/".$d->file, '250px','auto');
 
 						$vrg = $arr_jawab[$d->id]["r"] == "" ? "N" : $arr_jawab[$d->id]["r"];
 						$val = $arr_jawab[$d->id]["j"];
