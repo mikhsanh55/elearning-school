@@ -16,7 +16,8 @@ class M_jadwal extends MY_Model {
                 jwl.*,
 				mt.title as nama_materi,
                 mt.id_mapel as mt_id_mapel,
-                mp.nama  nama_mp
+                mp.nama  nama_mp,
+                gr.nama as nama_guru
             ")
             ->from('`tb_jadwal` jwl')
             ->join('tb_kelas kls','kls.id=jwl.id_kelas')
