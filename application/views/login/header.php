@@ -34,7 +34,43 @@
 	<script src="<?= base_url(); ?>assets/js/pace.min.js"></script>
 	<script src="<?= base_url(); ?>assets/plugins/modernizr/modernizr-custom.js"></script>
 	<style>
-	
+	.popup-chat {
+      z-index: 99;
+      box-shadow: 0 0 3px 1px #ccc;
+      transition: visibility .5s, opacity .5s, margin-bottom .4s;
+      position: fixed;
+      right: 0;
+      bottom: 60px;
+      background: #fff;
+    }
+    .animate-hide {
+      opacity: 0;
+      visibility: hidden;
+    }
+    .chat-container {
+      cursor:pointer;
+      z-index: 99;
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      background: #f7f7f7;
+      box-shadow: 0 0 5px 1px #ccc;
+      margin: 20px;
+      padding: 10px 20px;
+      border-radius: 30px;
+    }
+    .chat-container .label-section {
+      cursor:pointer;
+      align-self: center;
+    }
+    .chat-container .chat-img {
+      cursor:pointer;
+      width: 30px;
+      height: 30px;
+    }
+    .capitalize {
+      text-transform: capitalize;
+    }
 	</style>
 </head>
 

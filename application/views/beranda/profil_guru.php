@@ -221,7 +221,9 @@
                                 </td>
                             </tr>
                         </table>
-
+                        <section class="mt-4">
+                            <h4><strong>Catatan :</strong> untuk mengubah data profil tekang ikon <i class="fas fa-edit edit text-primary "></i> kemudian tekan <strong>Enter</strong></h4>
+                        </section>
                     </div>
                 </div>
             </div>

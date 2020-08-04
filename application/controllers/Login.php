@@ -57,11 +57,13 @@ class Login extends MY_Controller
         if(empty($check_domain)) {
             $this->logo = base_url('assets/logo/') . '1587386003_logo_Sekolah20200420193323.png';
             $this->title = 'E-Learning Sekolah';
+            $datas['contact_person'] = FALSE;
         }
         else {
             $data = $this->m_setting_instansi->get_by(['id_instansi' => $check_domain->id]);
             $this->logo = base_url('assets/logo/') . $data->logo;
             $this->title = $data->judul;
+            $datas['contact_person'] = $data->id === 10 ? TRUE : FALSE;
         }
 
         $datas['csrf'] = $this->generateCSRFToken();
@@ -69,7 +71,7 @@ class Login extends MY_Controller
 
 		$this->load->view('login/header');
 		$this->load->view('login/index', $datas);
-		$this->load->view('login/footer');
+		$this->load->view('login/footer', $datas);
 	}
 
     // Update status login apakah online atau offline
