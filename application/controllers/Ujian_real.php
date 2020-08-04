@@ -1209,29 +1209,17 @@ class Ujian_real extends MY_Controller {
 
 			$cek_sdh_selesai = $this->m_ikut_ujian->count_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id,'status'=>'N']);
 
-
-
-			// print_r($this->total_ujian);exit;
-
 			// Jika Belum ujian
-
 			if ($cek_sdh_selesai <= $this->total_ujian) {
 
 				//ini jika ujian belum tercatat, belum ikut
-
 				$cek_detil_tes = $this->m_ujian->get_by(['uji.id'=>$id_ujian]);
 				$ikut_ujian = $this->m_ikut_ujian->get_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
 				
 				$cek_sdh_ujian	= $this->m_ikut_ujian->count_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
 				$acakan = $cek_detil_tes->jenis == "ORDER BY id ASC";
-
 				$offset = 0;
-
 				$to = $this->m_soal_ujian->count_by(['id_ujian'=>$id_ujian]);
-
-			
-				// print_r($cek_detil_tes);
-				// exit;
 
 				if ($cek_sdh_ujian <= $this->total_ujian)	{		
 
@@ -1247,16 +1235,6 @@ class Ujian_real extends MY_Controller {
 										->limit($to, $offset)
 										->get()
 										->result();
-					// print_r($a_soal);
-				
-					// exit;
-					// $q_soal	= $this->db->query("SELECT id, file, jawaban, tipe_file, soal, opsi_a, opsi_b, opsi_c, opsi_d, opsi_e, '' AS jawaban FROM m_soal_ujian WHERE id_ujian = '".$cek_detil_tes->id."' ".$acakan." LIMIT ".$offset.", ".$to)->result();
-
-
-
-
-					
-
 					$i = 0;
 
 					foreach ($q_soal as $s) {
@@ -1288,12 +1266,7 @@ class Ujian_real extends MY_Controller {
 						$i++;
 
 					}
-
-
-
 					$soal_urut_ok = $soal_urut_ok;
-
-					
 
 					$list_id_soal	= "";
 
@@ -1543,9 +1516,10 @@ class Ujian_real extends MY_Controller {
 				            $checked = $arr_jawab[$d->id]["j"] == strtoupper($this->opsi[$j]) ? "checked" : "";
 
 				            $pc_pilihan_opsi = explode("#####", $d->$opsi);
-
-				            $tampil_media_opsi = (is_file('./upload/file_ujian_soal/'.$pc_pilihan_opsi[0]) || $pc_pilihan_opsi[0] != "") ? tampil_media('./upload/file_ujian_soal/'.$pc_pilihan_opsi[0],'250px','auto') : '';
-
+				            
+				            $gambar = !is_null($pc_pilihan_opsi[0]) ? base_url('upload/file_ujian_opsi/') . $pc_pilihan_opsi[0] : NULL;
+				            $tampil_media_opsi = (is_file('/upload/file_ujian_opsi/'.$pc_pilihan_opsi[0]) || $pc_pilihan_opsi[0] != "") ? tampil_media('./upload/file_ujian_opsi/'.$pc_pilihan_opsi[0],'250px','auto') : '';
+				            
 					    	$pilihan_opsi = empty($pc_pilihan_opsi[1]) ? "-" : $pc_pilihan_opsi[1];
 				            $html .= '<div class="funkyradio-success" onclick="return simpan_sementara_ujian();">
 
@@ -1554,28 +1528,15 @@ class Ujian_real extends MY_Controller {
 				        }
 
 				        $html .= '</div></div>';
-
 				        $no++;
-
 				    }
-
 				}
 
-
-
 				$a['jam_mulai'] = $detil_tes->tgl_mulai;
-
 				$a['jam_selesai'] = $detil_tes->tgl_selesai;
-
 				$a['id_tes'] = $cek_detil_tes->id;
-
 				$a['no'] = $no;
-
 				$a['html'] = $html;
-
-
-
-				
 
 				$this->load->view('ujian/v_ujian', $a);
 
