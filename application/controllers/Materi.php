@@ -169,7 +169,17 @@ class Materi extends MY_Controller
         $where['mt.id_mapel'] = $post['id_mapel'];
         
         $paginate         = $this->m_materi->paginate_materi($pg,$where,$limit);
-        // print_r($paginate);exit;
+
+        // Cek keaktifan akses materi oleh siswa
+        foreach($paginate['data'] as $key => $row) :
+            $now = date('Y-m-d H:i:s');
+            if($now >= $row->start_date && $now <= $row->end_date) {
+                $row->in_jadwal = TRUE;
+            }
+            else {
+                $row->in_jadwal = FALSE;
+            }
+        endforeach;
       
         $data['paginate'] = $paginate;
 		$data['paginate']['url']	= 'materi/page_load';

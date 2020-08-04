@@ -21,22 +21,12 @@ class M_jadwal extends MY_Model {
             ")
             ->from('`tb_jadwal` jwl')
             ->join('tb_kelas kls','kls.id=jwl.id_kelas')
-            // ->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'inner')
             ->join('m_guru gr','gr.id = jwl.id_guru', 'left')
-            
             ->join('m_materi mt','mt.id = jwl.id_materi','left')
             ->join('m_mapel mp','mp.id = mt.id_mapel','left')
             ->where($where)
             ->get()
             ->result();
-            // ->from('`tb_jadwal` jwl')
-            // ->join('tb_kelas kls','kls.id=jwl.id_kelas')
-            // ->join('m_guru gr','gr.id = kls.id_trainer')
-            // ->join('m_mapel mp','mp.id = kls.id_mapel','left')
-            // ->join('m_materi mt','mt.id = jwl.id_materi','left')
-            // ->where($where)
-            // ->get()
-            // ->result();
 
         return $get;
     }

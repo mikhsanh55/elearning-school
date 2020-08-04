@@ -120,7 +120,7 @@
                             <tr>
                                 <th colspan="3" class="text-center text-uppercase font-weight-bold">
                                     <h3>Profil</h3>
-                                    <img class="round" src="<?= empty($siswa->photo) ? 'assets/img/avatar-default.jpg' : $siswa->photo ?>" alt="" width="90" height="90" id="avatar">
+                                    <img class="round" src="<?= empty($guru->photo) ? 'assets/img/avatar-default.jpg' : $guru->photo ?>" alt="" width="90" height="90" id="avatar">
                                 </th>
                             </tr>
                             <tr>

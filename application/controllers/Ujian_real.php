@@ -424,24 +424,8 @@ class Ujian_real extends MY_Controller {
 		$where['uji.id_instansi'] = $this->akun->instansi;
 
 		if ($this->log_lvl == 'guru') {
-
 			$where['uji.id_guru'] = $this->akun->id;
-
 		}
-
-		// if ($this->log_lvl == 'guru') {
-
-		// 	$where['uji.id_guru'] = $this->akun->id;
-		// 	$id_kelas = $this->m_kelas->get_data_mapel(['dkmapel.id_guru' => $this->akun->id, 'kls.id_instansi' => $this->akun->instansi]);
-		// 	if(empty($id_kelas)) {
-		// 		die("Kelas kosong");
-		// 	}
-		// 	// print_r($id_kelas);exit;
-		// 	$where['uji.id_kelas'] = $id_kelas[0]->id_kelas;
-
-		// }
-
-		
 
 		if ($this->log_lvl == 'siswa') {
 
@@ -450,15 +434,19 @@ class Ujian_real extends MY_Controller {
 			$paginate = $this->m_ujian->paginate_siswa($pg,$where,$limit);
 
 		}else{
-
 		    $paginate = $this->m_ujian->paginate($pg,$where,$limit);
-
 		}
 
-
-		// print_r($paginate);exit;
-	
-
+		// Cek in jadwal
+		foreach($paginate['data'] as $key => $row) :
+			$now = date('Y-m-d H:i:s');
+			if($now >= $row->tgl_mulai && $now <= $row->terlambat) {
+				$row->in_jadwal = TRUE;
+			}
+			else {
+				$row->in_jadwal = FALSE;
+			}
+		endforeach;
 		$data['paginate'] = $paginate;
 
 		$data['paginate']['url']	= 'ujian_real/page_load';
