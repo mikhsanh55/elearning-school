@@ -71,7 +71,7 @@
             <td class="materi-link text-secondary"><?= $materi->title; ?></a></td>
 
             <?php if($this->log_lvl == 'guru'): 
-                $kelas = $this->m_kelas->get_by(['kls.id' => $rows->id_kelas]);
+                $kelas = $this->m_kelas->get_by(['kls.id' => $materi->id_kelas]);
                 $nama_kelas = !empty($kelas->nama) ? $kelas->nama : '';
             ?>
                 <th class="materi-link text-secondary">
