@@ -108,13 +108,6 @@
 					<option value="50">50</option>
 					<option value="100">100</option>
 				</select>
-		
-				<!-- <a class="btn btn-success btn-sm tombol-kanan" href="#" onclick="return m_siswa_add();"><i class="fa fa-user-plus"></i> &nbsp;Tambah</a>
-				<a href="javascript:void(0);" title="edit" id="edited" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> &nbsp;Edit</a>
-				<a href="javascript:void(0);" id="deleted" title="Hapus" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> &nbsp;Hapus</a> -->
-
-				<!-- <a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url(); ?>upload/format_siswa.xlsx"><i class="fa fa-cloud-download" aria-hidden="true"></i> &nbsp;Download Format Import</a>
-				<a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url(); ?>pengusaha/import"><i class="fa fa-cloud-upload" aria-hidden="true"></i> &nbsp;Import</a> -->
 				<a class="btn btn-success btn-sm tombol-kanan" href="#" id="restore"><i class="fa fa-undo" aria-hidden="true" data-graduated="1"></i> &nbsp;Restore</a>
 				<a class="btn btn-success btn-sm tombol-kanan" href="<?php echo base_url('export/siswa/1'); ?>"><i class="fa fa-file-excel-o" aria-hidden="true"></i> &nbsp;Export</a>
 	

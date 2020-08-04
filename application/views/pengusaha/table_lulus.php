@@ -44,24 +44,17 @@
 				<td><?=$rows->nama;?></td>
 				<td><?=$rows->username;?></td>
 				<td><?=$rows->nrp;?></td>
-				<!-- <td><?=$rows->nama_kelas;?></td> -->
 				<td>
 					<?= $rows->nik; ?>
 				</td>
 				<td>
 					<div class="password-input">
-						<input type="password" value="<?= $rows->password; ?>" data-id="<?= $this->encryption->encrypt($rows->user_id); ?>" class="form-control password-reset">
+						<input type="password" data-id="<?= $this->encryption->encrypt($rows->user_id); ?>" class="form-control password-reset">
 						<i class="fas fa-eye mata-kau" data-id="<?= $this->encryption->encrypt($rows->user_id); ?>"></i>
 						</div>
 				</td>
 				<td class="frist">
 					<?php
-
-					// if (empty($get)) {
-					// 	echo '<a href="#" onclick="return m_siswa_u('.$rows->id.');" class="btn btn-success btn-sm mr-2"><i class="glyphicon glyphicon-user" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Buatkan Password</a>';
-					// } else {
-					// 	echo '<a href="#" onclick="return m_siswa_ur('.$rows->id.');" class="btn btn-warning btn-sm mr-2"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Reset Password</a>';
-					// }
 
 					if ($rows->deleted == 1) {
 						 echo $data_link ='<a href="#" onclick="return m_siswa_ak('.$rows->id.',1);" class="btn btn-success btn-sm mr-2"><i class="glyphicon glyphicon-user" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Aktifkan</a>';
