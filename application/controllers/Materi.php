@@ -1336,7 +1336,7 @@ class Materi extends MY_Controller
         echo json_encode(['url' => $url]);
     }
 
-    public function diskusi($id = null, $id_koment = null)
+    public function diskusi($id = null, $id_kelas = null)
     {
 
         if ($this->log_lvl == 'siswa') {
@@ -1356,14 +1356,12 @@ class Materi extends MY_Controller
         $data = array(
             'materi'     => $this->m_materi->get_by(array('id' => $id)),
             'komentar'   => $this->m_komen_materi->get_many_by(array('id_materi' => $id, 'id_head' => 0)),
-            'jadwal'     => $this->m_jadwal->get_by($cari),
-            'jadwal_by'  => $this->m_jadwal->get_by(array('id_materi' => $id)),
+            'jadwal'     => $this->m_jadwal->get_by(['id_materi' => $id, 'id_kelas' => $id_kelas]),
+            'jadwal_by'  => $this->m_jadwal->get_by(['id_materi' => $id, 'id_kelas' => $id_kelas]),
             'id_trainer' => $id_trainer,
             'id_siswa'   => $id_siswa,
             'id_kelas' => $this->uri->segment(4),
         );
-
-        // print_r($data['komentar']);exit;
 
         $this->render('materi/diskusi_head', $data);
     }
