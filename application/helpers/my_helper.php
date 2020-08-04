@@ -124,7 +124,7 @@ function tampil_media($file,$width="320px",$height="240px") {
 	} else {
 		if (in_array($eks, $eks_video)) {
 			if (is_file("./".$file)) {
-				$ret .= '<p><video width="'.$width.'" height="'.$height.'" controls>
+				$ret .= '<p class="mt-2 mb-2"><video width="'.$width.'" height="'.$height.'" controls>
 				  <source src="'.base_url().$file.'" type="video/mp4">
 				  <source src="'.base_url().$file.'" type="application/octet-stream">Browser tidak support</video></p>';
 			} else {
@@ -144,7 +144,7 @@ function tampil_media($file,$width="320px",$height="240px") {
 
 		if (in_array($eks, $eks_image)) {
 			if (is_file("./".$file)) {
-				$ret .= '<div class="gambar"><img src="'.base_url().$file.'" style="width: '.$width.'; height: '.$height.'; display: inline; float: left"></div>';
+				$ret .= '<div class="gambar mt-2 mb-2"><img src="'.base_url().$file.'" style="width: '.$width.'; height: '.$height.'; display: inline; float: left"></div><br>';
 			} else {
 				$ret .= '';
 			}
