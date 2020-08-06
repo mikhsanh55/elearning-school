@@ -35,16 +35,17 @@ class M_ujian extends MY_Model {
 
 	public function get_nilai($where=array()){
 		$get = $this->db->select('
-							ikut.nilai
+							AVG(ikut.nilai) as nilai
 						')
 		->from('tb_ujian uji')
+		->join('tb_kelas_ujian ujikls', 'ujikls.id_ujian = uji.id', 'inner')
 		->join('tb_ikut_ujian ikut','ikut.id_ujian = uji.id','inner')
 		->order_by('uji.id','asc')
 		->where($where)
 		->get()
 		->row();
 	
-      
+      	// echo $this->db->last_query();exit;
 		return $get;
 	}
 
@@ -70,6 +71,7 @@ class M_ujian extends MY_Model {
 						count(uji.id) as cek
 						')
 		->from('tb_ujian uji')
+		->join('tb_kelas_ujian ujikls', 'ujikls.id_ujian = uji.id', 'inner')
 		->join('m_soal_ujian_essay soal','soal.id_ujian = uji.id','inner')
 		->order_by('uji.id','asc')
 		->where($where)

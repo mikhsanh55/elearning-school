@@ -10,7 +10,7 @@
 			<th>Tanggal Mulai</th>
 			<th>Tanggal Selesai</th>
 			<th class="frist">Opsi</th>
-			<th>Status</th>
+			<!-- <th>Status</th> -->
 		</tr>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows):
 			$ujian = $this->m_ujian->get_by(['uji.id'=>$rows->id_ujian]);
@@ -50,7 +50,7 @@
 						</a>
 					</div>				
 				</td>	
-				<td class="text-center mx-auto">
+				<!-- <td class="text-center mx-auto">
 					<div class="dropdown">
 					  <button class="btn <?= $class_status_siswa; ?> btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					    <?= $rows->status_siswa == NULL ? 'Mengulang' : ucwords($rows->status_siswa) ?>
@@ -62,7 +62,7 @@
 					    <a class="dropdown-item" href="#" onclick="updateStatusSiswa('remedial', <?= $rows->id; ?>)">Remedial</a>
 					  </div>
 					</div>
-				</td> 
+				</td>  -->
 			</tr>
 		<?php $i++;endforeach ?>
 	</thead>

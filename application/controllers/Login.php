@@ -63,7 +63,7 @@ class Login extends MY_Controller
             $data = $this->m_setting_instansi->get_by(['id_instansi' => $check_domain->id]);
             $this->logo = base_url('assets/logo/') . $data->logo;
             $this->title = $data->judul;
-            $datas['contact_person'] = $data->id === 10 ? TRUE : FALSE;
+            $datas['contact_person'] = $data->id_instansi === 10 ? TRUE : FALSE;
         }
 
         $datas['csrf'] = $this->generateCSRFToken();

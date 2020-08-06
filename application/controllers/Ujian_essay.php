@@ -6,8 +6,6 @@
 
 class Ujian_essay extends MY_Controller {
 
-
-
     function __construct() {
 
         parent::__construct();
@@ -1388,7 +1386,7 @@ class Ujian_essay extends MY_Controller {
 
 				    	 $d->id;
 
-				        $tampil_media = tampil_media("./upload/file_ujian_soal_essay/".$d->file, '250px','auto');
+				        $tampil_media = tampil_media("upload/file_ujian_soal_essay/".$d->file, '250px','auto');
 
 						$vrg = $arr_jawab[$d->id]["r"] == "" ? "N" : $arr_jawab[$d->id]["r"];
 						$val = $arr_jawab[$d->id]["j"];
@@ -1626,7 +1624,7 @@ class Ujian_essay extends MY_Controller {
 
 		public function result($id,$mapel=null) {
 
-	
+			$this->page_title = 'Ujian Essay';
 
 			$data = array(
 

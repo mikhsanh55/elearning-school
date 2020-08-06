@@ -163,8 +163,6 @@
     widget      = $(".step");
     total_widget = widget.length;
     
-
-
     //jawaban dan nomer
     simpan_sementara_ujian = function() {
         var f_asal  = $("#_form");

@@ -21,10 +21,10 @@
 	<tbody>
 	    <?php if(count($paginate['data']) > 0) { ?>
 	<?php $i= $page_start; foreach ($paginate['data'] as $rows): 
-		$uts = $this->m_ujian->get_nilai(['uji.type_ujian'=>'uts','uji.id_kelas'=>$rows->id_kelas,'id_user'=>$rows->id_peserta]);
+		$uts = $this->m_ujian->get_nilai(['uji.type_ujian'=>'uts','ujikls.id_kelas'=>$rows->id_kelas,'id_user'=>$rows->id_peserta]);
 		$uts_essay = $this->m_ujian->get_essay(['uji.type_ujian'=>'uts','uji.id_kelas'=>$rows->id_kelas,'ikut.id_user'=>$rows->id_peserta]);
 
-		$ujian_harian = $this->m_ujian->get_essay(['uji.type_ujian'=>'harian','uji.id_kelas'=>$rows->id_kelas,'ikut.id_user'=>$rows->id_peserta]);
+		$ujian_harian = $this->m_ujian->get_nilai(['uji.type_ujian'=>'harian','ujikls.id_kelas'=>$rows->id_kelas,'ikut.id_user'=>$rows->id_peserta]);
 		$ujian_harian_essay = $this->m_ujian->get_essay(['uji.type_ujian'=>'harian','uji.id_kelas'=>$rows->id_kelas,'ikut.id_user'=>$rows->id_peserta]);
 
 		$utsNilai = (isset($uts->nilai)) ? (int)$uts->nilai:0;
@@ -34,7 +34,7 @@
 		$harianNilaiEssay = (isset($ujian_harian_essay->nilai)) ? (int)$ujian_harian_essay->nilai:0;
 
 		// Check UTS
-		$check = $this->m_ujian->get_check(['uji.type_ujian'=>'uts','uji.id_kelas'=>$rows->id_kelas]);
+		$check = $this->m_ujian->get_check(['uji.type_ujian'=>'uts','ujikls.id_kelas'=>$rows->id_kelas]);
 		
 		if($check > 0){
 			$total_uts = $utsNilai;
@@ -44,7 +44,7 @@
 		$total_uts = ($utsNilai + $utsNilaiEssay) / 2;
 
 		// Check Ulangan Harian
-		$check = $this->m_ujian->get_check(['uji.type_ujian'=>'harian','uji.id_kelas'=>$rows->id_kelas]);
+		$check = $this->m_ujian->get_check(['uji.type_ujian'=>'harian','ujikls.id_kelas'=>$rows->id_kelas]);
 		
 		if($check > 0){
 			$total_harian = $harianNilai;
@@ -54,12 +54,12 @@
 		$total_harian = ($harianNilai + $harianNilaiEssay) / 2;
 
 		// Check UAS
-		$uas = $this->m_ujian->get_nilai(['uji.type_ujian'=>'uas','uji.id_kelas'=>$rows->id_kelas,'id_user'=>$rows->id_peserta]);
+		$uas = $this->m_ujian->get_nilai(['uji.type_ujian'=>'uas','ujikls.id_kelas'=>$rows->id_kelas,'id_user'=>$rows->id_peserta]);
 		$uas = $this->m_ujian->get_essay(['uji.type_ujian'=>'uas','uji.id_kelas'=>$rows->id_kelas,'ikut.id_user'=>$rows->id_peserta]);
 
 		$uasNilai = (isset($uas->nilai)) ? (int)$uas->nilai:0;
 		$uasNilaiEssay = (isset($uas_essay->nilai)) ? (int)$uas_essay->nilai:0;
-		$check = $this->m_ujian->get_check(['uji.type_ujian'=>'uas','uji.id_kelas'=>$rows->id_kelas]);
+		$check = $this->m_ujian->get_check(['uji.type_ujian'=>'uas','ujikls.id_kelas'=>$rows->id_kelas]);
 		
 		if($check > 0){
 			$total_uas = $uasNilai;
@@ -69,6 +69,10 @@
 
 		$tugas = $this->m_tugas->get_nilai([ 'tgs.id_guru' => $rows->id_guru, 'id_mapel' => $rows->id_mapel, 'tgs.id_kelas'=>$rows->id_kelas,'id_siswa'=>$rows->id_peserta]);
 		$nama_guru = $this->m_guru->get_by(['id' => $rows->id_guru]);
+
+		// Nilai Keaktifan
+		$sumKeaktifan = 4;
+		$nilaiKeaktifan = ($rows->active_login + $rows->active_video + $rows->active_materi + $rows->active_diskusi + $rows->active_tugas) / $sumKeaktifan;
 			?>
 				<tr>
 					<td align="center" class="frist"><?=$i;?></td>
@@ -82,7 +86,7 @@
 					<td><?=(isset($total_uts)) ? (int)$total_uts:0;?></td>
 					<td><?=(isset($uas->nilai)) ? (int)$uas->nilai:0;?></td>
 					<td><?=(isset($tugas->nilai)) ? (int)$tugas->nilai:0;?></td>
-					<td><?=(isset($uas->nilai)) ? $uas->nilai:0;?></td>
+					<td><?=$nilaiKeaktifan <= 0 ? 0 : (int)$nilaiKeaktifan;?></td>
 				</tr>
 			<?php $i++;endforeach ?>
 	<?php } else { ?>		
