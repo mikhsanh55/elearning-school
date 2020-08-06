@@ -1490,7 +1490,7 @@ class Ujian_real extends MY_Controller {
 
 				    	 $d->id;
 
-				        $tampil_media = tampil_media("./upload/file_ujian_soal/".$d->file, '250px','auto');
+				        $tampil_media = tampil_media("upload/file_ujian_soal/".$d->file, '250px','auto');
 
 				        $vrg = $arr_jawab[$d->id]["r"] == "" ? "N" : $arr_jawab[$d->id]["r"];
 
@@ -1515,7 +1515,7 @@ class Ujian_real extends MY_Controller {
 				            $pc_pilihan_opsi = explode("#####", $d->$opsi);
 				            
 				            $gambar = !is_null($pc_pilihan_opsi[0]) ? base_url('upload/file_ujian_opsi/') . $pc_pilihan_opsi[0] : NULL;
-				            $tampil_media_opsi = (is_file('/upload/file_ujian_opsi/'.$pc_pilihan_opsi[0]) || $pc_pilihan_opsi[0] != "") ? tampil_media('./upload/file_ujian_opsi/'.$pc_pilihan_opsi[0],'250px','auto') : '';
+				            $tampil_media_opsi = (is_file('upload/file_ujian_opsi/'.$pc_pilihan_opsi[0]) || $pc_pilihan_opsi[0] != "") ? tampil_media('upload/file_ujian_opsi/'.$pc_pilihan_opsi[0],'250px','auto') : '';
 				            
 					    	$pilihan_opsi = empty($pc_pilihan_opsi[1]) ? "-" : $pc_pilihan_opsi[1];
 				            $html .= '<div class="funkyradio-success" onclick="return simpan_sementara_ujian();">

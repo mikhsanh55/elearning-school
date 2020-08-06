@@ -1386,7 +1386,7 @@ class Ujian_essay extends MY_Controller {
 
 				    	 $d->id;
 
-				        $tampil_media = tampil_media("./upload/file_ujian_soal_essay/".$d->file, '250px','auto');
+				        $tampil_media = tampil_media("upload/file_ujian_soal_essay/".$d->file, '250px','auto');
 
 						$vrg = $arr_jawab[$d->id]["r"] == "" ? "N" : $arr_jawab[$d->id]["r"];
 						$val = $arr_jawab[$d->id]["j"];
