@@ -113,6 +113,7 @@ function tampil_media($file,$width="320px",$height="240px") {
 
 	$pc_file = explode(".", $file);
 	$eks = end($pc_file);
+	$eks = strtolower($eks);
 
 	$eks_video = array("mp4","flv","mpeg");
 	$eks_audio = array("mp3","acc");
