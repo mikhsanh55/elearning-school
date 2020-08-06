@@ -17,6 +17,10 @@ class Trainer extends MY_Controller {
         $this->load->model('m_admin');
         $this->load->model('m_detail_mapel');
         $this->load->model('m_instansi');
+        $this->load->model('m_komen_materi');
+        $this->load->model('m_tugas');
+        $this->load->model('m_tugas_nilai');
+        $this->load->model('m_tugas_attach');
 
         $this->load->library('validasi');
 
@@ -68,10 +72,6 @@ class Trainer extends MY_Controller {
 			], 500);
 		}
 		
-	}
-
-	public function findId($obj, $search) {
-
 	}
     
 	public function m_guru() {
@@ -550,6 +550,87 @@ class Trainer extends MY_Controller {
 		$this->load->view('pengajar/data',$data);
 	}
 
+	/*
+	*	Return @void
+	*	get file dan hapus
+	*/
+	private function hapusFileTugas($id_tugas) {
+		$getFile = $this->m_tugas_attach->get_many_by(['id_tugas' => $id_tugas]);
+		if(count($getFile) > 0) {
+			// Delete file
+			foreach($getFile as $fileTugas) :
+				$pathFile = 'assets/tugas/attach/' . $fileTugas->file;
+				if(file_exists($pathFile)) {
+					unlink($pathFile);
+				}
+			endforeach;
+		}
+
+		// Delete data dan nilai tugas
+		$this->m_tugas_attach->delete(['id_tugas' => $id_tugas]);
+		$this->m_tugas_nilai->delete(['id_tugas' => $id_tugas]);
+	}
+
+	/*
+	*	Perform delete tugas dan delete data tugas
+	*/
+	private function getTugasFile($arrayIdGuru = []) {
+		$idTugas = $this->m_tugas->get_many_wherein('id_guru', $arrayIdGuru);
+
+		if(count($idTugas) > 0) {
+			foreach($idTugas as $tugas) :
+				$this->hapusFileTugas($tugas->id);
+			endforeach;
+		}
+
+		// Delete data tugas 
+		$this->m_tugas->delete_wherein('id_guru', $arrayIdGuru);
+	}
+
+	/*
+	*	return @void
+	*	delete data chat and its assets ( image and file )
+	*/
+	private function deleteChatDiskusi($arrayIdGuru = []) {
+		$dataKomenGuru = $this->m_komen_materi->get_many_wherein('id_trainer', $arrayIdGuru);
+
+		if(count($dataKomenGuru) > 0) {
+			foreach($dataKomenGuru as $komen) :
+				if($komen->file !== 0 && !empty($komen->file) && file_exists($komen->file)) {
+					unlink($komen->file);
+				}
+			endforeach;
+		}
+
+		// Dlete data chat diskusi
+		$this->m_komen_materi->delete_wherein('id_trainer', $arrayIdGuru);
+	}
+
+	private function deleteDataUjian($arrayIdGuru = []) {
+		$this->load->model('m_ujian');
+		$this->load->model('m_detail_ujian');
+		$this->load->model('m_ikut_ujian');
+		$this->load->model('m_ikut_ujian_essay');
+		$this->load->model('m_soal_ujian');
+		$this->load->model('m_soal_ujian_essay');
+		$dataUjian = $this->m_ujian->get_many_wherein('id_guru', $arrayIdGuru);
+		if(count($dataUjian) > 0) {
+			// Delete related data to data ujian
+			foreach($dataUjian as $ujian) :
+				$this->m_detail_ujian->delete(['id_ujian' => $ujian->id]);
+				$this->m_ikut_ujian->delete(['id_ujian' => $ujian->id]);
+				$this->m_ikut_ujian_essay->delete(['id_ujian' => $ujian->id]);
+				$this->db->delete('tb_ikut_ujian_pertama', ['id_ujian' => $ujian->id]);
+				$this->db->delete('tb_ikut_ujian_essay_pertama', ['id_ujian' => $ujian->id]);
+				$this->m_soal_ujian->delete(['id_ujian' => $ujian->id]);
+				$this->m_soal_ujian_essay->delete(['id_ujian' => $ujian->id]);
+			endforeach;
+		}
+
+		// Delete Data ujian
+		$this->m_ujian->delete_wherein('id_guru', $arrayIdGuru);
+	}
+
 	public function multi_delete(){
 		$post = $this->input->post();
 
@@ -557,10 +638,38 @@ class Trainer extends MY_Controller {
 			$where[] = $val;
 		}
 
+		$this->db->trans_start(); # Starting Transaction
+		$this->db->trans_strict(FALSE); # See Note 01. If you wish can remove as well 
+
 		$kirim = $this->db->where_in('id',$where)->delete('m_guru');
 		$kirim = $this->db->where_in('kon_id',$where)->where_in('level','guru')->delete('m_admin');
         // Hapus rank
         $kirim = $this->db->where_in('id_trainer', $where)->delete('tb_rank');
+        // Hapus jadwal
+        $kirim = $this->db->where_in('id_guru', $where)->delete('tb_jadwal');
+        $kirim = $this->db->where_in('id_guru', $where)->delete('tb_detail_mapel');
+        $kirim = $this->db->where_in('id_guru', $where)->delete('tb_detail_kelas_mapel');
+
+        // Hapus Notif dan chat
+        $this->deleteChatDiskusi($where);
+        $kirim = $this->db->where_in('id_trainer', $where)->delete('tb_notifikasi_forum');
+
+        // Hapus tugas dan file tugasnya dan nilai tugas ( Untuk file tugas siswa tidak terhapus )
+        $this->getTugasFile($where);
+
+        // Hapus semua data ulangan ( soal, hasil ujian, dll )
+        $this->deleteDataUjian($where);
+
+        $this->db->trans_complete();
+
+        if ($this->db->trans_status() === FALSE) {
+		    $this->db->trans_rollback();
+		    $result = FALSE;
+		} 
+		else {
+		    $this->db->trans_commit();
+		    $result = TRUE;
+		}
 
 		if ($kirim) {
 			$result = true;

@@ -49,7 +49,7 @@
 
 			$jumlah_soal_essay = $this->m_soal_ujian_essay->count_by(['id_ujian' => $rows->id]);
 			$cekSudahEssay = $this->m_ikut_ujian_essay->count_by(['id_ujian'=>$rows->id,'id_user'=>$this->akun->id,'status'=>'N']);
-			$cekSudahEssay = $cekHasilEssay > 0 ? '<a class="btn btn-warning btn-sm mr-2  mb-2" href="'.base_url('ujian_essay/ikuti_ujian/'.encrypt_url($rows->id)).'"  data-toggle="tooltip" title="" disabled>Sudah Essay</a>' : ( $jumlah_soal_essay > 0 ? ' <a class="btn btn-success btn-sm mr-2  mb-2" href="'.base_url('ujian_essay/ikuti_ujian/'.encrypt_url($rows->id)).'" data-toggle="tooltip" title="">Mulai Essay</a> ' : '<span class="btn btn-danger btn-sm text-center">Belum ada soal</span>' );
+			$cekSudahEssay = $cekSudahEssay > 0 ? '<a class="btn btn-warning btn-sm mr-2  mb-2" href="'.base_url('ujian_essay/ikuti_ujian/'.encrypt_url($rows->id)).'"  data-toggle="tooltip" title="" disabled>Sudah Essay</a>' : ( $jumlah_soal_essay > 0 ? ' <a class="btn btn-success btn-sm mr-2  mb-2" href="'.base_url('ujian_essay/ikuti_ujian/'.encrypt_url($rows->id)).'" data-toggle="tooltip" title="">Mulai Essay</a> ' : '<span class="btn btn-danger btn-sm text-center">Belum ada soal</span>' );
 			$noJadwal = '<span class="btn btn-danger btn-sm text-center">Belum masuk jadwal</span>';
 
 

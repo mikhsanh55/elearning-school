@@ -92,4 +92,17 @@ class MY_Model extends CI_Model
         return array('data' => $results, 'counts' => $counts);
     }
 
+    public function get_many_wherein($columnName, $where = []) {
+        $get = $this->db->select('*')
+                        ->from($this->_table)
+                        ->where_in($columnName, $where)
+                        ->get()
+                        ->result();
+        return $get;
+    }
+
+    public function delete_wherein($columnName, $where = []) {
+        $delete = $this->db->where_in($columnName, $where)->delete($this->_table); 
+    }
+
 }

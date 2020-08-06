@@ -706,6 +706,7 @@ class Dtest extends MY_Controller {
 		      if($update) {
 
 		        $this->db->query("DELETE FROM m_mapel WHERE id = '".$this->input->post('id')."'");
+		        
 
         	     $ret_arr['status'] 	= "ok";
 

@@ -55,6 +55,11 @@ class M_kelas extends MY_Model {
 		$get = $this->db->select('
 									dekls.id_peserta,
 									sis.nama as siswa,
+									sis.active_num as active_login,
+									sis.active_video,
+									sis.active_read as active_materi,
+									sis.active_diskusi,
+									sis.active_tugas,
 									kls.nama AS nama_kelas,
 									mpl.nama as mapel, mpl.id as id_mapel,
 									dekls.id_kelas,

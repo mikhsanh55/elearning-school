@@ -56,6 +56,7 @@ class Ujian_real extends MY_Controller {
 		$this->render('ujian/list',$data);
 
 	}
+
 	public function data_soal($id_ujian=null){
 
 
@@ -77,13 +78,9 @@ class Ujian_real extends MY_Controller {
 			'ujian' => $this->m_ujian->get_by(['uji.id'=>decrypt_url($id_ujian)])
 
 		);
-		// print_r($this->m_ujian->get_by(['uji.id'=>decrypt_url($id_ujian)]));exit;
 
 		$this->render('ujian/list_soal',$data);
-
 	}
-
-
 
 	public function add(){
 
@@ -1761,7 +1758,7 @@ class Ujian_real extends MY_Controller {
 
 		public function result($id,$mapel=null) {
 
-	
+			$this->page_title = 'Ujian PG';
 
 			$data = array(
 

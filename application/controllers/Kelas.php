@@ -733,56 +733,53 @@ class Kelas extends MY_Controller
 
   public function update_kelas_all(){
 
-	$post = $this->input->post(null,true);
+		$post = $this->input->post(null,true);
 
 
 
-	if ($post['aksi'] == 1) {
+		if ($post['aksi'] == 1) {
 
 
 
-		$siswa = $this->m_siswa->get_many_by(['id_jurusan'=>$post['id_jurusan']]);
+			$siswa = $this->m_siswa->get_many_by(['id_jurusan'=>$post['id_jurusan']]);
 
-		foreach ($siswa as $key => $rows) {
+			foreach ($siswa as $key => $rows) {
 
-			$data[$key]['id_peserta'] = $rows->id;
+				$data[$key]['id_peserta'] = $rows->id;
 
-			$data[$key]['id_kelas'] = $post['id_kelas'];
+				$data[$key]['id_kelas'] = $post['id_kelas'];
+
+			}
+
+			$this->m_detail_kelas->delete(['id_kelas'=>$post['id_kelas']]);
+
+			$this->db->insert_batch('tb_detail_kelas',$data);
+
+			
+
+		}else{
+
+			$this->m_detail_kelas->delete(['id_kelas'=>$post['id_kelas']]);
 
 		}
 
-		$this->m_detail_kelas->delete(['id_kelas'=>$post['id_kelas']]);
 
-		$this->db->insert_batch('tb_detail_kelas',$data);
 
-		
+		$json = array(
 
-	}else{
+			'id_jurusan'    => $post['id_jurusan'], 
 
-		$this->m_detail_kelas->delete(['id_kelas'=>$post['id_kelas']]);
+			'kelas'         => $post['id_kelas'], 
+
+		);
+
+
+
+		echo json_encode($json);
+
+
 
 	}
-
-
-
-	$json = array(
-
-		'id_jurusan'    => $post['id_jurusan'], 
-
-		'kelas'         => $post['id_kelas'], 
-
-	);
-
-
-
-	echo json_encode($json);
-
-
-
-}
-
-  
-
 
 
   public function multi_delete(){
@@ -927,11 +924,5 @@ class Kelas extends MY_Controller
   		$this->sendAjaxResponse($data, 200);
   	}
 }
-
-
-
-
-
 /* End of file Kelas.php */
-
 /* Location: ./application/controllers/Kelas.php */

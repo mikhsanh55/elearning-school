@@ -6,13 +6,21 @@
 	</header>
 	<section class="d-flex flex-column pl-3 pr-4 pt-3 pb-3" style="line-height: 20px;">
 		<p><i class="far fa-comments mr-2" style="line-height: 20px;transform: scale(1);"></i> Chat kami sekarang yuk!</p>
-		<div class="d-flex justify-content-between">
+		<!-- <div class="d-flex justify-content-between">
 			<p><strong> Pak Iqbal </strong></p>
 			<p><strong> Pak Fajar </strong></p>
 		</div>
 		<div class="d-flex justify-content-between">
 			<p><strong> 082216169143 </strong></p>
 			<p><strong>	087825979439 </strong></p>
+		</div> -->
+		<div class="d-flex justify-content-between">
+			<p><strong> Pak Ikhsan </strong></p>
+			<p><strong> Pak Aji </strong></p>
+		</div>
+		<div class="d-flex justify-content-between">
+			<p><strong> 085314028181 </strong></p>
+			<p><strong>	087710781433 </strong></p>
 		</div>
 	</section>
 </div>

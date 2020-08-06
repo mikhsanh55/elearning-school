@@ -6,8 +6,6 @@
 
 class Ujian_essay extends MY_Controller {
 
-
-
     function __construct() {
 
         parent::__construct();
@@ -1626,7 +1624,7 @@ class Ujian_essay extends MY_Controller {
 
 		public function result($id,$mapel=null) {
 
-	
+			$this->page_title = 'Ujian Essay';
 
 			$data = array(
 
