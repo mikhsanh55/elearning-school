@@ -103,6 +103,8 @@ class MY_Model extends CI_Model
 
     public function delete_wherein($columnName, $where = []) {
         $delete = $this->db->where_in($columnName, $where)->delete($this->_table); 
+
+        return $delete;
     }
 
 }

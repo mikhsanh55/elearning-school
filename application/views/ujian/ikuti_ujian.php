@@ -67,11 +67,6 @@
                 </div>
 
                 <div id="waktu_game_over"></div>
-
-            <!--
-            <a href="#" class="btn btn-success btn-lg" id="tbl_mulai" onclick="return konfirmasi_token(<?php echo $du['id']; ?>)"><i class="fa fa-check-circle"></i> MULAI</a>
-            <div class="btn btn-danger" id="ujian_selesai">UJIAN TELAH SELESAI</div>
-          -->
         </div>
       </div>
     </div>
@@ -93,7 +88,6 @@
 	        <span aria-hidden="true">&times;</span>
 	      </button>
 	    </div>
-
     	<!-- Body -->
     	<div class="modal-body">
     		<p>

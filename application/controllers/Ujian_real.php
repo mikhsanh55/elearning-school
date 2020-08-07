@@ -529,8 +529,10 @@ class Ujian_real extends MY_Controller {
 
 	}
 
-
-
+	/*
+	* return @html
+	* Data untuk hasil ujian
+	*/
 	public function page_load_result($pg = 1){
 
 		$post = $this->input->post();
@@ -554,39 +556,18 @@ class Ujian_real extends MY_Controller {
 					$where["(lower(gr.nama) like '%".strtolower($post['search'])."%' )"] = null;
 
 					break;
-
-				default:
-
-					# code...
-
-					break;
-
 			}
 
 		}
-
-
-
-		
-
 		$where['id_ujian'] = $post['id_ujian'];
-
 		$where['status'] = 'N';
 
 		$paginate = $this->m_ikut_ujian->paginate($pg,$where,$limit);
-
 		$data['paginate'] = $paginate;
-
 		$data['paginate']['url']	= 'ujian_real/page_load_result';
-
 		$data['paginate']['search'] = 'lookup_key';
-
 		$data['page_start'] = $paginate['counts']['from_num'];
-
 		$data['id_ujian'] = $post['id_ujian'];
-
-
-
 		$this->load->view('ujian/table_hasil',$data);
 
 		$this->generate_page($data);
@@ -929,57 +910,115 @@ class Ujian_real extends MY_Controller {
 					@unlink("./upload/file_ujian_opsi/".$pc_opsi_e[0]);
 
 				}
-
 			}
-
-
-
 			echo json_encode(['result'=>true]);
 
 		}
 
+		/*
+		* @return boolean
+		* Untuk get data hasil ujian dan siap untuk dihapus
+		*/
+		private function hapusHasilUjian($modelName, $idUjian) {
+			$checkExist = $modelName->get_many_by(['id_ujian' => $idUjian]);
+			if(!is_null($checkExist)) {
+				$delete = $modelName->delete(['id_ujian' => $idUjian]);
+				return $delete;
+			}
+			return FALSE;
+		}
 
+		/*
+		* Untuk mengulang ujian
+		*/
+		public function batalkanUjian() {
+			$post = $this->input->post();
+			$izin = $post['izin'] === 0 ? 1 : 1;
+			$this->db->trans_begin();
+			// Update data Ujian
+			$data = [
+				'jumlah_soal' => $post['soal'],
+				'izin' => $izin
+			];
+			$updateUjian = $this->m_ujian->update($data, ['id' => $post['id']]);
 
-		public function izinkan(){
+			// Delete data hasil ujian
+			$delHasilPg = $this->hapusHasilUjian($this->m_ikut_ujian, $post['id']);
+			$delHasilEssay = $this->hapusHasilUjian($this->m_ikut_ujian_essay, $post['id']);
+			$delLogPg = $this->db->where(['id_ujian' => $post['id']])->delete('tb_ikut_ujian_pertama');
+			$delLogEssay = $this->db->where(['id_ujian' => $post['id']])->delete('tb_ikut_ujian_essay_pertama');
 
+			if ($this->db->trans_status() === FALSE) {
+				$this->db->trans_rollback();
+			}
+			else {
+				$this->db->trans_commit();
+			}
+
+			if($updateUjian && $delHasilPg && $delHasilEssay && $delLogPg && $delLogEssay) {
+				$this->sendAjaxResponse([
+					'status' => TRUE,
+					'msg' => 'Data ujian berhasil di reset'
+				], 200);
+			}
+			else {
+				$this->sendAjaxResponse([
+					'status' => FALSE,
+					'msg' => 'Data ujian gagal direset'
+				], 500);
+			}
+		}
+
+		/*
+		* return @json
+		* Hapus Hasil ujian siswa
+		*/
+		public function delete_hasil_ujian() {
 			$post = $this->input->post();
 
+			foreach ($post['id'] as $val) {
+				$where[] = $val;
+			}
 
+			$this->db->trans_begin();
 
+			$delete = $this->m_ikut_ujian->delete_wherein('id', $where);
+
+			if ($this->db->trans_status() === FALSE) {
+				$this->db->trans_rollback();
+			}
+			else {
+				$this->db->trans_commit();
+			}
+
+			if($delete) {
+				$this->sendAjaxResponse([
+					'status' => TRUE,
+					'msg' => 'Berhasil menghapus data'
+				], 200);
+			}
+			else {
+				$this->sendAjaxResponse([
+					'status' => FALSE,
+					'msg' => 'Gagal menghapus data'
+				], 500);
+			}
+		}
+		
+		public function izinkan(){
+			$post = $this->input->post();
 			if ($post['izin'] == 0) {
-
-
-
 				$data = [
-
 					'jumlah_soal' => $post['soal'],
-
 					'izin'		  => 1,
-
 				];
-
-
-
 				$title = 'Mengizinkan';
-
-
-
 			}else{
-
-
-
 				$data = [
-
 					'jumlah_soal' => $post['soal'],
-
 					'izin'		  => 0,
-
 				];
-
-
-
 				$title = 'Membatalkan';
-
 			}
 
 		
@@ -1919,16 +1958,6 @@ class Ujian_real extends MY_Controller {
 			$html = '';
 
 			$no = 1;
-
-
-
-
-
-
-
-
-
-
 
 			if (!empty($soal_urut_ok)) {
 

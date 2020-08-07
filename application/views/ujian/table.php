@@ -33,10 +33,14 @@
 			$soalPg = '<a href="'.base_url('ujian_real/data_soal/'.encrypt_url($rows->id)).'" class="btn btn-primary btn-sm ml-2 mr-2 mb-2">Soal PG</a>';
 			$soalEssay = '<a href="'.base_url('ujian_essay/data_soal/'.encrypt_url($rows->id)).'" class="btn btn-primary btn-sm ml-2 mr-2  mb-2">Soal Essay</a>';
 			$cekHasilPg = $this->m_ikut_ujian->count_by(['id_ujian'=>$rows->id,'status'=>'N']);
+			$cekHasilEssay = $this->m_ikut_ujian_essay->count_by(['id_ujian'=>$rows->id,'status'=>'N']);
+
+			$ulangUjianBtn = ($cekHasilEssay > 0 && $cekHasilPg > 0 && $rows->type_ujian === 'harian') ? '<a href="javascript:void(0);" class="btn btn-danger btn-sm mr-2  mb-2 ulang-ujian" data-id="'.$rows->id.'" data-izin="'.$rows->izin.'" data-soal="'.$soal.'">Ulang ujian</a>' : NULL;
 			$cekHasilPg = $cekHasilPg > 0 ? '<button type="button" class="btn btn-info btn-sm mr-2  mb-2" onclick="window.location = `'.base_url('ujian_real/result/'.encrypt_url($rows->id)).'`"  data-toggle="tooltip" title="">Hasil PG</button>' : NULL;
 
-			$cekHasilEssay = $this->m_ikut_ujian->count_by(['id_ujian'=>$rows->id,'status'=>'N']);
+			
 			$cekHasilEssay = $cekHasilEssay > 0 ? '<button type="button" class="btn btn-info btn-sm mr-2  mb-2" onclick="window.location = `'.base_url('ujian_essay/result/'.encrypt_url($rows->id)).'`"  data-toggle="tooltip" title="">Hasil Essay</button>' : NULL;
+			
 
 			// Button for Admin
 			$izinUjian = $rows->izin === 0 ? '<a href="javascript:void(0);" class="btn btn-success btn-sm mr-2  mb-2 izinkan" data-id="'.$rows->id.'" data-izin="'.$rows->izin.'" data-soal="'.$soal.'">Izinkan Ujian</a>' : '<a href="javascript:void(0);" class="btn btn-danger btn-sm mr-2  mb-2 izinkan" data-id="'.$rows->id.'" data-izin="'.$rows->izin.'" data-soal="'.$soal.'">Batalkan Ujian</a>';
@@ -45,11 +49,11 @@
 			// Button for Siswa
 			$jumlah_soal_pg = $this->m_soal_ujian->count_by(['id_ujian' => $rows->id]);
 			$cekSudahPg = $this->m_ikut_ujian->count_by(['id_ujian'=>$rows->id,'id_user'=>$this->akun->id,'status'=>'N']);
-			$cekSudahPg = $cekSudahPg > 0 ? '<button type="button" class="btn btn-warning btn-sm mr-2  mb-2" onclick="window.location = `'.base_url('ujian_real/ikuti_ujian/'.encrypt_url($rows->id)).'`"  data-toggle="tooltip" title="" disabled>Sudah PG</button>' : ($jumlah_soal_pg  > 0 ? '<a class="btn btn-success btn-sm mr-2  mb-2" href="'.base_url('ujian_real/ikuti_ujian/'.encrypt_url($rows->id)).'"  data-toggle="tooltip" title="">Mulai PG</a>' : '<span class="btn btn-danger btn-sm text-center">Belum ada soal</span>');
+			$cekSudahPg = $cekSudahPg > 0 ? '<button type="button" class="btn btn-success btn-sm mr-2  mb-2" onclick="window.location = `'.base_url('ujian_real/ikuti_ujian/'.encrypt_url($rows->id)).'`"  data-toggle="tooltip" title="" disabled>Sudah PG</button>' : ($jumlah_soal_pg  > 0 ? '<a class="btn btn-success btn-sm mr-2  mb-2" href="'.base_url('ujian_real/ikuti_ujian/'.encrypt_url($rows->id)).'"  data-toggle="tooltip" title="">Mulai PG</a>' : '<span class="btn btn-danger btn-sm text-center">Belum ada soal</span>');
 
 			$jumlah_soal_essay = $this->m_soal_ujian_essay->count_by(['id_ujian' => $rows->id]);
 			$cekSudahEssay = $this->m_ikut_ujian_essay->count_by(['id_ujian'=>$rows->id,'id_user'=>$this->akun->id,'status'=>'N']);
-			$cekSudahEssay = $cekSudahEssay > 0 ? '<a class="btn btn-warning btn-sm mr-2  mb-2" href="'.base_url('ujian_essay/ikuti_ujian/'.encrypt_url($rows->id)).'"  data-toggle="tooltip" title="" disabled>Sudah Essay</a>' : ( $jumlah_soal_essay > 0 ? ' <a class="btn btn-success btn-sm mr-2  mb-2" href="'.base_url('ujian_essay/ikuti_ujian/'.encrypt_url($rows->id)).'" data-toggle="tooltip" title="">Mulai Essay</a> ' : '<span class="btn btn-danger btn-sm text-center">Belum ada soal</span>' );
+			$cekSudahEssay = $cekSudahEssay > 0 ? '<button class="btn btn-success btn-sm mr-2  mb-2" data-toggle="tooltip" title="" disabled>Sudah Essay</button>' : ( $jumlah_soal_essay > 0 ? ' <a class="btn btn-success btn-sm mr-2  mb-2" href="'.base_url('ujian_essay/ikuti_ujian/'.encrypt_url($rows->id)).'" data-toggle="tooltip" title="">Mulai Essay</a> ' : '<span class="btn btn-danger btn-sm text-center">Belum ada soal</span>' );
 			$noJadwal = '<span class="btn btn-danger btn-sm text-center">Belum masuk jadwal</span>';
 
 
@@ -80,6 +84,7 @@
 							echo $soalEssay;
 							echo $cekHasilPg;
 							echo $cekHasilEssay;
+							echo $ulangUjianBtn;
 						break;
 
 						case 'admin':
@@ -113,16 +118,37 @@
 </table>
 
 <script type="text/javascript">
+	var conf = '';
 	$(document).ready(function(){
 		$('[data-toggle="tooltip"]').tooltip();   
 	});
 
+	$(document).on('click', '.ulang-ujian', function() {
+		conf = confirm('Seluruh data hasil ujian akan terhapus, yakin?');
+		if(conf) {
+			$.ajax({
+				type:'post',
+				url : '<?=base_url('ujian/batalkan-ujian');?>',
+				dataType : 'json',
+				data : {
+					id   : $(this).data('id'),
+					izin : $(this).data('izin'),
+					soal : $(this).data('soal'),
+				},
+				success:function(response){
+					alert(response.msg);
+					pageLoad(1,'ujian_real/page_load');
+				}
+			})
+		}
+		else {
+			return false;
+		}
+	});
+
 	$(document).on('click','.izinkan',function(){
-
-		var y = confirm('Apakah anda yakin akan mengizinkan ujian ?');
-
-		if (y == true) {
-
+		conf = confirm('Apakah anda yakin akan mengizinkan ujian ?');
+		if (conf == true) {
 			$.ajax({
 				type:'post',
 				url : '<?=base_url('ujian_real/izinkan');?>',
@@ -137,13 +163,9 @@
 					pageLoad(1,'ujian_real/page_load');
 				}
 			})
-
-
 		}else{
 			return false;
 		}
-
-		
 	})
 
 </script>

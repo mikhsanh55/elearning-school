@@ -2076,4 +2076,40 @@ class Ujian_essay extends MY_Controller {
 		$this->render('ujian_essay/import_soal', $data);
 	}
 
+
+	/*
+	* return @json
+	* Hapus Hasil ujian siswa
+	*/
+	public function delete_hasil_ujian() {
+		$post = $this->input->post();
+
+		foreach ($post['id'] as $val) {
+			$where[] = $val;
+		}
+
+		$this->db->trans_begin();
+
+		$delete = $this->m_ikut_ujian_essay->delete_wherein('id', $where);
+
+		if ($this->db->trans_status() === FALSE) {
+			$this->db->trans_rollback();
+		}
+		else {
+			$this->db->trans_commit();
+		}
+
+		if($delete) {
+			$this->sendAjaxResponse([
+				'status' => TRUE,
+				'msg' => 'Berhasil menghapus data'
+			], 200);
+		}
+		else {
+			$this->sendAjaxResponse([
+				'status' => FALSE,
+				'msg' => 'Gagal menghapus data'
+			], 500);
+		}
+	}
 }
