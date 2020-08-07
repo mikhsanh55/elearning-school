@@ -155,7 +155,9 @@ function timer2() {
 	var id_ujian = $("#id_ujian").val();
 	var statuse = $("#_statuse").val();
 	statuse = parseInt(statuse);
-	if (statuse == 1) {
+	console.warn('statuse');
+	console.error(statuse === 1)
+	if (statuse === 1) {
 		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-primary btn-sm btn-block" id="tbl_mulai" onclick="return konfirmasi_token2('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
 		
 		$('#waktu_akhir_ujian').countdowntimer({
@@ -166,7 +168,7 @@ function timer2() {
 	 		timeUp : hilangkan_tombol,
 	    });
 	} else if (statuse == 0) {
-		// $("#btn_mulai").addClass("btn btn-primary btn-sm btn-block");
+		$("#btn_mulai").addClass("btn btn-primary btn-sm btn-block");
 		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-primary btn-sm btn-block" id="tbl_mulai" onclick="return konfirmasi_token2('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
 		$("#waktu_").hide();
 		$('#akan_mulai').countdowntimer({
@@ -177,8 +179,6 @@ function timer2() {
 	 		timeUp : timeIsUp,
 	    });
 	} else if (statuse == 2) {
-		hilangkan_tombol();
-	} else {
 		hilangkan_tombol();
 	}
 }

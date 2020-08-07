@@ -2,7 +2,7 @@
 <table class="table table-bordered table-striped table-hovered">
 	<thead>
 		<tr>
-			<!-- <th class="frist"><input type="checkbox" name="checkall" id="checkall"></th> -->
+			<th class="frist"><input type="checkbox" name="checkall" id="checkall"></th>
 			<th class="frist">No</th>
 			<th>Siswa</th>
 			<th>Kelas</th>
@@ -34,6 +34,7 @@
 			$nama_kelas = !empty($nama_kelas) ? $nama_kelas->nama : '';
 		?>
 			<tr>
+				<td><input type="checkbox" name="checklist[]" class="checklist" data-id= "<?=encrypt_url($rows->id);?>" value="<?=$rows->id;?>"></td>
 				<td align="center" class="frist"><?=$i;?></td>
 				<td><?=$siswa->nama;?></td>
 				<td><?= $nama_kelas; ?></td>
@@ -44,12 +45,6 @@
 				<td><?=$ujian->min_nilai;?></td>
 				<td><?=$rows->tgl_mulai;?></td>
 				<td><?=$rows->tgl_selesai;?></td>
-				<!-- <td class="frist">
-						<a href="<?=base_url('ujian_real/riwayat/'.encrypt_url($rows->id).'/'.encrypt_url($id_ujian));?>" class="btn btn-primary btn-sm ml-2 mr-2">
-							Lihat Jawaban
-						</a>
-					</div>				
-				</td>	 -->
 			</tr>
 		<?php $i++;endforeach ?>
 	</thead>
