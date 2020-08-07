@@ -28,6 +28,7 @@
 			<th>Reset Password</th>
 			<th>Opsi</th>
 		</tr>
+		
 		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $x= 1; foreach ($paginate['data'] as $rows):
 			$id_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $rows->id]) ?? NULL;
