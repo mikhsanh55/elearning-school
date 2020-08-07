@@ -1,5 +1,3 @@
-
-
 <style type="text/css">
 	h1{
 		font-family: sans-serif;
@@ -138,15 +136,6 @@
 				<form action="" method="post" id="form-siswa" enctype="multipart/form-data">
 					<input type="hidden" name="id" id="id" value="0">
 					<table class="table table-form">
-						<!--<tr>-->
-						<!--	<td style="width: 25%">Photo</td>-->
-						<!--	<td style="width: 75%">-->
-						<!--		<input type="file" class="form-control" name="photo" id="photo">-->
-						<!--		<input type="hidden" class="form-control" name="photo_before" id="photo_before">-->
-						<!--		<span id="photo-txt"></span>-->
-						<!--	</td>-->
-						<!--</tr>-->
-
 						<tr>
 							<td style="width: 25%">Nama Lengkap<span class="text-danger">*</span> </td>
 							<td style="width: 75%"><input type="text" class="form-control" name="nama" id="nama" required></td>
@@ -194,11 +183,6 @@
 							<td style="width: 25%">Alamat</td>
 							<td style="width: 75%"><textarea type="text" class="form-control" name="alamat" id="alamat" ></textarea></td>
 						</tr>
-						
-						
-
-						
-
 						</table>
 					</div>
 			<div class="modal-footer">
@@ -213,6 +197,7 @@
 <script src="<?= base_url(); ?>assets/js/jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
+		let i, elementsId = [];
 		pageLoad(1,'pengusaha/page_load');
 
 		$('#limit').change(function(){
@@ -236,6 +221,17 @@
 
 
 	})
+
+	function emptyAllInput() {
+		i = 0;
+		elementsId = ['id', 'kelompok', 'nama', 'username', 'pangkat', 'nrp', 'telp', 'tempat', 'tanggal', 'nim', 'nik', 'email', 'alamat', 'instansi', 'tahun_angkatan_masuk'];
+		for(i  = 0;i < elementsId.length;i++) {
+			$('#' + elementsId[i]).val('');
+			if(elementsId === 'nama') {
+				$('#nama').focus();
+			}
+		}
+	}
 
 	function pageLoad(pg, url, search){
 		$.ajax({
@@ -366,7 +362,10 @@
 		
 	})
 
+	
+
 	$(document).on('click','#edited',function(){
+		emptyAllInput();
 		var totalChecked = $('.checklist:checked').length;
 		var opsi = [];
 

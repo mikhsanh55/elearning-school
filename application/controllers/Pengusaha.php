@@ -678,8 +678,10 @@ class Pengusaha extends MY_Controller {
 	}
 
 	public function detail_siswa($id=0){
-		$siswa = $this->m_siswa->get_kelas_by(array('akun.id'=>$id));
+		// $siswa = $this->m_siswa->get_kelas_by(array('akun.id'=>$id));
+		$siswa = $this->m_siswa->get_by(['id' => $id]);
 		$data = array('data' => $siswa, );
+		// print_r($this->db->last_query());exit;
 		echo json_encode($data);
 		exit;
 	}

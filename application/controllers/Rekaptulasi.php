@@ -60,9 +60,6 @@ class Rekaptulasi extends MY_Controller {
 		$this->load->view('rekaptulasi/table',$data);
 		$this->generate_page($data);
 	}
-
-	
-
 }
 
 /* End of file instantsi.php */
