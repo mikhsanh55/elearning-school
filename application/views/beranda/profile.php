@@ -30,13 +30,13 @@
 									<i class="fas fa-check"></i>
 								</td>
 							</tr>
-							<tr>
+							<!-- <tr>
 								<th class="text-secondary text-uppercase">Telpon</th>
 								<td class="text-uppercase font-weight-bold"><?= $data->no_telpon; ?></td>
 								<td class="text-right text-primary font-weight-bold">
 									<i class="fas fa-check"></i>
 								</td>
-							</tr>
+							</tr> -->
 							<tr class="m-3">
 								<th class="text-secondary text-uppercase">
 									<span class="badge badge-pill badge-light d-block p-1"></span>

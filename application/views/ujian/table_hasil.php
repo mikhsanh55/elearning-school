@@ -13,9 +13,8 @@
 			<th>KKM</th>
 			<th>Waktu Mulai</th>
 			<th>Waktu Selesai</th>
-			<!-- <th class="frist">Opsi</th> -->
 		</tr>
-		<?php $i= $page_start; foreach ($paginate['data'] as $rows):
+		<?php if(count($paginate['data']) > 0) { $i= $page_start; foreach ($paginate['data'] as $rows):
 			$ujian = $this->m_ujian->get_by(['uji.id'=>$rows->id_ujian]);
 			$siswa = $this->m_siswa->get_by(['id'=>$rows->id_user]);
 			$keterangan = ($rows->nilai >= $ujian->min_nilai) ? 'LULUS' : 'BELUM LULUS';
@@ -46,7 +45,11 @@
 				<td><?=$rows->tgl_mulai;?></td>
 				<td><?=$rows->tgl_selesai;?></td>
 			</tr>
-		<?php $i++;endforeach ?>
+		<?php $i++;endforeach; } else { ?>
+			<tr>
+				<td colspan="11" class="text-center">Data Kosong</td>
+			</tr>
+		<?php } ?>
 	</thead>
 <tbody>
 </tbody>
