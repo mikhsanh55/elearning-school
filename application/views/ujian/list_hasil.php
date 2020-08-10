@@ -111,8 +111,8 @@
 				
 				<?php if ($this->log_lvl != 'siswa'): ?>
 					<!-- <a class="btn btn-success btn-sm tombol-kanan" href="<?=base_url('ujian_real/add');?>"><i class="fa fa-user-plus"></i> &nbsp;Tambah</a>
-					<a href="javascript:void(0);" title="edit" id="edited" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> &nbsp;Edit</a>
-					<a href="javascript:void(0);" id="deleted" title="Hapus" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> &nbsp;Hapus</a> -->
+					<a href="javascript:void(0);" title="edit" id="edited" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> &nbsp;Edit</a>-->
+					<a href="javascript:void(0);" id="deleted" title="Hapus" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> &nbsp;Hapus</a> 
 					<a href="<?= base_url('export/pdf_hasil_ujian/') . encrypt_url($id_ujian); ?>" class="btn btn-sm btn-danger tombol-kanan" title="Export Hasil Ujian ke PDF" target="_blank">
 						<i class="fas fa-print"></i>&nbsp;Export ke PDF
 					</a>
@@ -120,12 +120,6 @@
 						<i class="fas fa-file-excel-o"></i>&nbsp;Export ke Excel
 					</a>
 				<?php endif;?>
-
-		<!-- 		<a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url(); ?>upload/format_siswa.xlsx"><i class="fa fa-cloud-download" aria-hidden="true"></i> &nbsp;Download Format Import</a>
-				<a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url(); ?>pengusaha/import"><i class="fa fa-cloud-upload" aria-hidden="true"></i> &nbsp;Import</a> -->
-	
-			
-			
 				<div id="content-view"></div>
 			</div>
 		</div>
@@ -212,7 +206,7 @@
 	})
 
 
-	$(document).on('click','#deleted',function(){
+$(document).on('click','#deleted',function(){
 		var totalChecked = $('.checklist:checked').length;
 		var opsi = [];
 
@@ -224,26 +218,22 @@
 		}else{
 			alert('Tidak ada yang dipilih!');
 		}
-
-		
-
 		if (y == true) {
 
 			$.ajax({
 				type:'post',
-				url : '<?=base_url('ujian_real/multi_delete');?>',
+				url : '<?=base_url('ujian/delete-hasil-ujian');?>',
 				dataType : 'json',
 				data : {
 					id : opsi,
 				},
-				success:function(response){
-					if (response.result == true) {
-						alert('Hapus Berhasil');
+				success:function(res){
+					if (res.status) {
+						pageLoad(1,'ujian_real/page_load_result');	
 					}else{
-						alert('Hapus Gagal');
+						alert(res.msg);
+						return false;
 					}
-
-					pageLoad(1,'ujian_real/page_load_result');
 				}
 			})
 
@@ -253,116 +243,7 @@
 		}
 
 		
-	})
-
-	$(document).on('click','#edited',function(){
-		var totalChecked = $('.checklist:checked').length;
-		var opsi = [];
-
-		if (totalChecked > 1) {
-			alert('Pilih satu untuk edit  !');
-			return false;
-		}else if(totalChecked < 1){
-			alert('Tidak ada yang dipilih!');
-			return false;
-		}else{
-			window.location = base_url + 'ujian_real/edit/' + $('.checklist:checked').data('id');			
-		}
-
-		
-	})
-
-	$(document).on('click','.buat-pass',function(){
-	
-		var y = confirm('Apakah anda yakin untuk membuat password untuk nama ' + $(this).data('nama') +' ?');
-
-		if (y == true) {
-
-			$.ajax({
-				type:'post',
-				url : '<?=base_url('ujian_real/buatkan_password');?>',
-				dataType : 'json',
-				data : {
-					id : $(this).data('id'),
-				},
-				success:function(response){
-					if (response.status == 1) {
-						alert(response.message);
-					}else{
-						alert(response.message);
-					}
-
-					pageLoad(1,'ujian_real/page_load_result');
-				}
-			})
-
-
-		}else{
-			return false;
-		}
-	})
-
-	$(document).on('click','.reset-pass',function(){
-	
-		var y = confirm('Apakah anda yakin untuk membuat password untuk nama ' + $(this).data('nama') +' ?');
-
-		if (y == true) {
-
-			$.ajax({
-				type:'post',
-				url : '<?=base_url('ujian_real/reset_password');?>',
-				dataType : 'json',
-				data : {
-					id : $(this).data('id'),
-				},
-				success:function(response){
-					if (response.status == 1) {
-						alert(response.message);
-					}else{
-						alert(response.message);
-					}
-
-					pageLoad(1,'ujian_real/page_load_result');
-				}
-			})
-
-
-		}else{
-			return false;
-		}
-	})
-
-	$(document).on('click','.aktif-non-akun',function(){
-	
-		var y = confirm('Apakah anda yakin untuk membuat password untuk nama ' + $(this).data('nama') +' ?');
-
-		if (y == true) {
-
-			$.ajax({
-				type:'post',
-				url : '<?=base_url('ujian_real/aktif_non_akun');?>',
-				dataType : 'json',
-				data : {
-					id : $(this).data('id'),
-					status : $(this).data('status')
-				},
-				success:function(response){
-					if (response.status == 1) {
-						alert(response.message);
-					}else{
-						alert(response.message);
-					}
-
-					pageLoad(1,'ujian_real/page_load_result');
-				}
-			})
-
-
-		}else{
-			return false;
-		}
-	})
-
+	});
 </script>
 
 

@@ -10,7 +10,6 @@
 			<th>Tanggal Mulai</th>
 			<th>Tanggal Selesai</th>
 			<th class="frist">Opsi</th>
-			<!-- <th>Status</th> -->
 		</tr>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows):
 			$ujian = $this->m_ujian->get_by(['uji.id'=>$rows->id_ujian]);
