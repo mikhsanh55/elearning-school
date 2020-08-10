@@ -540,13 +540,13 @@ class Ujian_essay extends MY_Controller {
 
 				case 0:
 
-					$where["(lower(mp.nama) like '%".strtolower($post['search'])."%' )"] = null;
+					$where["(lower(siswa.nama) like '%".strtolower($post['search'])."%' )"] = null;
 
 					break;
 
 				case 1:
 
-					$where["(lower(gr.nama) like '%".strtolower($post['search'])."%' )"] = null;
+					$where["(lower(kls.nama) like '%".strtolower($post['search'])."%' )"] = null;
 
 					break;
 
@@ -1628,7 +1628,8 @@ class Ujian_essay extends MY_Controller {
 
 			$data = array(
 
-				'id_ujian' => decrypt_url($id)
+				'id_ujian' => decrypt_url($id),
+				'searchFilter' => ['Nama Siswa', 'Kelas']
 
 			);
 

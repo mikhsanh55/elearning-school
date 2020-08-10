@@ -451,6 +451,80 @@ class Export extends MY_Controller {
 		$this->excelColumnNo = 1;
 	}
 
+	public function hasil_ujian_essay($md5_id_ujian) {
+		$this->load->model('m_ikut_ujian_essay');
+		$this->load->model('m_ujian');
+		$this->load->model('m_siswa');
+		$this->load->model('m_kelas');
+		$this->load->model('m_detail_kelas');
+		$id = decrypt_url($md5_id_ujian);
+		$this->excelDatas = $this->m_ikut_ujian_essay->get_many_by(['id_ujian' => $id]);
+
+		if(count($this->excelDatas) > 0) {
+			$data_ujian = $this->m_ujian->get_by(['uji.id' => $this->excelDatas[0]->id_ujian ]);
+			$data_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $this->excelDatas[0]->id_user]);
+			$kelas = $this->m_kelas->get_by(['kls.id' => $data_kelas->id_kelas]);
+			$nama_kelas = !empty($kelas) ? $kelas->nama : '';	
+
+			
+			$nama_guru = $data_ujian->nama_guru;
+			$nama_mapel = $data_ujian->nama_mapel;
+		}
+		else {
+			$result['nama_kelas'] = '';
+			$nama_guru = '';
+			$nama_mapel = '';	
+		}
+		// Initialize excel object
+		$this->excelInitialize();
+
+		$this->excelCellsHeading = [
+			['cell' => 'A', 'label' => 'No'],
+			['cell' => 'B', 'label' => 'Siswa'],
+			['cell' => 'C', 'label' => 'Kelas'],
+			['cell' => 'D', 'label' => 'Nilai'],
+			['cell' => 'E', 'label' => 'KKM'],
+			['cell' => 'F', 'label' => 'Keteramgan'],
+			['cell' => 'G', 'label' => 'Waktu Mulai'],
+			['cell' => 'H', 'label' => 'Waktu Selesai']
+		];
+
+		// Write header of Document
+		$this->excelObject->getActiveSheet()->SetCellValue('A' . 1, 'Data Hasil Ujian Essay Kelas ' . $nama_kelas);
+		$this->excelObject->getActiveSheet()->SetCellValue('A' . 2, 'Guru ' . $nama_guru);
+		$this->excelObject->getActiveSheet()->SetCellValue('A' . 3, 'Mata Pelajaran ' . $nama_mapel);
+
+		$this->excelDataStart = 6;
+		// Write heading excel use method on MY_Controller.php
+		$this->excelWriteHeading(5);
+
+		foreach($this->excelDatas as $data) {
+			$ujian = $this->m_ujian->get_by(['uji.id'=>$data->id_ujian]);
+			$nilai = $this->db->select('sum(nilai) as total')->where('id_ikut_essay',$data->id)->get('tb_jawaban_essay')->row();
+			$keterangan = ($nilai->total >= $ujian->min_nilai) ? 'LULUS' : 'BELUM LULUS';
+
+			$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, $this->excelColumnNo);
+			$this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $data->nama_siswa);
+			$this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $data->nama_kelas);
+			$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $nilai->total);
+			$this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $ujian->min_nilai);
+			$this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, $keterangan);
+			$this->excelObject->getActiveSheet()->SetCellValue('G' . $this->excelDataStart, $data->tgl_mulai);
+			$this->excelObject->getActiveSheet()->SetCellValue('H' . $this->excelDataStart, $data->tgl_selesai);
+
+			$this->excelDataStart++;
+			$this->excelColumnNo++;
+		}
+
+		// Create Filename and output as .xlsx
+		$this->excelFileName = "Data Hasil Ujian Essay - " . $nama_kelas . ' ' . date('m-d-Y') . ".xlsx";
+		$this->excelDisplayOutput();
+
+		// Set No Column back to 1 for reuse
+		$this->excelColumnNo = 1;
+
+	}
+
 	// Hasil Ujian PG
 	public function hasil_ujian($md5_id_ujian) {
 		$this->load->model('m_ikut_ujian');
@@ -494,7 +568,7 @@ class Export extends MY_Controller {
 
 
 		// Write header of Document
-		$this->excelObject->getActiveSheet()->SetCellValue('A' . 1, 'Data Hasil Ujian Kelas ' . $nama_kelas);
+		$this->excelObject->getActiveSheet()->SetCellValue('A' . 1, 'Data Hasil Ujian PG Kelas ' . $nama_kelas);
 		$this->excelObject->getActiveSheet()->SetCellValue('A' . 2, 'Guru ' . $nama_guru);
 		$this->excelObject->getActiveSheet()->SetCellValue('A' . 3, 'Mata Pelajaran ' . $nama_mapel);
 
@@ -543,7 +617,7 @@ class Export extends MY_Controller {
 
 
 		// Create Filename and output as .xlsx
-		$this->excelFileName = "Data Hasil Ujian - " . date('m-d-Y') . ".xlsx";
+		$this->excelFileName = "Data Hasil Ujian PG Kelas - " . $nama_kelas . ' ' . date('m-d-Y') . ".xlsx";
 		$this->excelDisplayOutput();
 
 		// Set No Column back to 1 for reuse

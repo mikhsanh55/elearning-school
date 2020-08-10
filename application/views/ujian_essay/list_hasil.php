@@ -95,7 +95,20 @@
 							</div>
 						</div>
 					</div>
-					
+					<form class="form-inline" style="display: block;">
+						<div class="form-group">
+							<label for="search">Search&nbsp;&nbsp;</label>
+							<div class="rs-select2 js-select-simple select--no-search">
+								<select id="filter" class="form-control input-sm">
+									<?php foreach ($searchFilter as $key => $val): ?>
+										<option value="<?=$key;?>"><?=$val;?></option>
+									<?php endforeach ?>
+								</select>
+								<div class="select-dropdown"></div>
+							</div>
+							<input type="text" style="width: 50%;height:30px;" class="form-control input-sm" id="search" placeholder="ketikan yang anda cari" name="search">
+						</div>
+					</form>					
 					<br>
 				</div>
 			</div>
@@ -114,6 +127,9 @@
 					<a href="<?= base_url('export/pdf_hasil_ujian_essay/') . encrypt_url($id_ujian); ?>" title="Export" class="btn btn-danger btn-sm" target="_blank">
 						<i class="fas fa-file-pdf-o"></i> &nbsp;Export
 					</a>
+					<a href="<?= base_url('export/hasil_ujian_essay/') . encrypt_url($id_ujian); ?>" class="btn btn-sm btn-success" title="Export Hasil Ujian ke Excel">
+						<i class="fas fa-file-excel-o"></i>&nbsp;Export ke Excel
+					</a>
 				<?php endif;?>
 				<div id="content-view"></div>
 			</div>
@@ -131,6 +147,10 @@
 		pageLoad(1,'ujian_essay/page_load_result');
 
 		$('#limit,#tipe_ujian_essay').change(function(){
+			pageLoad(1,'ujian_essay/page_load_result');
+		});
+
+		$('#filter').change(function(){
 			pageLoad(1,'ujian_essay/page_load_result');
 		});
 
@@ -199,6 +219,8 @@
 		}
 		
 	})
+
+	$(document).on('')
 
 	$(document).on('click','#deleted',function(){
 		var totalChecked = $('.checklist:checked').length;

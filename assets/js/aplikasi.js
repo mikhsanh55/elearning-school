@@ -158,7 +158,7 @@ function timer2() {
 	console.warn('statuse');
 	console.error(statuse === 1)
 	if (statuse === 1) {
-		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-primary btn-sm btn-block" id="tbl_mulai" onclick="return konfirmasi_token2('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
+		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-primary btn-block" id="tbl_mulai" onclick="return konfirmasi_token2('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
 		
 		$('#waktu_akhir_ujian').countdowntimer({
 	        startDate : tgl_sekarang,

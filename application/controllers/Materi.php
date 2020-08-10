@@ -18,6 +18,7 @@ class Materi extends MY_Controller
         $this->load->model('m_instansi');
         $this->load->model('m_detail_kelas');
         $this->load->model('m_detail_kelas_mapel');
+        // $this->load->model('m_detail_materi');
         
 
         if ($this->session->userdata('admin_level') == null) {
@@ -506,12 +507,14 @@ class Materi extends MY_Controller
             'is_verify'  => 1
         ];
 
-        if (isset($_FILES['file[]']['name'])) {
+        // print_r($_FILES['file']);exit;
+        if (isset($_FILES['file']['name'])) {
             // Upload and insert file to detail materi
-            for($x = 0; $x < count($_FILES['file[]']['name']);$x++) {
+
+            for($x = 0; $x < count($_FILES['file']['name']);$x++) {
 
             
-                $file     = stripcslashes($_FILES['file[]']['name'][$x]);
+                $file     = stripcslashes($_FILES['file']['name'][$x]);
                 $namafile = DATE('d-m-Y') . "-" . time() . "-" . Str_replace(" ", "_", $file);
 
                 $config['upload_path']   = 'assets/materi/pdf/';
@@ -520,8 +523,9 @@ class Materi extends MY_Controller
                 $config['file_name']     = $namafile;
 
                 $this->load->library('upload', $config);
+
                 $this->upload->initialize($config);
-                if (!$this->upload->do_upload('file[]')) {
+                if (!$this->upload->do_upload('file' . $x)) {
                     $d = [
                         'status' => false,
                         'msg'    => 'Upload file gagal! .'.$this->upload->display_errors(),
@@ -534,14 +538,13 @@ class Materi extends MY_Controller
                     $file_name   = $upload_data['file_name'];
 
                     $data['file_pdf'] = $file_name;
-
                     $this->db->trans_start();
-                    $detailMateri = [
-                        'id_materi' => $post['imateri'],
-                        'pdf' => $config['upload_path'] . $namafile
-                    ];
+                    // $detailMateri = [
+                    //     'id_materi' => $post['imateri'],
+                    //     'pdf' => $config['upload_path'] . $namafile
+                    // ];
 
-                    $this->m_detail_materi->insert($detailMateri);
+                    // $this->m_detail_materi->insert($detailMateri);
                     $this->db->trans_complete();
 
                     if ($this->db->trans_status() === FALSE) {
@@ -569,9 +572,9 @@ class Materi extends MY_Controller
 
                 if($this->log_lvl === 'guru') {
                     $data_guru = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
-                            
-                    $this->db->where('id', $this->session->admin_konid);
-                    $this->db->update('m_guru', ['sum_upload_materi' => $data_guru->sum_upload_materi + 1]);
+                    $this->m_guru->update([
+                        'sum_upload_materi' => $data_guru->sum_upload_materi + 1
+                    ], ['id' => $this->session->admin_konid]);
                 }
                 
                 $this->sendAjaxResponse([
@@ -603,7 +606,7 @@ class Materi extends MY_Controller
                     
                     // Update aktivitas guru
                     $this->m_guru->update([
-                        'sum_upload_materi' => $data_guru->sum_upload_materi + 1
+                        'sum_upload_materi' => $dataGuru->sum_upload_materi + 1
                     ], ['id' => $this->session->admin_konid]);
                 }
                     
@@ -611,6 +614,7 @@ class Materi extends MY_Controller
                     'status' => true,
                     'msg'    => 'Materi updated!',
                     'res'    => $this->input->post(),
+                    'action' => 'Tidak ada file asw'
                 ], 200);
             } else {
                  $this->sendAjaxResponse([
