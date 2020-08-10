@@ -418,7 +418,7 @@ class Materi extends MY_Controller
 
                 $d = [
                     'status' => true,
-                    'msg'    => 'Sub Modul berhasil diupdate!',
+                    'msg'    => 'Materi berhasil diupdate!',
                     'data'   => $this->input->post(),
                 ];
                 echo json_encode($d);
@@ -478,7 +478,7 @@ class Materi extends MY_Controller
 
                 $d = [
                     'status' => true,
-                    'msg'    => 'Sub Modul berhasil diupdate!',
+                    'msg'    => 'Materi berhasil diupdate!',
                     'data'   => $this->input->post(),
                 ];
                 echo json_encode($d);
@@ -497,101 +497,126 @@ class Materi extends MY_Controller
 
     public function update_pdf()
     {
-        $data = [
+        $post = $this->input->post();
+        $dataUpdate = [
             'id_mapel'   => $this->input->post('imapel'),
             'req_add'    => 0,
             'req_edit'   => 1,
             'req_delete' => 0,
+            'is_verify'  => 1
         ];
 
-            $data['is_verify'] = 1;
-        if (isset($_FILES['file']['name'])) {
+        if (isset($_FILES['file[]']['name'])) {
+            // Upload and insert file to detail materi
+            for($x = 0; $x < count($_FILES['file[]']['name']);$x++) {
 
-            $file     = stripcslashes($_FILES['file']['name']);
-            $namafile = DATE('d-m-Y') . "-" . time() . "-" . Str_replace(" ", "_", $file);
+            
+                $file     = stripcslashes($_FILES['file[]']['name'][$x]);
+                $namafile = DATE('d-m-Y') . "-" . time() . "-" . Str_replace(" ", "_", $file);
 
-            $config['upload_path']   = 'assets/materi/pdf/';
-            $config['allowed_types'] = 'pdf|pdfx|doc|docx';
-            $config['max_size']      = 102400; // 100 MB
-            $config['file_name']     = $namafile;
+                $config['upload_path']   = 'assets/materi/pdf/';
+                $config['allowed_types'] = 'pdf|pdfx|doc|docx';
+                $config['max_size']      = 102400; // 100 MB
+                $config['file_name']     = $namafile;
 
-            $this->load->library('upload', $config);
-            $this->upload->initialize($config);
-            if (!$this->upload->do_upload('file')) {
-                $d = [
-                    'status' => false,
-                    'msg'    => 'Upload file gagal! .'.$this->upload->display_errors(),
-                ];
-                echo json_encode($d);
-                http_response_code(500);
-                exit;
-            } else {
-                $upload_data = $this->upload->data(); //Returns array of containing all of the data related to the file you uploaded.
-                $file_name   = $upload_data['file_name'];
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config);
+                if (!$this->upload->do_upload('file[]')) {
+                    $d = [
+                        'status' => false,
+                        'msg'    => 'Upload file gagal! .'.$this->upload->display_errors(),
+                    ];
+                    echo json_encode($d);
+                    http_response_code(500);
+                    exit;
+                } else {
+                    $upload_data = $this->upload->data(); //Returns array of containing all of the data related to the file you uploaded.
+                    $file_name   = $upload_data['file_name'];
 
-                $data['file_pdf'] = $file_name;
+                    $data['file_pdf'] = $file_name;
 
-                $edit     = $this->db->where('id', $this->input->post('imateri'))->get('m_materi')->row();
-                $file_pdf = (isset($edit->file_pdf)) ? $edit->file_pdf : 'none.php';
-                $lokasi   = 'assets/materi/pdf/' . $file_pdf;
+                    $this->db->trans_start();
+                    $detailMateri = [
+                        'id_materi' => $post['imateri'],
+                        'pdf' => $config['upload_path'] . $namafile
+                    ];
 
-                if (file_exists($lokasi)) {
-                    unlink($lokasi);
+                    $this->m_detail_materi->insert($detailMateri);
+                    $this->db->trans_complete();
+
+                    if ($this->db->trans_status() === FALSE) {
+                        
+                        $this->db->trans_rollback();
+                        $this->sendAjaxResponse([
+                            'status' => FALSE,
+                            'msg'    => 'Cannot insert data detail materi',
+                        ], 500);
+                        exit;
+                    } 
+                    else {
+                        # Everything is Perfect. 
+                        # Committing data to the database.
+                        $this->db->trans_commit();
+                    }
                 }
 
-                $update = $this->db->update('m_materi', $data, array('id' => $this->input->post('imateri')));
+            
             }
 
+            // Update Data Materi
+            $update = $this->m_materi->update($dataUpdate, ['id' => $post['imateri']]);
             if ($update) {
-                $data_guru = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
-                        
-                $this->db->where('id', $this->session->admin_konid);
-                $this->db->update('m_guru', ['sum_upload_materi' => $data_guru->sum_upload_materi + 1]);
-                $d = [
+
+                if($this->log_lvl === 'guru') {
+                    $data_guru = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
+                            
+                    $this->db->where('id', $this->session->admin_konid);
+                    $this->db->update('m_guru', ['sum_upload_materi' => $data_guru->sum_upload_materi + 1]);
+                }
+                
+                $this->sendAjaxResponse([
                     'status' => true,
-                    'msg'    => 'Sub Modul updated!',
+                    'msg'    => 'Materi updated!',
                     'res'    => $this->input->post(),
-                ];
-                echo json_encode($d);
-                http_response_code(200);
+                ], 200);
             } else {
-                $d = [
+                $this->sendAjaxResponse([
                     'status' => false,
-                    'msg'    => 'Sub Modul not updated!',
-                ];
-                echo json_encode($d);
-                http_response_code(500);
+                    'msg'    => 'Materi not updated!',
+                ], 500);
             }
+
         } else {
 
-            $data = [
-                'id_mapel'   => $this->input->post('imapel'),
+            $dataUpdate = [
+                'id_mapel'   => $post['imapel'],
                 'is_verify'  => 1,
                 'req_add'    => 0,
                 'req_edit'   => 1,
                 'req_delete' => 0,
             ];
-            $this->db->where('id', $this->input->post('imateri'));
-            $update = $this->db->update('m_materi', $data);
+
+            $update = $this->m_materi->update($dataUpdate, ['id' => $post['imateri']]);
             if ($update) {
-                $data_guru = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
-                        
-                $this->db->where('id', $this->session->admin_konid);
-                $this->db->update('m_guru', ['sum_upload_materi' => $data_guru->sum_upload_materi + 1]);
-                $d = [
+                if($this->log_lvl === 'guru') {
+                    $dataGuru = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
+                    
+                    // Update aktivitas guru
+                    $this->m_guru->update([
+                        'sum_upload_materi' => $data_guru->sum_upload_materi + 1
+                    ], ['id' => $this->session->admin_konid]);
+                }
+                    
+                $this->sendAjaxResponse([
                     'status' => true,
-                    'msg'    => 'Sub Modul updated!',
+                    'msg'    => 'Materi updated!',
                     'res'    => $this->input->post(),
-                ];
-                echo json_encode($d);
-                http_response_code(200);
+                ], 200);
             } else {
-                $d = [
+                 $this->sendAjaxResponse([
                     'status' => false,
-                    'msg'    => 'Sub Modul not updated!',
-                ];
-                echo json_encode($d);
-                http_response_code(500);
+                    'msg'    => 'Materi not updated!',
+                ], 500);
             }
 
         }
@@ -985,7 +1010,7 @@ class Materi extends MY_Controller
         $update = $this->db->update('m_materi', ['is_verify' => 1, 'req_add' => 0, 'req_edit' => 0, 'req_delete' => 0]);
 
         if ($update) {
-            echo json_encode(['status' => true, 'msg' => 'Sub Modul berhasil diupdate']);
+            echo json_encode(['status' => true, 'msg' => 'Materi berhasil diupdate']);
         }
     }
 
