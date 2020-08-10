@@ -33,12 +33,6 @@
          <div class="tombol-kanan">
             <h2><strong><?=$this->page_title;?></strong></h2>
 
-   
-
-            <!--<a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url(); ?>upload/format_import_siswa.xlsx"><i class="glyphicon glyphicon-download"></i> &nbsp;&nbsp;Download Format Import</a>-->
-
-            <!--<a class="btn btn-info btn-sm tombol-kanan" href="<?php echo base_url(); ?>Peserta/m_siswa/import"><i class="glyphicon glyphicon-upload"></i> &nbsp;&nbsp;Import</a>-->
-
          </div>
 
       </div>
@@ -58,6 +52,14 @@
 					<?php endif; ?>
 					</select>
 				</div>
+				<?php if($this->log_lvl !== 'guru' && $this->log_lvl !== 'siswa'): ?>
+				<div class="col-md-6 col-sm-12 form-group text-right">
+					<label for="">Reset Aktivitas</label>
+					<div>
+						<button class="btn btn-primary" onclick="resetAktivitas(event, this, 'siswa')">Reset</button>
+					</div>
+				</div>
+				<?php endif; ?>
 			</div>
 		</form>
          <table class="table table-bordered table-striped w-100 mx-auto" style="width: 300% !important;" id="datatabel">
@@ -180,20 +182,44 @@
 </div>
 
 <script type="text/javascript">
+	function resetAktivitas(e, self, type) {
+		e.preventDefault();
+		conf = confirm('Anda yakin akan mereset semua data aktivitas?');
+		if(conf) {
+			$(self).prop('disabled', true);
+			$(self).text('Loading...');
+			$.ajax({
+				type: 'post',
+				url: '<?= base_url('aktivitas/reset') ?>',
+				data: {
+					type
+				},
+				dataType: 'json',
+				success: function(res) {
+					$(self).prop('disabled', false);
+					$(self).text('Reset');
+					pagination("datatabel", base_url+"aktivitas/data", []);
+				}
+			});
+		}	
+		else {
+			return false;
+		}
+	}
 
 	$(document).ready(function(){
-		var data
+		let data, conf;
 		pagination("datatabel", base_url+"aktivitas/data", []);
 
 		$('#kelas').change(function(e) {
-			e.preventDefault()
-			$("#datatabel").DataTable().destroy()
+			e.preventDefault();
+			$("#datatabel").DataTable().destroy();
 			data = {
 				kelas: $(this).val()
-			}
-			pagination("datatabel", base_url + "aktivitas/data", [], data)
-		})
-	})
+			};
+			pagination("datatabel", base_url + "aktivitas/data", [], data);
+		});
+	});
 
 </script>
 

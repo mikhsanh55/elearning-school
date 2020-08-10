@@ -130,11 +130,11 @@ class Aktivitas extends MY_Controller {
         $length = $this->input->post('length');
         $draw = $this->input->post('draw');
         $search = $this->input->post('search');
-
         if($this->log_lvl == 'instansi') {
         	$where = [
         		'guru.instansi' => $this->akun->instansi,
-        		"guru.nama LIKE '%" . $search['value'] . "%'" => NULL
+        		"guru.nama LIKE '%" . $search['value'] . "%'" => NULL,
+        		'guru.instansi' => $this->akun->instansi
         	];
 
         	$result = $this->db->select('guru.*, ins.instansi AS nama_instansi')
@@ -213,15 +213,15 @@ class Aktivitas extends MY_Controller {
 					$where['dkls.id_kelas'] = $prop['kelas'];
 				}
 
+				$where['sis.instansi'] = $this->akun->instansi;
+
 	        	$q_datanya = $this->db->select('sis.*, dkls.id_kelas')
 
 	        						  ->from('m_siswa sis')
 
-									  ->join('tb_detail_kelas dekls','dekls.id_peserta = sis.id','inner')
+									  ->join('tb_detail_kelas dekls','dekls.id_peserta = sis.id','left')
 
-									  ->join('tb_detail_kelas_mapel dkls','dkls.id_kelas = dekls.id_kelas','inner')
-
-	        						  ->group_by('sis.id','kls.id_trainer')
+									  ->join('tb_detail_kelas_mapel dkls','dkls.id_kelas = dekls.id_kelas','left')
 
 	        						  ->order_by(NULL,'sis.active_video + sis.active_read DESC')
 
@@ -242,8 +242,6 @@ class Aktivitas extends MY_Controller {
 									  ->join('tb_detail_kelas dekls','dekls.id_peserta = sis.id','inner')
 
 									  ->join('tb_detail_kelas_mapel dkls','dkls.id_kelas = dekls.id_kelas','inner')
-
-	        						  ->group_by('sis.id','kls.id_trainer')
 
 	        						  ->order_by(NULL,'sis.active_video + sis.active_read DESC')
 
@@ -384,6 +382,57 @@ class Aktivitas extends MY_Controller {
     		'status' => TRUE,
     		'data' => $html
     	], 200);
+    }
+
+    public function reset() {
+    	$this->load->model('m_guru');
+    	$this->load->model('m_siswa');
+    	$post = $this->input->post();
+    	$noValue = 0;
+    	$update;
+
+    	$this->db->trans_begin();
+    	if($post['type'] === 'siswa') {
+    		$data = [
+    			'active_num' => $noValue,
+    			'active_video' => $noValue,
+    			'active_read' => $noValue,
+    			'active_diskusi' => $noValue,
+    			'active_tugas' => $noValue
+    		];
+    		$update = $this->m_siswa->update($data, ['instansi' => $this->akun->instansi]);
+    	}
+    	else if($post['type'] === 'guru') {
+    		$data = [
+    			'active_num' => $noValue,
+    			'sum_upload_materi' => $noValue,
+    			'sum_upload_ujian' => $noValue,
+    			'sum_diskusi' => $noValue,
+    		];
+
+    		$update = $this->m_guru->update($data, ['instansi' => $this->akun->instansi]);
+    	}
+    	// print_r($this->db->last_query());exit;
+    	
+    	if($this->db->trans_status() === FALSE) {
+    		$this->db->trans_rollback();
+    	}
+    	else {
+    		$this->db->trans_commit();
+    	}
+
+    	if($update) {
+    		$this->sendAjaxResponse([
+    			'status' => TRUE,
+    			'msg' => 'Data aktivitas ' . $post['type'] . 'berhasil direset'
+    		], 200);
+    	}
+    	else {
+    		$this->sendAjaxResponse([
+    			'status' => FALSE,
+    			'msg' => 'Data aktivitas ' . $post['type'] . 'gagal direset'
+    		], 500);
+    	}
     }
 }
 
