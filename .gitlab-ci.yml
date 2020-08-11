@@ -45,7 +45,7 @@ production_sman21:
         - git reset --hard
         - git pull origin production_sman21
         - sudo rm /var/www/globaltech-codeigniter/application/config/database.php
-        - sudo cp /var/www/globaltech-codeigniter/database/config1/database1.php /var/www/globaltech-codeigniter/application/config/database.php
+        - sudo cp /var/www/globaltech-codeigniter/database/config1/database2.php /var/www/globaltech-codeigniter/application/config/database.php
         - sudo rm /var/www/globaltech-codeigniter/application/config/config.php
         - sudo cp /var/www/globaltech-codeigniter/database/config1/config.php /var/www/globaltech-codeigniter/application/config/config.php
         
@@ -58,6 +58,6 @@ production_sman5:
         - git reset --hard
         - git pull origin production_sman5
         - sudo rm /var/www/globaltech-codeigniter/application/config/database.php
-        - sudo cp /var/www/globaltech-codeigniter/database/config1/database1.php /var/www/globaltech-codeigniter/application/config/database.php
+        - sudo cp /var/www/globaltech-codeigniter/database/config1/database3.php /var/www/globaltech-codeigniter/application/config/database.php
         - sudo rm /var/www/globaltech-codeigniter/application/config/config.php
         - sudo cp /var/www/globaltech-codeigniter/database/config1/config.php /var/www/globaltech-codeigniter/application/config/config.php
