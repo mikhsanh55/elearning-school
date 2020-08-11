@@ -431,9 +431,7 @@ class Kelas extends MY_Controller
 
 
 		$this->load->view('kelas/table_siswa',$data);
-
 		$this->generate_page($data);
-
   }
 
   public function daftar_mapel() {
