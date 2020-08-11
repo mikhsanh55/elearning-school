@@ -427,9 +427,6 @@ class Kelas extends MY_Controller
 		$data['paginate']['search'] = 'lookup_key';
 
 		$data['page_start'] = $paginate['counts']['from_num'];
-
-
-
 		$this->load->view('kelas/table_siswa',$data);
 		$this->generate_page($data);
   }
