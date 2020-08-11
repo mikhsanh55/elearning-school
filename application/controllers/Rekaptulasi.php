@@ -25,14 +25,14 @@ class Rekaptulasi extends MY_Controller {
 		$post = $this->input->post();
 		$limit = $post['limit'];
 		$where = [];
-		
+		$where['kls.id_instansi'] = $this->akun->instansi;
+		// $where['sis.is_graduated'] = 0;
 		if($this->log_lvl == 'siswa') {
 		    $where['sis.id'] = $this->log_id; // id di m_siswa
 		}
 		else if($this->log_lvl == 'guru') {
 		    $where['dmkls.id_guru'] = $this->log_id;
 		}
-		
 		
 		if (!empty($post['search'])) {
 			switch ($post['filter']) {
@@ -45,12 +45,10 @@ class Rekaptulasi extends MY_Controller {
 				case 2:
 					$where["(lower(mpl.nama) like '%".strtolower($post['search'])."%' )"] = null;
 					break;
-				default:
-					# code...
-					break;
 			}
 		}
 		$paginate = $this->m_kelas->paginate_rekap($pg,$where,$limit);
+		// print_r($this->db->last_query());exit;
 		
 		$data['paginate'] = $paginate;
 		$data['paginate']['url']	= 'rekaptulasi/page_load';

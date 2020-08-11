@@ -5,6 +5,7 @@
 			<th class="frist"><input type="checkbox" name="checkall" id="checkall"></th>
 			<th class="frist">No</th>
 			<th>Nama</th>
+			<th>Kelas</th>
 			<th>Nilai</th>
 			<th>Nilai Minimum</th>
 			<th>Tanggal Mulai</th>
@@ -13,7 +14,7 @@
 		</tr>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows):
 			$ujian = $this->m_ujian->get_by(['uji.id'=>$rows->id_ujian]);
-			$siswa = $this->m_siswa->get_by(['id'=>$rows->id_user]);
+			
 			$nilai = $this->db->select('sum(nilai) as total')->where('id_ikut_essay',$rows->id)->get('tb_jawaban_essay')->row();
 			$keterangan = ($nilai->total >= $ujian->min_nilai) ? 'LULUS' : 'BELUM LULUS';
 			$class_status_siswa = '';
@@ -38,7 +39,8 @@
 			<tr>
 				<td><input type="checkbox" name="checklist[]" class="checklist" data-id= "<?=encrypt_url($rows->id);?>" value="<?=$rows->id;?>"></td>
 				<td align="center" class="frist"><?=$i;?></td>
-				<td><?=$siswa->nama;?></td>
+				<td><?=$rows->nama_siswa;?></td>
+				<td><?= $rows->nama_kelas; ?></td>
 				<td><?=$nilai->total;?></td>
 				<td><?=$ujian->min_nilai;?></td>
 				<td><?=$rows->tgl_mulai;?></td>

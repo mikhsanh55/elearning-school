@@ -536,9 +536,7 @@ class Ujian_real extends MY_Controller {
 	public function page_load_result($pg = 1){
 
 		$post = $this->input->post();
-
 		$limit = $post['limit'];
-
 		$where = [];
 
 		if (!empty($post['search'])) {
@@ -547,18 +545,16 @@ class Ujian_real extends MY_Controller {
 
 				case 0:
 
-					$where["(lower(mp.nama) like '%".strtolower($post['search'])."%' )"] = null;
-
+					$where["(lower(siswa.nama) like '%".strtolower($post['search'])."%' )"] = null;
 					break;
 
 				case 1:
 
-					$where["(lower(gr.nama) like '%".strtolower($post['search'])."%' )"] = null;
-
+					$where["(lower(kls.nama) like '%".strtolower($post['search'])."%' )"] = null;
 					break;
 			}
-
 		}
+
 		$where['id_ujian'] = $post['id_ujian'];
 		$where['status'] = 'N';
 
@@ -1801,7 +1797,8 @@ class Ujian_real extends MY_Controller {
 
 			$data = array(
 
-				'id_ujian' => decrypt_url($id)
+				'id_ujian' => decrypt_url($id),
+				'searchFilter' => ['Nama Siswa', 'Kelas']
 
 			);
 

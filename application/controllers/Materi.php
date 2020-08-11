@@ -18,6 +18,7 @@ class Materi extends MY_Controller
         $this->load->model('m_instansi');
         $this->load->model('m_detail_kelas');
         $this->load->model('m_detail_kelas_mapel');
+        // $this->load->model('m_detail_materi');
         
 
         if ($this->session->userdata('admin_level') == null) {
@@ -418,7 +419,7 @@ class Materi extends MY_Controller
 
                 $d = [
                     'status' => true,
-                    'msg'    => 'Sub Modul berhasil diupdate!',
+                    'msg'    => 'Materi berhasil diupdate!',
                     'data'   => $this->input->post(),
                 ];
                 echo json_encode($d);
@@ -478,7 +479,7 @@ class Materi extends MY_Controller
 
                 $d = [
                     'status' => true,
-                    'msg'    => 'Sub Modul berhasil diupdate!',
+                    'msg'    => 'Materi berhasil diupdate!',
                     'data'   => $this->input->post(),
                 ];
                 echo json_encode($d);
@@ -597,7 +598,7 @@ class Materi extends MY_Controller
         }
 
     }
-
+    
     public function update_ppt()
     {
        
@@ -985,7 +986,7 @@ class Materi extends MY_Controller
         $update = $this->db->update('m_materi', ['is_verify' => 1, 'req_add' => 0, 'req_edit' => 0, 'req_delete' => 0]);
 
         if ($update) {
-            echo json_encode(['status' => true, 'msg' => 'Sub Modul berhasil diupdate']);
+            echo json_encode(['status' => true, 'msg' => 'Materi berhasil diupdate']);
         }
     }
 
@@ -1660,7 +1661,8 @@ class Materi extends MY_Controller
         else if($this->log_lvl === 'siswa') {
             $data_update = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
             $this->m_siswa->update([
-                'active_diskusi' => $data_update->active_diskusi + 1
+                'active_diskusi' => $data_update->active_diskusi + 1,
+                'is_graduated' => 0
             ], ['id' => $this->session->admin_konid]);
         }
         

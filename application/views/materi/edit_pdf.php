@@ -55,7 +55,7 @@
                         <button class="btn btn-light" onclick="back_page('materi', true)">Kembali</button>
                     </div>
                 </div>
-                <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" action="POST" class="">
+                <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" action="POST" class="" enctype="multipart/form-data">
 
                     <div class="row container mx-auto">
                         <div class="col-sm-4">
@@ -65,27 +65,17 @@
                         </div>
                     </div>
                     <br><br>
-                   <!--  <div class="row container mx-auto">
-                        <div class="col-sm-12">
-                            <h4><label for="title" class="text-success">Title</label><span class="text-danger"> *</span></h4>
-                            <input type="text" class="form-control" placeholder="Judul materi..." name="title" value="<?= $materi->title; ?>" autofocus>
-                        </div>
-                    </div>
-                      <br><br> -->
-<!--                     <div class="row container mx-auto">
-                        <div class="col-sm-12">
-                            <h4><label for="video" class="text-success">Video</label><span class="text-danger"> *</span></h4>
-                            <input type="text" class="form-control" placeholder="Masukan Id Video..." name="video" value="<?= $materi->path_video; ?>" autofocus>
-                        </div>
-                    </div> -->
-                    <!-- <br><br> -->
+                  
                         <div class="row container mx-auto">
                             <div class="col-sm-12">
                                 <h3><label for="title" class="text-success">File</label></h3>
-                                <input type="file" name="file" id="file" class="form-control" value="<?= $materi->file_pdf; ?>" required /><span><?= $materi->file_pdf; ?></span>
+                                <input type="file" name="file[]" id="file" class="form-control" value="<?= $materi->file_pdf; ?>" required multiple="multiple" /><span><?= $materi->file_pdf; ?></span>
                                 <p id="passwordHelpBlock" class="form-text text-muted">
                                   File PDF yang akan diupload maksimal memiliki ukuran 100 MB.
                                 </p>
+                            </div>
+                            <div class="col-sm-12 list-pdf">
+                                <header>File PDF: </header>
                             </div>
                         </div>
                     <br>
@@ -105,33 +95,35 @@
         </div>
     </div>
 </div>
-<link href="<?= base_url(); ?>assets/plugins/editor/dist/css/jquery.wysiwygEditor.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
-<script type="text/javascript" src="<?= base_url('assets/plugin/ckeditor/ckeditor.js') ?>"></script>
 <script>
     $(document).ready(function() {
         let file = undefined, filename, ext, uploadOk = 1, maxSize = 104857600;
-        let data = new FormData();
+        let data = new FormData(), html, fileArray = [];
         
         // kontent
-        $('input[type=file][name=file]').change(function() {
-            file = this.files[0]; 
-           filename = this.value;
-           ext = filename.substring(filename.lastIndexOf('.') + 1);
-           if(ext != 'pdf') {
-               alert('File harus PDF!');
-               this.value = '';
-               return false;
-           }
-           else if(file.size > maxSize) {
-               alert('File terlalu besar! Maksimal 100 MB');
-               this.value = '';
-               return false;
-           }
-           else {
-               uploadOk = 1;
-           }
+        $('input[type=file]').change(function() {
+            html = '';
+            for(var x = 0;x < this.files.length;x++) {
+               file = this.files[x]; 
+               filename = this.value;
+               ext = filename.substring(filename.lastIndexOf('.') + 1);
+               if(ext != 'pdf') {
+                   alert('File harus PDF!');
+                   this.value = '';
+                   return false;
+               }
+               else if(file.size > maxSize) {
+                   alert('File terlalu besar! Maksimal 100 MB');
+                   this.value = '';
+                   return false;
+               }
+               else {
+                   html = `<span class="badge badge-primary m-1">${file.name}</span>`;
+                   $('.list-pdf').append(html);
+                   uploadOk = 1;
+               }  
+            }
+              
         });
 
         $('form').submit(function(e) {
@@ -141,7 +133,11 @@
             if(uploadOk === 1)
             
                 if(file != undefined) {
-                    data.append('file', file);
+                    file = document.querySelector('input[type=file]').files.length;
+                    
+                    for(var x = 0;x < file;x++) {
+                        data.append('file[]', document.querySelector('input[type=file]').files[x]);
+                    }
                 }
                 data.append('imateri', $('input[name=imateri]').val());
                 data.append('imapel', $('input[name=imapel]').val());
@@ -169,15 +165,16 @@
                     type:"POST",
                     url:"<?= base_url('Materi/update_pdf'); ?>",
                     data:data,
+                    cache: false,
                     contentType:false,
                     processData:false,
                     success:function(res) {
                         res = JSON.parse(res);
                         if(res.status == true) {
                             $('#spin-icon').toggleClass('d-none');
-                            // alert(res.msg);
-                            // console.log(res);
-                            window.location.href = sessionStorage.getItem('url');
+                            
+                            console.log(res);
+                            // window.location.href = sessionStorage.getItem('url');
                         }
                         else {
                             $('#spin-icon').toggleClass('hide');

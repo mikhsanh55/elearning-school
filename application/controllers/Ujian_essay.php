@@ -540,13 +540,13 @@ class Ujian_essay extends MY_Controller {
 
 				case 0:
 
-					$where["(lower(mp.nama) like '%".strtolower($post['search'])."%' )"] = null;
+					$where["(lower(siswa.nama) like '%".strtolower($post['search'])."%' )"] = null;
 
 					break;
 
 				case 1:
 
-					$where["(lower(gr.nama) like '%".strtolower($post['search'])."%' )"] = null;
+					$where["(lower(kls.nama) like '%".strtolower($post['search'])."%' )"] = null;
 
 					break;
 
@@ -1628,7 +1628,8 @@ class Ujian_essay extends MY_Controller {
 
 			$data = array(
 
-				'id_ujian' => decrypt_url($id)
+				'id_ujian' => decrypt_url($id),
+				'searchFilter' => ['Nama Siswa', 'Kelas']
 
 			);
 
@@ -2016,7 +2017,7 @@ class Ujian_essay extends MY_Controller {
 					$html .= '<div class="form-group" style="border:1px #000 solid; padding:10px;">';
 					$html .= '  <label>'.$no.'.'.$soal_.''.$tampil_media.' </label>';
 					$html .= '<textarea class="form-control" readonly>Jawaban : '.$val.'</textarea>';
-					$html .= '<div style=" padding:10px 0px;"><label>Nilai</label> <input type="text" value="'.$rows->nilai.'" data-soal ="'.$rows->id_soal.'"  data-ujian ="'.$rows->id_ujian.'"  data-user ="'.$rows->id_user.'" data-bobot ="'.$soal->bobot.'" maxlength="3" class="only-number nilai"></div>';
+					$html .= '<div style=" padding:10px 0px;"><label>Nilai</label> <input type="text" value="'.$rows->nilai.'" data-soal ="'.$rows->id_soal.'"  data-ujian ="'.$rows->id_ujian.'"  data-user ="'.$rows->id_user.'" data-bobot ="'.$soal->bobot.'" maxlength="3" class="only-number nilai"> <button type="button" data-soal="'.$rows->id_soal.'" data-nilai="'.$rows->nilai.'" data-ujian="'.$rows->id_ujian.'" data-user="'.$rows->id_user.'" data-bobot="'.$soal->bobot.'" class="beri-nilai btn btn-primary">Update Nilai</button> </div>';
 					$html .= '</div>';
 
 					$no++;
