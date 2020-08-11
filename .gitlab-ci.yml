@@ -2,8 +2,8 @@ stages:
     - test
     - development
     - production_icommits
-    - production_sman21
-    - production_sman5
+    - production_sman21bdg
+    - production_sman5bdg
     
 test_branch:
     stage: test
@@ -19,7 +19,7 @@ development_branch:
         - git reset --hard
         - git pull origin development
         - sudo rm /var/www/globaltech-codeigniter/application/config/database.php
-        - cp /var/www/globaltech-codeigniter/database/config/database1.php /var/www/globaltech-codeigniter/application/config/database.php
+        - cp /var/www/globaltech-codeigniter/database/config/database.php /var/www/globaltech-codeigniter/application/config/database.php
         - sudo rm /var/www/globaltech-codeigniter/application/config/config.php
         - cp /var/www/globaltech-codeigniter/database/config/config.php /var/www/globaltech-codeigniter/application/config/config.php
         
@@ -37,26 +37,26 @@ production_icommits:
         - sudo cp /var/www/globaltech-codeigniter/database/config1/config.php /var/www/globaltech-codeigniter/application/config/config.php
         
 production_sman21:
-    stage: production_sman21
+    stage: production_sman21bdg
     only: 
-        - production_sman21
+        - production_sman21bdg
     script:
         - cd /var/www/globaltech-codeigniter
         - git reset --hard
-        - git pull origin production_sman21
+        - git pull origin production_sman21bdg
         - sudo rm /var/www/globaltech-codeigniter/application/config/database.php
         - sudo cp /var/www/globaltech-codeigniter/database/config1/database2.php /var/www/globaltech-codeigniter/application/config/database.php
         - sudo rm /var/www/globaltech-codeigniter/application/config/config.php
         - sudo cp /var/www/globaltech-codeigniter/database/config1/config.php /var/www/globaltech-codeigniter/application/config/config.php
         
 production_sman5:
-    stage: production_sman5
+    stage: production_sman5bdg
     only: 
-        - production_sman5
+        - production_sman5bdg
     script:
         - cd /var/www/globaltech-codeigniter
         - git reset --hard
-        - git pull origin production_sman5
+        - git pull origin production_sman5bdg
         - sudo rm /var/www/globaltech-codeigniter/application/config/database.php
         - sudo cp /var/www/globaltech-codeigniter/database/config1/database3.php /var/www/globaltech-codeigniter/application/config/database.php
         - sudo rm /var/www/globaltech-codeigniter/application/config/config.php
