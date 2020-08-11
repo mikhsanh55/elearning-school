@@ -61,7 +61,7 @@ class M_kelas extends MY_Model {
 									sis.active_diskusi,
 									sis.active_tugas,
 									kls.nama AS nama_kelas,
-									mpl.nama as mapel, mpl.id as id_mapel,
+									mpl.nama as mapel, dmkls.id_mapel,
 									dekls.id_kelas,
 									dmkls.id_guru
 						')

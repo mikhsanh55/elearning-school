@@ -1661,7 +1661,8 @@ class Materi extends MY_Controller
         else if($this->log_lvl === 'siswa') {
             $data_update = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
             $this->m_siswa->update([
-                'active_diskusi' => $data_update->active_diskusi + 1
+                'active_diskusi' => $data_update->active_diskusi + 1,
+                'is_graduated' => 0
             ], ['id' => $this->session->admin_konid]);
         }
         

@@ -382,7 +382,7 @@ class Kelas extends MY_Controller
 
 	$this->load->view('kelas/table_mapel',$data);
 
-	$this->generate_page($data);
+	$this->generate_page_modal($data);
   }
 
   public function page_load_siswa($pg = 1){
@@ -562,7 +562,7 @@ class Kelas extends MY_Controller
 
 		$this->load->view('kelas/table_peserta',$data);
 
-		$this->generate_page($data);
+		$this->generate_page_modal($data);
 
 		
 
@@ -612,7 +612,7 @@ class Kelas extends MY_Controller
 
 		$this->load->view('kelas/table_peserta_kelas',$data);
 
-		$this->generate_page($data);
+		$this->generate_page_modal($data);
 
   }
 

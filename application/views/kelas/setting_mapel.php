@@ -25,9 +25,6 @@
             <div class="col-sm-12 col-md-6 col-lg-6">
 
                 <h2><?=(empty($edit->id)) ? 'Tambah' : 'Update' ;?> Mata Pelajaran</h2>
-
-
-
             </div>
 
             <div class="col-sm-12 col-md-6 col-lg-6 text-right">
@@ -91,11 +88,11 @@
 					</div>
 
 					<from class="form-inline" style="display: block;">
-
+						<input type="hidden" id="kelas-id" value="<?= $kelas->id; ?>">
 						<div class="form-group">
 
 							<label for="search">Search&nbsp;&nbsp;</label>
-								<select id="filter" class="form-control input-sm">
+								<select id="filter-murid" class="form-control input-sm">
 									<?php foreach ($searchFilter as $key => $val): ?>
 										<option value="<?=$key;?>"><?=$val;?></option>
 									<?php endforeach ?>
@@ -118,25 +115,13 @@
 		<div class="row">
 
 			<div class="col-md-12">
-
 				Limit 
-
 				<select id="limit-murid">
-
 					<option value="10">10</option>
-
 					<option value="50">50</option>
-
 					<option value="100">100</option>
-
 				</select>
-
-				<!-- <button class="btn btn-sm btn-primary" id="aktifkan_semua">Aktifkan Semua</button>
-
-				<button class="btn btn-sm btn-danger"  id="nonaktifkan_semua">NonAktifkan Semua</button> -->
-
-				<div id="content-table"></div>
-
+				<div id="table-setting-modal"></div>
 			</div>
 
 		</div>
@@ -150,140 +135,122 @@
 </div>
 
 <!--/.row-box End-->
-
 <script>
 
-	$(document).ready(function(){
+    $(document).ready(function(){
 
-		pageLoad(1,'kelas/page_load_mapel');
+        // pageLoad(1,'kelas/page_load_mapel');
+        pageLoadModal(1, `${base_url}/kelas/page_load_mapel`, {
+            pg: 1,
+            limit: $('#limit-murid').val(),
+            search: $('#search-murid').val(),
+            filter: $('#filter-murid').val(),
+            id_kelas: $('#kelas-id').val(),
+        }, '#table-setting-modal');
 
 
 
-		$('#limit').change(function(){
+        $('#limit-murid').change(function(){
 
-			pageLoad(1,'kelas/page_load_mapel');
+            pageLoadModal(1, `${base_url}/kelas/page_load_mapel`, {
+	            pg: 1,
+	            limit: $('#limit-murid').val(),
+	            search: $('#search-murid').val(),
+	            filter: $('#filter-murid').val(),
+	            id_kelas: $('#kelas-id').val(),
+	        }, '#table-setting-modal');
 
-		});
+        });
 
 
 
-		$('#search-murid').keyup(delay(function (e) {
+        $('#search-murid').keyup(delay(function (e) {
+            pageLoadModal(1, `${base_url}/kelas/page_load_modal`, {
+	            pg: 1,
+	            limit: $('#limit-murid').val(),
+	            search: $('#search-murid').val(),
+	            filter: $('#filter-murid').val(),
+	            id_kelas: $('#kelas-id').val(),
+	        }, '#table-setting-modal');
 
-			pageLoad(1,'kelas/page_load_mapel');
+        }, 500));
 
-		}, 500));
 
 
+        function delay(callback, ms) {
 
-		function delay(callback, ms) {
+            var timer = 0;
 
-			var timer = 0;
+            return function() {
 
-			return function() {
+                var context = this, args = arguments;
 
-				var context = this, args = arguments;
+                clearTimeout(timer);
 
-				clearTimeout(timer);
+                timer = setTimeout(function () {
 
-				timer = setTimeout(function () {
+                    callback.apply(context, args);
 
-					callback.apply(context, args);
+                }, ms || 0);
 
-				}, ms || 0);
+            };
 
-			};
+        }
 
-		}
 
 
 
 
+    })
 
-	})
 
 
 
 
+    $('#aktifkan_semua').click(function(){
 
-	$('#aktifkan_semua').click(function(){
+        set_all(1);
 
-		set_all(1);
+    })
 
-	})
 
 
+    $('#nonaktifkan_semua').click(function(){
 
-	$('#nonaktifkan_semua').click(function(){
+        set_all(2);
 
-		set_all(2);
+    })
 
-	})
 
 
+    function set_all(aksi){
+        $.ajax({
 
-	function set_all(aksi){
+            type : 'post',
 
+            url  : "<?= base_url('kelas/update_kelas_all'); ?>",
 
+            data :{
 
-		$.ajax({
+                id_kelas : $('#kelas-id').val(),
 
-			type : 'post',
+                aksi : aksi
 
-			url  : "<?= base_url('kelas/update_kelas_all'); ?>",
-
-			data :{
-
-				id_kelas : '<?=$kelas->id;?>',
-
-				aksi : aksi
-
-			},
-
-			success:function(response){
-
-				pageLoad(1,'kelas/page_load_mapel');
-				window.location.reload()
-			}
-
-		})
-
-	}
-
-
-
-	function pageLoad(pg, url, search){
-
-		$.ajax({
-
-			type : 'post',
-
-			url  : '<?php echo base_url() ?>' + url + '/' + pg,
-
-			data :{
-
-				pg    : pg,
-
-				limit : $('#limit-murid').val(),
-
-				search : $('#search-murid').val(),
-
-				filter: $('#filter').val(),
-
-				id_kelas : '<?=$kelas->id;?>',
-
-			},
-
-			success:function(response){
-
-				$('#content-table').html(response);
-
-			}
-
-		})
-
-	}
-
+            },
+            success:function(response){
+
+                pageLoadModal(1, `${base_url}/kelas/page_load_modal`, {
+		            pg: 1,
+		            limit: $('#limit-murid').val(),
+		            search: $('#search-murid').val(),
+		            filter: $('#filter-murid').val(),
+		            id_kelas: $('#kelas-id').val(),
+		        }, '#table-setting-modal');
+                window.location.reload()
+            }
+
+        })
+
+    }
 </script>
-
-
 

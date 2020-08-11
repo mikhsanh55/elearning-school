@@ -91,23 +91,23 @@
 
 <script type="text/javascript">
 
-    $(document).on('keyup','.nilai',delay(function(e){
+    $(document).on('click','.beri-nilai',delay(function(e){
         e.preventDefault();
         bobot = $(this).data('bobot');
-        nilai = $(this).val();
+        nilai = $(this).data('nilai');
         if(nilai <= bobot){
             $.ajax({
                 type : 'post',
                 url  : '<?=base_url('ujian_essay/beri_nilai');?>',
                 data : {
-                    nilai : $(this).val(),
-                    bobot : $(this).data('bobot'),
+                    nilai,
+                    bobot,
                     id_soal : $(this).data('soal'),
                     id_ujian : $(this).data('ujian'),
                     id_user : $(this).data('user'),
                 },
                 success:function(response){
-                   window.location.reload()
+                   // window.location.reload()
                 }
             });
         }else{
