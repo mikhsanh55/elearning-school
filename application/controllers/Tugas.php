@@ -495,7 +495,7 @@ class Tugas extends MY_Controller {
 	{	
 
 		$data = array(
-			'searchFilter' => array('Kelas'),
+			'searchFilter' => ['Kelas', 'Mata Pelajaran'],
 			'tugas' => $this->m_tugas->get_by(array('tgs.id'=>decrypt_url($id)))
 		);
 
@@ -512,6 +512,9 @@ class Tugas extends MY_Controller {
 			switch ($post['filter']) {
 				case 0:
 					$where["(lower(kls.nama) like '%".strtolower($post['search'])."%' )"] = null;
+					break;
+				case 1:
+					$where["(lower(guru.nama) like '%".strtolower($post['search'])."%' )"] = null;
 					break;
 			}
 		}

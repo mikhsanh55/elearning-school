@@ -13,6 +13,7 @@
   <link rel="apple-touch-icon-precomposed" href="<?= base_url(); ?>assets/ico/apple-touch-icon-57-precomposed.png">
   <link rel="shortcut icon" href="<?=$this->logo;?>">
   <title><?=$this->title;?></title>
+  <script src="<?php echo base_url(); ?>assets/js/aplikasi.js?time=<?php echo time(); ?>"></script>
   <!-- Bootstrap core CSS --> 
   <link href="<?= base_url(); ?>assets/bootstrap/css/bootstrap.css" rel="stylesheet">
   <link href="<?= base_url(); ?>assets/css/style.css" rel="stylesheet">

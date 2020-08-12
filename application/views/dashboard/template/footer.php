@@ -59,52 +59,6 @@
     	window.location = base_url + url;
     }
 
-    function delete_silabus(element) {
-    	token_modul = element.getAttribute('data-modal');
-    	let sure = confirm('Kamu yakin?');
-    	if(sure) {
-    		$('title').text('Loading...');
-    		$.ajax({
-	    		type:"GET",
-	    		url:"<?= base_url('Materi/check_silabus_exist'); ?>",
-	    		data:{md5:token_modul},
-	    		dataType:"JSON",
-	    		success:function(res) {
-	    			
-	    			if(res.status === true) {
-	    				$.ajax({
-	    					type:"POST",
-	    					url:"<?= base_url('Materi/delete_silabus'); ?>",
-	    					data:{md5:token_modul},
-	    					dataType:"JSON",
-	    					success:function(res) {
-	    						if(res.status == true) {
-	    							alert('Silabus berhasil dihapus!');
-	    							window.location.reload();
-	    						}
-	    						else {
-	    							alert('Something went wrong, please contact your developer!');
-	    							console.log(res);
-	    							return false;
-	    						}
-	    					},
-	    					error:function(e) {
-	    						alert('Something went wrong, contact your developer!');
-	    						console.log(e);
-	    						return false;
-	    					}
-	    				})
-	    			}
-	    			else {
-	    				$('title').text('E-Learning UMKM');
-	    				alert('Hapus gagal, silabus belum ada!');
-	    				return false;
-	    			}
-	    		}
-	    	});
-    	}
-    }
-
     function checkExist(element) {
     	let src = element.getAttribute('data-src');
     	let md5 = src.split('/');
@@ -129,63 +83,6 @@
     }
 
 	$('.loading').hide();
-	$('#silabus_file').change(function(e) {
-	   file = this.files[0]; 
-	   filename = this.value;
-	   ext = filename.substring(filename.lastIndexOf('.') + 1);
-	   if(ext != 'pdf') {
-	       alert('File harus PDF!');
-	       this.value = '';
-	       return false;
-	   }
-	   else if(file.size > 20746185) {
-	       alert('File terlalu besar!');
-	       this.value = '';
-	       return false;
-	   }
-	   else {
-	       uploadOk = 1;
-	   }
-	});
-	$('#upload-silabus').click(function(e) {
-		e.preventDefault();
-
-		$('#spin-icon').toggleClass('hide');
-		if($('#silabus_file').val() != '') {
-			if(uploadOk === 1) {
-				data.append('file', file);
-				data.append('token_modul', token_modul);
-
-				$.ajax({
-					type:"POST",
-					url:"<?= base_url('Materi/upload_silabus') ?>",
-					data:data,
-					contentType:false,
-					processData:false,
-					success:function(res) {
-						$('#spin-icon').toggleClass('hide');
-    		              res = JSON.parse(res);
-    		               console.log(res);
-    		              if(res.status == true) {
-    		                  alert(res.msg);
-    		                  window.location.reload();
-    		              }
-    		              else {
-    		                  alert(res.msg);
-    		                  return false;
-    		              }
-					}
-				})
-			}
-		}
-		else {
-			alert('Harap upload silabusnya!');
-			$('#spin-icon').toggleClass('hide');
-			return false;	
-
-		}
-	});
-
 	// Event for Sub Menu
 	$('.parent-menu-link').click(function(e) {
 		e.preventDefault()
@@ -233,7 +130,6 @@ if ($this->uri->segment(2) == "m_soal" && $this->uri->segment(3) == "edit") {
 <script src="<?php echo base_url(); ?>assets/plugin/datatables/dataTables.bootstrap.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/plugin/jquery_zoom/jquery.zoom.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/plugin/countdown/jquery.countdownTimer.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/aplikasi.js?time=<?php echo time(); ?>"></script>
 
 <script src="<?=base_url();?>/assets/vendor/select2/select2.min.js"></script>
 <script src="<?=base_url();?>/assets/vendor/datepicker/moment.min.js"></script>

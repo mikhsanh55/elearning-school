@@ -11,4 +11,21 @@ class M_ikut_ujian extends MY_Model {
 		
 	}
 
+	public function get_all($where = []) {
+		$get = $this->db->select("hasilpg.*, siswa.nama as nama_siswa, kls.nama as nama_kelas")
+						->from('tb_ikut_ujian hasilpg')
+						->join('m_siswa siswa', 'hasilpg.id_user = siswa.id', 'inner')
+						->join('tb_detail_kelas dkls', 'dkls.id_peserta = siswa.id', 'inner')
+						->join('tb_kelas kls', 'kls.id = dkls.id_kelas', 'inner')
+						->where($where)
+						->get()
+						->result();
+
+		return $get;
+	}
+
+	public function count_by($where = []) {
+		return count($this->get_all($where));
+	}
+
 }

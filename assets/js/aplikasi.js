@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	
+		
 	let updateActiveUser = async (objData, url) => {
 		let settings = {
 			method: 'post',
@@ -158,7 +158,7 @@ function timer2() {
 	console.warn('statuse');
 	console.error(statuse === 1)
 	if (statuse === 1) {
-		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-primary btn-sm btn-block" id="tbl_mulai" onclick="return konfirmasi_token2('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
+		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-primary btn-block" id="tbl_mulai" onclick="return konfirmasi_token2('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
 		
 		$('#waktu_akhir_ujian').countdowntimer({
 	        startDate : tgl_sekarang,
@@ -1351,39 +1351,6 @@ function rubah_password() {
 	});
 	return false;
 }
-//rubah password Simpan
-// function rubah_password_s() {
-// 	var f_asal	= $("#f_ubah_password");
-// 	var form	= getFormData(f_asal);
-// 	var error = '';
-// 	console.log(form)
-// 	$.ajax({		
-// 		type: "POST",
-// 		url: `${base_url}adm/res_pwd`,
-// 		data: form,
-// 		dataType: 'json',
-// 		success:function(res) {
-// 			if(res.status === true) {
-// 				alert(res.msg);
-// 				$("#modalpassword").modal('hide');
-// 			}
-// 			else {
-// 				alert(res.msg);
-// 				console.error(res);
-// 				return false;
-// 			}
-// 		},
-// 		error:function(e) {
-// 			console.error(e.responseJSON);
-// 			error = e.responseJSON;
-
-// 			alert(error.msg)
-// 			return false;
-// 		}
-// 	})
-	
-// 	return false;
-// }
 
 function rubah_password_s() {
 	var f_asal	= $("#f_ubah_password");
@@ -1404,4 +1371,28 @@ function rubah_password_s() {
 		}
 	});
 	return false;
+}
+
+function callPageLoadModal(pg, url, idTable) {
+
+	pageLoadModal(pg, url, {
+		limit: $('#limit-murid').val(),
+        search: $('#search-murid').val(),
+        filter: $('#filter').val(),
+        id_kelas: $('#kelas-id').val(),
+	}, idTable);
+}
+
+/*
+* Untuk handle modal seperti Pilih mapel atau Pilih Siswa
+*/
+function pageLoadModal(pg, url, dataObj = {}, idTable) {
+	$.ajax({
+		type: 'post',
+		url: `${url}/${pg}`,
+		data: dataObj,
+		success:function(response){
+			$(idTable).html(response);
+		}
+	});
 }

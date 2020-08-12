@@ -1,7 +1,6 @@
 <?php if(!isset($paginate['template_view']))
 $paginate['template_view'] = 'contain_view';
 ?>
-
 <nav aria-label="Page navigation" style="font-size: 12px;float: right;">
 	<ul class="pagination">
 		<?php if ($paginate['counts']['curr_page'] == 1): ?>
