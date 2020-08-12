@@ -61,15 +61,17 @@ class M_kelas extends MY_Model {
 									sis.active_diskusi,
 									sis.active_tugas,
 									kls.nama AS nama_kelas,
-									mpl.nama as mapel, mpl.id as id_mapel,
+									mpl.nama as mapel, dmkls.id_mapel,
 									dekls.id_kelas,
-									dmkls.id_guru
+									dmkls.id_guru,
+									guru.nama as nama_guru
 						')
 		->from('tb_kelas kls')
-		->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'inner')
-		->join('tb_detail_kelas dekls','dekls.id_kelas = kls.id','inner')
+		->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'right')
+		->join('tb_detail_kelas dekls','dekls.id_kelas = kls.id','right')
 		->join('m_mapel mpl','mpl.id=dmkls.id_mapel','inner')
 		->join('m_siswa sis','sis.id = dekls.id_peserta','inner')
+		->join('m_guru guru', 'guru.id = dmkls.id_guru', 'right')
 		->where($where)
 		->get()
 		->result();

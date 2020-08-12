@@ -17,28 +17,34 @@
 		<tr>
 			<th class="frist">No</th>
 			<th style="width: 30%;">Nama</th>
+			<th>Kelas</th>
 			<th>Nilai</th>
-			<th style="width: 30%;">Keterangan</th>
 			<th>Nilai Minimum</th>
+			<th style="width: 30%;">Keterangan</th>
+			
 			<th>Tanggal Mulai</th>
 			<th>Tanggal Selesai</th>
 		</tr>
-		<?php $i= 1; foreach ($datas as $rows):
+		<?php if(count($datas) > 0) { $i= 1; foreach ($datas as $rows):
 			$ujian = $this->m_ujian->get_by(['uji.id'=>$rows->id_ujian]);
-			$siswa = $this->m_siswa->get_by(['id'=>$rows->id_user]);
 			$nilai = $this->db->select('sum(nilai) as total')->where('id_ikut_essay',$rows->id)->get('tb_jawaban_essay')->row();
 			$keterangan = ($nilai->total >= $ujian->min_nilai) ? 'LULUS' : 'BELUM LULUS';
 		?>
 			<tr>
 				<td align="center" class="frist"><?=$i;?></td>
-				<td><?=$siswa->nama;?></td>
+				<td><?=$rows->nama_siswa;?></td>
+				<td><?=$rows->nama_kelas;?></td>
 				<td><?=$nilai->total;?></td>
-				<td><?=$keterangan;?></td>
 				<td><?=$ujian->min_nilai;?></td>
+				<td><?=$keterangan;?></td>
 				<td><?=$rows->tgl_mulai;?></td>
 				<td><?=$rows->tgl_selesai;?></td>
 			</tr>
-		<?php $i++;endforeach ?>
+		<?php $i++;endforeach; } else { ?>
+			<tr>
+				<td colspan="8" class="text-center">Data Kosong</td>
+			</tr>
+		<?php } ?>
 	</thead>
 	<tbody>
 	</tbody>

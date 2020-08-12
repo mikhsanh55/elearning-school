@@ -95,7 +95,20 @@
 							</div>
 						</div>
 					</div>
-					
+					<form class="form-inline" style="display: block;">
+						<div class="form-group">
+							<label for="search">Search&nbsp;&nbsp;</label>
+							<div class="rs-select2 js-select-simple select--no-search">
+								<select id="filter" class="form-control input-sm">
+									<?php foreach ($searchFilter as $key => $val): ?>
+										<option value="<?=$key;?>"><?=$val;?></option>
+									<?php endforeach ?>
+								</select>
+								<div class="select-dropdown"></div>
+							</div>
+							<input type="text" style="width: 50%;height:30px;" class="form-control input-sm" id="search" placeholder="ketikan yang anda cari" name="search">
+						</div>
+					</form>		
 					<br>
 				</div>
 			</div>
@@ -135,7 +148,7 @@
 	$(document).ready(function(){
 		pageLoad(1,'ujian_real/page_load_result');
 
-		$('#limit,#tipe_ujian_real').change(function(){
+		$('#limit,#filter').change(function(){
 			pageLoad(1,'ujian_real/page_load_result');
 		});
 

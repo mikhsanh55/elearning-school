@@ -460,6 +460,11 @@ class MY_Controller extends CI_Controller
 		$this->load->view('content/index', $data);
 	}
 
+	public function generate_page_modal($paginate = []) 
+	{
+		$this->load->view('dashboard/content/pagination_modal', $paginate);
+	}
+
 	public function generate_page($paginate = array())
 	{
 		$this->load->view('dashboard/content/pagination', $paginate);

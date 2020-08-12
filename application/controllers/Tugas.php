@@ -98,7 +98,8 @@ class Tugas extends MY_Controller {
 
 		$data = array(
 			'kelas' => $this->m_kelas->get_all(['kls.id_instansi' => $this->akun->instansi]), 
-			'edit' => $this->m_tugas->get_by(array('md5(tgs.id)'=>$id)), 
+			'edit' => $this->m_tugas->get_by(array('md5(tgs.id)'=>$id)),
+			'uploadedFiles' => $this->m_tugas_attach->get_many_by(['md5(id_tugas)' => $id])
 		);
 		// print_r($data['edit']);exit;
 		$this->render('tugas/edit',$data);
@@ -191,80 +192,96 @@ class Tugas extends MY_Controller {
 		public function update(){
 			try {
 				$post = $this->input->post();
-				$files = $_FILES;
 				
-				$qty_attach = $_FILES['file']['name'];
+				if(is_null($post['mapel'])) {
+					$this->sendAjaxResponse([
+						'status' => FALSE,
+						'msg' => 'Harap pilih Mata Pelajaran'
+					], 400);
+				}
+
+				if(is_null($post['kelas'])) {
+					$this->sendAjaxResponse([
+						'status' => FALSE,
+						'msg' => 'Harap pilih Kelas'
+					], 400);
+				}
 
 				$data = array(
 					'id_kelas' => $post['kelas'], 
+					'id_mapel' => $post['mapel'],
 					'keterangan' => $post['keterangan'],
 					'end_date' => date_default($post['end_date']).' '.$post['end_time'],
 				);
 
-				// if($this->log_lvl == 'guru') {
-				// 	$data['id_guru'] = $this->akun->id;
-				// }
-				$this->db->trans_start();
-				$kirim = $this->m_tugas->update($data,array('id'=>$post['id']));
+				if(isset($_FILES['file']['name'])) {
+					$files = $_FILES;
+					
+					$qty_attach = $_FILES['file']['name'];
 
-				// if(!empty($qty_attach[0])) {
+				
 
+					$this->db->trans_start();
+					
+					$namafile = 'tugas-'.DATE('d-m-Y')."-".time().'-';
 
-				// 	for($i=0; $i < count($qty_attach); $i++)
-				// 	{           
+					$config['upload_path']   = 'assets/tugas/attach/';
+					$config['allowed_types'] = 'pdf|pdfx|doc|docx|jpeg|jpg|png|zip|rar|ppt|pptx|xlsx|xls';
+					$config['max_size']      = 22222220480;
+					$config['file_name']     = $namafile;
 
-						$namafile = 'tugas-'.DATE('d-m-Y')."-".time().'-';
+					$this->load->library('upload', $config);
+					$this->upload->initialize($config);
+					
 
-						$config['upload_path']   = 'assets/tugas/attach/';
-						$config['allowed_types'] = 'pdf|pdfx|doc|docx|jpeg|jpg|png|zip|rar|ppt|pptx|xlsx|xls';
-						$config['max_size']      = 22222220480;
-						$config['file_name']     = $namafile;
+					$_FILES['file']['name'] 		= $files['file']['name'];
+					$_FILES['file']['type']  		= $files['file']['type'];
+					$_FILES['file']['tmp_name']	= $files['file']['tmp_name'];
+					$_FILES['file']['error']		= $files['file']['error'];
+					$_FILES['file']['size']		= $files['file']['size'];    
 
-						$this->load->library('upload', $config);
-						$this->upload->initialize($config);
-						
+					$this->upload->initialize($config);
+					if ( ! $this->upload->do_upload('file') ){
+						$json = [
+							'status' => FALSE,
+							'msg'    => 'Upload file gagal!',
+							'info' => $this->upload->display_errors()
+						];
+						echo json_encode($json);
+						exit;
+					}else{
+						$upload_data = $this->upload->data();
+						$file_name = $upload_data['file_name'];
 
-						$_FILES['file']['name'] 		= $files['file']['name'];
-						$_FILES['file']['type']  		= $files['file']['type'];
-						$_FILES['file']['tmp_name']	= $files['file']['tmp_name'];
-						$_FILES['file']['error']		= $files['file']['error'];
-						$_FILES['file']['size']		= $files['file']['size'];    
-
-						$this->upload->initialize($config);
-						if ( ! $this->upload->do_upload('file') ){
-							$json = [
-								'status' => FALSE,
-								'msg'    => 'Upload file gagal!',
-								'info' => $this->upload->display_errors()
-							];
-							echo json_encode($json);
-							exit;
-						}else{
-							$upload_data = $this->upload->data();
-							$file_name = $upload_data['file_name'];
-
-							$attach = array(
-								'id_tugas' => $post['id'],
-								'file'     => $upload_data['file_name'],
-								'format'   => $upload_data['file_ext']
-							);
-						}
-					// }
+						$attach = array(
+							'id_tugas' => $post['id'],
+							'file'     => $upload_data['file_name'],
+							'format'   => $upload_data['file_ext']
+						);
+					}
 
 					$this->db->insert('tb_tugas_attachment',$attach);
-				// }
+					$this->db->trans_complete();
+				}
+					
+				//  Update
+				$update = $this->m_tugas->update($data,array('id'=>$post['id']));
 
-				$this->db->trans_complete();
+				if($update) {
+					$this->sendAjaxResponse([
+						'status' => FALSE,
+						'msg' => 'Tugas berhasil update'
+					], 200);
+				}
+				else {
+					$this->sendAjaxResponse([
+						'status' => FALSE,
+						'msg' => 'Error update data tugas'
+					], 500);
+				}
 
-				$json = [
-					'status' => true,
-					'msg'    => 'success',
-					'info' => NULL
-				];
-				echo json_encode($json);
-				exit;
 			} catch (Exception $e) {
-				$this->sendAjaxResponse(['error' => $e], 500);
+				$this->sendAjaxResponse(['status' => false, 'error' => $e], 500);
 			}
 	}
 
@@ -393,7 +410,7 @@ class Tugas extends MY_Controller {
 			'type' => $this->type,
 			'color' => $this->color
 		);
-		$this->load->view('tugas/editListFIle',$data);
+		$this->load->view('tugas/editListFile',$data);
 	}
 
 	public function get_attach_list_siswa(){
@@ -436,7 +453,35 @@ class Tugas extends MY_Controller {
 		$this->render('tugas/lampiran_detail',$data);
 	}
 
+	/*
+	* Ini versi json dari method attach_file_delete
+	*/
+	public function delete_file_attach() {
+		$post = $this->input->post();
+		
+		$data = $this->m_tugas_attach->get_by(['id' => $post['id']]);
+		if(!is_null($data)) {
+			$path_file = 'assets/tugas/attach/' . $data->file;
+			if(file_exists($path_file)) {
+				unlink($path_file);
+			}
 
+
+			$delete = $this->m_tugas_attach->delete(['id' => $post['id']]);
+			if($delete) {
+				$this->sendAjaxResponse([
+					'status' => true,
+					'msg' => 'File berhasil dihapus'
+				], 200);
+			}
+			else {
+				$this->sendAjaxResponse([
+					'status' => false,
+					'msg' => 'File gagal dihapus'
+				], 500);	
+			}
+		}
+	}
 
 	public function attach_file_delete(){
 		$post = $this->input->post();
@@ -495,7 +540,7 @@ class Tugas extends MY_Controller {
 	{	
 
 		$data = array(
-			'searchFilter' => array('Kelas'),
+			'searchFilter' => ['Kelas', 'Mata Pelajaran'],
 			'tugas' => $this->m_tugas->get_by(array('tgs.id'=>decrypt_url($id)))
 		);
 
@@ -512,6 +557,9 @@ class Tugas extends MY_Controller {
 			switch ($post['filter']) {
 				case 0:
 					$where["(lower(kls.nama) like '%".strtolower($post['search'])."%' )"] = null;
+					break;
+				case 1:
+					$where["(lower(guru.nama) like '%".strtolower($post['search'])."%' )"] = null;
 					break;
 			}
 		}

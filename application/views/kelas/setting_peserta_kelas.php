@@ -13,7 +13,6 @@
 		border-radius:10px;
 
 	}
-
 </style>
 
 <div class="col-md-12 page-content">
@@ -91,7 +90,7 @@
 					</div>
 
 					<from class="form-inline" style="display: block;">
-
+						<input type="hidden" id="kelas-id" value="<?= $kelas->id; ?>">
 						<div class="form-group">
 
 							<label for="search">Search&nbsp;&nbsp;</label>
@@ -135,34 +134,36 @@
 				<!-- <button class="btn btn-sm btn-primary" id="aktifkan_semua">Aktifkan Semua</button>
 
 				<button class="btn btn-sm btn-danger"  id="nonaktifkan_semua">NonAktifkan Semua</button> -->
-
-				<div id="content-table"></div>
-
+				<div id="table-setting-modal"></div>
 			</div>
-
 		</div>
-
 	</div>
-
-
-
 </div>
-
 </div>
-
 <!--/.row-box End-->
-
 <script>
 
 	$(document).ready(function(){
 
-		pageLoad(1,'kelas/page_load_murid_kelas');
+		pageLoadModal(1, `${base_url}/kelas/page_load_murid_kelas`, {
+            pg: 1,
+            limit: $('#limit-murid').val(),
+            search: $('#search-murid').val(),
+            filter: $('#filter-murid').val(),
+            id_kelas: $('#kelas-id').val(),
+        }, '#table-setting-modal');
 
 
 
 		$('#limit-murid').change(function(){
 
-			pageLoad(1,'kelas/page_load_murid_kelas');
+			pageLoadModal(1, `${base_url}/kelas/page_load_murid_kelas`, {
+	            pg: 1,
+	            limit: $('#limit-murid').val(),
+	            search: $('#search-murid').val(),
+	            filter: $('#filter-murid').val(),
+	            id_kelas: $('#kelas-id').val(),
+	        }, '#table-setting-modal');
 
 		});
 
@@ -170,7 +171,13 @@
 
 		$('#search-murid').keyup(delay(function (e) {
 
-			pageLoad(1,'kelas/page_load_murid_kelas');
+			pageLoadModal(1, `${base_url}/kelas/page_load_murid_kelas`, {
+	            pg: 1,
+	            limit: $('#limit-murid').val(),
+	            search: $('#search-murid').val(),
+	            filter: $('#filter-murid').val(),
+	            id_kelas: $('#kelas-id').val(),
+	        }, '#table-setting-modal');
 
 		}, 500));
 
@@ -242,48 +249,19 @@
 
 			success:function(response){
 
-				pageLoad(1,'kelas/page_load_murid_kelas');
+				pageLoadModal(1, `${base_url}/kelas/page_load_murid_kelas`, {
+		            pg: 1,
+		            limit: $('#limit-murid').val(),
+		            search: $('#search-murid').val(),
+		            filter: $('#filter-murid').val(),
+		            id_kelas: $('#kelas-id').val(),
+		        }, '#table-setting-modal');
 				window.location.reload()
 			}
 
 		})
 
 	}
-
-
-
-	function pageLoad(pg, url, search){
-
-		$.ajax({
-
-			type : 'post',
-
-			url  : '<?php echo base_url() ?>' + url + '/' + pg,
-
-			data :{
-
-				pg    : pg,
-
-				filter: $('#filter-murid').val(),
-
-				limit : $('#limit-murid').val(),
-
-				search : $('#search-murid').val(),
-
-				id_kelas : '<?=$kelas->id;?>',
-
-			},
-
-			success:function(response){
-
-				$('#content-table').html(response);
-
-			}
-
-		})
-
-	}
-
 </script>
 
 

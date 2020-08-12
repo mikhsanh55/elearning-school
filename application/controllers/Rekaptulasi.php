@@ -15,7 +15,7 @@ class Rekaptulasi extends MY_Controller {
 	{	
         $this->page_title = 'Nilai Siswa';
 		$data = array(
-			'searchFilter' => array('Nama siswa', 'Kelas', 'Mata Pelajaran')
+			'searchFilter' => array('Nama siswa', 'Nama Guru', 'Kelas', 'Mata Pelajaran')
 		);
 
 		$this->render('rekaptulasi/list',$data);
@@ -25,7 +25,8 @@ class Rekaptulasi extends MY_Controller {
 		$post = $this->input->post();
 		$limit = $post['limit'];
 		$where = [];
-		
+		$where['kls.id_instansi'] = $this->akun->instansi;
+		$where['sis.is_graduated'] = 0;
 		if($this->log_lvl == 'siswa') {
 		    $where['sis.id'] = $this->log_id; // id di m_siswa
 		}
@@ -33,24 +34,24 @@ class Rekaptulasi extends MY_Controller {
 		    $where['dmkls.id_guru'] = $this->log_id;
 		}
 		
-		
 		if (!empty($post['search'])) {
 			switch ($post['filter']) {
 				case 0:
 					$where["(lower(sis.nama) like '%".strtolower($post['search'])."%' )"] = null;
 					break;
-				case 1:
-					$where["(lower(kls.nama) like '%".strtolower($post['search'])."%' )"] = null;
+				case 1: 
+					$where["(lower(guru.nama) like '%".strtolower($post['search'])."%' )"] = null;
 					break;
 				case 2:
-					$where["(lower(mpl.nama) like '%".strtolower($post['search'])."%' )"] = null;
+					$where["(lower(kls.nama) like '%".strtolower($post['search'])."%' )"] = null;
 					break;
-				default:
-					# code...
+				case 3:
+					$where["(lower(mpl.nama) like '%".strtolower($post['search'])."%' )"] = null;
 					break;
 			}
 		}
 		$paginate = $this->m_kelas->paginate_rekap($pg,$where,$limit);
+		// print_r($this->db->last_query());exit;
 		
 		$data['paginate'] = $paginate;
 		$data['paginate']['url']	= 'rekaptulasi/page_load';

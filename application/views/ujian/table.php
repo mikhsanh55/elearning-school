@@ -35,7 +35,7 @@
 			$cekHasilPg = $this->m_ikut_ujian->count_by(['id_ujian'=>$rows->id,'status'=>'N']);
 			$cekHasilEssay = $this->m_ikut_ujian_essay->count_by(['id_ujian'=>$rows->id,'status'=>'N']);
 
-			$ulangUjianBtn = ($cekHasilEssay > 0 && $cekHasilPg > 0 && $rows->type_ujian === 'harian') ? '<a href="javascript:void(0);" class="btn btn-danger btn-sm mr-2  mb-2 ulang-ujian" data-id="'.$rows->id.'" data-izin="'.$rows->izin.'" data-soal="'.$soal.'">Ulang ujian</a>' : NULL;
+			$ulangUjianBtn = ($cekHasilEssay > 0 || $cekHasilPg > 0) ? '<a href="javascript:void(0);" class="btn btn-danger btn-sm mr-2  mb-2 ulang-ujian" data-id="'.$rows->id.'" data-izin="'.$rows->izin.'" data-soal="'.$soal.'">Ulang ujian</a>' : NULL;
 			$cekHasilPg = $cekHasilPg > 0 ? '<button type="button" class="btn btn-info btn-sm mr-2  mb-2" onclick="window.location = `'.base_url('ujian_real/result/'.encrypt_url($rows->id)).'`"  data-toggle="tooltip" title="">Hasil PG</button>' : NULL;
 
 			

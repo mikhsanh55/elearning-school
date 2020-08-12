@@ -247,7 +247,7 @@ class Kelas extends MY_Controller
 		}	
 	}
 
-	$paginate = $this->m_kelas->paginate_guru(1, $limit, $where);
+	$paginate = $this->m_kelas->paginate_guru($pg, $limit, $where);
 
 	$data['paginate'] = $paginate;
 
@@ -382,7 +382,7 @@ class Kelas extends MY_Controller
 
 	$this->load->view('kelas/table_mapel',$data);
 
-	$this->generate_page($data);
+	$this->generate_page_modal($data);
   }
 
   public function page_load_siswa($pg = 1){
@@ -427,13 +427,8 @@ class Kelas extends MY_Controller
 		$data['paginate']['search'] = 'lookup_key';
 
 		$data['page_start'] = $paginate['counts']['from_num'];
-
-
-
 		$this->load->view('kelas/table_siswa',$data);
-
 		$this->generate_page($data);
-
   }
 
   public function daftar_mapel() {
@@ -456,7 +451,7 @@ class Kelas extends MY_Controller
   public function daftar_murid(){
   	$post = $this->input->post();
   	
-  		$filter = $this->log_lvl == 'guru' ? ['Nama', 'NISN'] : ['Nama', 'NISN', 'Kelas'];
+  		$filter = $this->log_lvl == 'guru' ? ['Nama', 'NIS'] : ['Nama', 'NIS', 'Kelas'];
 		$data = array(
 
 			'searchFilter' 	=> $filter,
@@ -567,7 +562,7 @@ class Kelas extends MY_Controller
 
 		$this->load->view('kelas/table_peserta',$data);
 
-		$this->generate_page($data);
+		$this->generate_page_modal($data);
 
 		
 
@@ -617,7 +612,7 @@ class Kelas extends MY_Controller
 
 		$this->load->view('kelas/table_peserta_kelas',$data);
 
-		$this->generate_page($data);
+		$this->generate_page_modal($data);
 
   }
 

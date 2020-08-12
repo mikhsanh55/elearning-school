@@ -16,7 +16,7 @@
 			<div class="form-group">
 				<label for="lembaga">Kelas</label>
 				<div class="rs-select2 js-select-simple select--no-search">
-					<select name="kelas" id="kelas" style="width: 30%;">
+					<select name="kelas" id="kelas" style="width: 30%;" required>
 						<option disabled="disabled" selected="">Pilih</option>
 						<?php foreach ($kelas as $rows): ?>
 							<?php if ($edit->id_kelas == $rows->id): ?>
@@ -37,10 +37,6 @@
 						$data_mapel = $this->m_mapel->get_by(['id' => $edit->id_mapel]);
 						?>
 						<option value="<?= $edit->id_mapel; ?>"><?= !empty($data_mapel) ? $data_mapel->nama : ''; ?></option>
-						<!-- <option disabled="disabled" value="null" selected="selected">Pilih</option> -->
-							<!-- <?php foreach ($mapel as $rows): ?>
-								<option value="<?=$rows->id_mapel;?>"><?=$rows->nama_mapel;?></option>
-							<?php endforeach ?> -->
 					</select>
 					<div class="select-dropdown"></div>
 			</div>
@@ -54,6 +50,7 @@
 					<input type="file" class="custom-file-input" id="attach" name="file">
 					<label class="custom-file-label" for="customFile">Choose file</label>
 				</div>
+				
 				<span id="errors-username" class="errors"></span>
 				<div id="attach-file">
 					
@@ -74,7 +71,7 @@
 
 			<div class="form-group">
 				<label for="end_date">Tanggal Pengumpulan:</label>
-				<input class="form-control js-datepicker" type="text" id="end_date" name="end_date" value="<?=$date;?>" required="" readonly="">
+				<input class="form-control js-datepicker" type="text" id="end_date" name="end_date" value="<?=$date;?>" requiredreadonly="">
 			</div>
 			<div class="form-group">
 				<label for="end_time">Waktu Pengumpulan:</label>
@@ -100,6 +97,7 @@
 <!--/.row-box End-->
 <script src="<?= base_url(); ?>assets/js/jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
+	let conf, self;
 	$(document).ready(function(){
 		listAttach();
 
@@ -113,16 +111,41 @@
         			id_kelas
         		},
         		success:function(res) {
-
-        			// res.opsi.forEach(function(item, i) {
-        			// 	html += `<option value="${item.id}">${item.nama}</option>`
-        			// })
-
         			$('#mapel').html(res)
         		}
         	})
 
-        })
+        });
+
+		$(document).on('click', '.delete-file-tugas', function(e) {
+			e.preventDefault();
+			conf = confirm('Anda yakin akan menghapus file tugas ini?');
+			self = this;
+			if(conf) {
+				$(this).prop('disabled', true).html('<i class="fas fa-spinner spin-icon"></i>');
+				$.ajax({
+					type: 'post',
+					url: '<?= base_url('tugas/delete-file-tugas'); ?>',
+					data: {
+						id: $(this).data('id')
+					},
+					dataType: 'json',
+					success: function(res) {
+						$(self).prop('disabled', false).html('<i class="fas fa-trash"></i>');
+						listAttach();
+					},
+					error: function(e) {
+						$(self).prop('disabled', false).html('<i class="fas fa-trash"></i>');
+						alert('File error ketika dihapus');
+						console.error(e.responseText);
+						return false;
+					}
+				});
+			}
+			else {
+				return false;
+			}
+		});
 
 		$('input[type="file"]').change(function(e){
             var fileName = e.target.files[0].name;
@@ -148,7 +171,13 @@
 		var valid = false;
 		var error = 0;
 
+		if($('#mapel').val() === '' || $('#mapel').val() === null || $('#mapel').val() == 0) {
+			alert('Pilih Mata Pelajaran');
+			return false;
+		}
+
 		$("#save").prop('disabled', true).html('<i class="fas fa-spinner ml-2 spin-icon"></i>');
+
 
 		if (error == 0) {
 
@@ -175,7 +204,6 @@
 			        xhr.upload.addEventListener("progress", function(e) {
 			            if(e.lengthComputable) {
 			                let percentComplete = e.loaded / e.total;
-			                console.log(percentComplete);
 			                // console.log('e.total : ' . e.total);
 			                percentComplete = parseInt(percentComplete * 100);
 			                $('#progress-container').removeClass('d-none');
@@ -196,7 +224,7 @@
 				data : data,
 				success:function(response) {
 					$("#save").html('Simpan').prop("disabled", false);
-					if(response.status == 0){
+					if(response.status){
 						$('#errors-file').html(response.info);
 						$('#progressBar').text('Something wrong when create Tugas').addClass('bg-danger');
 						$('input[type=file]').val('')

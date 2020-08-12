@@ -234,7 +234,8 @@ class Pengusaha extends MY_Controller {
 					    'alamat'  => bersih($p, "alamat"),
 					    'instansi'  => empty($this->akun->instansi) ? 1 : $this->akun->instansi,
 					    'pembuatan_akun' => time(),
-					    'verifikasi' => md5(time())
+					    'verifikasi' => md5(time()),
+					    'is_graduated' => 0
 					];
 
 					if(!empty($file_name)){
@@ -539,7 +540,7 @@ class Pengusaha extends MY_Controller {
 
 	public function aktif_non($id,$kondisi){
 		$kondisi = ($kondisi == 1) ? 0 : 1 ;
-		$kirim = $this->m_siswa->update(array('deleted'=>$kondisi),array('id'=>$id));
+		$kirim = $this->m_siswa->update(array('deleted'=>$kondisi, 'is_graduated' => 0),array('id'=>$id));
 		$ret_arr['status'] 	= "ok";
 		$ret_arr['caption']	= "proses sukses";
 		j($ret_arr);
@@ -557,7 +558,7 @@ class Pengusaha extends MY_Controller {
 			'instansi' => $instansi,
 			'kelas' => $kelas, 
 			'guru' => $guru,
-			'searchFilter' => array('Nama','Username','NISN')
+			'searchFilter' => array('Nama','Username','NIS')
 		);
 		$this->render('pengusaha/list',$data);
 	}
@@ -584,13 +585,13 @@ class Pengusaha extends MY_Controller {
 		if (!empty($post['search'])) {
 			switch ($post['filter']) {
 				case 0:
-					$where["(lower(nama) like '%".strtolower($post['search'])."%' )"] = null;
+					$where["(lower(akun.nama) like '%".strtolower($post['search'])."%' )"] = null;
 					break;
 				case 1:
-					$where["(lower(username) like '%".strtolower($post['search'])."%' )"] = null;
+					$where["(lower(akun.username) like '%".strtolower($post['search'])."%' )"] = null;
 					break;
 				case 2:
-					$where["(lower(nrp) like '%".strtolower($post['search'])."%' )"] = null;
+					$where["(lower(akun.nrp) like '%".strtolower($post['search'])."%' )"] = null;
 					break;
 				default:
 					# code...
@@ -753,7 +754,8 @@ class Pengusaha extends MY_Controller {
 	public function update_profile() {
 		$post = $this->input->post();
 		$update = $this->m_siswa->update([
-			$post['key'] => $post['value']
+			$post['key'] => $post['value'],
+			'is_graduated' => 0
 		], ['id' => $post['id']]);		
 
 		if($update) {
@@ -802,7 +804,7 @@ class Pengusaha extends MY_Controller {
 				}
 
 				$path = 'upload/siswa_photo/'.$this->upload->data('file_name');
-				$update = $this->m_siswa->update(['photo' => $path], ['id' => $post['id']]);
+				$update = $this->m_siswa->update(['photo' => $path, 'is_graduated' => 0], ['id' => $post['id']]);
 
 				if($update) {
 					$this->sendAjaxResponse([

@@ -35,7 +35,7 @@ class M_ujian extends MY_Model {
 
 	public function get_nilai($where=array()){
 		$get = $this->db->select('
-							AVG(ikut.nilai) as nilai
+							ikut.nilai as nilai
 						')
 		->from('tb_ujian uji')
 		->join('tb_kelas_ujian ujikls', 'ujikls.id_ujian = uji.id', 'inner')
@@ -45,8 +45,8 @@ class M_ujian extends MY_Model {
 		->get()
 		->row();
 	
-      	// echo $this->db->last_query();exit;
 		return $get;
+		// return $this->db->last_query();
 	}
 
 	public function get_essay($where=array()){
@@ -54,6 +54,7 @@ class M_ujian extends MY_Model {
 						sum(jwb.nilai) as nilai
 						')
 		->from('tb_ujian uji')
+		->join('tb_kelas_ujian ujikls', 'ujikls.id_ujian = uji.id', 'inner')
 		->join('tb_ikut_ujian_essay ikut','ikut.id_ujian = uji.id','inner')
 		->join('tb_jawaban_essay jwb','jwb.id_ikut_essay = ikut.id','inner')
 		->order_by('uji.id','asc')
@@ -64,6 +65,7 @@ class M_ujian extends MY_Model {
 	
       
 		return $get;
+		// return $this->db->last_query();
 	}
 
 	public function get_check($where=array()){
@@ -79,6 +81,7 @@ class M_ujian extends MY_Model {
 		->row();
 	
 		return $get->cek;
+		// return $this->db->last_query();
 	}
 
 
