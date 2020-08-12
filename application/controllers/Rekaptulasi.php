@@ -14,8 +14,15 @@ class Rekaptulasi extends MY_Controller {
 	public function index()
 	{	
         $this->page_title = 'Nilai Siswa';
+       	if($this->log_lvl == 'siswa') {
+       		$filter = ['Nama Guru', 'Kelas', 'Mata Pelajaran'];
+       	}
+       	else {
+       		$filter = ['Nama siswa', 'Nama Guru', 'Kelas', 'Mata Pelajaran'];
+       	}
+
 		$data = array(
-			'searchFilter' => array('Nama siswa', 'Nama Guru', 'Kelas', 'Mata Pelajaran')
+			'searchFilter' => $filter
 		);
 
 		$this->render('rekaptulasi/list',$data);
@@ -50,6 +57,8 @@ class Rekaptulasi extends MY_Controller {
 					break;
 			}
 		}
+
+
 		$paginate = $this->m_kelas->paginate_rekap($pg,$where,$limit);
 		// print_r($this->db->last_query());exit;
 		
