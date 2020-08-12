@@ -19,9 +19,9 @@ development_branch:
         - git reset --hard
         - git pull origin development
         - sudo rm /var/www/html/globaltech-codeigniter/application/config/database.php
-        - cp /var/www/html/globaltech-codeigniter/database/config/database.php /var/www/html/globaltech-codeigniter/application/config/database.php
+        - cp /var/www/html/globaltech-codeigniter/database/config1/database.php /var/www/html/globaltech-codeigniter/application/config1/database.php
         - sudo rm /var/www/html/globaltech-codeigniter/application/config/config.php
-        - cp /var/www/html/globaltech-codeigniter/database/config/config.php /var/www/html/globaltech-codeigniter/application/config/config.php
+        - cp /var/www/html/globaltech-codeigniter/database/config1/config.php /var/www/html/globaltech-codeigniter/application/config1/config.php
         
 production_icommits:
     stage: production_icommits
