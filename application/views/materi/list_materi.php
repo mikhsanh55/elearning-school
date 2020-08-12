@@ -6,9 +6,16 @@
 <tr class="">
 <td class="text-center" width="30"><i class="fas fa-book"></i></td>
 <th class="materi-link text-secondary">Judul</th>
-<?php if($this->log_lvl == 'guru') : ?>
+<?php if($this->log_lvl != 'siswa') : ?>
     <th class="materi-link text-secondary">Kelas</th>
 <?php endif; ?>
+
+<?php if($this->log_lvl != 'guru') : ?>
+    <th class="materi-link text-secondary">
+        Nama Guru
+    </th>
+<?php endif; ?>
+
 <th class="materi-link text-secondary">Tanggal Aktif</th>
 
 <th class="materi-link text-secondary text-center" colspan="1">Aksi</th>
@@ -82,15 +89,21 @@
 
             <td class="materi-link text-secondary"><?= $materi->title; ?></a></td>
 
-            <?php if($this->log_lvl == 'guru'): 
+            <?php if($this->log_lvl != 'siswa'): 
                 $kelas = $this->m_kelas->get_by(['kls.id' => $materi->id_kelas]);
                 $nama_kelas = !empty($kelas->nama) ? $kelas->nama : '';
             ?>
-                <th class="materi-link text-secondary">
+                <td class="materi-link text-secondary">
                     <?= $nama_kelas; ?>
-                </th>
+                </td>
             <?php endif; ?>
-
+            
+            <?php if($this->log_lvl != 'guru'):
+             ?>
+                <td class="materi-link text-secondary">
+                    <?= $materi->nama_guru; ?>
+                </td>
+            <?php endif; ?>
             <td class="materi-link text-secondary"><?=$tgl_aktif; ?></a></td>
             <!-- New Refactored -->
             <td class="text-right">
