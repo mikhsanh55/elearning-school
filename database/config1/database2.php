@@ -1,15 +1,15 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$active_group = 'development';
+$active_group = 'production';
 $query_builder = TRUE;  
 
-$db['development'] = array(
+$db['production'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	'username' => 'globaltech_dev',
-	'password' => 'Dw1Sur@2020-sql=root&J4nG4nd18uk4nt4rd1C1dUk+password>Gl0bd-sql',
-	'database' => 'elearning_dev',
+	'username' => 'sman21_elearning',
+	'password' => 'Sm4n218D9@2020-sql=user&J4nG4nd18uk4nt4rd1C1dUk+password>Sm4n21up-user',
+	'database' => 'elearning_sman21',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -25,4 +25,3 @@ $db['development'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
-
