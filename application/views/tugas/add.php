@@ -123,10 +123,16 @@
 		// Add Tugas Event
 		$(document).on('submit','#form-akun-lembaga',function(event){
 			event.preventDefault();
-			if($('#kelas').val() == null) {
+			if($('#kelas').val() == null || $('#kelas').val() == '' || $('#kelas').val() == 0) {
 				alert('Harap pilih kelas');
 				return false;
 			}
+
+			if($('#mapel').val() === '' || $('#mapel').val() === null || $('#mapel').val() == 0) {
+				alert('Pilih Mata Pelajaran');
+				return false;
+			}
+
 
 			var valid = false;
 			var error = 0;
