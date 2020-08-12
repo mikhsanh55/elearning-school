@@ -15,7 +15,7 @@ class Rekaptulasi extends MY_Controller {
 	{	
         $this->page_title = 'Nilai Siswa';
 		$data = array(
-			'searchFilter' => array('Nama siswa', 'Kelas', 'Mata Pelajaran')
+			'searchFilter' => array('Nama siswa', 'Nama Guru', 'Kelas', 'Mata Pelajaran')
 		);
 
 		$this->render('rekaptulasi/list',$data);
@@ -26,7 +26,7 @@ class Rekaptulasi extends MY_Controller {
 		$limit = $post['limit'];
 		$where = [];
 		$where['kls.id_instansi'] = $this->akun->instansi;
-		// $where['sis.is_graduated'] = 0;
+		$where['sis.is_graduated'] = 0;
 		if($this->log_lvl == 'siswa') {
 		    $where['sis.id'] = $this->log_id; // id di m_siswa
 		}
@@ -39,10 +39,13 @@ class Rekaptulasi extends MY_Controller {
 				case 0:
 					$where["(lower(sis.nama) like '%".strtolower($post['search'])."%' )"] = null;
 					break;
-				case 1:
-					$where["(lower(kls.nama) like '%".strtolower($post['search'])."%' )"] = null;
+				case 1: 
+					$where["(lower(guru.nama) like '%".strtolower($post['search'])."%' )"] = null;
 					break;
 				case 2:
+					$where["(lower(kls.nama) like '%".strtolower($post['search'])."%' )"] = null;
+					break;
+				case 3:
 					$where["(lower(mpl.nama) like '%".strtolower($post['search'])."%' )"] = null;
 					break;
 			}

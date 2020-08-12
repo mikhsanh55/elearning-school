@@ -10,7 +10,7 @@
     <th class="materi-link text-secondary">Kelas</th>
 <?php endif; ?>
 
-<?php if($this->log_lvl != 'siswa' && $this->log_lvl != 'guru') : ?>
+<?php if($this->log_lvl != 'guru') : ?>
     <th class="materi-link text-secondary">
         Nama Guru
     </th>
@@ -98,7 +98,7 @@
                 </td>
             <?php endif; ?>
             
-            <?php if($this->log_lvl != 'siswa' && $this->log_lvl != 'guru'):
+            <?php if($this->log_lvl != 'guru'):
              ?>
                 <td class="materi-link text-secondary">
                     <?= $materi->nama_guru; ?>
