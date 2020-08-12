@@ -56,5 +56,6 @@ $route['aktivitas/detail-siswa/(:any)'] = 'aktivitas/detail_siswa/$1';
 $route['ujian/batalkan-ujian'] = 'ujian_real/batalkanUjian';
 $route['ujian/delete-hasil-ujian'] = 'ujian_real/delete_hasil_ujian';
 $route['ujian/delete-hasil-ujian-essay'] = 'ujian_essay/delete_hasil_ujian';
+$route['tugas/delete-file-tugas'] = 'tugas/delete_file_attach';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
