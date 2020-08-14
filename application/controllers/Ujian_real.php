@@ -9,7 +9,7 @@ class Ujian_real extends MY_Controller {
 
 
     function __construct() {
-
+    	
         parent::__construct();
 
         $this->load->model('m_ujian');
@@ -437,13 +437,18 @@ class Ujian_real extends MY_Controller {
 		// Cek in jadwal
 		foreach($paginate['data'] as $key => $row) :
 			$now = date('Y-m-d H:i:s');
-			if($now >= $row->tgl_mulai && $now <= $row->terlambat) {
+			$date_start = $row->tgl_mulai;
+			$date_end = $row->terlambat;
+			if($now >= $date_start && $now <= $date_end) {
 				$row->in_jadwal = TRUE;
 			}
 			else {
 				$row->in_jadwal = FALSE;
 			}
 		endforeach;
+
+		// print_r($paginate['data']);exit;
+
 		$data['paginate'] = $paginate;
 
 		$data['paginate']['url']	= 'ujian_real/page_load';
@@ -1742,7 +1747,7 @@ class Ujian_real extends MY_Controller {
 			$is_graduted = $this->m_ujian->get_by(['uji.id' => $id_ujian]);
 			if(!is_null($is_graduted)) {
 				if($nilai >= $is_graduted->min_nilai) {
-					$this->db->update('m_siswa', ['is_graduated' => 1],['id' => $this->akun->id]);
+					$this->db->update('m_siswa', ['is_graduated' => 0],['id' => $this->akun->id]);
 				}
 			}
 

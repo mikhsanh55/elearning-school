@@ -107,14 +107,10 @@
 					<option value="100">100</option>
 				</select>
                 <?php if($this->log_lvl == 'instansi' || $this->log_lvl == 'admin') : ?>
-				<!-- <a href="<?=base_url('export/rekapitulasi') ?>" class="btn btn-sm btn-success"><i class="fas fa-file-excel-o"></i>&nbsp;Export Excel</a>
+				<a href="<?=base_url('export/rekapitulasi') ?>" class="btn btn-sm btn-success"><i class="fas fa-file-excel-o"></i>&nbsp;Export Excel</a>
 				<a target="_blank" href="<?= base_url('export/pdf_rekapitulasi') ?>" class="btn btn-sm btn-danger">
 					<i class="fas fa-file-pdf-o">&nbsp;Export PDF</i>
-				</a> -->
-				<button data-href="<?=base_url('export/rekapitulasi') ?>" class="btn btn-sm btn-success" disabled><i class="fas fa-file-excel-o" ></i>&nbsp;Export Excel</button>
-				<button data-target="_blank" href="<?= base_url('export/pdf_rekapitulasi') ?>" class="btn btn-sm btn-danger" disabled>
-					<i class="fas fa-file-pdf-o">&nbsp;Export PDF</i>
-				</button>
+				</a>
 				<?php endif; ?>
 				<div id="content-view"></div>
 			</div>

@@ -57,5 +57,8 @@ $route['ujian/batalkan-ujian'] = 'ujian_real/batalkanUjian';
 $route['ujian/delete-hasil-ujian'] = 'ujian_real/delete_hasil_ujian';
 $route['ujian/delete-hasil-ujian-essay'] = 'ujian_essay/delete_hasil_ujian';
 $route['tugas/delete-file-tugas'] = 'tugas/delete_file_attach';
+$route['rekaptulasi/detail-ujian/(:any)/(:any)'] = 'rekaptulasi/detail_ujian/$1/$2';
+// Type Ujian, Id_mapel, Id_guru, Id_kelas
+$route['rekaptulasi/detail-ujian/(:any)/(:any)/(:any)/(:any)'] = 'rekaptulasi/detail_ujian_siswa/$1/$2/$3/$4';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

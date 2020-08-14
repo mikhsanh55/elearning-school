@@ -90,11 +90,19 @@
 <script src="<?php echo base_url(); ?>assets/plugin/jquery_zoom/jquery.zoom.min.js"></script>
 
 <script type="text/javascript">
+    let bobot, nilai = 0, id_soal, id_ujian, id_user;
+
+    $(document).on('keyup', '.nilai', function() {
+        nilai = $(this).val();
+    })
 
     $(document).on('click','.beri-nilai',delay(function(e){
         e.preventDefault();
         bobot = $(this).data('bobot');
-        nilai = $(this).data('nilai');
+        id_soal = $(this).data('soal');
+        id_ujian = $(this).data('ujian');
+        id_user = $(this).data('user');
+
         if(nilai <= bobot){
             $.ajax({
                 type : 'post',
@@ -102,16 +110,17 @@
                 data : {
                     nilai,
                     bobot,
-                    id_soal : $(this).data('soal'),
-                    id_ujian : $(this).data('ujian'),
-                    id_user : $(this).data('user'),
+                    id_soal,
+                    id_ujian,
+                    id_user,
                 },
                 success:function(response){
-                   // window.location.reload()
+                   window.location.reload()
                 }
             });
         }else{
             $(this).val('');
+            console.warn(nilai)
             alert('Nilai melebihi bobot ! Bobot soal : ' + bobot);
         }
       

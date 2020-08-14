@@ -96,7 +96,8 @@ class MY_Controller extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		// print_r($this->encryption->encrypt('123456'));exit;
+		date_default_timezone_set('Asia/Jakarta');
+		
 		$this->load->model('m_instansi');
 		$this->backButton = '<button class="btn btn-light text-right" onclick="history.back()">Kembali</button>';
 		if ($this->uri->segment(1) == 'login') {
