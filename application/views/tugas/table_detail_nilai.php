@@ -16,7 +16,7 @@
 					<td class="text-center"><?= $rows->end_date; ?></td>
 					<td class="text-center"><?= $rows->nilai; ?></td>
 				</tr>
-			<? } 
+			<?php } 
 		} ?>
 	</tbody>
 </table>
