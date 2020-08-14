@@ -81,7 +81,7 @@
                     <br>
                     <div class="row container mx-auto">
                         <div class="col-sm-12 mx-auto">
-                            <button class="btn btn-primary btn-block" type="submit">Upload PDF <i id="spin-icon" class="ml-2 fas fa-spinner d-none"></i></button>
+                            <button class="btn btn-primary btn-block btn-upload" type="submit"><span>Upload PDF</span> <i id="spin-icon" class="ml-2 fas fa-spinner d-none"></i></button>
                             <br>
                              <div class="progress d-none mt-4" id="progress-container">
                                  <div id="progressBar" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
@@ -99,7 +99,6 @@
     $(document).ready(function() {
         let file = undefined, filename, ext, uploadOk = 1, maxSize = 104857600;
         let data = new FormData(), html, fileArray = [];
-        
         // kontent
         $('input[type=file]').change(function() {
             html = '';
@@ -128,20 +127,20 @@
 
         $('form').submit(function(e) {
             e.preventDefault();
-
-            
+            $(".btn-upload").prop('disabled', true).html('<i class="fas fa-spinner ml-2 spin-icon"></i>');
             if(uploadOk === 1)
             
                 if(file != undefined) {
-                    file = document.querySelector('input[type=file]').files.length;
+                    data.append('file', file)
+                    /*file = document.querySelector('input[type=file]').files.length;
                     
-                    for(var x = 0;x < file;x++) {
+                    *for(var x = 0;x < file;x++) {
                         data.append('file[]', document.querySelector('input[type=file]').files[x]);
-                    }
+                    }*/
                 }
                 data.append('imateri', $('input[name=imateri]').val());
                 data.append('imapel', $('input[name=imapel]').val());
-                $('#spin-icon').toggleClass('d-none');
+                
                 $.ajax({
 			    xhr:function() {
 			        let xhr = new window.XMLHttpRequest();
@@ -169,19 +168,25 @@
                     contentType:false,
                     processData:false,
                     success:function(res) {
+                        $(".btn-upload").prop('disabled', false).html('<span>Upload PDF</span>');
                         res = JSON.parse(res);
                         if(res.status == true) {
-                            $('#spin-icon').toggleClass('d-none');
-                            
                             console.log(res);
-                            // window.location.href = sessionStorage.getItem('url');
+                            window.location.href = sessionStorage.getItem('url');
                         }
                         else {
-                            $('#spin-icon').toggleClass('hide');
                             console.log(res);
                             alert(res.msg);
                             return false;
                         }
+                    },
+                    error: function(e) {
+                        $(".btn-upload").prop('disabled', false).html('<span>Upload PDF</span>');
+                        $('#progressBar').attr('aria-valuenow', 0).css('width', 0 + '%').text(0 + '%');
+                        $('#progress-container').toggleClass('d-none');
+                        var error = JSON.parse(e.responseText);
+                        alert(error.msg);
+                        return false;
                     }
                 });    
             
