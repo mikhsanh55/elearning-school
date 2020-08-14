@@ -134,6 +134,7 @@
 
 <!--/.row-box End-->
 <script src="<?= base_url(); ?>assets/js/jquery/jquery-3.3.1.min.js"></script>
+<?php if($this->log_lvl === 'siswa') { ?>
 <script type="text/javascript">
 	$(document).ready(function(){
 		pageLoad(1,'tugas/page_load_nilai_tugas');
@@ -159,8 +160,6 @@
 
 
 	})
-
-	<?php if($this->log_lvl === 'siswa') { ?>
 	function pageLoad(pg, url, search){
 		$.ajax({
 			type : 'post',
@@ -178,7 +177,35 @@
 			}
 		})
 	}
-	<?php } else { ?>
+	
+	
+</script>
+<?php } else { ?>
+<script>
+	$(document).ready(function(){
+		pageLoad(1,'tugas/page_load_nilai_tugas');
+
+		$('#limit').change(function(){
+			pageLoad(1,'tugas/page_load_nilai_tugas');
+		});
+
+		$('#search').keyup(delay(function (e) {
+			pageLoad(1,'tugas/page_load_nilai_tugas');
+		}, 500));
+
+		function delay(callback, ms) {
+			var timer = 0;
+			return function() {
+				var context = this, args = arguments;
+				clearTimeout(timer);
+				timer = setTimeout(function () {
+					callback.apply(context, args);
+				}, ms || 0);
+			};
+		}
+
+
+	})
 	function pageLoad(pg, url, search){
 		$.ajax({
 			type : 'post',
@@ -197,5 +224,5 @@
 			}
 		})
 	}
-	<?php } ?>
 </script>
+<?php } ?>
