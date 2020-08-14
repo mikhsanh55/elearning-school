@@ -79,10 +79,10 @@
 					<div class="panel panel-info">
 						<div class="panel-heading">
 							<div class="tombol-kanan">
-								<h2><strong>Data Ujian Hasil <?= ucfirst($type_ujian); ?></strong></h2>
+								<h2><strong>Data Nilai Tugas</strong></h2>
 							</div>
 							<?php if($this->log_lvl !== 'siswa') : ?>
-							<section class="detail-info">
+							<section class="mt-2 detail-info">
 								<h5>Nama Siswa : <?= $nama_siswa; ?></h5>
 								<h5>Kelas : <?= $nama_kelas; ?> </h5>
 								<h5>Mata Pelajaran : <?= $nama_mapel; ?> </h5>
@@ -113,6 +113,16 @@
 					<option value="50">50</option>
 					<option value="100">100</option>
 				</select>
+                <?php if($this->log_lvl == 'instansi' || $this->log_lvl == 'admin') : ?>
+				<!-- <a href="<?=base_url('export/rekapitulasi') ?>" class="btn btn-sm btn-success"><i class="fas fa-file-excel-o"></i>&nbsp;Export Excel</a>
+				<a target="_blank" href="<?= base_url('export/pdf_rekapitulasi') ?>" class="btn btn-sm btn-danger">
+					<i class="fas fa-file-pdf-o">&nbsp;Export PDF</i>
+				</a> -->
+				<button data-href="<?=base_url('export/rekapitulasi') ?>" class="btn btn-sm btn-success" disabled><i class="fas fa-file-excel-o" ></i>&nbsp;Export Excel</button>
+				<button data-target="_blank" href="<?= base_url('export/pdf_rekapitulasi') ?>" class="btn btn-sm btn-danger" disabled>
+					<i class="fas fa-file-pdf-o">&nbsp;Export PDF</i>
+				</button>
+				<?php endif; ?>
 				<div id="content-view"></div>
 			</div>
 		</div>
@@ -124,17 +134,16 @@
 
 <!--/.row-box End-->
 <script src="<?= base_url(); ?>assets/js/jquery/jquery-3.3.1.min.js"></script>
-<?php if($this->log_lvl === 'siswa') { ?>
-	<script type="text/javascript">
+<script type="text/javascript">
 	$(document).ready(function(){
-		pageLoad(1,'rekaptulasi/page_load_detail_ujian');
+		pageLoad(1,'tugas/page_load_nilai_tugas');
 
 		$('#limit').change(function(){
-			pageLoad(1,'rekaptulasi/page_load_detail_ujian');
+			pageLoad(1,'tugas/page_load_nilai_tugas');
 		});
 
 		$('#search').keyup(delay(function (e) {
-			pageLoad(1,'rekaptulasi/page_load_detail_ujian');
+			pageLoad(1,'tugas/page_load_nilai_tugas');
 		}, 500));
 
 		function delay(callback, ms) {
@@ -151,6 +160,7 @@
 
 	})
 
+	<?php if($this->log_lvl === 'siswa') { ?>
 	function pageLoad(pg, url, search){
 		$.ajax({
 			type : 'post',
@@ -160,45 +170,15 @@
 				limit : $('#limit').val(),
 				filter : $('#filter').val(),
 				search : $('#search').val(),
-				id_mapel: "<?= $id_mapel; ?>",
-				id_kelas: "<?= $detail_kelas->id_kelas; ?>",
-				type: "<?= $type_ujian; ?>"
+				id_kelas : "<?= $id_kelas->id_kelas; ?>",
+				id_mapel : "<?= $id_mapel; ?>"
 			},
 			success:function(response){
 				$('#content-view').html(response);
 			}
 		})
 	}
-
-</script>
-
-<?php } else { ?>
-<script>
-	$(document).ready(function(){
-		pageLoad(1,'rekaptulasi/page_load_detail_ujian');
-
-		$('#limit').change(function(){
-			pageLoad(1,'rekaptulasi/page_load_detail_ujian');
-		});
-
-		$('#search').keyup(delay(function (e) {
-			pageLoad(1,'rekaptulasi/page_load_detail_ujian');
-		}, 500));
-
-		function delay(callback, ms) {
-			var timer = 0;
-			return function() {
-				var context = this, args = arguments;
-				clearTimeout(timer);
-				timer = setTimeout(function () {
-					callback.apply(context, args);
-				}, ms || 0);
-			};
-		}
-
-
-	})
-
+	<?php } else { ?>
 	function pageLoad(pg, url, search){
 		$.ajax({
 			type : 'post',
@@ -208,17 +188,14 @@
 				limit : $('#limit').val(),
 				filter : $('#filter').val(),
 				search : $('#search').val(),
-				id_mapel: "<?= $id_mapel; ?>",
-				id_kelas: "<?= $id_kelas; ?>",
-				id_siswa: "<?= $id_siswa; ?>",
-				type: "<?= $type_ujian; ?>"
+				id_kelas : "<?= $id_kelas; ?>",
+				id_mapel : "<?= $id_mapel; ?>",
+				id_siswa : "<?= $id_siswa; ?>"
 			},
 			success:function(response){
 				$('#content-view').html(response);
 			}
 		})
 	}
+	<?php } ?>
 </script>
-<?php } ?>
-
-

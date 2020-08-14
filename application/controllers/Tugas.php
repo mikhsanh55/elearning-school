@@ -654,14 +654,6 @@ class Tugas extends MY_Controller {
 		}
 
 		$this->db->trans_complete();
-
-		// $json = [
-		// 	'status' => true,
-		// 	'msg'    => 'success',
-		// 	'info' => NULL
-		// ];
-		// echo json_encode($json);
-		// Update Activity Siswa
 		$this->updateActiveUser($this->log_lvl, 'active_tugas');
 		exit;
 
@@ -701,7 +693,88 @@ class Tugas extends MY_Controller {
 			], 500);
 		}
 	}
+	/*
+	* Section Nilai Tugas untuk Admin / Guru
+	*/
+	public function detail_nilai_tugas_siswa($id_mapel, $id_siswa) {
+		$id_mapel = decrypt_url($id_mapel);
+		$id_siswa = decrypt_url($id_siswa);
 
+		$detail_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $id_siswa]);
+
+		$mapel = $this->m_mapel->get_by(['id' => $id_mapel]);
+		$kelas = $this->m_kelas->get_by(['kls.id' => $detail_kelas->id_kelas]);
+		$siswa = $this->m_siswa->get_by(['id' => $id_siswa]);
+
+		$data = [
+			'id_mapel' => $id_mapel,
+			'id_kelas' => $detail_kelas->id_kelas,
+			'id_siswa' => $id_siswa,
+			'nama_siswa' => $siswa->nama,
+			'nama_mapel' => $mapel->nama,
+			'nama_kelas' => $kelas->nama,
+			'searchFilter' => ['Keterangan']
+		];
+
+		$this->render('tugas/list_detail_nilai', $data);
+	}
+
+	/*
+	* Section Nilai Tugas untuk siswa
+	*/
+	public function detail_nilai_tugas($id_mapel) {
+		$id_mapel = decrypt_url($id_mapel);
+
+		$detail_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $this->session->userdata('admin_konid')]);
+
+
+		$data = [
+			'id_mapel' => $id_mapel,
+			'id_kelas' => $detail_kelas,
+			'searchFilter' => ['Keterangan']
+		];
+
+		$this->render('tugas/list_detail_nilai', $data);
+	}
+
+	public function page_load_nilai_tugas($pg = 1) {
+		$post = $this->input->post();
+		$limit = $post['limit'];
+		$where = [];
+
+		$where['tugas.id_kelas'] = $post['id_kelas'];
+		$where['tugas.id_mapel'] = $post['id_mapel'];
+
+		switch($this->log_lvl) {
+			case 'siswa':
+				$where['tnilai.id_siswa'] = $this->session->userdata('admin_konid');
+			break;
+			case 'guru' :
+				$where['tugas.id_guru'] = $this->session->userdata('admin_konid');
+				$where['tnilai.id_siswa'] = $post['id_siswa'];
+			default:
+				$where['tnilai.id_siswa'] = $post['id_siswa'];
+			break;
+		}
+
+		if (!empty($post['search'])) {
+			switch ($post['filter']) {
+				case 0:
+					$where["(lower(tugas.keterangan) like '%".strtolower($post['search'])."%' )"] = null;
+					break;
+			}
+		}
+
+		$paginate = $this->m_tugas_nilai->paginate_detail_nilai($pg, $where, $limit);
+
+		$data['paginate'] = $paginate;
+		$data['paginate']['url']	= 'tugas/page_load_nilai_tugas';
+		$data['paginate']['search'] = 'lookup_key';
+		$data['page_start'] = $paginate['counts']['from_num'];
+
+		$this->load->view('tugas/table_detail_nilai',$data);
+		$this->generate_page($data);
+	}
 }
 
 /* End of file Tugas.php */

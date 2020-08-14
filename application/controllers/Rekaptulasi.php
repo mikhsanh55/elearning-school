@@ -116,6 +116,11 @@ class Rekaptulasi extends MY_Controller {
 	public function detail_ujian($type_ujian) {
 		$id_mapel = decrypt_url($this->uri->segment(4));
 		$detail_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $this->session->userdata('admin_konid')]);
+
+		$mapel = $this->m_mapel->get_by(['id' => $id_mapel]);
+		$kelas = $this->m_kelas->get_by(['kls.id' => $detail_kelas->id_kelas]);
+		$siswa = $this->m_siswa->get_by(['id' => $this->session->userdata('admin_konid')]);
+
 		switch($type_ujian) {
 			case 1:
 				$type_ujian = 'harian';
@@ -131,9 +136,11 @@ class Rekaptulasi extends MY_Controller {
 			'id_mapel' => $id_mapel,
 			'detail_kelas' => $detail_kelas,
 			'type_ujian' => $type_ujian,
+			'nama_siswa' => $siswa->nama,
+			'nama_mapel' => $mapel->nama,
+			'nama_kelas' => $kelas->nama,
 			'searchFilter' => ['Mata Pelajaran', 'Keterangan']
 		];
-		// print_r($data);exit;
 
 		$this->render('rekaptulasi/list_detail_ujian', $data);
 	}
@@ -168,7 +175,7 @@ class Rekaptulasi extends MY_Controller {
 			}
 		}
 		$paginate = $this->m_kelas->paginate_detail_ujian($pg, $where, $limit);
-		// print_r($this->db->last_query());exit;
+		
 		$data['paginate'] = $paginate;
 		$data['paginate']['url']	= 'rekaptulasi/page_load_detail_ujian';
 		$data['paginate']['search'] = 'lookup_key';

@@ -27,7 +27,7 @@
 				<td><?= $i++; ?></td>
 				<td><?= $rows->nama_mapel; ?></td>
 				<td><?= !is_null($guru) ? $guru->nama : 'Kosong'; ?></td>
-				
+
 				<td class="text-center">
 					<a href="<?= base_url('rekaptulasi/detail-ujian/1/') . encrypt_url($rows->id_mapel); ?>" class="btn btn-sm btn-primary">Detail</a>
 				</td>
@@ -38,7 +38,7 @@
 					<a href="<?= base_url('rekaptulasi/detail-ujian/3/') . encrypt_url($rows->id_mapel); ?>" class="btn btn-sm btn-primary">Detail</a>
 				</td>
 				<td class="text-center">
-					<button data-href="<?= base_url('rekaptulasi/detail-tugas/') . encrypt_url($rows->id_mapel); ?>" class="btn btn-sm btn-primary" disabled>Detail</button>
+					<a href="<?= base_url('tugas/detail-nilai/') . encrypt_url($rows->id_mapel); ?>" class="btn btn-sm btn-primary">Detail</a>
 				</td>
 				<td class="text-center">
 					<?= $nilaiKeaktifan; ?>

@@ -38,8 +38,8 @@
 						<a href="<?= base_url('rekaptulasi/detail-ujian/3/') . encrypt_url($rows->id_mapel) . '/' . encrypt_url($rows->id_siswa) . '/' . encrypt_url($rows->id_kelas); ?>" class="btn btn-sm btn-primary">Detail</a>
 					</td>
 					<td class="text-center">
-						<button data-href="<?= base_url('rekaptulasi/detail-ujian/1/') . encrypt_url($rows->id_mapel); ?>" class="btn btn-sm btn-primary" disabled>Detail</button>
-					</td>
+					<a href="<?= base_url('tugas/detail-nilai-siswa/') . encrypt_url($rows->id_mapel) . '/' .encrypt_url($rows->id_siswa); ; ?>" class="btn btn-sm btn-primary">Detail</a>
+				</td>
 					<td><?=$nilaiKeaktifan <= 0 ? 0 : (int)$nilaiKeaktifan;?></td>
 				</tr>
 			<?php $i++;endforeach ?>
