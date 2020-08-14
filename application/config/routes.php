@@ -60,5 +60,7 @@ $route['tugas/delete-file-tugas'] = 'tugas/delete_file_attach';
 $route['rekaptulasi/detail-ujian/(:any)/(:any)'] = 'rekaptulasi/detail_ujian/$1/$2';
 // Type Ujian, Id_mapel, Id_guru, Id_kelas
 $route['rekaptulasi/detail-ujian/(:any)/(:any)/(:any)/(:any)'] = 'rekaptulasi/detail_ujian_siswa/$1/$2/$3/$4';
+$route['tugas/detail-nilai/(:any)'] = 'tugas/detail_nilai_tugas/$1';
+$route['tugas/detail-nilai-siswa/(:any)/(:any)'] = 'tugas/detail_nilai_tugas_siswa/$1/$2';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
