@@ -16,10 +16,6 @@
 					<td class="text-center"><?= $rows->end_date; ?></td>
 					<td class="text-center"><?= $rows->nilai; ?></td>
 				</tr>
-			<? endforeach; } else { ?>
-			<tr>
-				<td class="text-center" colspan="4">Data Kosong</td>
-			</tr>
-		<?php  } ?>
+			<? endforeach; } ?>
 	</tbody>
 </table>
