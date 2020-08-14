@@ -96,7 +96,7 @@
 							<select id="filter" class="form-control input-sm">
 								<?php foreach ($searchFilter as $key => $val): ?>
 									<option value="<?=$key;?>"><?=$val;?></option>
-								<?php endforeach ?>
+								<?php endforeach; ?>
 							</select>
 							<input type="text" style="width: 50%;" class="form-control input-sm" id="search" placeholder="ketikan yang anda cari" name="search">
 						</div>
