@@ -20,6 +20,6 @@
 			<tr>
 				<td class="text-center" colspan="4">Data Kosong</td>
 			</tr>
-		<?php }  }?>
+		<?php  } ?>
 	</tbody>
 </table>
