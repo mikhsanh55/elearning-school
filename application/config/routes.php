@@ -62,5 +62,7 @@ $route['rekaptulasi/detail-ujian/(:any)/(:any)'] = 'rekaptulasi/detail_ujian/$1/
 $route['rekaptulasi/detail-ujian/(:any)/(:any)/(:any)/(:any)'] = 'rekaptulasi/detail_ujian_siswa/$1/$2/$3/$4';
 $route['tugas/detail-nilai/(:any)'] = 'tugas/detail_nilai_tugas/$1';
 $route['tugas/detail-nilai-siswa/(:any)/(:any)'] = 'tugas/detail_nilai_tugas_siswa/$1/$2';
+$route['Materi/get-list-files'] = 'Materi/get_list_file';
+$route['Materi/delete-file-materi'] = 'Materi/delete_file_materi';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

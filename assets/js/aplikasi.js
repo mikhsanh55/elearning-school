@@ -1,5 +1,7 @@
+	
 $(document).ready(function() {
-		
+	 
+
 	let updateActiveUser = async (objData, url) => {
 		let settings = {
 			method: 'post',
@@ -1396,3 +1398,14 @@ function pageLoadModal(pg, url, dataObj = {}, idTable) {
 		}
 	});
 }
+function getListFiles(data, url) {
+        $.ajax({
+            type: 'post',
+            url,
+            data,
+            dataType: 'json',
+            success: function(res) {
+                $('.list-files').html(res.data);
+            }
+        })
+    }

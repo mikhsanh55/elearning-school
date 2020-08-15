@@ -69,9 +69,9 @@
         // Declare Button
         $videoBtn = empty($materi->video) ? '<a href="#" onclick="return false" class="m-2 btn btn-sm btn-warning view-video"> <i class="fas fa-ban" disabled></i> Video</a>' : '<a href="#" class="m-2 btn btn-sm btn-success view-video" onclick="viewVideo(this, event)" data-type-video="'. $materi->id_type_video .'" data-url="'. $materi->path_video. '" data-title="'. $materi->title .'" data-video="'. $materi->video.'"> <i class="fas fa-check"></i> Video</a>';
 
-        $pdfBtn = !isset($materi->file_pdf) ? '<a href="javascript:void(0);" class="m-2 btn btn-sm btn-warning"><i class="fas fa-ban" title="Mulai Baca"></i> PDF</a>' : '<a href="'. base_url('Materi/read_pdf') . '/' . md5($materi->id).'" target="_blank" class="m-2 btn btn-sm btn-danger"><i class="fas fa-file-pdf-o mr-2" title="Mulai Baca"></i> PDF</a>';
+        $pdfBtn = '<a href="javascript:void(0);"  data-id="'.$materi->id.'" class="m-2 btn btn-sm btn-danger read-pdf"><i class="fas fa-file-pdf-o mr-2" title="Mulai Baca"></i> PDF</a>';
 
-        $pptBtn = !isset($materi->file_ppt) ? '<a href="javascript:void(0);" class="m-2 btn btn-sm btn-warning"><i class="fas fa-ban" title="Mulai Baca"></i> PPT</a>  ' : '<a href="'. base_url('Materi/read_ppt') . '/' . md5($materi->id).'" target="_blank" class="m-2 btn btn-sm btn-danger"><i class="fas fa-file-pdf-o mr-2" title="Mulai Baca"></i> PPT</a>';
+        $pptBtn = '<a href="javascript:void(0);" data-id="'.$materi->id.'" class="m-2 btn btn-sm btn-danger read-ppt"><i class="fas fa-file-pdf-o mr-2" title="Mulai Baca"></i> PPT</a>';
 
         $uploadPdf = '<a href="#" onclick="setSess(event, this)" data-href="'. base_url('Materi/edit_pdf') . '/' .md5($materi->id).'" class="m-2 btn btn-primary btn-sm"><i class="fas fa-pen mr-2" title="Edit materi"></i> Upload PDF</a>';
 

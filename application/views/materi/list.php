@@ -95,7 +95,24 @@
     </div>
   </div>
 </div>
+<!-- View File -->
+<div class="modal fade" tabindex="-1" role="dialog" id="list-materi-file">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">List File</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="content-file">
+      </div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
 
+<!--  -->
 <div class="modal fade" tabindex="-1" role="dialog" id="upload-materi">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -123,10 +140,53 @@
 	$(document).ready(function(){
 
 		/* Logic Sections */
-		let uploadOk = 0, file, ext, filename;
+		let uploadOk = 0, file, ext, filename, self, html;
 		
 	    var data = new FormData();
 		$('.loading').hide();
+
+		$(document).on('click', '.read-ppt', function(e) {
+			e.preventDefault();
+			self = this;
+			$.ajax({
+				type: 'post', 
+				url: "<?= base_url('Materi/get-list-files') ?>",
+				data: {
+					type_file: 'ppt',
+					imateri: $(self).data('id'),
+					view: true
+				},
+				dataType: 'json',
+				success: function(res) {
+					if(res.status) {
+						$('#content-file').html(res.data);
+						$('#list-materi-file').modal('show');
+					}
+				}
+			})
+		});
+
+		$(document).on('click', '.read-pdf', function(e) {
+			e.preventDefault();
+			self = this;
+			$.ajax({
+				type: 'post', 
+				url: "<?= base_url('Materi/get-list-files') ?>",
+				data: {
+					type_file: 'pdf',
+					imateri: $(self).data('id'),
+					view: true
+				},
+				dataType: 'json',
+				success: function(res) {
+					if(res.status) {
+						$('#content-file').html(res.data);
+						$('#list-materi-file').modal('show');
+					}
+				}
+			})
+		});	
+
 		$('.hapus-materi').click(function(e) {
 		    e.preventDefault();
 		    let src = window.location.href, materi = $(this).data('materi');
