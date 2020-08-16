@@ -141,7 +141,7 @@
 
     <tr>
 
-        <td colspan="4" class="text-center text-secondary">Data Kosong</td>
+        <td colspan="5" class="text-center text-secondary">Data Kosong</td>
 
     </tr>
 

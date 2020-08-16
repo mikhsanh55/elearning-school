@@ -670,14 +670,34 @@ class Materi extends MY_Controller
 
     public function delete()
     {
-        $id = $this->uri->segment('3');
-        $this->db->where('MD5(id)', $id);
-        $delete = $this->db->delete('m_materi');
+        $this->load->model('m_materi_attach');
+        $post = $this->input->post();
+        $id = decrypt_url($post['imateri']);
 
-        if ($delete) {
-            echo "Berhasil";
-        } else {
-            echo 'gagal';
+        $uploadedFiles = $this->m_materi_attach->get_many_by(['id_materi' => $id]);
+        if(count($uploadedFiles) > 0) {
+            foreach($uploadedFiles as $file) :
+                if(file_exists($file->path)) {
+                    unlink($file->path);
+                }
+            endforeach;
+        }
+        $this->db->trans_start();
+        $deleteFiles = $this->m_materi_attach->delete(['id_materi' => $id]);
+        $delete = $this->m_materi->delete(['id' => $id]);
+        $this->db->trans_complete();
+        if($deleteFiles && $delete && $this->db->trans_status() === TRUE) {
+            $this->sendAjaxResponse([
+                'status' => TRUE,
+                'msg' => 'Materi berhasil dihapus'
+            ], 200);
+        } 
+        else {
+            $this->sendAjaxResponse([
+                'status' => FALSE,
+                'msg' => 'Materi gagal dihapus'
+            ], 500);
+            exit;
         }
     }
 
@@ -1367,6 +1387,10 @@ class Materi extends MY_Controller
         }
     }
 
+    /*
+    * Soft delete: belum terpakai lagi
+    * tgl catatan : 16 Agustus 2020 11:33 WIB
+    */
     public function s_delete()
     {
         if ($this->session->userdata('admin_level') == 'admin') {
@@ -1984,7 +2008,9 @@ class Materi extends MY_Controller
         ]);
     }
     
-
+    /*
+    * Delete file materi via ajax call
+    */
     public function delete_file_materi()
     {
         $this->load->model('m_materi_attach');

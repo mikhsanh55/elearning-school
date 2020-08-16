@@ -65,5 +65,6 @@ $route['tugas/detail-nilai-siswa/(:any)/(:any)'] = 'tugas/detail_nilai_tugas_sis
 $route['Materi/get-list-files'] = 'Materi/get_list_file';
 $route['Materi/delete-file-materi'] = 'Materi/delete_file_materi';
 $route['Materi/get-list-videos'] = 'Materi/get_list_videos';
+$route['Materi/delete-materi'] = 'Materi/delete';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
