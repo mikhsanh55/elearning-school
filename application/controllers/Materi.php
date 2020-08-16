@@ -270,11 +270,27 @@ class Materi extends MY_Controller
 
     public function edit()
     {
+        $this->load->model('m_materi_attach');
         $md5_id = $this->uri->segment(3) or die('You donot have access yet.');
+        $materi = $this->get_list_materi_by_mapel($md5_id, true);
+        $type = '';
+        switch($materi->id_type_video) {
+            case 2:
+                $type = 'video-gdrive';
+            break;
+            case 3:
+                $type = 'video-youtube';
+            break;
+        }
+
+        $uploadedFiles = $this->m_materi_attach->get_many_by(['id_materi' => $materi->id, 'type_file' => $type]);
         $data   = [
             'mapel'  => $this->get_mapel(),
-            'materi' => $this->get_list_materi_by_mapel($md5_id, true),
+            'materi' => $materi,
+            'uploadedFiles' => $uploadedFiles
         ];
+        // print_r($uploadedFiles);exit;
+
         $this->load->view('dashboard/template/header');
         $this->load->view('materi/edit', $data);
         $this->load->view('dashboard/template/footer');
@@ -309,191 +325,85 @@ class Materi extends MY_Controller
     // Logic section
     public function update()
     {
+        $this->load->model('m_materi_attach');
         $post = $this->input->post();
-        
 
-        $before_materi = $this->m_materi->get_by(['id' => $this->input->post('imateri')]);
-
-        if ($post['id_type_video'] == 1) {
-
-            $update_video = false;
-            $data         = [];
-
-            if (isset($_FILES['video_manual'])) {
-
-                $file     = stripcslashes($_FILES['video_manual']['name']);
-                $namafile = DATE('d-m-Y') . "-" . time() . "-" . str_replace(" ", "_", $file);
-                $namefile = str_replace('.', '_', $namafile);
-
-                $config['upload_path']   = 'assets/materi/video/';
-                $config['allowed_types'] = 'mp4|m4a|mkv';
-                $config['max_size']      = 222220480;
-                $config['file_name']     = $namafile;
-
-                $this->load->library('upload', $config);
-                $this->upload->initialize($config);
-                if (!$this->upload->do_upload('video_manual')) {
-                    $d = [
-                        'status' => false,
-                        'msg'    => 'Upload file gagal! '.$this->upload->display_errors(),
-                    ];
-                    echo json_encode($d);
-                    http_response_code(500);
-                } else {
-                    $upload_data = $this->upload->data(); //Returns array of containing all of the data related to the file you uploaded.
-
-                    $file_name = $upload_data['file_name'];
-
-                    $data['video']      = base_url('assets/materi/video/') . $file_name;
-                    $data['path_video'] = 'assets/materi/video/' . $file_name;
-
-                    $update_video = true;
-                }
-
+        $data = [
+            'id_mapel'   => $post['mapel'],
+            'id_trainer' => $this->akun->id,
+            'title'      => $post['title'],
+            'content'    => $post['content'],
+            'req_edit'    => 1,
+            'is_verify'  => 1
+        ];
+        $idTypeVideo = '';
+        if(isset($post['video']) && count($post['video']) > 0) {
+            switch($post['type-video']) {
+                case 'video-gdrive': 
+                $idTypeVideo = 2;
+                break;
+                case 'video-youtube': 
+                $idTypeVideo = 3;
+                break;
             }
 
-            $data['id_mapel']      = $this->input->post('mapel');
-            $data['id_trainer']    = $this->akun->id;
-            $data['title']         = $this->input->post('title');
-            $data['content']       = $this->input->post('content');
-            $data['upload_manual'] = 1;
-            $data['req_add']       = 1;
-            $data['id_type_video'] = 1;
-
-            if ($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') {
-                $data['is_verify'] = 1;
-            } else {
-                $data['is_verify'] = 1;
-            }
-
-            $update = $this->m_materi->update($data, ['id' => $this->input->post('imateri')]);
-
-            if ($update) {
-
-                if ($update_video == true) {
-                    $lokasi = $before_materi->path_video;
-
-                    if (file_exists($lokasi)) {
-                        unlink($lokasi);
-                    }
-                }
-
-                $data_guru = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
-                        
-                $this->db->where('id', $this->session->admin_konid);
-                $this->db->update('m_guru', ['sum_upload_materi' => $data_guru->sum_upload_materi + 1]);
-                $d = [
-                    'status' => true,
-                    'msg'    => 'Materi berhasil diupload!',
-                ];
-                echo json_encode($d);
-                http_response_code(200);
-
-            }
-
-        } 
-        else if($post['id_type_video'] == 3) {
-
-            $expl = explode('?v=', $this->input->post('video-youtube'));
-            $v = 'https://www.youtube.com/embed/' . end($expl);
-            
-            $data = [
-                'id_mapel'   => $this->input->post('mapel'),
-                'id_trainer' => $this->akun->id,
-                'id_type_video' => 3,
-                'title'      => $this->input->post('title'),
-                'content'    => $this->input->post('content'),
-                'video'      => $v,
-                'path_video' => $this->input->post('video-youtube'),
-                'req_add'    => 1,
-                'is_verify'  => 1
-            ];
-
-            $this->db->where('id', $this->input->post('imateri'));
-            $update = $this->db->update('m_materi', $data);
-            if ($update) {
-                $data_guru = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
-                        
-                $this->db->where('id', $this->session->admin_konid);
-                $this->db->update('m_guru', ['sum_upload_materi' => $data_guru->sum_upload_materi + 1]);
-
-                $d = [
-                    'status' => true,
-                    'msg'    => 'Materi berhasil diupdate!',
-                    'data'   => $this->input->post(),
-                ];
-                echo json_encode($d);
-                http_response_code(200);
-            } else {
-                $d = [
-                    'status' => false,
-                    'msg'    => 'Internal Server Error!',
-                ];
-                echo json_encode($d);
-                http_response_code(500);
-            }
+            $data['id_type_video'] = $idTypeVideo;
         }
 
-        else if($post['id_type_video'] == 2){
+        $this->db->trans_start();
+
+        $this->m_materi->update($data, ['id' => $post['imateri']]);
+
+        if(isset($post['video']) && count($post['video']) > 0) {
+            $this->m_materi_attach->delete([
+                'id_materi' => $post['imateri'], 
+                'type_file' => $post['type-video']
+            ]);
+            $x = 1;
+            $chunk = '';$modifiedUrl = '';
+            for($i = 0;$i < count($post['video']);$i++ ) {
             
-            $gdrive = $this->input->post('video-gdrive');
-            if( !empty($this->input->post('video-gdrive')) ) {
-                $embedVideo = explode('/', $this->input->post('video-gdrive'));
-                array_pop($embedVideo);
-                $embedVideo = implode('/', $embedVideo);
-                $embedVideo = $embedVideo . '/preview';
-            }
-            else {
-                $embedVideo = '';
-            }
-
-            $data = [
-                'id_mapel'      => $this->input->post('mapel'),
-                'id_trainer'    => $this->akun->id,
-                'title'         => $this->input->post('title'),
-                'content'       => $this->input->post('content'),
-                'video'      => $embedVideo,
-                'path_video'      => !empty($this->input->post('video-gdrive')) ?  $this->input->post('video-gdrive') : '',
-                'upload_manual' => 0,
-                'req_edit'      => 1,
-                'id_type_video' => 2
-            ];
-            if ($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') {
-                $data['is_verify'] = 1;
-            } else {
-                $data['is_verify'] = 1;
-            }
-
-            $this->db->where('id', $this->input->post('imateri'));
-            $update = $this->db->update('m_materi', $data);
-            if ($update) {
-                $data_guru = $this->m_guru->get_by(['id' => $this->session->admin_konid]);
-                        
-                $this->db->where('id', $this->session->admin_konid);
-                $this->db->update('m_guru', ['sum_upload_materi' => $data_guru->sum_upload_materi + 1]);
-                $lokasi = $before_materi->path_video;
-
-                if (file_exists($lokasi)) {
-                    unlink($lokasi);
+                switch($post['type-video']) {
+                    case 'video-youtube' :
+                        $chunk = explode('?v=', $post['video'][$i]);
+                        $modifiedUrl = 'https://www.youtube.com/embed/' . end($chunk);
+                    break;
+                    case 'video-gdrive' :
+                        $chunk = explode('/', $post['video'][$i]);
+                        array_pop($chunk);
+                        $chunk = implode('/', $embedVideo);
+                        $modifiedUrl = $embedVideo . '/preview';
+                    break;
                 }
 
-                $d = [
-                    'status' => true,
-                    'msg'    => 'Materi berhasil diupdate!',
-                    'data'   => $this->input->post(),
+                $dataMateri[] = [
+                    'id_materi' => $post['imateri'],
+                    'file_name' => 'Video ' . $x,
+                    'type_file' => $post['type-video'],
+                    'path' => $post['video'][$i],
+                    'view_path' => $modifiedUrl
                 ];
-                echo json_encode($d);
-                http_response_code(200);
-            } else {
-                $d = [
-                    'status' => false,
-                    'msg'    => 'Internal Server Error!',
-                ];
-                echo json_encode($d);
-                http_response_code(500);
+                $x++;
             }
+            
+            $this->db->insert_batch('tb_materi_attach', $dataMateri);
         }
+            
+        $this->db->trans_complete();
 
+        if($this->db->trans_status() === FALSE) {
+            $this->sendAjaxResponse([
+                'status' => FALSE,
+                'msg' => 'Materi gagal ditambahkan'
+            ], 500);
+            exit;
+        }
+        else {
+            $this->sendAjaxResponse([
+                'status' => TRUE,
+                'msg' => 'Materi berhasil ditambahkan'
+            ], 200);
+        }
     }
 
     public function update_pdf()
@@ -827,14 +737,25 @@ class Materi extends MY_Controller
         $post = $this->input->post();
 
         if(isset($post['video']) && count($post['video']) > 0) {
+            switch($post['type-video']) {
+                case 'video-gdrive': 
+                $idTypeVideo = 2;
+                break;
+                case 'video-youtube': 
+                $idTypeVideo = 3;
+                break;
+            }
+
             $data = [
                 'id_mapel'   => $this->input->post('mapel'),
                 'id_trainer' => $this->akun->id,
+                'id_type_video' => $idTypeVideo,
                 'title'      => $this->input->post('title'),
                 'content'    => $this->input->post('content'),
                 'req_add'    => 1,
                 'is_verify'  => 1
             ];
+            
             $this->db->trans_start();
             $this->m_materi->insert($data);
             $id_materi = $this->db->insert_id();
@@ -910,144 +831,6 @@ class Materi extends MY_Controller
             }
         }
 
-        // if (isset($_FILES['video_manual'])) {
-
-        //     $file     = stripcslashes($_FILES['video_manual']['name']);
-        //     $namafile = DATE('d-m-Y') . "-" . time() . "-" . str_replace(" ", "_", $file);
-        //     $namefile = str_replace('.', '_', $namafile);
-
-        //     $config['upload_path']   = 'assets/materi/video/';
-        //     $config['allowed_types'] = 'mp4|m4a|mkv';
-        //     $config['max_size']      = 222220480;
-        //     $config['file_name']     = $namafile;
-
-        //     $this->load->library('upload', $config);
-        //     $this->upload->initialize($config);
-        //     if (!$this->upload->do_upload('video_manual')) {
-        //         echo $this->upload->display_errors();exit;
-        //         $d = [
-        //             'status' => false,
-        //             'msg'    => 'Upload file gagal!',
-        //         ];
-        //         echo json_encode($d);
-        //         http_response_code(500);
-        //     } else {
-        //         $upload_data = $this->upload->data(); //Returns array of containing all of the data related to the file you uploaded.
-
-        //         $file_name = $upload_data['file_name'];
-
-        //         $data = [
-        //             'id_mapel'      => $this->input->post('mapel'),
-        //             'id_trainer'    => $this->akun->id,
-        //             'id_type_video' => 1,
-        //             'title'         => $this->input->post('title'),
-        //             'content'       => $this->input->post('content'),
-        //             'video'         => base_url('assets/materi/video/') . $file_name,
-        //             'path_video'    => 'assets/materi/video/' . $file_name,
-        //             'upload_manual' => 1,
-        //             'req_add'       => 1,
-        //         ];
-
-        //         if ($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') {
-        //             $data['is_verify'] = 1;
-        //         } else {
-        //             $data['is_verify'] = 1;
-        //         }
-        //         $insert = $this->db->insert('m_materi', $data);
-
-        //         if ($insert) {
-
-        //             // Update jumlah upload guru
-        //             if($this->log_lvl == 'guru') {
-        //                 $this->updateSumUploadMateri();
-        //             }
-
-        //             $d = [
-        //                 'status' => true,
-        //                 'msg'    => 'Materi berhasil diupload!',
-        //             ];
-        //             echo json_encode($d);
-        //             http_response_code(200);
-
-        //         }
-
-        //     }
-
-        // } else if($this->input->post('video-youtube') != NULL) {
-             
-            // $expl = explode('?v=', $this->input->post('video-youtube'));
-            // $v = 'https://www.youtube.com/embed/' . end($expl);
-            
-        //     $data = [
-        //         'id_mapel'   => $this->input->post('mapel'),
-        //         'id_trainer' => $this->akun->id,
-        //         'id_type_video' => 3,
-        //         'title'      => $this->input->post('title'),
-        //         'content'    => $this->input->post('content'),
-        //         'video'      => $v,
-        //         'path_video' => $this->input->post('video-youtube'),
-        //         'req_add'    => 1,
-        //         'is_verify'  => 1
-        //     ];
-
-        //     $insert = $this->db->insert('m_materi', $data);
-        //     if ($insert) {
-        //         $d = [
-        //             'status' => true,
-        //             'msg'    => 'Materi berhasil dibuat',
-        //         ];
-        //         echo json_encode($d);
-        //     } else {
-        //         $d = [
-        //             'status' => false,
-        //             'msg'    => 'Internal SErver Error!',
-        //         ];
-        //         echo json_encode($d);
-        //         http_response_code(500);
-        //     }
-        // }
-        // else {
-        //     if( !empty($this->input->post('video-gdrive')) ) {
-                // $embedVideo = explode('/', $this->input->post('video-gdrive'));
-                // array_pop($embedVideo);
-                // $embedVideo = implode('/', $embedVideo);
-                // $embedVideo = $embedVideo . '/preview';
-        //     }
-        //     else {
-        //         $embedVideo = '';
-        //     }
-        //     $data = [
-        //         'id_mapel'   => $this->input->post('mapel'),
-        //         'id_trainer' => $this->akun->id,
-        //         'id_type_video' => 2,
-        //         'title'      => $this->input->post('title'),
-        //         'content'    => $this->input->post('content'),
-        //         'video'      => $embedVideo,
-        //         'path_video'      => !empty($this->input->post('video-gdrive')) ?  $this->input->post('video-gdrive') : '',
-        //         'req_add'    => 1,
-        //     ];
-        //     if ($this->session->userdata('admin_level') == 'admin' || $this->session->userdata('admin_level') == 'guru') {
-        //         $data['is_verify'] = 1;
-        //     } else {
-        //         $data['is_verify'] = 1;
-        //     }
-
-        //     $insert = $this->db->insert('m_materi', $data);
-        //     if ($insert) {
-        //         $d = [
-        //             'status' => true,
-        //             'msg'    => 'Materi berhasil dibuat',
-        //         ];
-        //         echo json_encode($d);
-        //     } else {
-        //         $d = [
-        //             'status' => false,
-        //             'msg'    => 'Internal SErver Error!',
-        //         ];
-        //         echo json_encode($d);
-        //         http_response_code(500);
-        //     }
-        // }
     }
 
     public function verify()

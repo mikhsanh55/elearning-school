@@ -155,17 +155,20 @@
 			}	
 			video = document.querySelectorAll('.link-videos');
 			for(let i = 0;i < video.length;i++) {
-				if(!$('.typeVideos').is(':checked')) {
-					alert('Harap pilih tipe video');
-					return false;
-				}
 
 				if(video[i].value != '') {
+					if(!$('.typeVideos').is(':checked')) {
+						alert('Harap pilih tipe video');
+						return false;
+					}
 					data.append('video[]', video[i].value);
 				}
 			}
 
-			data.append('type-video', $('.typeVideos:checked').data('type'));
+			if($('.typeVideos').is(':checked')) {
+				data.append('type-video', $('.typeVideos:checked').data('type'));	
+			}
+			
 			data.append('title', title.val());
 			data.append('content', content);
 			data.append('mapel', mapel);
@@ -201,10 +204,8 @@
 					success:function(res) {
 						res = JSON.parse(res);
 						$('.spin-icon').toggleClass('d-none');
-						if(sessionStorage.getItem('url') != null) {
-							window.location.href = sessionStorage.getItem('url') || localStorage.getItem('url');	
-						}
 						
+							window.location.href = sessionStorage.getItem('url') || localStorage.getItem('url');		
 					},
 					error:function(e) {
 						console.log(e);
