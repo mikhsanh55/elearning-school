@@ -440,7 +440,6 @@ class M_kelas extends MY_Model {
     public function count_detail_ujian($where = []) {
     	return count($this->get_detail_ujian($where));
     }
-
     public function get_detail_ujian($where = []) {
     	$get = $this->db->select('pg.nilai as nilai_pg, pg.id_user, essay.nilai as nilai_essay, ujikls.id_kelas as idkelas, uji.*')
     					->from('tb_ujian uji')

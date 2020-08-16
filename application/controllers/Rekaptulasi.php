@@ -159,11 +159,11 @@ class Rekaptulasi extends MY_Controller {
 		switch($this->log_lvl) {
 			case 'siswa':
 				$where['pg.id_user'] = $this->session->userdata('admin_konid');
-				$where['essay.id_user'] = $this->session->userdata('admin_konid');
+				// $where['essay.id_user'] = $this->session->userdata('admin_konid');
 			break;
 			case 'guru':
 				$where['pg.id_user'] = $post['id_siswa'];
-				$where['essay.id_user'] = $post['id_siswa'];
+				// $where['essay.id_user'] = $post['id_siswa'];
 			break;
 		}
 		
