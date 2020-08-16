@@ -67,7 +67,7 @@
         $tgl_aktif = (empty($materi->start_date)) ? 'Belum Terjadwal' : $date.' '.$time.' - '.$date2.' '.$time2;
 
         // Declare Button
-        $videoBtn = empty($materi->video) ? '<a href="#" onclick="return false" class="m-2 btn btn-sm btn-warning view-video"> <i class="fas fa-ban" disabled></i> Video</a>' : '<a href="#" class="m-2 btn btn-sm btn-success view-video" onclick="viewVideo(this, event)" data-type-video="'. $materi->id_type_video .'" data-url="'. $materi->path_video. '" data-title="'. $materi->title .'" data-video="'. $materi->video.'"> <i class="fas fa-check"></i> Video</a>';
+        $videoBtn = '<a href="#" class="m-2 btn btn-sm btn-success view-video" data-title="'. $materi->title .'" data-id="'.$materi->id.'"> <i class="fas fa-check"></i> Video</a>';
 
         $pdfBtn = '<a href="javascript:void(0);"  data-id="'.$materi->id.'" class="m-2 btn btn-sm btn-danger read-pdf"><i class="fas fa-file-pdf-o mr-2" title="Mulai Baca"></i> PDF</a>';
 

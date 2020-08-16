@@ -145,6 +145,25 @@
 	    var data = new FormData();
 		$('.loading').hide();
 
+		$(document).on('click', '.view-video', function(e) {
+			e.preventDefault();
+			self = this;
+			$.ajax({
+				type: 'post',
+				url: "<?= base_url('Materi/get-list-videos') ?>",
+				data: {
+					imateri: $(self).data('id')
+				},
+				dataType: 'json',
+				success: function(res) {
+					if(res.status) {
+						$('#content-file').html(res.data);
+						$('#list-materi-file').modal('show');
+					}
+				}
+			})
+		});
+
 		$(document).on('click', '.read-ppt', function(e) {
 			e.preventDefault();
 			self = this;

@@ -92,10 +92,11 @@ class MY_Model extends CI_Model
         return array('data' => $results, 'counts' => $counts);
     }
 
-    public function get_many_wherein($columnName, $where = []) {
+    public function get_many_wherein($columnName, $where = [], $customeWhere = []) {
         $get = $this->db->select('*')
                         ->from($this->_table)
                         ->where_in($columnName, $where)
+                        ->where($customeWhere)
                         ->get()
                         ->result();
         return $get;
