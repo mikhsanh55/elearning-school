@@ -113,7 +113,8 @@ class Rekaptulasi extends MY_Controller {
 
 		$this->render('rekaptulasi/list_detail_ujian', $data);
 	}
-	public function detail_ujian($type_ujian) {
+	public function detail_ujian($type_ujian) 
+	{
 		$id_mapel = decrypt_url($this->uri->segment(4));
 		$detail_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $this->session->userdata('admin_konid')]);
 
@@ -145,7 +146,8 @@ class Rekaptulasi extends MY_Controller {
 		$this->render('rekaptulasi/list_detail_ujian', $data);
 	}
 
-	public function page_load_detail_ujian($pg = 1) {
+	public function page_load_detail_ujian($pg = 1) 
+	{
 		$post = $this->input->post();
 		$limit = $post['limit'];
 		$where = [];
@@ -183,6 +185,80 @@ class Rekaptulasi extends MY_Controller {
 
 		$this->load->view('rekaptulasi/table_detail_ujian',$data);
 		$this->generate_page($data);
+	}
+
+	public function get_data_by_kategori() 
+	{
+		$post = $this->input->post();
+		$datas = [];
+		switch($post['kategori']) {
+			case 'harian':
+				$datas = $this->m_ujian->get_list_data(['type_ujian' => 'harian','id_guru' => $this->akun->id]);
+			break;
+			case 'tugas':
+				$datas = $this->m_tugas->get_list_data(['id_guru' => $this->akun->id]);
+			break;
+		}
+		$html = '<option value="0">Pilih Data</option>';
+		$nama = '';
+		if(count($datas) > 0) {
+			
+			foreach($datas as $data) :
+				switch($post['kategori']) {
+					case 'harian':
+						$nama = $data->nama_ujian;	
+					break;
+					case 'tugas':
+						$nama = substr($data->keterangan, 0, 50);
+						$nama .= '...';
+					break;
+				}
+				$html .= '<option value="'.$data->id.'">'.$nama.'</option>';
+			endforeach;
+		}
+		else {
+			$html .= '<option value="0">Hasil 0</option>';
+		}
+
+		$this->sendAjaxResponse([
+			'status' => TRUE,
+			'data' => $html
+		]);
+	}
+
+	public function get_kelas_by_data()
+	{
+		$post = $this->input->post();
+		$html = '<option value="0">Pilih Kelas</option>';
+		switch($post['kategori']) {
+			case 'harian':
+				$datas = $this->m_ujian->get_kelas(['ujikls.id_ujian' => $post['data']]);
+				if(count($datas) > 0) {
+					foreach($datas as $data) :
+						$html .= '<option value="'.$data->id_kelas.'">'.$data->nama_kelas.'</option>';
+					endforeach;
+				}
+				else {
+					$html .= '<option value="0">Tidak ada hasil</option>';
+				}
+			break;
+			case 'tugas':
+				$datas = $this->m_tugas->get_many_by(['tugas.id' => $post['data']]);
+				if(count($datas) > 0) {
+					foreach($datas as $data) :
+						$html .= '<option value="'.$data->id_kelas.'">'.$data->kelas.'</option>';
+					endforeach;
+				}
+				else {
+					$html .= '<option value="0">Tidak ada hasil</option>';
+				}
+			break;	 
+		}
+
+		$this->sendAjaxResponse([
+			'status' => TRUE,
+			'data' => $html
+		]);
 	}
 }
 /* End of file instantsi.php */

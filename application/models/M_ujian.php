@@ -223,7 +223,18 @@ class M_ujian extends MY_Model {
         return array('data' => $results, 'counts' => $counts);
     }
 
+    // get kelas by ujian
+    public function get_kelas($where)
+    {
+    	$get = $this->db->select('ujikls.*, kls.nama as nama_kelas')
+    					->from('tb_kelas_ujian ujikls')
+    					->join('tb_kelas kls', 'ujikls.id_kelas = kls.id', 'inner')
+    					->where($where)
+    					->get()
+    					->result();
 
+    	return $get;
+    }
 }
 
 /* End of file m_ujian.php */

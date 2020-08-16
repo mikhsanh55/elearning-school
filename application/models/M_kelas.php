@@ -452,6 +452,21 @@ class M_kelas extends MY_Model {
 
     	return $get;
     }
+
+    public function get_rekap_ujian($where = []) {
+    	$get = $this->db->select('pg.nilai as nilai_pg, pg.id_user, essay.nilai as nilai_essay, ujikls.id_kelas as idkelas, uji.*')
+    					->from('tb_kelas_ujian ujikls')
+    					->join('tb_ujian uji', 'uji.id = ujikls.id_ujian', 'inner')
+    					->join('tb_ikut_ujian pg', 'pg.id_ujian = uji.id', 'inner')
+    					->join('tb_ikut_ujian_essay essay', 'essay.id_ujian = uji.id', 'left')
+    					->where($where)
+    					->group_by('pg.id_user', 'essay.id_user')
+    					->order_by('ujikls.id_kelas', 'asc')
+    					->get()
+    					->result();
+
+    	return $get;
+    }
 }
 
 /* End of file m_perusahaan.php */

@@ -108,4 +108,13 @@ class MY_Model extends CI_Model
         return $delete;
     }
 
+    public function get_list_data($where) {
+        $get = $this->db->select('*')
+                        ->from($this->_table)
+                        ->where($where)
+                        ->get()
+                        ->result();
+        return $get;
+    }
+
 }

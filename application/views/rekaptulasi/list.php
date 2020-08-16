@@ -106,12 +106,15 @@
 					<option value="50">50</option>
 					<option value="100">100</option>
 				</select>
-                <?php if($this->log_lvl == 'instansi' || $this->log_lvl == 'admin') : ?>
+				<div id="error">
+					<?= $this->session->flashdata('error'); ?>
+				</div>
+                <?php if($this->log_lvl != 'siswa') : ?>
 				<!-- <a href="<?=base_url('export/rekapitulasi') ?>" class="btn btn-sm btn-success"><i class="fas fa-file-excel-o"></i>&nbsp;Export Excel</a>
 				<a target="_blank" href="<?= base_url('export/pdf_rekapitulasi') ?>" class="btn btn-sm btn-danger">
 					<i class="fas fa-file-pdf-o">&nbsp;Export PDF</i>
 				</a> -->
-				<button data-href="<?=base_url('export/rekapitulasi') ?>" class="btn btn-sm btn-success" disabled><i class="fas fa-file-excel-o" ></i>&nbsp;Export Excel</button>
+				<button data-href="<?=base_url('export/rekapitulasi') ?>" class="btn btn-sm btn-success export-nilai-excel"><i class="fas fa-file-excel-o" ></i>&nbsp;Export Excel</button>
 				<button data-target="_blank" href="<?= base_url('export/pdf_rekapitulasi') ?>" class="btn btn-sm btn-danger" disabled>
 					<i class="fas fa-file-pdf-o">&nbsp;Export PDF</i>
 				</button>
@@ -123,12 +126,54 @@
 
 </div>
 </div>
-
+<!-- Modal -->
+<div class="modal fade" id="nilaiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+  	<form action="" id="export-nilai">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">Export Nilai</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <div class="form-group">
+	        	<label for="">Kategori</label>
+	        	<select name="kategori" class="form-control" id="kategori-nilai" required>
+	        		<option value="0">Pilih Kategori</option>
+	        		<option value="harian">Ujian Harian</option>
+<!-- 	        		<option value="uts">UTS</option>
+	        		<option value="uas">UAS</option> -->
+	        		<option value="tugas">Tugas</option>
+	        	</select>
+	        </div>
+	        <div class="form-group">
+	        	<label for="">Data</label>
+	        	<select name="data" id="data-nilai" class="form-control" required>
+	        		<option value="0" disabled>Pilih Data</option>	
+	        	</select>
+	        </div>
+	        <div class="form-group" id="kelas">
+	        	<label for="">Kelas</label>
+	        	<select name="kelas" id="kelas-nilai" class="form-control" required>
+	        		<option value="0" disabled>Pilih Kelas</option>	
+	        	</select>
+	        </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="submit" class="btn btn-primary">Export</button>
+	      </div>
+	    </div>
+    </form>
+  </div>
+</div>
 
 <!--/.row-box End-->
 <script src="<?= base_url(); ?>assets/js/jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
+		let self;
 		pageLoad(1,'rekaptulasi/page_load');
 
 		$('#limit').change(function(){
@@ -150,7 +195,78 @@
 			};
 		}
 
+		$('.export-nilai-excel').click(function(e) {
+			e.preventDefault();
+			$('#nilaiModal').modal('show');
 
+		});
+
+		// kategori event
+		$('#kategori-nilai').change(function(e) {
+			e.preventDefault();
+
+
+			$('#data-nilai').html(`<option value="0" selected disabled>Pilih Data</option>`);
+			$('#kelas-nilai').html(`<option value="0" selected disabled>Pilih Kelas</option>`);
+			if($(this).val() != 'tugas') {
+				$('#kelas').addClass('d-none');	
+			}
+			else {
+				$('#kelas').removeClass('d-none');		
+			}
+			self = this;
+			$.ajax({
+				type: 'post',
+				url: "<?= base_url('rekaptulasi/get-data-by-kategori'); ?>",
+				data: {
+					kategori: $(self).val()
+				},
+				dataType: 'json',
+				success: function(res) {
+					$('#data-nilai').html(res.data);
+				}
+			})
+		});
+
+		// data event
+		$('#data-nilai').on('change', function(e) {
+			e.preventDefault();
+			$('#kelas-nilai').html(`<option value="0" selected disabled>Pilih Kelas</option>`);
+			self = this;
+			$.ajax({
+				type: 'post',
+				url: "<?= base_url('rekaptulasi/get-kelas-by-data'); ?>",
+				data: {
+					kategori: $('#kategori-nilai').val(),
+					data: $(self).val()
+				},
+				dataType: 'json',
+				success: function(res) {
+					$('#kelas-nilai').html(res.data);
+				}
+			})
+		});
+
+		$('#export-nilai').on('submit', function(e) {
+			e.preventDefault();
+			self = this;
+			if($('#kategori-nilai').val() == 0 || $('#data-nilai').val() == 0) {
+				alert('Harap pilih semua opsi');
+				return false;
+			}
+
+			$.ajax({
+				type: 'post',
+				url: "<?= base_url('export/rekaptulasi'); ?>",
+				data: $(self).serialize(),
+				dataType: 'json',
+				success: function(res) {
+					$('#nilaiModal').modal('hide');
+					window.location.href = res.url;
+				}
+			})
+
+		});
 	})
 
 	function pageLoad(pg, url, search){

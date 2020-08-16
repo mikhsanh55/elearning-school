@@ -4,7 +4,7 @@
 		<tr>
 			<th class="frist">No</th>
 			<th>Nama</th>
-			<th>NISN</th>
+			<th>NIS</th>
 			<th class="frist">Terkumpul</th>
 			<th class="frist">Nilai (0/100)</th>
 		</tr>

@@ -35,65 +35,167 @@ class Export extends MY_Controller {
 		header('Content-Type: application/vnd.ms-excel'); 
 		header('Content-Disposition: attachment;filename="'.$this->excelFileName.'"');
 		header('Cache-Control: max-age=0'); 
-		$this->excelObjectWriter = PHPExcel_IOFactory::createWriter($this->excelObject, 'Excel5');  
+		$this->excelObjectWriter = PHPExcel_IOFactory::createWriter($this->excelObject, 'Excel2007');  
 		ob_end_clean();
 		$this->excelObjectWriter->save('php://output'); 
 	}
 
 	// Rekapitulasi
-	public function rekapitulasi() {
+	public function rekaptulasi() {
 		$this->load->model('m_kelas');
 		$this->load->model('m_ujian');
 		$this->load->model('m_tugas');
+		$this->load->model('m_tugas_nilai');
+		$post = $this->input->post();
+		// print_r($post);exit;
+		$datas = [];
 		$where = [];
-		$this->excelDatas = $this->m_kelas->rekaptulasi($where);
+		$url = NULL;
 
-	    $this->excelCellsHeading = [
-	      ['cell' => 'A', 'label' => 'No'],
-	      ['cell' => 'B', 'label' => 'Siswa'],
-		  ['cell' => 'C', 'label' => 'Kelas'],
-		  
-		  ['cell' => 'D', 'label' => 'Mata Pelajaran'],
-		  ['cell' => 'E', 'label' => 'UTS'],
-		  ['cell' => 'F', 'label' => 'UAS'],
-		  ['cell' => 'G', 'label' => 'Tugas'],
-		  ['cell' => 'H', 'label' => 'Keaktifan'],
-	    ];
-
-	    // Write heading excel use method on MY_Controller.php
-	    $this->excelWriteHeading();
-
-		$this->excelDataStart = 2;
-		
-		foreach($this->excelDatas as $rows) {
-			
-			$uts = $this->m_ujian->get_nilai(['uji.type_ujian'=>'uts','uji.id_kelas'=>$rows->id_kelas,'id_user'=>$rows->id_peserta]);
-
-			$uas = $this->m_ujian->get_nilai(['uji.type_ujian'=>'uas','uji.id_kelas'=>$rows->id_kelas,'id_user'=>$rows->id_peserta]);
-
-			$tugas = $this->m_tugas->get_nilai(['tgs.id_kelas'=>$rows->id_kelas,'id_siswa'=>$rows->id_peserta]);
-
-
-			$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, $this->excelColumnNo);
-			$this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $rows->siswa);
-			$this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $rows->nama_kelas);
-			$this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $rows->mapel);
-			$this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, isset($uts->nilai) ? (int)$uts->nilai : 0 );
-			$this->excelObject->getActiveSheet()->SetCellValue('F' . $this->excelDataStart, isset($uas->nilai) ? (int)$uas->nilai : 0 );
-			$this->excelObject->getActiveSheet()->SetCellValue('G' . $this->excelDataStart, isset($tugas->nilai) ? (int)$tugas->nilai : 0 );
-			$this->excelObject->getActiveSheet()->SetCellValue('H' . $this->excelDataStart, 0);
-
-			$this->excelDataStart++;
-	      	$this->excelColumnNo++;
+		switch($post['kategori']) {
+			case 'harian':
+				$where['uji.id_instansi'] = $this->akun->instansi;
+				$where['uji.type_ujian'] = 'harian';
+				$where['pg.id_ujian'] = $post['data'];
+				$this->session->set_userdata([
+					'temp_datas' => $this->m_kelas->get_rekap_ujian($where)
+				]);
+				$url = base_url('export/rekap-ujian');
+			break;
+			case 'tugas':
+				$where['tnilai.id_tugas'] = $post['data'];
+				$where['tugas.id_kelas'] = $post['kelas'];
+				$this->session->set_userdata([
+					'temp_datas' => $this->m_tugas_nilai->get_detail_nilai($where)
+				]);
+				$url = base_url('export/rekap-tugas');
+			break;
 		}
 
+		$this->sendAjaxResponse([
+			'status' => TRUE,
+			'url' => $url
+		], 200);
+
+	}
+
+	public function rekapUjian()
+	{
+		$this->excelDatas = $this->session->userdata('temp_datas');
+		$this->load->model('m_ujian');
+		$this->load->model('m_siswa');
+		$this->load->model('m_kelas');
+		$this->load->model('m_detail_kelas');
+		$this->load->model('m_guru');
+		$this->load->model('m_mapel');
+
+		if(count($this->excelDatas) < 1 || empty($this->excelDatas)) {
+			$this->session->set_flashdata('error', '<p class="alert alert-danger">Data Kosong, tidak bisa diexport</p>');
+			redirect('rekaptulasi');
+		}
+
+		$id_mapel = $this->excelDatas[0]->id_mapel;
+		$id_guru = $this->excelDatas[0]->id_guru;
+		$nama_mapel = $this->m_mapel->get_by(['id' => $id_mapel])->nama;
+		$nama_guru = $this->m_guru->get_by(['id' => $id_guru])->nama;
+
+		$this->excelInitialize();
+		$this->excelCellsHeading = [
+			['cell' => 'A', 'label' => 'No'],
+			['cell' => 'B', 'label' => 'Nama Siswa'],
+			['cell' => 'C', 'label' => 'Kelas'],
+			['cell' => 'D', 'label' => 'KKM'],
+			['cell' => 'E', 'label' => 'Nilai']
+		];
+
+		// Write header of Document
+		$this->excelObject->getActiveSheet()->SetCellValue('A' . 1, 'Data Nilai Ujian Harian ' . $this->excelDatas[0]->nama_ujian);
+		$this->excelObject->getActiveSheet()->SetCellValue('A' . 2, 'Guru ' . $nama_guru);
+		$this->excelObject->getActiveSheet()->SetCellValue('A' . 3, 'Mata Pelajaran ' . $nama_mapel);
+
+		$this->excelDataStart = 6;
+		// Write heading excel use method on MY_Controller.php
+		$this->excelWriteHeading(5);
+
+		foreach($this->excelDatas as $data) :
+			$siswa = $this->m_siswa->get_by(['id' => $data->id_user]);
+			$detailKelas = $this->m_detail_kelas->get_by(['id_peserta' => $data->id_user]);
+			$kelas = $this->m_kelas->get_by(['kls.id' => $detailKelas->id_kelas]);
+			if($data->nilai_essay == NULL || empty($data->nilai_essay)) {
+				$nilai = $data->nilai_pg;
+			}
+			else {
+				$nilai = ($data->nilai_pg + $data->nilai_essay) / 2;
+			}
+			$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, $this->excelColumnNo);
+	        $this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $siswa->nama);
+	        $this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $kelas->nama);
+	        $this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $data->min_nilai);
+	        $this->excelObject->getActiveSheet()->SetCellValue('E' . $this->excelDataStart, $nilai);
+
+	        $this->excelDataStart++;
+	        $this->excelColumnNo++;
+		endforeach;
+
 		// Create Filename and output as .xlsx
-	    $this->excelFileName = "Data Rekapitulasi - " . date('m-d-Y') . ".xlsx";
+	    $this->excelFileName = "Data Nilai Ujian ".$this->excelDatas[0]->nama_ujian." - " . date('m-d-Y') . ".xlsx";
 	    $this->excelDisplayOutput();
 
 	    // Set No Column back to 1 for reuse
 	    $this->excelColumnNo = 1;
+	}
 
+	public function rekapTugas()
+	{
+		$this->excelDatas = $this->session->userdata('temp_datas');
+		$this->load->model('m_guru');
+		$this->load->model('m_mapel');
+		$this->load->model('m_kelas');
+		$this->load->model('m_siswa');
+		if(count($this->excelDatas) < 1 || empty($this->excelDatas)) {
+			$this->session->set_flashdata('error', '<p class="alert alert-danger">Data Kosong, tidak bisa diexport</p>');
+			redirect('rekaptulasi');
+		}
+		$id_kelas = $this->excelDatas[0]->id_kelas;
+		$id_mapel = $this->excelDatas[0]->id_mapel;
+		$id_guru = $this->excelDatas[0]->id_guru;
+		$nama_kelas = $this->m_kelas->get_by(['kls.id' => $id_kelas])->nama;
+		$nama_mapel = $this->m_mapel->get_by(['id' => $id_mapel])->nama;
+		$nama_guru = $this->m_guru->get_by(['id' => $id_guru])->nama;
+		$this->excelInitialize();
+		$this->excelCellsHeading = [
+			['cell' => 'A', 'label' => 'No'],
+			['cell' => 'B', 'label' => 'Nama'],
+			['cell' => 'C', 'label' => 'NIS'],
+			['cell' => 'D', 'label' => 'Nilai']
+		];
+
+		// Write header of Document
+		$this->excelObject->getActiveSheet()->SetCellValue('A' . 1, 'Data Nilai Tugas Kelas ' . $nama_kelas);
+		$this->excelObject->getActiveSheet()->SetCellValue('A' . 2, 'Guru ' . $nama_guru);
+		$this->excelObject->getActiveSheet()->SetCellValue('A' . 3, 'Mata Pelajaran ' . $nama_mapel);
+
+		$this->excelDataStart = 6;
+		// Write heading excel use method on MY_Controller.php
+		$this->excelWriteHeading(5);
+
+		foreach($this->excelDatas as $data) {
+			$siswa = $this->m_siswa->get_by(['id' => $data->id_siswa]);
+			$this->excelObject->getActiveSheet()->SetCellValue('A' . $this->excelDataStart, $this->excelColumnNo);
+	        $this->excelObject->getActiveSheet()->SetCellValue('B' . $this->excelDataStart, $siswa->nama);
+	        $this->excelObject->getActiveSheet()->SetCellValue('C' . $this->excelDataStart, $siswa->nrp);
+	        $this->excelObject->getActiveSheet()->SetCellValue('D' . $this->excelDataStart, $data->nilai);
+
+	        $this->excelDataStart++;
+	        $this->excelColumnNo++;
+		}
+
+		// Create Filename and output as .xlsx
+	    $this->excelFileName = "Data Nilai Tugas Kelas ".$nama_kelas." - " . date('m-d-Y') . ".xlsx";
+	    $this->excelDisplayOutput();
+
+	    // Set No Column back to 1 for reuse
+	    $this->excelColumnNo = 1;
 	}
 
 	// Jurusan

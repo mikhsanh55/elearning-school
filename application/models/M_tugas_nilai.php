@@ -12,7 +12,7 @@ class M_tugas_nilai extends MY_Model {
 	}
 
 	public function get_detail_nilai($where = []) {
-		$get = $this->db->select('tugas.*, tnilai.nilai')
+		$get = $this->db->select('tugas.*, tnilai.*')
 						->from('tb_tugas tugas')
 						->join('tb_tugas_nilai tnilai', 'tugas.id = tnilai.id_tugas', 'inner')
 						->where($where)
