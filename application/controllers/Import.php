@@ -1,6 +1,10 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 date_default_timezone_set("Asia/Jakarta");
 class Import extends MY_Controller {
+    protected $_reader = '';
     function __construct() {
         parent::__construct();
         $this->load->model('m_siswa');
@@ -125,34 +129,6 @@ class Import extends MY_Controller {
                     }
                 }
 
-              
-               
-
-                // $kirim = $this->db->insert_batch('m_siswa', $data);
-
-               
-            
-                // $siswa = $this->m_siswa->get_many_by(array('akun.id > '=>$last_id));
-        
-                // $admin = array();
-
-                // foreach ($siswa as $key => $rows) {
-                //     $admin[$key] = array(
-                //         'user_id'  => $rows->username,
-                //         'username' => $rows->email,
-                //         'password' => md5($rows->username),
-                //         'level'    => 'siswa',
-                //         'kon_id'   => $rows->id,
-                //         'status'   => 0,
-
-                //     );
-                // }
-
-            
-
-                // $this->db->insert_batch('m_admin', $admin);
-
-
                 if ($this->db->trans_status() === FALSE)
                 {
                     $this->db->trans_rollback();
@@ -160,11 +136,8 @@ class Import extends MY_Controller {
                 else
                 {
                     $this->db->trans_commit();
-                }
-
-                
+                }   
             }
-
           
             //delete file from server
             unlink(realpath('./upload/temp/'.$data_upload['file_name']));
@@ -377,11 +350,9 @@ class Import extends MY_Controller {
 
     }
 
-    public function ujian($id_ujian) {
-
+    public function ujian($id_ujian) 
+    {
         $back_url = base_url('ujian_real/form_import/'.$id_ujian.'');
-        
-        include APPPATH.'third_party/PHPExcel/PHPExcel.php';
 
         $config['upload_path'] = realpath('./upload/temp');
         $config['allowed_types'] = 'xlsx|xls|csv';
@@ -401,9 +372,20 @@ class Import extends MY_Controller {
         } else {
 
             $data_upload = $this->upload->data();
+            $extension = pathinfo($data_upload['file_name'], PATHINFO_EXTENSION);
 
-            $excelreader     = new PHPExcel_Reader_Excel5();
-            $loadexcel         = $excelreader->load('./upload/temp/'.$data_upload['file_name']); // Load file yang telah diupload ke folder excel
+            switch($extension) {
+                case 'csv':
+                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+                break;
+                case 'xlsx':
+                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+                break;
+                default :
+                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+                break;
+            }
+            $loadexcel         = $this->_reader->load('./upload/temp/'.$data_upload['file_name']); // Load file yang telah diupload ke folder excel
             $sheet             = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
 
             $data = array();
@@ -435,7 +417,6 @@ class Import extends MY_Controller {
                     );
                 }
             }
-            // print_r(count($data));exit;
 
             $this->db->insert_batch('m_soal_ujian', $data);
 
@@ -463,7 +444,6 @@ class Import extends MY_Controller {
         $post = $this->input->post();
         $id_ujian = $post['id_ujian'];
         $back_url = base_url('ujian_essay/data_soal/') . $id_ujian;
-        include APPPATH.'third_party/PHPExcel/PHPExcel.php';
 
         $config['upload_path'] = realpath('./upload/temp');
         $config['allowed_types'] = 'xlsx|xls|csv';
@@ -481,11 +461,22 @@ class Import extends MY_Controller {
             //redirect halaman
             redirect($back_url);
         } else {
-
             $data_upload = $this->upload->data();
+            $extension = pathinfo($data_upload['file_name'], PATHINFO_EXTENSION);
 
-            $excelreader     = new PHPExcel_Reader_Excel5();
-            $loadexcel         = $excelreader->load('./upload/temp/'.$data_upload['file_name']); // Load file yang telah diupload ke folder excel
+            switch($extension) {
+                case 'csv':
+                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+                break;
+                case 'xlsx':
+                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+                break;
+                default :
+                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+                break;
+            }
+
+            $loadexcel         = $this->_reader->load('./upload/temp/'.$data_upload['file_name']); // Load file yang telah diupload ke folder excel
             $sheet             = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
 
             $data = array();
@@ -508,7 +499,6 @@ class Import extends MY_Controller {
                     );
                 }
             }
-            // print_r(count($data));exit;
 
             $this->db->insert_batch('m_soal_ujian_essay', $data);
 
