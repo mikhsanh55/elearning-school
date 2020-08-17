@@ -252,7 +252,7 @@
 						$('.spin-icon').addClass('d-none');
 						if(res.status == true) {
 							// alert(res.msg);
-							// window.location.href = sessionStorage.getItem('url') || localStorage.getItem('url');
+							window.location.href = sessionStorage.getItem('url') || localStorage.getItem('url');
 						}
 						else {
 							alert(res.msg);
