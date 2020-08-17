@@ -10,7 +10,7 @@
 	        transform:rotate(360deg);
 	    }
 	}
-	.spin-icon {
+	.spin-icon, .spin-icon2 {
 	    animation:rot 1s linear infinite;   
 	}
 </style>
