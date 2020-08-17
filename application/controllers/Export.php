@@ -35,7 +35,7 @@ class Export extends MY_Controller {
 		header('Content-Type: application/vnd.ms-excel'); 
 		header('Content-Disposition: attachment;filename="'.$this->excelFileName.'"');
 		header('Cache-Control: max-age=0'); 
-		$this->excelObjectWriter = PHPExcel_IOFactory::createWriter($this->excelObject, 'Excel5');  
+		$this->excelObjectWriter = PHPExcel_IOFactory::createWriter($this->excelObject, 'Excel5');
 		ob_end_clean();
 		$this->excelObjectWriter->save('php://output'); 
 	}

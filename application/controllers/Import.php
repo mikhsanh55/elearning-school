@@ -49,12 +49,11 @@ class Import extends MY_Controller {
             $this->session->set_flashdata('notif', '<div class="alert alert-danger"><b>PROSES IMPORT GAGAL!</b> '.$this->upload->display_errors().'</div>');
             //redirect halaman
             redirect(base_url('pengusaha/import'));
-
         } else {
 
             $data_upload = $this->upload->data();
 
-            $excelreader     = new PHPExcel_Reader_Excel2007();
+            $excelreader     = new PHPExcel_Reader_Excel5();
             $loadexcel         = $excelreader->load('./upload/temp/'.$data_upload['file_name']); // Load file yang telah diupload ke folder excel
             $sheet             = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
           
@@ -200,7 +199,7 @@ class Import extends MY_Controller {
 
             $data_upload = $this->upload->data();
 
-            $excelreader     = new PHPExcel_Reader_Excel2007();
+            $excelreader     = new PHPExcel_Reader_Excel5();
             $loadexcel         = $excelreader->load('./upload/temp/'.$data_upload['file_name']); // Load file yang telah diupload ke folder excel
             $sheet             = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
 
@@ -320,7 +319,7 @@ class Import extends MY_Controller {
 
             $data_upload = $this->upload->data();
 
-            $excelreader     = new PHPExcel_Reader_Excel2007();
+            $excelreader     = new PHPExcel_Reader_Excel5();
             $loadexcel         = $excelreader->load('./upload/temp/'.$data_upload['file_name']); // Load file yang telah diupload ke folder excel
             $sheet             = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
 
@@ -403,7 +402,7 @@ class Import extends MY_Controller {
 
             $data_upload = $this->upload->data();
 
-            $excelreader     = new PHPExcel_Reader_Excel2007();
+            $excelreader     = new PHPExcel_Reader_Excel5();
             $loadexcel         = $excelreader->load('./upload/temp/'.$data_upload['file_name']); // Load file yang telah diupload ke folder excel
             $sheet             = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
 
@@ -485,7 +484,7 @@ class Import extends MY_Controller {
 
             $data_upload = $this->upload->data();
 
-            $excelreader     = new PHPExcel_Reader_Excel2007();
+            $excelreader     = new PHPExcel_Reader_Excel5();
             $loadexcel         = $excelreader->load('./upload/temp/'.$data_upload['file_name']); // Load file yang telah diupload ke folder excel
             $sheet             = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
 
