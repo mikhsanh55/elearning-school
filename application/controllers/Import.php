@@ -1,4 +1,6 @@
 <?php 
+require 'vendor/autoload.php';
+
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
@@ -458,7 +460,7 @@ class Import extends MY_Controller {
         if (!$this->upload->do_upload()) {
             //upload gagal
             $this->session->set_flashdata('notif', '<div class="alert alert-danger"><b>PROSES IMPORT GAGAL!</b> '.$this->upload->display_errors().'</div>');
-            //redirect halaman
+                //redirect halaman
             redirect($back_url);
         } else {
             $data_upload = $this->upload->data();
