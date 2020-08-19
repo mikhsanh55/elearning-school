@@ -39,17 +39,7 @@ class Import extends MY_Controller {
     }
 
     public function siswa() {
-        if (!extension_loaded('zip')) {
-            $prefix = (PHP_SHLIB_SUFFIX === 'dll') ? 'php_' : '';
-            dl($prefix . 'zip.' . PHP_SHLIB_SUFFIX);
-
-            if (!extension_loaded('zip')) {
-                echo "Cannot load zip extension dynamically<br>";
-            }
-            else {
-                echo "Zip extension loaded successfull";   
-            }
-        }
+        print_r(get_loaded_extensions());
         phpinfo();
         exit;
         include APPPATH.'third_party/PHPExcel/PHPExcel.php';
