@@ -39,7 +39,8 @@ class Import extends MY_Controller {
     }
 
     public function siswa() {
-
+        phpinfo();
+        exit;
         include APPPATH.'third_party/PHPExcel/PHPExcel.php';
 
         $config['upload_path'] = realpath('./upload/temp');
