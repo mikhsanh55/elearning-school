@@ -39,7 +39,7 @@ class Import extends MY_Controller {
     }
 
     public function siswa() {
-        if (!extension_loaded('gd')) {
+        if (!extension_loaded('zip')) {
             echo "Zip extension is not loaded<br>";
         }
         else {
