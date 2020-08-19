@@ -62,13 +62,16 @@ class Export extends MY_Controller {
 				$where['uji.id_instansi'] = $this->akun->instansi;
 				$where['uji.type_ujian'] = 'harian';
 				$where['pg.id_ujian'] = $post['data'];
+				if($this->log_lvl === 'guru') {
+					$where['uji.id_guru'] = $this->akun->id;
+				}
 				$this->session->set_userdata([
 					'temp_datas' => $this->m_kelas->get_rekap_ujian($where)
 				]);
 				$url = base_url('export/rekap-ujian');
 			break;
 			case 'tugas':
-				$where['tnilai.id_tugas'] = $post['data'];
+				$where['tugas.id'] = $post['data'];
 				$where['tugas.id_kelas'] = $post['kelas'];
 				$this->session->set_userdata([
 					'temp_datas' => $this->m_tugas_nilai->get_detail_nilai($where)
