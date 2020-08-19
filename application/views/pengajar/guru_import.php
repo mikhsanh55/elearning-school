@@ -4,9 +4,7 @@
     <div class="inner-box">
         <div class="row align-items-center">
             <div class="col-sm-12 col-md-6 col-lg-6">
-                <h2 class="panel-heading">Import Data Pengajar
-                <?php echo $this->session->flashdata('notif') ?>
-                </h2>
+                <h2 class="panel-heading">Import Data Pengajar</h2>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-6 text-right">
                 <?= $this->backButton; ?>
@@ -17,9 +15,10 @@
             <div class="row">
 
                 <div class="row col-md-12 ini_bodi">
+                    <div class="col-sm-12">
+                        <h2><?php echo $this->session->flashdata('notif') ?></h2>
+                    </div>
                     <div class="col-md-12 panel panel-info">
-
-                        
                         <div class="panel-body">
                             <form name="f_siswa" action="<?php echo base_url(); ?>import/guru" id="f_siswa" enctype="multipart/form-data" method="post">
                                 <table class="table table-form">
