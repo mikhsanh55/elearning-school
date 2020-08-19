@@ -40,10 +40,15 @@ class Import extends MY_Controller {
 
     public function siswa() {
         if (!extension_loaded('zip')) {
-            echo "Zip extension is not loaded<br>";
-        }
-        else {
-            echo "Zip extension is loaded<br>";   
+            $prefix = (PHP_SHLIB_SUFFIX === 'dll') ? 'php_' : '';
+            dl($prefix . 'zip.' . PHP_SHLIB_SUFFIX);
+
+            if (!extension_loaded('zip')) {
+                echo "Cannot load zip extension dynamically<br>";
+            }
+            else {
+                echo "Zip extension loaded successfull";   
+            }
         }
         phpinfo();
         exit;
