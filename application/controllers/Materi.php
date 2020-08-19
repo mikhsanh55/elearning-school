@@ -772,8 +772,8 @@ class Materi extends MY_Controller
                     case 'video-gdrive' :
                         $chunk = explode('/', $post['video'][$i]);
                         array_pop($chunk);
-                        $chunk = implode('/', $embedVideo);
-                        $modifiedUrl = $embedVideo . '/preview';
+                        $chunk = implode('/', $chunk);
+                        $modifiedUrl = $chunk . '/preview';
                     break;
                 }
 
