@@ -39,6 +39,12 @@ class Import extends MY_Controller {
     }
 
     public function siswa() {
+        if (!extension_loaded('gd')) {
+            echo "Zip extension is not loaded<br>";
+        }
+        else {
+            echo "Zip extension is loaded<br>";   
+        }
         phpinfo();
         exit;
         include APPPATH.'third_party/PHPExcel/PHPExcel.php';
