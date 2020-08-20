@@ -57,7 +57,6 @@ class Export extends MY_Controller {
 		$datas = [];
 		$where = [];
 		$url = NULL;
-
 		switch($post['kategori']) {
 			case 'harian':
 				$where['uji.id_instansi'] = $this->akun->instansi;
@@ -69,7 +68,7 @@ class Export extends MY_Controller {
 				$this->session->set_userdata([
 					'temp_datas' => $this->m_kelas->get_rekap_ujian($where)
 				]);
-				$url = base_url('export/rekap-ujian');
+				$url = $post['type'] === 'excel' ? base_url('export/rekap-ujian') : base_url('export/pdf-rekap-ujian');
 			break;
 			case 'tugas':
 				$where['tugas.id'] = $post['data'];
@@ -77,7 +76,7 @@ class Export extends MY_Controller {
 				$this->session->set_userdata([
 					'temp_datas' => $this->m_tugas_nilai->get_detail_nilai($where)
 				]);
-				$url = base_url('export/rekap-tugas');
+				$url = $post['type'] === 'excel' ? base_url('export/rekap-tugas') : base_url('export/pdf-rekap-tugas');
 			break;
 		}
 
@@ -88,6 +87,48 @@ class Export extends MY_Controller {
 
 	}
 
+	/*
+	* PDF
+	*/
+	public function pdfRekapUjian()
+	{
+		$this->load->library('dpdf');
+		$this->load->model('m_ujian');
+		$this->load->model('m_siswa');
+		$this->load->model('m_kelas');
+		$this->load->model('m_detail_kelas');
+		$this->load->model('m_guru');
+		$this->load->model('m_mapel');
+		$results['datas'] = $this->session->userdata('temp_datas');
+
+		if(count($results['datas']) < 1 || empty($results['datas'])) {
+			$this->session->set_flashdata('error', '<p class="alert alert-danger">Data Kosong, tidak bisa diexport</p>');
+			redirect('rekaptulasi');
+		}
+
+		if(count($results['datas']) > 0) {
+			$id_mapel = $results['datas'][0]->id_mapel;
+			$id_guru = $results['datas'][0]->id_guru;
+			$nama_mapel = $this->m_mapel->get_by(['id' => $id_mapel])->nama;
+			$nama_guru = $this->m_guru->get_by(['id' => $id_guru])->nama;
+			$results['nama_ujian'] = $results['datas'][0]->nama_ujian;
+			$results['nama_guru'] = $nama_guru;
+			$results['nama_mapel'] = $nama_mapel;
+		}
+		else {
+			$results['nama_ujian'] = '';
+			$results['nama_guru'] = '';
+			$results['nama_mapel'] = '';	
+		}
+
+		$this->dpdf->setPaper('A4', 'landscape');
+		$this->dpdf->filename = "Data Nilai Ujian ".$results['datas'][0]->nama_ujian." - " . date('m-d-Y') . ".pdf";
+		$this->dpdf->view('rekaptulasi/nilai_ujian_pdf', $results);
+	}
+
+	/*
+	* Excel
+	*/
 	public function rekapUjian()
 	{
 		$this->excelDatas = $this->session->userdata('temp_datas');
@@ -151,6 +192,41 @@ class Export extends MY_Controller {
 
 	    // Set No Column back to 1 for reuse
 	    $this->excelColumnNo = 1;
+	}
+
+	public function pdfRekapTugas()
+	{
+		$this->load->library('dpdf');
+		$this->load->model('m_guru');
+		$this->load->model('m_mapel');
+		$this->load->model('m_kelas');
+		$this->load->model('m_siswa');
+
+		$results['datas'] = $this->session->userdata('temp_datas');
+		if(count($results['datas']) < 1 || empty($results['datas'])) {
+			$this->session->set_flashdata('error', '<p class="alert alert-danger">Data Kosong, tidak bisa diexport</p>');
+			redirect('rekaptulasi');
+		}
+		if(count($results['datas']) > 0) {
+			$id_kelas = $results['datas'][0]->id_kelas;
+			$id_mapel = $results['datas'][0]->id_mapel;
+			$id_guru = $results['datas'][0]->id_guru;
+			$nama_kelas = $this->m_kelas->get_by(['kls.id' => $id_kelas])->nama;
+			$nama_mapel = $this->m_mapel->get_by(['id' => $id_mapel])->nama;
+			$nama_guru = $this->m_guru->get_by(['id' => $id_guru])->nama;
+			$results['nama_kelas'] = $nama_kelas;
+			$results['nama_guru'] = $nama_guru;
+			$results['nama_mapel'] = $nama_mapel;
+		}
+		else {
+			$results['nama_kelas'] = '';
+			$results['nama_guru'] = '';
+			$results['nama_mapel'] = '';	
+		}
+
+		$this->dpdf->setPaper('A4', 'landscape');
+		$this->dpdf->filename = "Data Nilai Tugas Kelas ".$nama_kelas." - " . date('m-d-Y') . ".pdf";
+		$this->dpdf->view('rekaptulasi/nilai_tugas_pdf', $results);
 	}
 
 	public function rekapTugas()

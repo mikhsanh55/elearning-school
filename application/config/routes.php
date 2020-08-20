@@ -70,5 +70,7 @@ $route['rekaptulasi/get-data-by-kategori'] = 'rekaptulasi/get_data_by_kategori';
 $route['rekaptulasi/get-kelas-by-data'] = 'rekaptulasi/get_kelas_by_data';
 $route['export/rekap-tugas'] = 'export/rekapTugas';
 $route['export/rekap-ujian'] = 'export/rekapUjian';
+$route['export/pdf-rekap-ujian'] = 'export/pdfRekapUjian';
+$route['export/pdf-rekap-tugas'] = 'export/pdfRekapTugas';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
