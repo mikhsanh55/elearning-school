@@ -191,12 +191,16 @@ class Rekaptulasi extends MY_Controller {
 	{
 		$post = $this->input->post();
 		$datas = [];
+		$where = [];
 		switch($post['kategori']) {
 			case 'harian':
-				$datas = $this->m_ujian->get_list_data(['type_ujian' => 'harian','id_guru' => $this->akun->id]);
+				$where['type_ujian'] = 'harian';
+				if($this->log_lvl === 'guru') { $where['id_guru'] = $this->akun->id; }
+				$datas = $this->m_ujian->get_list_data($where);
 			break;
 			case 'tugas':
-				$datas = $this->m_tugas->get_list_data(['id_guru' => $this->akun->id]);
+				if($this->log_lvl === 'guru') { $where['id_guru'] = $this->akun->id; }
+				$datas = $this->m_tugas->get_list_data($where);
 			break;
 		}
 		$html = '<option value="0">Pilih Data</option>';

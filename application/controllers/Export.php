@@ -799,8 +799,8 @@ class Export extends MY_Controller {
 		$this->load->model('m_tugas_attach_siswa');
 		$id = decrypt_url($encrypt_id);
 		$result['datas'] = $this->m_detail_kelas->get_all(['id_kelas' => $id]);
-
-		// $this->sendPdf('rekaptulasi/rekap_pdf', 'A4', 'potrait', 'Rekapitulasi.pdf');
+		// print_r($result);exit;
+		
 		$this->dpdf->setPaper('A4', 'potrait');
 		$this->dpdf->filename = 'Data Hasil Tugas.pdf';
 		$this->dpdf->view('tugas/siswa_pdf', $result);
@@ -858,20 +858,36 @@ class Export extends MY_Controller {
 	}
 
 	public function pdf_hasil_ujian_essay($encrypt_id) {
-		$id_ujian = decrypt_url($encrypt_id);
-
+	
 		$this->load->library('dpdf');
 		$this->load->model('m_ikut_ujian_essay');
 		$this->load->model('m_ujian');
 		$this->load->model('m_siswa');
+		$this->load->model('m_kelas');
+		$this->load->model('m_detail_kelas');
+		$id_ujian = decrypt_url($encrypt_id);
 
 		$result = [
 			'datas' => $this->m_ikut_ujian_essay->get_many_by(['id_ujian' => $id_ujian])
 		];
+		if(count($result['datas']) > 0) {
+			$data_ujian = $this->m_ujian->get_by(['uji.id' => $result['datas'][0]->id_ujian ]);
+			$data_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $result['datas'][0]->id_user]);
+			$kelas = $this->m_kelas->get_by(['kls.id' => $data_kelas->id_kelas]);
+			$nama_kelas = !empty($kelas) ? $kelas->nama : '';	
 
-		// print_r($result);
+			$result['nama_kelas'] = $nama_kelas;
+			$result['nama_guru'] = $data_ujian->nama_guru;
+			$result['nama_mapel'] = $data_ujian->nama_mapel;
+		}
+		else {
+			$result['nama_kelas'] = '';
+			$result['nama_guru'] = '';
+			$result['nama_mapel'] = '';
+		}
+
 		$this->dpdf->setPaper('A4', 'landscape');
 		$this->dpdf->filename = 'Hasil Ujian Essay.pdf';
-		$this->load->view('ujian_essay/pdf_list_hasil', $result);
+		$this->dpdf->view('ujian_essay/pdf_list_hasil', $result);
 	}
 }

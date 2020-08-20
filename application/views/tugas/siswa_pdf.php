@@ -20,12 +20,14 @@
     <tbody>
         <?php $i = 1;
             foreach($datas as $data) :
-                $id_tugas = $this->m_tugas->get_by(['id_kelas' => $id])->id;
+                $id_tugas = $this->m_tugas->get_by(['id_kelas' => $data->id_kelas]);
+                $id_tugas = $id_tugas->id;
                 $count = $this->m_tugas_attach_siswa->count_by(array('id_tugas'=>$id_tugas,'id_siswa'=>$data->id_peserta));
-                $countNilai = $this->m_tugas_nilai->count_by(array('id_tugas'=>$id_tugas,'id_siswa'=>$data->id_peserta));
-                if($count > 0 && $countNilai > 0) {
+                $getNilai = $this->m_tugas_nilai->get_by(array('id_tugas'=>$id_tugas,'id_siswa'=>$data->id_peserta));
+                if($count > 0 && !empty($getNilai)) {
                     $status = 'Sudah';
-                    $nilai =  $this->m_tugas_nilai->get_by(array('id_tugas'=>$id_tugas,'id_siswa'=>$data->id_peserta))->nilai;
+                    $nilai =  $this->m_tugas_nilai->get_by(array('id_tugas'=>$id_tugas,'id_siswa'=>$data->id_peserta));
+                    $nilai = $nilai->nilai;
                 }
                 else {
                     $status = 'Belum';
