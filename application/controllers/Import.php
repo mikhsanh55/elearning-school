@@ -112,7 +112,7 @@ class Import extends MY_Controller {
 
                         $this->db->insert('m_siswa', $data);
                         $inserted_id = $this->db->insert_id();
-                        $password = (!empty($row['I']) && $row['I'] != '') ? $this->encryption->encrypt($row['I']) : $this->encryption->encrypt($username);
+                        $password = (!empty($row['I']) && $row['I'] != '') ? password_hash($row['I'], PASSWORD_BCRYPT) : password_hash($username, PASSWORD_BCRYPT);
                         $data_admin = [
                             // 'user_id'  => $username,
                             'user_id' => $row['C'],
@@ -227,7 +227,7 @@ class Import extends MY_Controller {
                     $data_admin = [
                         'user_id'  => $row['E'],
                         'username' => $row['F'],
-                        'password'  => $this->encryption->encrypt($row['E']),
+                        'password'  => password_hash($row['E'], PASSWORD_BCRYPT),
                         'level'    => 'guru',
                         'kon_id'   => $inserted_id,
                         'login_at' => date('Y-m-d H:i:s')
