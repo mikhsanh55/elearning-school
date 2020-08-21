@@ -72,5 +72,6 @@ $route['export/rekap-tugas'] = 'export/rekapTugas';
 $route['export/rekap-ujian'] = 'export/rekapUjian';
 $route['export/pdf-rekap-ujian'] = 'export/pdfRekapUjian';
 $route['export/pdf-rekap-tugas'] = 'export/pdfRekapTugas';
+$route['ujian/hasil-pg/(:any)/(:any)'] = 'ujian_real/hasil_ujian_pg/$1/$2';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

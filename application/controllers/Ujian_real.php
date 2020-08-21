@@ -1458,16 +1458,9 @@ class Ujian_real extends MY_Controller {
 
 				} else {
 
-
-
 					$q_ambil_soal = $this->m_ikut_ujian->get_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
 
-
-
-
 					$urut_soal 		= explode(",", $q_ambil_soal->list_jawaban);
-
-					
 
 					$soal_urut_ok	= array();
 
@@ -1479,13 +1472,9 @@ class Ujian_real extends MY_Controller {
 
 						$ambil_soal = $this->db->query("SELECT *, $pc_urut_soal1 AS jawaban FROM m_soal_ujian WHERE id = '".$pc_urut_soal[0]."'")->row();
 
-
-
 						$soal_urut_ok[] = $ambil_soal; 
 
 					}
-
-					
 
 					$detil_tes = $q_ambil_soal;
 
@@ -2234,15 +2223,11 @@ class Ujian_real extends MY_Controller {
 
 	$post = $this->input->post(null,true);
 
-
-
 	$data = array(
 
 		'id_ujian'    => $post['id_ujian'], 
 		'id_kelas'    => $post['id_kelas'], 
 	);
-
-
 
 	if ($post['aktif'] == 1) {
 
@@ -2254,25 +2239,43 @@ class Ujian_real extends MY_Controller {
 
 	}
 
-
-
 	$json = array(
-
 		'id_ujian'    => $post['id_ujian'], 
 		'kelas'         => $post['id_kelas'], 
-
 	);
-
-
-
 	echo json_encode($json);
-
-
-
 }
 
+	public function hasil_ujian_pg($id_ujian, $id_siswa)
+	{
+		$id_ujian = decrypt_url($id_ujian);
+		$id_siswa = decrypt_url($id_siswa);
+		$dataSiswa = $this->m_siswa->get_by(['id' => $id_siswa]);
+		$kelasSiswa = $this->m_detail_kelas->get_by(['id_peserta' => $id_siswa]);
+		$kelasSiswa = $this->m_kelas->get_by(['kls.id' => $kelasSiswa->id_kelas]);
 
+		$result = $this->m_ikut_ujian->get_by([
+			'id_ujian' => $id_ujian,
+			'id_user' => $id_siswa
+		]);
+		$jawabanUser = explode(',', $result->list_jawaban);
+		$jawabanBenar = explode(',', $result->jawaban_benar);
 
+		$soal = $this->m_soal_ujian->get_many_by([
+			'id_ujian' => $id_ujian
+		]);
 
+		$datas = [
+			'soal' => $soal,
+			'jawaban_user' => $jawabanUser,
+			'jawaban_benar' => $jawabanBenar,
+			'backUrl' => base_url('ujian_real/result/') . encrypt_url($id_ujian),
+			'dataSiswa' => [
+				'nama' => $dataSiswa,
+				'kelas' => $kelasSiswa
+			]
+		];
 
+		$this->load->view('ujian/v_periksa_ujian', $datas);
+	}
 }
