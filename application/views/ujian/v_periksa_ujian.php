@@ -71,7 +71,7 @@
                 
                     <p>Nama : <?= $dataSiswa['nama']->nama; ?></p>
                     <p>Kelas : <?= $dataSiswa['kelas']->nama; ?></p>
-                    <p>Mata Pelajaran : <?= $dataSiswa['kelas']->nama_mapel; ?></p>
+                    <p>Mata Pelajaran : <?= $dataSiswa['mapel']->nama_mapel; ?></p>
                 
             </div>
         </div>
@@ -248,11 +248,16 @@
             $(activeWidget + activeSoal).css('display', 'block');
             $('#soalke').text(activeSoal);
             if(activeSoal == 1) {
-                $(this).css('display', 'none');
+                $('.back').css('display', 'none');
                 $('.next').css('display', 'inline');
             }
+            else if(activeSoal >= sumSoal) {
+                $('.back').css('display', 'inline');
+                $('.next').css('display', 'none');
+            }
             else {
-                $(this).css('display', 'inline');   
+                $('.back').css('display', 'inline');
+                $('.next').css('display', 'inline');   
             }
         });
 

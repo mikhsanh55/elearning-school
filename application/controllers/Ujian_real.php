@@ -2253,6 +2253,8 @@ class Ujian_real extends MY_Controller {
 		$dataSiswa = $this->m_siswa->get_by(['id' => $id_siswa]);
 		$kelasSiswa = $this->m_detail_kelas->get_by(['id_peserta' => $id_siswa]);
 		$kelasSiswa = $this->m_kelas->get_by(['kls.id' => $kelasSiswa->id_kelas]);
+		$dataMapel = $this->m_ujian->get_by(['uji.id' => $id_ujian]);
+		
 
 		$result = $this->m_ikut_ujian->get_by([
 			'id_ujian' => $id_ujian,
@@ -2272,10 +2274,11 @@ class Ujian_real extends MY_Controller {
 			'backUrl' => base_url('ujian_real/result/') . encrypt_url($id_ujian),
 			'dataSiswa' => [
 				'nama' => $dataSiswa,
-				'kelas' => $kelasSiswa
+				'kelas' => $kelasSiswa,
+				'mapel' => $dataMapel
 			]
 		];
-
+		// print_r($datas);exit;
 		$this->load->view('ujian/v_periksa_ujian', $datas);
 	}
 }
