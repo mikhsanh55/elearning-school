@@ -97,7 +97,7 @@
 </div>
 <script>
     $(document).ready(function() {
-        let file = undefined, filename, ext, uploadOk = 1, maxSize = 104857600;
+        let file = undefined, filename, ext, uploadOk = 1, maxSize = 10485760;
         let data = new FormData(), html, fileArray = [], conf, self;
        
 
@@ -118,7 +118,7 @@
                    return false;
                }
                else if(file.size > maxSize) {
-                   alert('File terlalu besar! Maksimal 100 MB');
+                   alert('File terlalu besar! Maksimal 10 MB');
                    this.value = '';
                    return false;
                }

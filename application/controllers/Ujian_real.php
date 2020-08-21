@@ -312,7 +312,7 @@ class Ujian_real extends MY_Controller {
 	public function update(){
 
 		$post = $this->input->post();
-
+		$maxSize = 3072;//3 Mb
 
 	
 		$data = [
@@ -660,6 +660,7 @@ class Ujian_real extends MY_Controller {
 			"audio/mpeg", "audio/mpg", "audio/mpeg3", "audio/mp3", "audio/x-wav", "audio/wave", "audio/wav",
 
 			"video/mp4", "application/octet-stream");
+			$maxSize = 3145728; // 3MB
 
 
 
@@ -752,7 +753,15 @@ class Ujian_real extends MY_Controller {
 
 					$nama_file[$k]	= "";
 
-					$tipe_file[$k]	= "";					
+					$tipe_file[$k]	= "";	
+
+				} else if($file_size > $maxSize) {
+
+					$gagal[$k] = "Maksimal File yang diupload sebesar 3 MB";
+
+					$nama_file[$k]	= "";
+
+					$tipe_file[$k]	= "";										
 
 				} else {
 

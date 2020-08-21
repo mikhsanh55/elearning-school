@@ -426,7 +426,7 @@ class Materi extends MY_Controller
 
                 $config['upload_path']   = 'assets/materi/pdf/';
                 $config['allowed_types'] = 'pdf|pdfx|doc|docx';
-                $config['max_size']      = 102400; // 100 MB
+                $config['max_size']      = 10240; // 10 MB
                 $config['file_name']     = $namafile;
 
                 $this->load->library('upload', $config);
@@ -512,7 +512,7 @@ class Materi extends MY_Controller
 
                 $config['upload_path']   = 'assets/materi/ppt/';
                 $config['allowed_types'] = 'ppt|pptx';
-                $config['max_size']      = 102400; // 100 MB
+                $config['max_size']      = 20240; // 20 MB
                 $config['file_name']     = $namafile;
 
                 $this->load->library('upload', $config);

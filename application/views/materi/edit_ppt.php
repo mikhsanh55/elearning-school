@@ -100,7 +100,7 @@
 <script type="text/javascript" src="<?= base_url('assets/plugin/ckeditor/ckeditor.js') ?>"></script>
 <script>
     $(document).ready(function() {
-        let file = undefined, filename, ext, uploadOk = 1, maxSize = 104857600;
+        let file = undefined, filename, ext, uploadOk = 1, maxSize = 20971520; // 20 MB
         let data = new FormData(), fileArray = [], self, conf;
 
         getListFiles({
@@ -124,7 +124,7 @@
                    return false;
                }
                else if(file.size > maxSize) {
-                   alert('File terlalu besar! maksimal 100 MB');
+                   alert('File terlalu besar! maksimal 20 MB');
                    this.value = '';
                    return false;
                }
