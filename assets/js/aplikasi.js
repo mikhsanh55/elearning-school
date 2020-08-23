@@ -509,6 +509,26 @@ function hapus_file_ujian(id,no) {
 	}
 	return false;
 }
+
+function hapus_file_penilaian(id,no) {
+	if (confirm('Anda yakin mau menghapus file ini..?')) {
+		$.ajax({
+			type: "GET",
+			url: base_url+"penilaian/file_hapus_ujian/"+id+"/"+no,
+			success: function(response) {
+				if (response.status == "ok") {
+					// pageLoad(1,'soal/m_soal/edit/'+id);
+					window.location.reload();
+				} else {
+					window.location.reload();
+					// pageLoad(1,'soal/m_soal/edit/'+id);
+					// console.log('gagal');
+				}
+			}
+		});
+	}
+	return false;
+}
 function data_realtime(){
 	var f_asal	= $("#f_chat");
 	var form	= getFormData(f_asal);
