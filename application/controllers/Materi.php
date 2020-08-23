@@ -1488,7 +1488,18 @@ class Materi extends MY_Controller
             $result = true;
             $type = $this->log_lvl === 'siswa' ? 'active_diskusi' : 'sum_diskusi';
             // Update Activity Siswa
-            $this->updateActiveUser($this->log_lvl, $type);
+            if($this->log_lvl === 'siswa') {
+                $id_mapel = $this->m_materi->get_by(['id' => $post['id_materi']]);
+                $id_mapel = $id_mapel->id_mapel;
+                $pointDiskusi = 1;
+                $this->m_keaktifan_siswa->insert([
+                    'id_siswa' => $this->akun->id,
+                    'id_mapel' => $id_mapel,
+                    'type' => 'diskusi',
+                    'value' => $pointDiskusi
+                ]); 
+            }
+            // $this->updateActiveUser($this->log_lvl, $type);
         } else {
             $result = false;
             $data   = array();
@@ -1506,7 +1517,18 @@ class Materi extends MY_Controller
         $kirim               = $this->m_komen_materi->update($data, array('id' => $post['id']));
 
         // Update sum diskusi
-        $this->updateSumDiskusi();
+        // $this->updateSumDiskusi();
+        if($this->log_lvl === 'siswa') {
+            $id_mapel = $this->m_materi->get_by(['id' => $post['id_materi']]);
+            $id_mapel = $id_mapel->id_mapel;
+            $pointDiskusi = 1;
+            $this->m_keaktifan_siswa->insert([
+                'id_siswa' => $this->akun->id,
+                'id_mapel' => $id_mapel,
+                'type' => 'diskusi',
+                'value' => $pointDiskusi
+            ]); 
+        }
         echo json_encode(array('result' => true));
     }
 
@@ -1725,6 +1747,7 @@ class Materi extends MY_Controller
     public function get_list_videos()
     {
         $this->load->model('m_materi_attach');
+        $this->load->model('m_keaktifan_siswa');
         $post = $this->input->post();
         $datas = $this->m_materi_attach->get_many_wherein('type_file', ['video-youtube', 'video-gdrive'], ['id_materi' => $post['imateri']]);
         $html = '<header class="mb-4">List Videos: </header>';
@@ -1744,6 +1767,19 @@ class Materi extends MY_Controller
             $html .= '<p class="alert alert-warning">Tidak ada video</p>';
         }
 
+        if($this->log_lvl === 'siswa') {
+            $id_mapel = $this->m_materi->get_by(['id' => $post['imateri']]);
+            $id_mapel = $id_mapel->id_mapel;
+            $pointVideo = 1;
+            $this->m_keaktifan_siswa->insert([
+                'id_siswa' => $this->akun->id,
+                'id_mapel' => $id_mapel,
+                'type' => 'video',
+                'value' => $pointVideo
+            ]); 
+        }
+            
+
         $this->sendAjaxResponse([
             'status' => true,
             'data' => $html
@@ -1753,6 +1789,7 @@ class Materi extends MY_Controller
     public function get_list_file()
     {
         $this->load->model('m_materi_attach');
+        $this->load->model('m_keaktifan_siswa');
         $post = $this->input->post();
         $dataFiles = $this->m_materi_attach->get_many_by([
             'type_file' => $post['type_file'],
@@ -1761,6 +1798,17 @@ class Materi extends MY_Controller
         $html = '<header class="mb-4">List Files: </header>';
 
         if(count($dataFiles) > 0) {
+            if($this->log_lvl === 'siswa') {
+                $id_mapel = $this->m_materi->get_by(['id' => $post['imateri']]);
+                $id_mapel = $id_mapel->id_mapel;
+                $pointRead = 1;
+                $this->m_keaktifan_siswa->insert([
+                    'id_siswa' => $this->akun->id,
+                    'id_mapel' => $id_mapel,
+                    'type' => 'read',
+                    'value' => $pointRead
+                ]); 
+            }
             $i = 1;
             // ada aksi hapusnya (khusus guru)
             if(!isset($post['view'])) {

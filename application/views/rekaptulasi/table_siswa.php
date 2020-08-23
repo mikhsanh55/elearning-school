@@ -11,17 +11,12 @@
 			<th>UTS</th>
 			<th>UAS</th>
 			<th>Tugas</th>
-			<th>Keaktifan</th>
 		</tr>
 	</thead>
 	<tbody>
 		<?php if(count($paginate['data']) > 0) { 
 			$i = 1;
 			foreach($paginate['data'] as $rows) :
-				$guru = $this->m_guru->get_by(['id' => $rows->id_guru]);
-				// Nilai Keaktifan
-				$sumKeaktifan = 4;
-				$nilaiKeaktifan = ($rows->active_login + $rows->active_video + $rows->active_materi + $rows->active_diskusi + $rows->active_tugas) / $sumKeaktifan;	
 		?>
 			<tr>
 				<td><?= $i++; ?></td>
@@ -39,9 +34,6 @@
 				</td>
 				<td class="text-center">
 					<a href="<?= base_url('tugas/detail-nilai/') . encrypt_url($rows->id_mapel); ?>" class="btn btn-sm btn-primary">Detail</a>
-				</td>
-				<td class="text-center">
-					<?= $nilaiKeaktifan; ?>
 				</td>
 			</tr>
 		<?php endforeach; } else { ?>

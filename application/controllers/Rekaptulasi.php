@@ -264,6 +264,27 @@ class Rekaptulasi extends MY_Controller {
 			'data' => $html
 		]);
 	}
+
+	public function page_load_detail_keaktifan_siswa($pg = 1)
+	{
+		$this->load->model('m_keaktifan_siswa');
+		$post = $this->input->post();
+		$limit = $post['limit'];
+
+		$where['id_mapel'] = $post['id_mapel'];
+		$where['id_siswa'] = $this->akun->siswa;
+
+		$paginate = $this->m_keaktifan_siswa->paginate($pg, $where, $limit);
+		
+		$data['paginate'] = $paginate;
+		$data['paginate']['url']	= 'rekaptulasi/page_load_detail_ujian';
+		$data['paginate']['search'] = 'lookup_key';
+		$data['page_start'] = $paginate['counts']['from_num'];
+
+		$this->load->view('aktivitas/table_detail_siswa',$data);
+		$this->generate_page($data);
+
+	}
 }
 /* End of file instantsi.php */
 /* Location: ./application/controllers/instantsi.php */

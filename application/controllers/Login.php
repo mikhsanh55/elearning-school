@@ -16,6 +16,7 @@ class Login extends MY_Controller
         $this->load->model('m_akun_lembaga');
         $this->load->model('m_admin_lembaga');
 		$this->load->model('m_guru');
+        $this->load->model('m_keaktifan_siswa');
 		ob_start();
 	}
 
@@ -144,11 +145,13 @@ class Login extends MY_Controller
         					j($_log);exit;
         				}else{
 
-        					$data = array(
-        						'active_num' => $siswa->active_num + 1, 
-        					);
+        					$pointLogin = 1;
 
-        					$this->m_siswa->update($data,array('id'=>$siswa->id));
+                            $this->m_keaktifan_siswa->insert([
+                                'id_siswa' => $siswa->id,
+                                'type' => 'login',
+                                'value' => $pointLogin
+                            ]);
 
                             // Set as Online
                             $this->setStatusActive(1, ['id' => $get_user->id]);
