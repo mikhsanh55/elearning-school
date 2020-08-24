@@ -31,10 +31,10 @@ production_icommits:
         - cd /var/www/globaltech-codeigniter
         - git reset --hard
         - git pull origin production_icommits
-        - sudo rm /var/www/globaltech-codeigniter/application/config/database.php
-        - sudo cp /var/www/globaltech-codeigniter/database/config1/database1.php /var/www/globaltech-codeigniter/application/config/database.php
-        - sudo rm /var/www/globaltech-codeigniter/application/config/config.php
-        - sudo cp /var/www/globaltech-codeigniter/database/config1/config.php /var/www/globaltech-codeigniter/application/config/config.php
+        - sudo rm /var/www/icommits/globaltech-codeigniter/application/config/database.php
+        - sudo cp /var/www/icommits/globaltech-codeigniter/database/config1/database1.php /var/www/icommits/globaltech-codeigniter/application/config/database.php
+        - sudo rm /var/www/icommits/globaltech-codeigniter/application/config/config.php
+        - sudo cp /var/www/icommits/globaltech-codeigniter/database/config1/config.php /var/www/icommits/globaltech-codeigniter/application/config/config.php
         
 production_sman21:
     stage: production_sman21bdg
