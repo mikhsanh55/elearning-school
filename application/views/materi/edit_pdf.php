@@ -100,7 +100,6 @@
         let file = undefined, filename, ext, uploadOk = 1, maxSize = 10485760;
         let data = new FormData(), html, fileArray = [], conf, self;
        
-
         getListFiles({
             type_file: 'pdf',
             imateri: $('input[name=imateri]').val()
@@ -114,7 +113,7 @@
                ext = filename.substring(filename.lastIndexOf('.') + 1);
                if(ext != 'pdf') {
                    alert('File harus PDF!');
-                   this.value = '';
+        ------           this.value = '';
                    return false;
                }
                else if(file.size > maxSize) {
