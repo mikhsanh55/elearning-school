@@ -115,10 +115,7 @@
 				<a class="btn btn-success btn-sm tombol-kanan" id="tambah" href="javascript:void(0);"><i class="fa fa-user-plus"></i> &nbsp;Tambah</a>
 				<a href="javascript:void(0);" title="edit" id="edited" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> &nbsp;Edit</a>
 				<a href="javascript:void(0);" id="deleted" title="Hapus" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> &nbsp;Hapus</a>
-                <a href="<?= base_url('dimensi'); ?>" class="btn btn-primary btn-sm"><i class="fas fa-box"></i> &nbsp;Dimensi</a>
-		<!-- 		<a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url(); ?>upload/format_siswa.xlsx"><i class="fa fa-cloud-download" aria-hidden="true"></i> &nbsp;Download Format Import</a>
-				<a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url(); ?>pengusaha/import"><i class="fa fa-cloud-upload" aria-hidden="true"></i> &nbsp;Import</a> -->
-	
+                <!-- <a href="<?= base_url('dimensi'); ?>" class="btn btn-primary btn-sm"><i class="fas fa-box"></i> &nbsp;Dimensi</a> -->
 			
 			
 				<div id="content-view"></div>
@@ -251,7 +248,7 @@
 
 			$.ajax({
 				type:'post',
-				url : '<?=base_url('jurusan/multi_delete');?>',
+				url : '<?=base_url('penilaian/paket_soal_multi_delete');?>',
 				dataType : 'json',
 				data : {
 					id : opsi,

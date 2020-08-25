@@ -192,9 +192,8 @@ function timer3() {
 	var id_ujian = $("#id_ujian").val();
 	var statuse = $("#_statuse").val();
 	statuse = parseInt(statuse);
-
 	if (statuse == 1) {
-		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-success btn-sm btn-block" id="tbl_mulai" onclick="return konfirmasi_token3('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
+		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-primary btn-block" id="tbl_mulai" onclick="return konfirmasi_token3('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
 		
 		$('#waktu_akhir_ujian').countdowntimer({
 	        startDate : tgl_sekarang,
@@ -204,8 +203,7 @@ function timer3() {
 	 		timeUp : hilangkan_tombol,
 	    });
 	} else if (statuse == 0) {
-		// $("#btn_mulai").addClass("btn btn-success btn-lg");
-		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-primary btn-sm btn-block" id="tbl_mulai" onclick="return konfirmasi_token4('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
+		$("#btn_mulai").html(`<a href="javascript:void(0);" class="btn btn-primary btn-block" id="tbl_mulai" onclick="return konfirmasi_token4('` + id_ujian + `')"><i class="fa fa-check-circle"></i> MULAI</a>`);
 		$("#waktu_").hide();
 		$('#akan_mulai').countdowntimer({
 	        startDate : tgl_sekarang,

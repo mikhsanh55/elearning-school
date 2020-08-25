@@ -20,11 +20,12 @@
                     <td ><?php echo $dp->nama; ?></td>
                   </tr>
                   <tr>
-                    <td>Modul</td><td><?php echo $du['nmmapel']; ?></td>
+                    <td>Guru</td>
+                    <td><?php echo $du['nama_guru']; ?></td>
                   </tr>
                   <tr>
-                    <td>Trainer</td>
-                    <td><?php echo $du['nmguru']; ?></td>
+                    <td>Mata Pelajaran</td>
+                    <td><?= $du['nama_mapel']; ?></td>
                   </tr>
                   <tr>
                     <td>Nama Ujian</td>
@@ -71,11 +72,6 @@
                 </div>
 
                 <div id="waktu_game_over"></div>
-
-            <!--
-            <a href="#" class="btn btn-success btn-lg" id="tbl_mulai" onclick="return konfirmasi_token(<?php echo $du['id']; ?>)"><i class="fa fa-check-circle"></i> MULAI</a>
-            <div class="btn btn-danger" id="ujian_selesai">UJIAN TELAH SELESAI</div>
-          -->
         </div>
       </div>
     </div>
@@ -88,6 +84,36 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function(){
-    timer3();
+    var tgl_sekarang = $("#_tgl_sekarang").val();
+    var tgl_mulai = $("#_tgl_mulai").val();
+      var tgl_terlambat = $("#_terlambat").val();
+    var id_ujian = $("#id_ujian").val();
+    var statuse = $("#_statuse").val();
+    statuse = parseInt(statuse);
+    if (statuse == 1) {
+      $("#btn_mulai").html(`<a href="${base_url}/penilaian/ikut_ujian/${id_ujian}" target="_blank" class="btn btn-primary btn-block" id="tbl_mulai"><i class="fa fa-check-circle"></i> MULAI</a>`);
+      
+      $('#waktu_akhir_ujian').countdowntimer({
+            startDate : tgl_sekarang,
+            dateAndTime : tgl_terlambat,
+            size : "lg",
+            labelsFormat : true,
+        timeUp : hilangkan_tombol,
+        });
+    } else if (statuse == 0) {
+      $("#btn_mulai").html(`<a href="${base_url}/penilaian/ikut_ujian/${id_ujian}" target="_blank" class="btn btn-primary btn-block" id="tbl_mulai"><i class="fa fa-check-circle"></i> MULAI</a>`);
+      $("#waktu_").hide();
+      $('#akan_mulai').countdowntimer({
+            startDate : tgl_sekarang,
+            dateAndTime : tgl_mulai,
+            size : "lg",
+            labelsFormat : true,
+        timeUp : timeIsUp,
+        });
+    } else if (statuse == 2) {
+      hilangkan_tombol();
+    } else {
+      hilangkan_tombol();
+    }
   })
 </script>

@@ -392,11 +392,9 @@ class Penilaian extends MY_Controller {
 
 		} else {
 
-			$kelas = $this->m_kelas->get_all();
+			$kelas = $this->m_kelas->get_all(['kls.id_instansi' => $this->akun->instansi]);
 
 		}
-
-		// print_r($kelas);exit;
 
 		$data = array(
 
@@ -404,14 +402,13 @@ class Penilaian extends MY_Controller {
 
 			'kelas' => $kelas,
 
-			'paket' => $this->m_paket_soal->get_all()
+			'guru' => $this->m_guru->get_all(['guru.instansi' => $this->akun->instansi]),
+
+			'paket' => $this->m_paket_soal->get_all(['id_instansi' => $this->akun->instansi])
 
 		);
 
-
-
 		$this->render('penilaian/add',$data);
-
 	}
 
 
@@ -426,7 +423,7 @@ class Penilaian extends MY_Controller {
 
 		} else {
 
-			$kelas = $this->m_kelas->get_all();
+			$kelas = $this->m_kelas->get_all(['kls.id_instansi' => $this->akun->instansi]);
 
 		}
 
@@ -438,19 +435,14 @@ class Penilaian extends MY_Controller {
 
 			'kelas' => $kelas,
 
+			'guru' => $this->m_guru->get_all(['guru.instansi' => $this->akun->instansi]),
+
 			'edit' => $this->m_penilaian->get_by(['pen.id'=>$id])
-
 		);
-
-
-
-	
+		// print_r($data['edit']);exit;
 
 		$this->render('penilaian/edit',$data);
-
 	}
-
-
 
 	public function form_import($id_ujian){
 
@@ -548,104 +540,67 @@ class Penilaian extends MY_Controller {
 
 		$post = $this->input->post();
 
-
-
 		$data = [
-
 			'id_kelas'		=> $post['id_kelas'],
-
+			'id_guru'		=> $post['id_guru'],
+			'id_mapel'		=> $post['id_mapel'],
 			'id_paket_soal'		=> $post['id_paket'],
-
 			'nama_ujian'  	=> $post['nama_ujian'],
-
 			'jumlah_soal'  	=> 0,
-
 			'waktu'  		=> $post['waktu_ujian'],
-
 			'nama_ujian'  	=> $post['nama_ujian'],
-
 			'jenis'  		=> 'set',
-
 			'tgl_mulai'		=> date_default($post['tgl_mulai']).' '.$post['waktu_mulai'],
-
 			'terlambat'		=> date_default($post['tgl_selesai']).' '.$post['waktu_selesai']
-
 		];
-
-
 
 		$kirim = $this->m_penilaian->insert($data);
 
 		if ($kirim) {
-
-			$json['status']  = 1;
-
-			$json['message'] = 'Tambah penilaian berhasil';
+			$json['status']  = TRUE;
+			$json['msg'] = 'Edit penilaian berhasil';
+			$responseCode = 200;
 
 		}else{
-
-			$json['status']  = 1;
-
-			$json['message'] = 'Tambah penilaian gagal';
-
+			$json['status']  = FALSE;
+			$json['msg'] = 'Edit penilaian gagal';
+			$responseCode = 500;
 		}
 
-
-
-		echo json_encode($json);
-
+		$this->sendAjaxResponse($json, $responseCode);
 	}
-
-
 
 	public function update(){
 
 		$post = $this->input->post();
 
-
-
 		$data = [
-
 			'id_kelas'		=> $post['id_kelas'],
-
+			'id_guru'		=> $post['id_guru'],
+			'id_mapel'		=> $post['id_mapel'],
 			'nama_ujian'  	=> $post['nama_ujian'],
-
 			'jumlah_soal'  	=> 0,
-
 			'waktu'  		=> $post['waktu_ujian'],
-
 			'nama_ujian'  	=> $post['nama_ujian'],
-
 			'jenis'  		=> 'set',
-
 			'tgl_mulai'		=> date_default($post['tgl_mulai']).' '.$post['waktu_mulai'],
-
-			'terlambat'		=> date_default($post['tgl_selesai']).' '.$post['waktu_selesai'],
-
+			'terlambat'		=> date_default($post['tgl_selesai']).' '.$post['waktu_selesai']
 		];
-
-
 
 		$kirim = $this->m_penilaian->update($data,array('id'=>$post['id']));
 
 		if ($kirim) {
-
-			$json['status']  = 1;
-
-			$json['message'] = 'Edit penilaian berhasil';
+			$json['status']  = TRUE;
+			$json['msg'] = 'Edit penilaian berhasil';
+			$responseCode = 200;
 
 		}else{
-
-			$json['status']  = 1;
-
-			$json['message'] = 'Edit penilaian gagal';
-
+			$json['status']  = FALSE;
+			$json['msg'] = 'Edit penilaian gagal';
+			$responseCode = 500;
 		}
 
-
-
-		echo json_encode($json);
-
+		$this->sendAjaxResponse($json, $responseCode);
 	}
 
 	
@@ -810,8 +765,6 @@ class Penilaian extends MY_Controller {
 
 	}
 
-
-
 	public function page_load_result($pg = 1){
 
 		$post = $this->input->post();
@@ -846,38 +799,20 @@ class Penilaian extends MY_Controller {
 
 		}
 
-
-
-		
-
 		$where['id_ujian'] = $post['id_ujian'];
-
 		$where['status'] = 'N';
-
 		$where['id_user'] = $this->akun->id;
-
-
-
-
 
 		$paginate = $this->m_ikut_penilaian->paginate($pg,$where,$limit);
 
 		$data['paginate'] = $paginate;
-
 		$data['paginate']['url']	= 'penilaian/page_load_result';
-
 		$data['paginate']['search'] = 'lookup_key';
-
 		$data['page_start'] = $paginate['counts']['from_num'];
-
 		$data['id_ujian'] = $post['id_ujian'];
 
-
-
 		$this->load->view('penilaian/table_hasil',$data);
-
 		$this->generate_page($data);
-
 	}
 
 	public function form_soal($id_paket,$id_soal=0) {
@@ -955,6 +890,9 @@ class Penilaian extends MY_Controller {
 
 	}
 
+	/*
+	* Function untuk update soal penilaian
+	**/
 	public function updateSoal()
 	{
 		$post = $this->input->post();
@@ -1039,6 +977,9 @@ class Penilaian extends MY_Controller {
 		}
 	}
 
+	/*
+	* Function untuk insert soal penilaian
+	*/
 	public function insertSoal()
 	{
 		$post = $this->input->post();
@@ -1109,6 +1050,9 @@ class Penilaian extends MY_Controller {
 		}
 	}
 
+	/*
+	*  @Deprecated, using insertSoal instead of this function
+	*/
 	function simpan_soal(){
 
 
@@ -1382,10 +1326,6 @@ class Penilaian extends MY_Controller {
 
 		}
 
-
-
-
-
 		public function file_hapus_ujian($id=0,$no){
 
 
@@ -1539,7 +1479,9 @@ class Penilaian extends MY_Controller {
 		}
 
 
-
+		/*
+		* Function untuk mengatur suatu penilaian diizinkan oleh admin
+		*/
 		public function izinkan(){
 
 			$post = $this->input->post();
@@ -1607,10 +1549,10 @@ class Penilaian extends MY_Controller {
 		}
 
 
-
+		/*
+		* Function untuk menampilkan persiapan sebelum memulai Ujian untuk siswa
+		*/
 		public function ikuti_ujian($id_ujian){
-
-
 
 			header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 
@@ -1618,105 +1560,25 @@ class Penilaian extends MY_Controller {
 
 			header("Pragma: no-cache");
 
-
-
-			//$id_tes = abs($id_ujian);
-
-			/*$a['du'] = $this->db->query("SELECT a.id, a.penggunaan, a.tgl_mulai, a.terlambat, 
-
-				a.token, a.nama_ujian, a.jumlah_soal, a.waktu,
-
-				a.status_token, b.nama nmguru, c.nama nmmapel,
-
-				(case
-
-				when (now() < a.tgl_mulai) then 0
-
-				when (now() >= a.tgl_mulai and now() <= a.terlambat) then 1
-
-				else 2
-
-				end) statuse
-
-				FROM tb_ujian a 
-
-				INNER JOIN m_guru b ON a.id_guru = b.id
-
-				INNER JOIN m_mapel c ON a.id_mapel = c.id 
-
-				WHERE a.id = '$id_ujian'")->row_array();*/
-
-
-
-			$a['du'] = $this->db->select("	
-
-										a.id, a.tgl_mulai, a.terlambat,a.izin, 
-
-										a.token, a.nama_ujian, a.waktu,
-
-										a.status_token, b.nama nmguru, c.nama nmmapel,
-
-										(case
-
-										when (now() < a.tgl_mulai) then 0
-
-										when (now() >= a.tgl_mulai and now() <= a.terlambat) then 1
-
-										else 2
-
-										end) statuse
-
-										")
-
-								->from('tb_penilaian a')
-
-								->join('tb_kelas kls','kls.id = a.id_kelas')
-
-								->join('m_guru b','kls.id_trainer = b.id')
-
-								->join(' m_mapel c','kls.id_mapel = c.id')
-
-								->where('a.id',decrypt_url($id_ujian))
-
-								->get()
-
-								->row_array();
-
+			// DU = Data Ujian
+			$dataUjian = $this->m_penilaian->get_join_by(['pen.id' => decrypt_url($id_ujian)], 'array');
+			// print_r($dataUjian);exit;
+			$a['du'] = $dataUjian;
 			$pen = $this->m_penilaian->get_by(['pen.id'=>decrypt_url($id_ujian)]);
 
 			$a['jumlah_soal'] = $this->m_soal_penilaian->count_by(['id_paket'=>$pen->id_paket_soal]);
 
-
-
-
-
 			$a['dp'] = $this->m_siswa->get_by(['id' =>$this->log_id]);
-
-			//$q_status = $this->db->query();
-
-
 
 			if (!empty($a['du']) || !empty($a['dp'])) {
 
 				$tgl_selesai = $a['du']['tgl_mulai'];
 
-			    //$tgl_selesai2 = strtotime($tgl_selesai);
-
-			    //$tgl_baru = date('F j, Y H:i:s', $tgl_selesai);
-
-
-
-			    //$tgl_terlambat = strtotime("+".$a['du']['terlambat']." minutes", $tgl_selesai2);	
-
 				$tgl_terlambat_baru = $a['du']['terlambat'];
-
-
 
 				$a['tgl_mulai'] = $tgl_selesai;
 
 				$a['terlambat'] = $tgl_terlambat_baru;
-
-
 
 				$cek = $this->db->query("
 
@@ -1745,9 +1607,6 @@ class Penilaian extends MY_Controller {
 					exit;
 
 				}
-
-
-
 				$this->session->set_userdata(array('selesai_ujian'=>0));
 
 				$this->render('penilaian/ikuti_ujian', $a);
@@ -1762,16 +1621,11 @@ class Penilaian extends MY_Controller {
 
 		}
 
-
-
+		/*
+		* Function untuk menjalankan Ujian untuk siswa
+		*/
 		public function ikut_ujian($id_ujian){
-
-
-
 			$id_ujian = decrypt_url($id_ujian);
-
-
-
 			if ($this->session->userdata('selesai_ujian') == 1) {
 
 				$cek = $this->db->query("
@@ -3373,5 +3227,66 @@ class Penilaian extends MY_Controller {
 			], 500);	
 			exit;
 		}
+	}
+
+	public function paket_soal_multi_delete()
+	{
+		$post = $this->input->post();
+
+		foreach ($post['id'] as $val) {
+			$where[] = $val;
+		}
+
+		$this->db->trans_begin();
+
+		$kirim = $this->db->where_in('id',$where)->delete('tb_paket_soal');
+
+		if ($this->db->trans_status() === FALSE)
+		{
+			$this->db->trans_rollback();
+		}
+		else
+		{
+			$this->db->trans_commit();
+		}
+
+		if ($kirim) {
+			$result = true;
+		}else{
+			$result = false;
+		}
+
+		echo json_encode(array('result'=>$result));
+	}
+
+	/*
+	* Function untuk melihat hasil penilaian oleh admin
+	*/
+	public function hasilPenilaian($encryptIdPenilaian)
+	{
+		$this->load->model('m_ikut_penilaian');
+		$id = decrypt_url($encryptIdPenilaian);
+
+		$data['id_penilaian'] = $id;
+
+		$this->render('penilaian/hasil-penilaian', $data);
+	}
+
+	public pageLoadHasilPenilaian($pg = 1)
+	{
+		$post = $this->input->post();
+		$limit = $post['limit'];
+		$where = [];
+		$where['id_penilaian'] = $post['id_penilaian'];
+
+		$paginate = $this->m_ikut_penilaian->paginate($pg,$where,$limit);
+
+		$data['paginate'] = $paginate;
+		$data['paginate']['url']	= 'penilaian/load-data-hasil-penilaian';
+		$data['paginate']['search'] = 'lookup_key';
+		$data['page_start'] = $paginate['counts']['from_num'];
+
+		$this->load->view('penilaian/table-hasil-penilaian',$data);
+		$this->generate_page($data);		
 	}
 }

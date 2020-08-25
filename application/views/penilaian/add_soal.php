@@ -94,7 +94,7 @@
 
 			<?php } ?>
 			<br><br>
-			<div class="form-group">
+			<!-- <div class="form-group">
 				<label for="">Pilih Dimensi</label>
 				<select name="dimensi" id="dimensi" required class="form-control">
 					<?php 
@@ -110,9 +110,9 @@
 						
 					<?php endforeach; ?>
 				</select>
-			</div>
+			</div> -->
 			<div class="form-group">
-				<label for="">Bobot Indikator</label>
+				<label for="">Bobot </label>
 				<input type="text" class="form-control" name="bobot" value="<?= isset($d['bobot']) ? $d['bobot'] : ''; ?>" required>
 			</div>
 			<div class="form-group" style="margin-top: 20px">
