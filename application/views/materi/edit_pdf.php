@@ -113,7 +113,7 @@
                ext = filename.substring(filename.lastIndexOf('.') + 1);
                if(ext != 'pdf') {
                    alert('File harus PDF!');
-        ------           this.value = '';
+                   this.value = '';
                    return false;
                }
                else if(file.size > maxSize) {
