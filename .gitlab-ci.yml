@@ -28,7 +28,7 @@ production_icommits:
     only: 
         - production_icommits
     script:
-        - cd /var/www/globaltech-codeigniter
+        - cd /var/www/icommits/globaltech-codeigniter
         - git reset --hard
         - git pull origin production_icommits
         - sudo rm /var/www/icommits/globaltech-codeigniter/application/config/database.php
