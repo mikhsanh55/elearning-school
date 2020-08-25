@@ -3266,13 +3266,14 @@ class Penilaian extends MY_Controller {
 	{
 		$this->load->model('m_ikut_penilaian');
 		$id = decrypt_url($encryptIdPenilaian);
-
+		$dataPenilaian = $this->m_penilaian->get_by(['pen.id' => $id]);
 		$data['id_penilaian'] = $id;
+		$data['penilaian'] = $dataPenilaian;
 
 		$this->render('penilaian/hasil-penilaian', $data);
 	}
 
-	public pageLoadHasilPenilaian($pg = 1)
+	public function pageLoadHasilPenilaian($pg = 1)
 	{
 		$post = $this->input->post();
 		$limit = $post['limit'];
@@ -3282,11 +3283,43 @@ class Penilaian extends MY_Controller {
 		$paginate = $this->m_ikut_penilaian->paginate($pg,$where,$limit);
 
 		$data['paginate'] = $paginate;
-		$data['paginate']['url']	= 'penilaian/load-data-hasil-penilaian';
+		$data['paginate']['url']	= 'penilaian/load-hasil-penilaian';
 		$data['paginate']['search'] = 'lookup_key';
 		$data['page_start'] = $paginate['counts']['from_num'];
 
 		$this->load->view('penilaian/table-hasil-penilaian',$data);
 		$this->generate_page($data);		
+	}
+
+	/*
+	* Function untuk melihat jawaban yang dipilih siswa saat penilaian
+	*/
+	public function hasilPenilaianSiswa($encryptIdSiswa, $encryptIdPenilaian)
+	{
+		$post = $this->input->post();
+		$idSiswa = decrypt_url($encryptIdSiswa);
+		$idPenilaian = decrypt_url($encryptIdPenilaian);
+
+		$getPaketSoal = $this->m_penilaian->get_by(['pen.id' => $idPenilaian]);
+
+		$soalPenilaian = $this->m_soal_penilaian->get_many_by([
+			'id_paket' => $getPaketSoal->id_paket_soal
+		]);
+
+		$result = $this->m_ikut_penilaian->get_by([
+			'id_penilaian' => $idPenilaian,
+			'id_user' => $idSiswa
+		]);
+
+		$jawabanUser = explode(',', $result->list_jawaban);
+
+		$datas = [
+			'soal' => $soalPenilaian,
+			'result' => $result,
+			'jawabanUser' => $jawabanUser,
+			'backUrl' => base_url('penilaian/hasil-penilaian/') . $encryptIdPenilaian
+		];
+		// print_r($datas);exit;
+		$this->load->view('penilaian/v_periksa_penilaian', $datas);
 	}
 }
