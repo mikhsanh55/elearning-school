@@ -99,7 +99,19 @@
     $(document).ready(function() {
         let file = undefined, filename, ext, uploadOk = 1, maxSize = 10485760;
         let data = new FormData(), html, fileArray = [], conf, self;
-       
+        
+        function getListFiles(data, url) {
+            $.ajax({
+                type: 'post',
+                url,
+                data,
+                dataType: 'json',
+                success: function(res) {
+                    $('.list-files').html(res.data);
+                }
+            })
+        }
+
         getListFiles({
             type_file: 'pdf',
             imateri: $('input[name=imateri]').val()

@@ -103,6 +103,18 @@
         let file = undefined, filename, ext, uploadOk = 1, maxSize = 20971520; // 20 MB
         let data = new FormData(), fileArray = [], self, conf;
 
+        function getListFiles(data, url) {
+            $.ajax({
+                type: 'post',
+                url,
+                data,
+                dataType: 'json',
+                success: function(res) {
+                    $('.list-files').html(res.data);
+                }
+            })
+        }
+
         getListFiles({
             type_file: 'ppt',
             imateri: $('input[name=imateri]').val()
