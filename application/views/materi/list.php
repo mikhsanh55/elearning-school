@@ -23,10 +23,10 @@
 							<nav aria-label="breadcrumb">
 								<ol class="breadcrumb">
 									<li class="breadcrumb-item">
-										<a href="<?= base_url('dtest/m_mapel'); ?>">
+										<span data-href="<?= base_url('dtest/m_mapel'); ?>">
 										<i class="fas fa-home"></i>
 										Home
-										</a>
+										</span>
 									</li>
 									<?php if(isset($mapel->nama)) { ?>
 									<li class="breadcrumb-item active" aria-current="page">
@@ -95,7 +95,24 @@
     </div>
   </div>
 </div>
+<!-- View File -->
+<div class="modal fade" tabindex="-1" role="dialog" id="list-materi-file">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">List File</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="content-file">
+      </div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
 
+<!--  -->
 <div class="modal fade" tabindex="-1" role="dialog" id="upload-materi">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -123,29 +140,72 @@
 	$(document).ready(function(){
 
 		/* Logic Sections */
-		let uploadOk = 0, file, ext, filename;
+		let uploadOk = 0, file, ext, filename, self, html, conf;
 		
 	    var data = new FormData();
 		$('.loading').hide();
-		$('.hapus-materi').click(function(e) {
-		    e.preventDefault();
-		    let src = window.location.href, materi = $(this).data('materi');
-		    let conf = confirm("Anda akan menghapus Materi ini?");
-		    
-		    if(conf)
-		    
-    		    $.ajax({
-    		        type:"POST",
-    		        url:"<?= base_url('Materi/s_delete'); ?>",
-    		        data:{src:src, materi:materi},
-    		        dataType:"JSON",
-    		        success:function(res) {
-    		            window.location.href = res.src;      
-    		        }
-    		    });
-		    
+
+		$(document).on('click', '.view-video', function(e) {
+			e.preventDefault();
+			self = this;
+			$.ajax({
+				type: 'post',
+				url: "<?= base_url('Materi/get-list-videos') ?>",
+				data: {
+					imateri: $(self).data('id')
+				},
+				dataType: 'json',
+				success: function(res) {
+					if(res.status) {
+						$('#content-file').html(res.data);
+						$('#list-materi-file').modal('show');
+					}
+				}
+			})
 		});
 		
+		$(document).on('click', '.read-ppt', function(e) {
+			e.preventDefault();
+			self = this;
+			$.ajax({
+				type: 'post', 
+				url: "<?= base_url('Materi/get-list-files') ?>",
+				data: {
+					type_file: 'ppt',
+					imateri: $(self).data('id'),
+					view: true
+				},
+				dataType: 'json',
+				success: function(res) {
+					if(res.status) {
+						$('#content-file').html(res.data);
+						$('#list-materi-file').modal('show');
+					}
+				}
+			})
+		});
+
+		$(document).on('click', '.read-pdf', function(e) {
+			e.preventDefault();
+			self = this;
+			$.ajax({
+				type: 'post', 
+				url: "<?= base_url('Materi/get-list-files') ?>",
+				data: {
+					type_file: 'pdf',
+					imateri: $(self).data('id'),
+					view: true
+				},
+				dataType: 'json',
+				success: function(res) {
+					if(res.status) {
+						$('#content-file').html(res.data);
+						$('#list-materi-file').modal('show');
+					}
+				}
+			})
+		});	
+
 		$('.upload-sub-modul').click(function(e) {
 		    e.preventDefault();
 		    let url = window.location.href;
@@ -260,24 +320,28 @@
 			pageLoad(1,'materi/page_load');
 		}, 500));
 
-		$(document).on('click','.hapus-materi',function(){
-			var conf = confirm('Anda yakin ingin menghapus materi ini?')
-			if(conf) {
-				$.ajax({
-					type : 'post',
-					url  : '<?=base_url('materi/deleteMapel');?>',
-					dataType : 'json',
-					data : {
-						id_materi : $(this).data('materi')
-					},
-					success:function(response){
-						if(response.delete != true){
-							alert('Gagal Menghapus Materi');
-						}
-						pageLoad(1,'materi/page_load');
-					}
-				})
-			}
+		$(document).on('click','.hapus-materi',function(e){
+			e.preventDefault();
+		    self = this;
+		    
+		    conf = confirm("Anda akan menghapus Materi ini beserta semua file nya?");
+		    
+		    if(conf) {
+		    	$.ajax({
+    		        type:"POST",
+    		        url:"<?= base_url('Materi/delete-materi'); ?>",
+    		        data:{imateri : $(self).data('materi')},
+    		        dataType:"JSON",
+    		        success:function(res) {
+    		            window.location.href = res.src;      
+    		        },
+    		        error: function(e) {
+    		        	alert(e.responseText.msg);
+    		        	console.error(e.responseText);
+    		        	return false;
+    		        }
+    		    });
+		    }
 				
 		});
 

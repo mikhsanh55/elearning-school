@@ -51,32 +51,7 @@ class M_kelas extends MY_Model {
 		return $get;
 	}
 
-	public function rekaptulasi($where=array()){
-		$get = $this->db->select('
-									dekls.id_peserta,
-									sis.nama as siswa,
-									sis.active_num as active_login,
-									sis.active_video,
-									sis.active_read as active_materi,
-									sis.active_diskusi,
-									sis.active_tugas,
-									kls.nama AS nama_kelas,
-									mpl.nama as mapel, dmkls.id_mapel,
-									dekls.id_kelas,
-									dmkls.id_guru,
-									guru.nama as nama_guru
-						')
-		->from('tb_kelas kls')
-		->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'right')
-		->join('tb_detail_kelas dekls','dekls.id_kelas = kls.id','right')
-		->join('m_mapel mpl','mpl.id=dmkls.id_mapel','inner')
-		->join('m_siswa sis','sis.id = dekls.id_peserta','inner')
-		->join('m_guru guru', 'guru.id = dmkls.id_guru', 'right')
-		->where($where)
-		->get()
-		->result();
-		return $get;
-	}
+	
 
 	public function count_guru($where = []) {
 		return count($this->get_all($where));
@@ -88,7 +63,8 @@ class M_kelas extends MY_Model {
 
 	public function count_rekap($where=array()){
 		
-		return count($this->rekaptulasi($where));
+		// return count($this->rekaptulasi($where));
+		return count($this->rekap($where));
 	}
 
 	public function get_all_siswa($where=array()){
@@ -189,6 +165,36 @@ class M_kelas extends MY_Model {
         return array('data' => $results, 'counts' => $counts);
 	}
 
+	/*
+	* Untuk NILAI SISWA aktor admin / guru
+	*/
+	public function rekaptulasi($where=array()){
+		$get = $this->db->select('
+									dekls.id_peserta,
+									sis.nama as siswa,
+									sis.active_num as active_login,
+									sis.active_video,
+									sis.active_read as active_materi,
+									sis.active_diskusi,
+									sis.active_tugas,
+									kls.nama AS nama_kelas,
+									mpl.nama as mapel, dmkls.id_mapel,
+									dekls.id_kelas,
+									dmkls.id_guru,
+									guru.nama as nama_guru
+						')
+		->from('tb_kelas kls')
+		->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'right')
+		->join('tb_detail_kelas dekls','dekls.id_kelas = kls.id','right')
+		->join('m_mapel mpl','mpl.id=dmkls.id_mapel','inner')
+		->join('m_siswa sis','sis.id = dekls.id_peserta','inner')
+		->join('m_guru guru', 'guru.id = dmkls.id_guru', 'right')
+		->where($where)
+		->get()
+		->result();
+		return $get;
+	}
+
 	public function paginate($page = 1, $where = array(), $limit = 10)
     {
         // get filtered results
@@ -211,7 +217,86 @@ class M_kelas extends MY_Model {
 
         return array('data' => $results, 'counts' => $counts);
 	}
+
+	/*
+	* Get Data Nilai siswa untuk admin/guru
+	*/
+	public function rekap($where = []) {
+    	$get = $this->db->select('kls.nama as nama_kelas,
+				mapel.nama as nama_mapel,
+				dmkls.*,
+				sis.nama as siswa,
+				sis.id as id_siswa,
+				sis.active_num as active_login,
+				sis.active_video,
+				sis.active_read as active_materi,
+				sis.active_diskusi,
+				sis.active_tugas')
+    					->from('m_siswa sis')
+						->join('tb_detail_kelas dekls', 'sis.id = dekls.id_peserta', 'inner')
+						->join('tb_kelas kls', 'dekls.id_kelas = kls.id', 'inner')
+						->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'inner')
+						->join('m_mapel mapel', 'mapel.id = dmkls.id_mapel', 'inner')
+						->join('m_guru guru', 'guru.id = dmkls.id_guru', 'inner')
+						->where($where)
+						->order_by('kls.nama', 'asc')
+						->get()
+						->result();
+		return $get;
+    }
+
+	public function rekaptulasi_siswa($where = []) {
+		$get = $this->db->select('
+				kls.nama as nama_kelas,
+				mapel.nama as nama_mapel,
+				dmkls.*,
+				sis.nama as siswa,
+				sis.active_num as active_login,
+				sis.active_video,
+				sis.active_read as active_materi,
+				sis.active_diskusi,
+				sis.active_tugas')
+						->from('m_siswa sis')
+						->join('tb_detail_kelas dekls', 'sis.id = dekls.id_peserta', 'inner')
+						->join('tb_kelas kls', 'dekls.id_kelas = kls.id', 'inner')
+						->join('tb_detail_kelas_mapel dmkls', 'dmkls.id_kelas = kls.id', 'inner')
+						->join('m_mapel mapel', 'mapel.id = dmkls.id_mapel', 'inner')
+						->join('m_guru guru', 'guru.id = dmkls.id_guru', 'inner')
+						->where($where)
+						->get()
+						->result();
+		return $get;
+	}
+
+	public function count_rekap_siswa($where = []) {
+		return count($this->rekaptulasi_siswa($where));
+	}
 	
+	public function paginate_rekap_siswa($page = 1, $where = array(), $limit = 10)
+    {
+        // get filtered results
+        $where = array_merge($where, $this->where);
+        $offset = ($page<=1) ? 0 : ($page-1)*$limit;
+        $this->db->limit($limit, $offset);
+        $results = $this->rekaptulasi_siswa($where);
+        //echo  $this->db->last_query(); exit;
+        // get counts (e.g. for pagination)
+        $count_results = count($results);
+        $count_total = $this->count_rekap_siswa($where);
+        $total_pages = ceil($count_total / $limit);
+        $counts = array(
+            'from_num'      => ($count_results==0) ? 0 : $offset + 1,
+            'to_num'        => ($count_results==0) ? 0 : $offset + $count_results,
+            'total_num'     => $count_total,
+            'curr_page'     => $page,
+            'total_pages'   => ($count_results==0) ? 1 : $total_pages,
+            'limit'         => $limit,
+        );
+
+        return array('data' => $results, 'counts' => $counts);
+    }
+
+   
 
 	public function paginate_rekap($page = 1, $where = array(), $limit = 10)
     {
@@ -219,7 +304,7 @@ class M_kelas extends MY_Model {
         $where = array_merge($where, $this->where);
         $offset = ($page<=1) ? 0 : ($page-1)*$limit;
         $this->db->limit($limit, $offset);
-        $results = $this->rekaptulasi($where);
+        $results = $this->rekap($where);
         //echo  $this->db->last_query(); exit;
         // get counts (e.g. for pagination)
         $count_results = count($results);
@@ -238,19 +323,6 @@ class M_kelas extends MY_Model {
     }
 
     public function get_data_mapel($where = array()) {
-    	
-    	// $kelas = $this->get_by($where);
-    	// if(!empty($kelas)) {
-    	// 	$id_mapel = explode(',', $kelas->id_mapel);
-    	// 	$result = $this->db->select('*')
-    	// 					->from('m_mapel')
-    	// 					->where_in('id', $id_mapel)
-    	// 					->get()
-    	// 					->result();	
-    	// }
-    	// else {
-    	// 	$result = [];
-    	// }
 
     	$result = $this->db->select('kls.id as id_kelas, kls.nama, mapel.nama AS nama_mapel, guru.nama AS nama_guru, guru.id AS idguru, dkmapel.*, dkmapel.id_mapel AS dmapel')
     						->from('tb_kelas kls')
@@ -337,6 +409,63 @@ class M_kelas extends MY_Model {
 
     	return $get;
 
+    }
+
+    /*
+    * Load data detail ujian
+    */
+    public function paginate_detail_ujian($pg, $where = [], $limit = 10) {
+    	 // get filtered results
+        $where = array_merge($where, $this->where);
+        $offset = ($pg<=1) ? 0 : ($pg-1)*$limit;
+        $this->db->limit($limit, $offset);
+        $results = $this->get_detail_ujian($where);
+        //echo  $this->db->last_query(); exit;
+        // get counts (e.g. for pagination)
+        $count_results = count($results);
+        $count_total = $this->count_detail_ujian($where);
+        $total_pages = ceil($count_total / $limit);
+        $counts = array(
+            'from_num'      => ($count_results==0) ? 0 : $offset + 1,
+            'to_num'        => ($count_results==0) ? 0 : $offset + $count_results,
+            'total_num'     => $count_total,
+            'curr_page'     => $pg,
+            'total_pages'   => ($count_results==0) ? 1 : $total_pages,
+            'limit'         => $limit,
+        );
+
+        return array('data' => $results, 'counts' => $counts);
+    }
+
+    public function count_detail_ujian($where = []) {
+    	return count($this->get_detail_ujian($where));
+    }
+    public function get_detail_ujian($where = []) {
+    	$get = $this->db->select('pg.nilai as nilai_pg, pg.id_user, essay.nilai as nilai_essay, ujikls.id_kelas as idkelas, uji.*')
+    					->from('tb_ujian uji')
+    					->join('tb_kelas_ujian ujikls', 'ujikls.id_ujian = uji.id', 'inner')
+    					->join('tb_ikut_ujian pg', 'pg.id_ujian = uji.id', 'left')
+    					->join('tb_ikut_ujian_essay essay', 'essay.id_ujian = uji.id', 'left')
+    					->where($where)
+    					->get()
+    					->result();
+
+    	return $get;
+    }
+
+    public function get_rekap_ujian($where = []) {
+    	$get = $this->db->select('pg.nilai as nilai_pg, pg.id_user, essay.nilai as nilai_essay, ujikls.id_kelas as idkelas, uji.*')
+    					->from('tb_kelas_ujian ujikls')
+    					->join('tb_ujian uji', 'uji.id = ujikls.id_ujian', 'inner')
+    					->join('tb_ikut_ujian pg', 'pg.id_ujian = uji.id', 'inner')
+    					->join('tb_ikut_ujian_essay essay', 'essay.id_ujian = uji.id', 'left')
+    					->where($where)
+    					->group_by('pg.id_user', 'essay.id_user')
+    					->order_by('ujikls.id_kelas', 'asc')
+    					->get()
+    					->result();
+
+    	return $get;
     }
 }
 

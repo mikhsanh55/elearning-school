@@ -1380,17 +1380,15 @@ class Ujian_essay extends MY_Controller {
 
 				if (!empty($soal_urut_ok)) {
 
-					
-
+					$file = NULL;
 				    foreach ($soal_urut_ok as $d) { 
 
 				    	 $d->id;
-
+				    	 if(is_file('upload/'))
 				        $tampil_media = tampil_media("upload/file_ujian_soal_essay/".$d->file, '250px','auto');
 
 						$vrg = $arr_jawab[$d->id]["r"] == "" ? "N" : $arr_jawab[$d->id]["r"];
 						$val = $arr_jawab[$d->id]["j"];
-				
 
 				        $html .= '<input type="hidden" name="id_soal_'.$no.'" value="'.$d->id.'">';
 
@@ -1441,13 +1439,13 @@ class Ujian_essay extends MY_Controller {
 
 		public function simpan_satu_ujian($id_ujian,$id_pengguna=NULL){
 
-			$p			= json_decode(file_get_contents('php://input'));
+			// $p			= json_decode(file_get_contents('php://input'));
+			$post = $this->input->post();
 
-		
 			$update_ 	= "";
 
-			for ($i = 1; $i < $p->jml_soal; $i++) {
-				$isi = 
+			for ($i = 1; $i < $post['jml_soal']; $i++) {
+				// $isi = 
 				$_tjawab 	= "opsi_".$i;
 
 				$_tidsoal 	= "id_soal_".$i;
@@ -1456,22 +1454,24 @@ class Ujian_essay extends MY_Controller {
 
 				$isi        = 'isi_'.$i;
 
-				$jawaban_ 	= empty($p->$isi) ? "" : $p->$isi;
+				$jawaban_ 	= empty($post[$isi]) ? "" : $post[$isi];
 
-				$update_	.= "".$p->$_tidsoal.":".$jawaban_.":".$p->$_ragu.",";
+				$update_	.= "".$post[$_tidsoal].":".$jawaban_.":".$post[$_ragu].",";
 
 				$datas = [
-					'id_soal'  =>$p->$_tidsoal,
+					'id_soal'  =>$post[$_tidsoal],
 					'jawaban'  => $jawaban_,
-					'ragu'     => $p->$_ragu
+					'ragu'     => $post[$_ragu]
 				];
-
-				$this->m_jawaban_essay->update($datas,['id_soal'=>$p->$_tidsoal,'id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
-
+				$uploadedFile = FALSE;
+				
+				$this->m_jawaban_essay->update($datas,['id_soal'=>$post[$_tidsoal],'id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
 
 			}
 
 			$update_		= substr($update_, 0, -1);
+
+
 
 
 			$q_ret_urn 	= $this->m_jawaban_essay->get_many_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
@@ -1501,86 +1501,6 @@ class Ujian_essay extends MY_Controller {
 
 
 		public function simpan_akhir_ujian($id_ujian){
-
-
-
-			// $get_jawaban = $this->db->query("SELECT list_jawaban FROM tb_ikut_ujian_essay WHERE status = 'Y' AND id_ujian = '$id_ujian' AND id_user = '".$this->akun->id."'")->row_array();
-
-			// $pc_jawaban = explode(",", $get_jawaban['list_jawaban']);
-
-			// $jumlah_benar 	= 0;
-
-			// $jumlah_salah 	= 0;
-
-			// $jumlah_ragu  	= 0;
-
-			// $nilai_bobot 	= 0;
-
-			// $total_bobot	= 0;
-
-			// $jumlah_soal	= sizeof($pc_jawaban);
-
-
-
-			// for ($x = 0; $x < $jumlah_soal; $x++) {
-
-			// 	$pc_dt = explode(":", $pc_jawaban[$x]);
-
-			// 	$id_soal 	= $pc_dt[0];
-
-			// 	$jawaban 	= $pc_dt[1];
-
-			// 	$ragu 		= $pc_dt[2];
-
-			// 	$cek_jwb 	= $this->db->query("SELECT bobot FROM m_soal_ujian_essay WHERE id = '".$id_soal."'")->row();
-
-			// 	$total_bobot = $total_bobot + $cek_jwb->bobot;
-
-				
-
-			// 	if (($cek_jwb->jawaban == $jawaban)) {
-
-			// 		//jika jawaban benar 
-
-			// 		$jumlah_benar++;
-
-			// 		$nilai_bobot = $nilai_bobot + $cek_jwb->bobot;
-
-			// 		$q_update_jwb = "UPDATE m_soal_ujian_essay SET jml_benar = jml_benar + 1 WHERE id = '".$id_soal."'";
-
-			// 	} else {
-
-			// 		//jika jawaban salah
-
-			// 		$jumlah_salah++;
-
-			// 		$q_update_jwb = "UPDATE m_soal_ujian_essay SET jml_salah = jml_salah + 1 WHERE id = '".$id_soal."'";
-
-			// 	}
-
-			// 	$this->db->query($q_update_jwb);
-
-			// }
-
-
-
-			// $nilai = ($jumlah_benar / $jumlah_soal)  * 100;
-
-			// $nilai_bobot = ($nilai_bobot / $total_bobot)  * 100;
-
-			
-			// Update status siswa jika nilainya lulus
-			// $is_graduted = $this->m_ujian->get_by(['uji.id' => $id_ujian]);
-			// if(!is_null($is_graduted)) {
-			// 	if($nilai >= $is_graduted->min_nilai) {
-			// 		$this->db->update('m_siswa', ['is_graduated' => 1],['id' => $this->akun->id]);
-			// 	}
-			// }
-
-
-			//$a_banyak		= $this->db->query("SELECT SUM(banyak) AS jumlah FROM tb_ikut_ujian")->row();
-
-			//$this->db->query("UPDATE tb_ujian SET penggunaan = '$a_banyak->jumlah' WHERE id = '$id_ujian' ");
 
 
 
@@ -2016,7 +1936,7 @@ class Ujian_essay extends MY_Controller {
 
 					$html .= '<div class="form-group" style="border:1px #000 solid; padding:10px;">';
 					$html .= '  <label>'.$no.'.'.$soal_.''.$tampil_media.' </label>';
-					$html .= '<textarea class="form-control" readonly>Jawaban : '.$val.'</textarea>';
+					$html .= '<textarea class="form-control nilai" readonly>Jawaban : '.$val.'</textarea>';
 					$html .= '<div style=" padding:10px 0px;"><label>Nilai</label> <input type="text" value="'.$rows->nilai.'" data-soal ="'.$rows->id_soal.'"  data-ujian ="'.$rows->id_ujian.'"  data-user ="'.$rows->id_user.'" data-bobot ="'.$soal->bobot.'" maxlength="3" class="only-number nilai"> <button type="button" data-soal="'.$rows->id_soal.'" data-nilai="'.$rows->nilai.'" data-ujian="'.$rows->id_ujian.'" data-user="'.$rows->id_user.'" data-bobot="'.$soal->bobot.'" class="beri-nilai btn btn-primary">Update Nilai</button> </div>';
 					$html .= '</div>';
 

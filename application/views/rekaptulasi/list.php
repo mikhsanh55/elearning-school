@@ -106,11 +106,18 @@
 					<option value="50">50</option>
 					<option value="100">100</option>
 				</select>
-                <?php if($this->log_lvl == 'instansi' || $this->log_lvl == 'admin') : ?>
-				<a href="<?=base_url('export/rekapitulasi') ?>" class="btn btn-sm btn-success"><i class="fas fa-file-excel-o"></i>&nbsp;Export Excel</a>
+				<div id="error">
+					<?= $this->session->flashdata('error'); ?>
+				</div>
+                <?php if($this->log_lvl != 'siswa') : ?>
+				<!-- <a href="<?=base_url('export/rekapitulasi') ?>" class="btn btn-sm btn-success"><i class="fas fa-file-excel-o"></i>&nbsp;Export Excel</a>
 				<a target="_blank" href="<?= base_url('export/pdf_rekapitulasi') ?>" class="btn btn-sm btn-danger">
 					<i class="fas fa-file-pdf-o">&nbsp;Export PDF</i>
-				</a>
+				</a> -->
+				<button data-href="<?=base_url('export/rekapitulasi') ?>" class="btn btn-sm btn-success export-nilai" data-type="excel"><i class="fas fa-file-excel-o" ></i>&nbsp;Export Excel</button>
+				<button data-target="_blank" data-href="<?= base_url('export/pdf_rekapitulasi') ?>" class="btn btn-sm btn-danger export-nilai" data-type="pdf">
+					<i class="fas fa-file-pdf-o">&nbsp;Export PDF</i>
+				</button>
 				<?php endif; ?>
 				<div id="content-view"></div>
 			</div>
@@ -119,12 +126,73 @@
 
 </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="nilaiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+  	<form action="" id="export-nilai">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">Export Nilai</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <div class="form-group">
+	        	<label for="">Kategori</label>
+	        	<select name="kategori" class="form-control" id="kategori-nilai" required>
+	        		<option value="0">Pilih Kategori</option>
+	        		<option value="harian">Ujian Harian</option>
+<!-- 	        		<option value="uts">UTS</option>
+	        		<option value="uas">UAS</option> -->
+	        		<option value="tugas">Tugas</option>
+	        	</select>
+	        </div>
+	        <div class="form-group">
+	        	<label for="">Data</label>
+	        	<select name="data" id="data-nilai" class="form-control" required>
+	        		<option value="0" disabled>Pilih Data</option>	
+	        	</select>
+	        </div>
+	        <div class="form-group" id="kelas">
+	        	<label for="">Kelas</label>
+	        	<select name="kelas" id="kelas-nilai" class="form-control" required>
+	        		<option value="0" disabled>Pilih Kelas</option>	
+	        	</select>
+	        </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="submit" class="btn btn-primary">Export</button>
+	      </div>
+	    </div>
+    </form>
+  </div>
+</div>
 
+<!-- Modal Keaktifan -->
+<div class="modal fade" id="keaktifanModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+  	
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">Nilai Keaktifan Siswa</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        
+	      </div>
+	    </div>
+    
+  </div>
+</div>
 
 <!--/.row-box End-->
 <script src="<?= base_url(); ?>assets/js/jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
+		let self, typeExport = 'pdf', formData;
 		pageLoad(1,'rekaptulasi/page_load');
 
 		$('#limit').change(function(){
@@ -146,7 +214,95 @@
 			};
 		}
 
+		$('.export-nilai').click(function(e) {
+			e.preventDefault();
+			if($(this).data('type') === 'pdf') {
+				typeExport = 'pdf';
+			}
+			else {
+				typeExport = 'excel';
+			}
+			$('#nilaiModal').modal('show');
+		});
 
+		
+
+		// kategori event
+		$('#kategori-nilai').change(function(e) {
+			e.preventDefault();
+
+
+			$('#data-nilai').html(`<option value="0" selected disabled>Pilih Data</option>`);
+			$('#kelas-nilai').html(`<option value="0" selected disabled>Pilih Kelas</option>`);
+			if($(this).val() != 'tugas') {
+				$('#kelas').addClass('d-none');	
+			}
+			else {
+				$('#kelas').removeClass('d-none');		
+			}
+			self = this;
+
+			$.ajax({
+				type: 'post',
+				url: "<?= base_url('rekaptulasi/get-data-by-kategori'); ?>",
+				data: {
+					kategori: $(self).val()
+				},
+				dataType: 'json',
+				success: function(res) {
+					$('#data-nilai').html(res.data);
+				}
+			})
+		});
+
+		// data event
+		$('#data-nilai').on('change', function(e) {
+			e.preventDefault();
+			$('#kelas-nilai').html(`<option value="0" selected disabled>Pilih Kelas</option>`);
+			self = this;
+			$.ajax({
+				type: 'post',
+				url: "<?= base_url('rekaptulasi/get-kelas-by-data'); ?>",
+				data: {
+					kategori: $('#kategori-nilai').val(),
+					data: $(self).val()
+				},
+				dataType: 'json',
+				success: function(res) {
+					$('#kelas-nilai').html(res.data);
+				}
+			})
+		});
+
+		$('#export-nilai').on('submit', function(e) {
+			e.preventDefault();
+			self = this;
+			if($('#kategori-nilai').val() == 0 || $('#data-nilai').val() == 0) {
+				alert('Harap pilih semua opsi');
+				return false;
+			}
+			var kategori = $('#kategori-nilai').val(),
+				kelas = $('#kelas-nilai').val(),
+				data = $('#data-nilai').val();
+			formData = new FormData();
+			formData.append('kategori', kategori);
+			formData.append('kelas', kelas);
+			formData.append('data', data);
+			formData.append('type', typeExport);
+			$.ajax({
+				type: 'post',
+				url: "<?= base_url('export/rekaptulasi'); ?>",
+				data: formData,
+				dataType: 'json',
+				processData: false,
+				contentType: false,
+				success: function(res) {
+					$('#nilaiModal').modal('hide');
+					window.location.href = res.url;
+				}
+			});
+
+		});
 	})
 
 	function pageLoad(pg, url, search){
@@ -164,7 +320,4 @@
 			}
 		})
 	}
-
 </script>
-
-

@@ -30,7 +30,6 @@
             </div>
         </div>	
 		
-
 		<form id="form" method="post">
 
 				<div class="form-group">
@@ -45,7 +44,7 @@
 
 								<?php foreach ($kelas as $rows): ?>
 
-								<option value="<?=$rows->id;?>"><?=$rows->nama.' ( '.$rows->nama_guru.' - '.$rows->nama_mapel.' )';?></option>
+								<option value="<?=$rows->id;?>"><?=$rows->nama;?></option>
 
 							<?php endforeach ?>
 

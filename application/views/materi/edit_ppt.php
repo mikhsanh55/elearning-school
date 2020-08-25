@@ -64,22 +64,18 @@
                          
                         </div>
                     </div>
-                   
-<!--                     <div class="row container mx-auto">
-                        <div class="col-sm-12">
-                            <h4><label for="video" class="text-success">Video</label><span class="text-danger"> *</span></h4>
-                            <input type="text" class="form-control" placeholder="Masukan Id Video..." name="video" value="<?= $materi->path_video; ?>" autofocus>
-                        </div>
-                    </div> -->
                     <br>
                         <div class="row container mx-auto">
                             <div class="col-sm-12 form-group">
                                 <label for="title" class="text-success"><h3>File PPT</h3></label>
-                                <input type="file" class="form-control" name="file" id="file" value="<?= $materi->file_ppt; ?>" required /><span><?= $materi->file_ppt; ?></span>
+                                <input type="file" class="form-control" name="file[]" id="file" required multiple="multiple" />
                                 <p id="passwordHelpBlock" class="form-text text-muted">
                                   File PPT yang akan diupload maksimal memiliki ukuran 100 MB.
                                 </p>
                             </div>
+                        </div>
+                        <div class="col-sm-12 list-files">
+                                
                         </div>
                     <br>
                     <div class="row container mx-auto">
@@ -104,49 +100,53 @@
 <script type="text/javascript" src="<?= base_url('assets/plugin/ckeditor/ckeditor.js') ?>"></script>
 <script>
     $(document).ready(function() {
-        let file = undefined, filename, ext, uploadOk = 1, maxSize = 104857600;
-        let data = new FormData();
+        let file = undefined, filename, ext, uploadOk = 1, maxSize = 20971520; // 20 MB
+        let data = new FormData(), fileArray = [], self, conf;
+
+        getListFiles({
+            type_file: 'ppt',
+            imateri: $('input[name=imateri]').val()
+        }, "<?= base_url('Materi/get-list-files'); ?>");
         
         // kontent
-        $('input[type=file][name=file]').change(function() {
-            file = this.files[0]; 
-           filename = this.value;
-           ext = filename.substring(filename.lastIndexOf('.') + 1);
-           var errors = 0;
-           var msg = null;
+        $('input[type=file]').change(function() {
+            var errors = 0;
+               var msg = null;
+            for(var x = 0;x < this.files.length;x++) {
+                file = this.files[x]; 
+               filename = this.value;
+               ext = filename.substring(filename.lastIndexOf('.') + 1);
+               console.warn(ext)
 
-           if(ext == 'pptx') {
-             
-           }else if(ext == 'ppt'){
-           
-           }else{
-            errors++;
-           }
-
-           if(errors > 0){
-               alert('Format File Harus ppt atau pptx');
-               this.value = '';
-               return false;
-           }
-           else if(file.size > maxSize) {
-               alert('File terlalu besar! maksimal 100 MB');
-               this.value = '';
-               return false;
-           }
-           else {
-               uploadOk = 1;
-           }
+               if(ext != 'ppt' && ext != 'pptx'){
+                   alert('Format File Harus ppt atau pptx');
+                   this.value = '';
+                   return false;
+               }
+               else if(file.size > maxSize) {
+                   alert('File terlalu besar! maksimal 20 MB');
+                   this.value = '';
+                   return false;
+               }
+               else {
+                   uploadOk = 1;
+               }
+            }
+                
         });
 
         $('form').submit(function(e) {
             e.preventDefault();
 
-            
+            console.warn(file); 
             if(uploadOk === 1)
-                data.append('title', $('input[type=text][name=title]').val());
                 /*data.append('video', $('input[type=text][name=video]').val());*/
                 if(file != undefined) {
-                    data.append('file', file);
+                     file = document.querySelector('input[type=file]').files.length;
+                    
+                    for(var x = 0;x < file;x++) {
+                        data.append('file[]', document.querySelector('input[type=file]').files[x]);
+                    }
                 }
                 data.append('imateri', $('input[name=imateri]').val());
                 data.append('imapel', $('input[name=imapel]').val());
@@ -180,9 +180,16 @@
                         res = JSON.parse(res);
                         if(res.status == true) {
                             $('#spin-icon').toggleClass('d-none');
-                            // alert(res.msg);
-                            // console.log(res);
-                            window.location.href = sessionStorage.getItem('url');
+                            getListFiles({
+                                type_file: 'ppt',
+                                imateri: $('input[name=imateri]').val()
+                            }, "<?= base_url('Materi/get-list-files'); ?>");
+
+                            if(sessionStorage.getItem('url') != null) {
+                                setTimeout(function() {
+                                    window.location.href = sessionStorage.getItem('url');
+                                }, 2000)
+                            }
                         }
                         else {
                             $('#spin-icon').toggleClass('hide');
@@ -193,5 +200,37 @@
                     }
                 });    
         });
+
+        $(document).on('click', '.delete-file-tugas', function(e){
+            e.preventDefault();
+            conf = confirm('Kamu yakin akan menghapus file ini?');
+            if(conf) {
+                self = this;
+                $.ajax({
+                    type: 'post',
+                    url: "<?= base_url('Materi/delete-file-materi'); ?>",
+                    data: {
+                        id: $(self).data('id')
+                    },
+                    dataType: 'json',
+                    success: function(res) {
+                        if(res.status) {
+                            getListFiles({
+                                type_file: 'ppt',
+                                imateri: $('input[name=imateri]').val()
+                            }, "<?= base_url('Materi/get-list-files'); ?>");
+                        }
+                    },
+                    error: function(e) {
+                        alert(e.responseText.msg);
+                        console.error(e.responseText);
+                        return false;
+                    }
+                })
+            }
+            else {
+                return false;
+            }
+        })
     });
 </script>

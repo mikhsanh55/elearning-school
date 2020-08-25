@@ -22,8 +22,12 @@ class Aktivitas extends MY_Controller {
 		
 		$this->load->model('m_kelas');
 		$this->load->model('m_admin');
+        $this->load->model('m_mapel');
+        $this->load->model('m_detail_kelas');
+        $this->load->model('m_detail_kelas_mapel');
 		$this->load->model('m_siswa');
 		$this->load->model('m_admin_detail');
+        $this->load->model('m_keaktifan_siswa');
 
 	}
 
@@ -185,7 +189,8 @@ class Aktivitas extends MY_Controller {
     }
 
     public function data(){
-
+            $this->load->model('m_keaktifan_siswa');
+            $this->load->model('m_detail_kelas_mapel');
     		$start = $this->input->post('start');
 
 	        $length = $this->input->post('length');
@@ -232,7 +237,6 @@ class Aktivitas extends MY_Controller {
 	        						  ->get()
 
 									  ->result_array();
-				// print_r($q_datanya);exit;
 
 				// Set for pagination server side DataTable
 				$total_data =  $this->db->select('sis.*, dkls.id_kelas')
@@ -283,6 +287,44 @@ class Aktivitas extends MY_Controller {
 				else {
 					$nama_kelas = 'Kosong';
 				}
+
+                if($this->log_lvl === 'guru') {
+                    $id_mapel = $this->m_detail_kelas_mapel->get_by(['id_guru' => $this->akun->id]);
+                    $id_mapel = $id_mapel->id_mapel;
+                }
+                else {
+                    $id_mapel = NULL;
+                }
+
+                $sumLogin = $this->m_keaktifan_siswa->getSumKeaktifan([
+                    'id_siswa' => $d['id'],
+                    'id_mapel' => $id_mapel,
+                    'type' => 'login'
+                ]);
+                
+                $sumVideos = $this->m_keaktifan_siswa->getSumKeaktifan([
+                    'id_siswa' => $d['id'],
+                    'id_mapel' => $id_mapel,
+                    'type' => 'video'
+                ]);
+
+                $sumRead = $this->m_keaktifan_siswa->getSumKeaktifan([
+                    'id_siswa' => $d['id'],
+                    'id_mapel' => $id_mapel,
+                    'type' => 'read'
+                ]);                
+
+                $sumDiskusi = $this->m_keaktifan_siswa->getSumKeaktifan([
+                    'id_siswa' => $d['id'],
+                    'id_mapel' => $id_mapel,
+                    'type' => 'diskusi'
+                ]);
+
+                $sumTugas = $this->m_keaktifan_siswa->getSumKeaktifan([
+                    'id_siswa' => $d['id'],
+                    'id_mapel' => $id_mapel,
+                    'type' => 'tugas'
+                ]);
 				
 	            $data_ok = array();
 
@@ -294,18 +336,18 @@ class Aktivitas extends MY_Controller {
 
 	            $data_ok[] = $nama_kelas;
 
-	            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-sm btn-success ">' . $d['active_num'] . '</button></div>';
+	            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-sm btn-success ">' . $sumLogin->sum . '</button></div>';
 
-	            $total = $d['active_video'] + $d['active_read'];
-	            $sum_all = $d['active_num'] + $d['active_video'] + $d['active_read'] + $d['active_diskusi'] + $d['active_tugas'];
+	            $total = $sumVideos->sum + $sumRead->sum;
+	            $sumAll = $sumLogin->sum + $sumVideos->sum + $sumRead->sum + $sumDiskusi->sum + $sumDiskusi->sum;
 
 	            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-success btn-sm">'.$total.'</button></div>';
 
-	            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-success btn-sm">'.$d['active_diskusi'].'</button></div>';
+	            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-success btn-sm">'.$sumDiskusi->sum.'</button></div>';
 
-	            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-success btn-sm">'.$d['active_tugas'].'</button></div>';
+	            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-success btn-sm">'.$sumTugas->sum.'</button></div>';
 
-	            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-primary btn-sm">'.$sum_all.'</button></div>';
+	            $data_ok[] = '<div class="d-flex justify-content-center"><button type="button" class="btn btn-primary btn-sm">'.$sumAll.'</button></div>';
 
             	// Detail AKtivitas siswa :
             	// $data_ok[] = '<div class="d-flex justify-content-center"><a href="'.base_url('aktivitas/detail-siswa/') . $this->encryption->encrypt($d['id']).'" class="btn btn-sm btn-primary ">Lihat Aktivitas</a></div>';
@@ -433,6 +475,85 @@ class Aktivitas extends MY_Controller {
     			'msg' => 'Data aktivitas ' . $post['type'] . 'gagal direset'
     		], 500);
     	}
+    }
+
+    /*
+    * Function untuk mengambil data keaktifan siswa per mapel
+    * return @json
+    */
+    public function detail_keaktifan_siswa()
+    {
+        $post = $this->input->post();
+        $dataSiswa = $this->m_siswa->get_by(['id' => $post['siswa']]);
+        $dataKelas = $this->m_detail_kelas->get_by(['id_peserta' => $post['siswa']]);
+        $dataKelas = $this->m_kelas->get_by(['kls.id' => $dataKelas->id_kelas]);
+        $dataMapel = $this->m_mapel->get_by(['id' => $post['mapel']]);
+        // print_r($dataKelas);exit;
+
+        $html = '<div class="container">
+                    <header>
+                        <h4>Nama Siswa : '.$dataSiswa->nama.'</h4>
+                        <h4>Kelas : '.$dataKelas->nama.'</h4>
+                        <h4>Mata Pelajaran : '.$dataMapel->nama.'</h4>
+                    </header>    
+                ';
+        $sumLogin = $this->m_keaktifan_siswa->getSumKeaktifan([
+            'id_siswa' => $post['siswa'],
+            'id_mapel' => $post['mapel'],
+            'type' => 'login'
+        ]);
+
+        $sumRead = $this->m_keaktifan_siswa->getSumKeaktifan([
+            'id_siswa' => $post['siswa'],
+            'id_mapel' => $post['mapel'],
+            'type' => 'read'
+        ]);
+
+        $sumVideos = $this->m_keaktifan_siswa->getSumKeaktifan([
+            'id_siswa' => $post['siswa'],
+            'id_mapel' => $post['mapel'],
+            'type' => 'video'
+        ]);
+
+        $sumDiskusi = $this->m_keaktifan_siswa->getSumKeaktifan([
+            'id_siswa' => $post['siswa'],
+            'id_mapel' => $post['mapel'],
+            'type' => 'diskusi'
+        ]);
+
+        $sumTugas = $this->m_keaktifan_siswa->getSumKeaktifan([
+            'id_siswa' => $post['siswa'],
+            'id_mapel' => $post['mapel'],
+            'type' => 'tugas'
+        ]);
+
+        $html .= '<table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Jumlah Login</th>
+                            <th class="text-center">Jumlah Download Materi</th>
+                            <th class="text-center">Jumlah Tonton Video</th>
+                            <th class="text-center">Keaktifan Diskusi</th>
+                            <th class="text-center">Keaktifan Pengumpulan Tugas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">'. $sumLogin->sum .'</td>
+                            <td class="text-center">'. $sumRead->sum .'</td>
+                            <td class="text-center">'. $sumVideos->sum .'</td>
+                            <td class="text-center">'. $sumDiskusi->sum .'</td>
+                            <td class="text-center">'. $sumTugas->sum .'</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        ';
+
+        $this->sendAjaxResponse([
+            'status' => TRUE,
+            'data' => $html
+        ], 200);
     }
 }
 

@@ -9,7 +9,7 @@ class Ujian_real extends MY_Controller {
 
 
     function __construct() {
-
+    	
         parent::__construct();
 
         $this->load->model('m_ujian');
@@ -312,7 +312,7 @@ class Ujian_real extends MY_Controller {
 	public function update(){
 
 		$post = $this->input->post();
-
+		$maxSize = 3072;//3 Mb
 
 	
 		$data = [
@@ -437,13 +437,18 @@ class Ujian_real extends MY_Controller {
 		// Cek in jadwal
 		foreach($paginate['data'] as $key => $row) :
 			$now = date('Y-m-d H:i:s');
-			if($now >= $row->tgl_mulai && $now <= $row->terlambat) {
+			$date_start = $row->tgl_mulai;
+			$date_end = $row->terlambat;
+			if($now >= $date_start && $now <= $date_end) {
 				$row->in_jadwal = TRUE;
 			}
 			else {
 				$row->in_jadwal = FALSE;
 			}
 		endforeach;
+
+		// print_r($paginate['data']);exit;
+
 		$data['paginate'] = $paginate;
 
 		$data['paginate']['url']	= 'ujian_real/page_load';
@@ -655,6 +660,7 @@ class Ujian_real extends MY_Controller {
 			"audio/mpeg", "audio/mpg", "audio/mpeg3", "audio/mp3", "audio/x-wav", "audio/wave", "audio/wav",
 
 			"video/mp4", "application/octet-stream");
+			$maxSize = 3145728; // 3MB
 
 
 
@@ -747,7 +753,15 @@ class Ujian_real extends MY_Controller {
 
 					$nama_file[$k]	= "";
 
-					$tipe_file[$k]	= "";					
+					$tipe_file[$k]	= "";	
+
+				} else if($file_size > $maxSize) {
+
+					$gagal[$k] = "Maksimal File yang diupload sebesar 3 MB";
+
+					$nama_file[$k]	= "";
+
+					$tipe_file[$k]	= "";										
 
 				} else {
 
@@ -1453,16 +1467,9 @@ class Ujian_real extends MY_Controller {
 
 				} else {
 
-
-
 					$q_ambil_soal = $this->m_ikut_ujian->get_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
 
-
-
-
 					$urut_soal 		= explode(",", $q_ambil_soal->list_jawaban);
-
-					
 
 					$soal_urut_ok	= array();
 
@@ -1474,13 +1481,9 @@ class Ujian_real extends MY_Controller {
 
 						$ambil_soal = $this->db->query("SELECT *, $pc_urut_soal1 AS jawaban FROM m_soal_ujian WHERE id = '".$pc_urut_soal[0]."'")->row();
 
-
-
 						$soal_urut_ok[] = $ambil_soal; 
 
 					}
-
-					
 
 					$detil_tes = $q_ambil_soal;
 
@@ -1742,7 +1745,7 @@ class Ujian_real extends MY_Controller {
 			$is_graduted = $this->m_ujian->get_by(['uji.id' => $id_ujian]);
 			if(!is_null($is_graduted)) {
 				if($nilai >= $is_graduted->min_nilai) {
-					$this->db->update('m_siswa', ['is_graduated' => 1],['id' => $this->akun->id]);
+					$this->db->update('m_siswa', ['is_graduated' => 0],['id' => $this->akun->id]);
 				}
 			}
 
@@ -2229,15 +2232,11 @@ class Ujian_real extends MY_Controller {
 
 	$post = $this->input->post(null,true);
 
-
-
 	$data = array(
 
 		'id_ujian'    => $post['id_ujian'], 
 		'id_kelas'    => $post['id_kelas'], 
 	);
-
-
 
 	if ($post['aktif'] == 1) {
 
@@ -2249,25 +2248,46 @@ class Ujian_real extends MY_Controller {
 
 	}
 
-
-
 	$json = array(
-
 		'id_ujian'    => $post['id_ujian'], 
 		'kelas'         => $post['id_kelas'], 
-
 	);
-
-
-
 	echo json_encode($json);
-
-
-
 }
 
+	public function hasil_ujian_pg($id_ujian, $id_siswa)
+	{
+		$id_ujian = decrypt_url($id_ujian);
+		$id_siswa = decrypt_url($id_siswa);
+		$dataSiswa = $this->m_siswa->get_by(['id' => $id_siswa]);
+		$kelasSiswa = $this->m_detail_kelas->get_by(['id_peserta' => $id_siswa]);
+		$kelasSiswa = $this->m_kelas->get_by(['kls.id' => $kelasSiswa->id_kelas]);
+		$dataMapel = $this->m_ujian->get_by(['uji.id' => $id_ujian]);
+		
 
+		$result = $this->m_ikut_ujian->get_by([
+			'id_ujian' => $id_ujian,
+			'id_user' => $id_siswa
+		]);
+		$jawabanUser = explode(',', $result->list_jawaban);
+		$jawabanBenar = explode(',', $result->jawaban_benar);
 
+		$soal = $this->m_soal_ujian->get_many_by([
+			'id_ujian' => $id_ujian
+		]);
 
-
+		$datas = [
+			'soal' => $soal,
+			'jawaban_user' => $jawabanUser,
+			'jawaban_benar' => $jawabanBenar,
+			'backUrl' => base_url('ujian_real/result/') . encrypt_url($id_ujian),
+			'dataSiswa' => [
+				'nama' => $dataSiswa,
+				'kelas' => $kelasSiswa,
+				'mapel' => $dataMapel
+			]
+		];
+		// print_r($datas);exit;
+		$this->load->view('ujian/v_periksa_ujian', $datas);
+	}
 }

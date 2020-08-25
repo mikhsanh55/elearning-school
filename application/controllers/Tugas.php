@@ -107,6 +107,7 @@ class Tugas extends MY_Controller {
 
 
 	public function insert(){
+		$this->load->model('m_keaktifan_siswa');
 		try {
 			$post = $this->input->post();
 			$files = $_FILES;
@@ -138,7 +139,7 @@ class Tugas extends MY_Controller {
 
 						$config['upload_path']   = 'assets/tugas/attach/';
 						$config['allowed_types'] = 'xlsx|xls|pdf|pdfx|doc|docx|jpeg|jpg|png|zip|rar|ppt|pptx';
-						$config['max_size']      = 222220480;
+						$config['max_size']      = 10240; // 10 MB
 						$config['file_name']     = $namafile;
 
 						$this->load->library('upload', $config);
@@ -172,6 +173,14 @@ class Tugas extends MY_Controller {
 					// }
 
 					$this->db->insert('tb_tugas_attachment',$attach);
+	                $pointTugas = 1;
+	                $this->m_keaktifan_siswa->insert([
+	                    'id_siswa' => $this->akun->id,
+	                    'id_mapel' => $post['mapel'],
+	                    'type' => 'tugas',
+	                    'value' => $pointTugas
+	                ]); 
+		            
 				// }
 
 				$this->db->trans_complete();
@@ -227,7 +236,7 @@ class Tugas extends MY_Controller {
 
 					$config['upload_path']   = 'assets/tugas/attach/';
 					$config['allowed_types'] = 'pdf|pdfx|doc|docx|jpeg|jpg|png|zip|rar|ppt|pptx|xlsx|xls';
-					$config['max_size']      = 22222220480;
+					$config['max_size']      = 10240; // 10 MB
 					$config['file_name']     = $namafile;
 
 					$this->load->library('upload', $config);
@@ -268,6 +277,7 @@ class Tugas extends MY_Controller {
 				$update = $this->m_tugas->update($data,array('id'=>$post['id']));
 
 				if($update) {
+
 					$this->sendAjaxResponse([
 						'status' => FALSE,
 						'msg' => 'Tugas berhasil update'
@@ -597,6 +607,7 @@ class Tugas extends MY_Controller {
 	}
 
 	public function insert_attach_siswa(){
+		$this->load->model('m_keaktifan_siswa');
 		$post = $this->input->post();
 		$files = $_FILES;
 		$qty_attach = $_FILES['attach']['name'];
@@ -615,7 +626,7 @@ class Tugas extends MY_Controller {
 
 				$config['upload_path']   = 'assets/tugas/attach_siswa/';
 				$config['allowed_types'] = 'pdf|pdfx|doc|docx|jpeg|jpg|png|zip|rar|ppt|pptx|xlsx|xls';
-				$config['max_size']      = 20480; // 20 MB
+				$config['max_size']      = 10240; // 10 MB
 				$config['file_name']     = $namafile;
 
 				$this->load->library('upload', $config);
@@ -654,15 +665,21 @@ class Tugas extends MY_Controller {
 		}
 
 		$this->db->trans_complete();
+		// $this->updateActiveUser($this->log_lvl, 'active_tugas');
+		$id_mapel = $this->m_tugas->get_by(['tgs.id' => $post['id_tugas']]);
+		$id_mapel = $id_mapel->id_mapel;
+		$pointTugas = 1;
+        $this->m_keaktifan_siswa->insert([
+            'id_siswa' => $this->akun->id,
+            'id_mapel' => $id_mapel,
+            'type' => 'tugas',
+            'value' => $pointTugas
+        ]);
 
-		// $json = [
-		// 	'status' => true,
-		// 	'msg'    => 'success',
-		// 	'info' => NULL
-		// ];
-		// echo json_encode($json);
-		// Update Activity Siswa
-		$this->updateActiveUser($this->log_lvl, 'active_tugas');
+        $this->sendAjaxResponse([
+        	'status' => TRUE,
+        	'msg' => 'Tugas berhasil diupload'
+        ], 200);
 		exit;
 
 	}
@@ -701,7 +718,88 @@ class Tugas extends MY_Controller {
 			], 500);
 		}
 	}
+	/*
+	* Section Nilai Tugas untuk Admin / Guru
+	*/
+	public function detail_nilai_tugas_siswa($id_mapel, $id_siswa) {
+		$id_mapel = decrypt_url($id_mapel);
+		$id_siswa = decrypt_url($id_siswa);
 
+		$detail_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $id_siswa]);
+
+		$mapel = $this->m_mapel->get_by(['id' => $id_mapel]);
+		$kelas = $this->m_kelas->get_by(['kls.id' => $detail_kelas->id_kelas]);
+		$siswa = $this->m_siswa->get_by(['id' => $id_siswa]);
+
+		$data = [
+			'id_mapel' => $id_mapel,
+			'id_kelas' => $detail_kelas->id_kelas,
+			'id_siswa' => $id_siswa,
+			'nama_siswa' => $siswa->nama,
+			'nama_mapel' => $mapel->nama,
+			'nama_kelas' => $kelas->nama,
+			'searchFilter' => ['Keterangan']
+		];
+
+		$this->render('tugas/list_detail_nilai', $data);
+	}
+
+	/*
+	* Section Nilai Tugas untuk siswa
+	*/
+	public function detail_nilai_tugas($id_mapel) {
+		$id_mapel = decrypt_url($id_mapel);
+
+		$detail_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $this->session->userdata('admin_konid')]);
+
+
+		$data = [
+			'id_mapel' => $id_mapel,
+			'id_kelas' => $detail_kelas,
+			'searchFilter' => ['Keterangan']
+		];
+
+		$this->render('tugas/list_detail_nilai', $data);
+	}
+
+	public function page_load_nilai_tugas($pg = 1) {
+		$post = $this->input->post();
+		$limit = $post['limit'];
+		$where = [];
+
+		$where['tugas.id_kelas'] = $post['id_kelas'];
+		$where['tugas.id_mapel'] = $post['id_mapel'];
+
+		switch($this->log_lvl) {
+			case 'siswa':
+				$where['tnilai.id_siswa'] = $this->session->userdata('admin_konid');
+			break;
+			case 'guru' :
+				$where['tugas.id_guru'] = $this->session->userdata('admin_konid');
+				$where['tnilai.id_siswa'] = $post['id_siswa'];
+			default:
+				$where['tnilai.id_siswa'] = $post['id_siswa'];
+			break;
+		}
+
+		if (!empty($post['search'])) {
+			switch ($post['filter']) {
+				case 0:
+					$where["(lower(tugas.keterangan) like '%".strtolower($post['search'])."%' )"] = null;
+					break;
+			}
+		}
+
+		$paginate = $this->m_tugas_nilai->paginate_detail_nilai($pg, $where, $limit);
+
+		$data['paginate'] = $paginate;
+		$data['paginate']['url']	= 'tugas/page_load_nilai_tugas';
+		$data['paginate']['search'] = 'lookup_key';
+		$data['page_start'] = $paginate['counts']['from_num'];
+
+		$this->load->view('tugas/table_detail_nilai',$data);
+		$this->generate_page($data);
+	}
 }
 
 /* End of file Tugas.php */
