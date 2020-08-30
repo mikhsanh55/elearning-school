@@ -79,5 +79,7 @@ $route['penilaian/update-soal'] = 'penilaian/updateSoal';
 $route['penilaian/hapus-opsi-file'] = 'penilaian/hapusOpsiFile';
 $route['penilaian/hapus-soal-file'] = 'penilaian/hapusSoalFile';
 $route['penilaian/hasil-penilaian/(:any)'] = 'penilaian/hasilPenilaian/$1';
+$route['penilaian/load-hasil-penilaian/(:num)'] = 'penilaian/pageLoadHasilPenilaian/$1';
+$route['penilaian/hasil-penilaian-siswa/(:any)/(:any)'] = 'penilaian/hasilPenilaianSiswa/$1/$2';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

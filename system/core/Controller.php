@@ -86,9 +86,9 @@ class CI_Controller {
 		$this->load->initialize();
 		log_message('info', 'Controller Class Initialized');
 
-		if(date('Y-m-d') >= '2020-08-31'){
-			echo '<H1 style="color:red; text-align: center; margin:100px auto;"> Hubungi  Kembali Dian Global Tech</H1>';exit;
-		}
+		// if(date('Y-m-d') >= '2020-08-31'){
+		// 	echo '<H1 style="color:red; text-align: center; margin:100px auto;"> Hubungi  Kembali Dian Global Tech</H1>';exit;
+		// }
 	}
 
 	// --------------------------------------------------------------------

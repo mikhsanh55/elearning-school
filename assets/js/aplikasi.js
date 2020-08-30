@@ -1269,63 +1269,6 @@ function m_mapel_h(id) {
 		$.post(base_url + 'dtest/m_mapel/hapus/', {id:id}, function(res) {
            pageLoad(1,'dtest/page_load');
        });
-	   // $.get(base_url + "Materi/check_sub_modul/" + id, function(res) {
-    //        res = JSON.parse(res);
-    //        if(res.sum_data > 0) {
-    //     	   $('input[name=aksi_hapus_modul]').on('change', function(e) {
-    //     	       // Jika Hapus sub modul semua FALSE
-    //     	       if(this.value == 0) {
-    //     	           get_mapel(id).then(function(res) {
-    //     	               res = JSON.parse(res);
-    //     	               res.data.forEach(function(option) {
-    //     	                   options += `<option class="ganti-modul" value="${option.id}">${option.nama}</option>`;
-    //     	               });
-    //                        $('select[name=id_pindah_modul]').html(options); 
-    //                        $('select[name=id_pindah_modul]').removeClass('d-none'); 
-                           
-    //                        $('#label-pindah-modul').removeClass('d-none'); 
-    //     	           }).then(function() {
-    //     	               data = {id:id, modul:$('#select-ganti-modul option:selected').val()};     
-    //     	           });        
-        	           
-    //     	       }
-    //     	       else {
-    //     	           $('select[name=id_pindah_modul]').html(''); 
-    //                    $('select[name=id_pindah_modul]').addClass('d-none'); 
-    //                    $('#label-pindah-modul').addClass('d-none'); 
-    //     	           data = {id:id};
-    //     	       }
-        	       
-    //     	       $('#hapus-modul').click(function(e) {
-    //     	           e.preventDefault();
-    //     	           $.post(base_url + 'dtest/m_mapel/hapus/', data, function(res) {
-    //         	           pageLoad(1,'dtest/page_load');
-    //         	            $('#hapus_mapel').modal('toggle');
-    //         	       });
-    //     	       });
-    //     	   });        
-    //        }
-    //        else {
-    //            data = {id:id};
-    //            $.post(base_url + 'dtest/m_mapel/hapus/', data, function(res) {
-    // 	          pageLoad(1,'dtest/page_load');
-    // 	           $('#hapus_mapel').modal('toggle');
-    // 	       });
-    //        }
-    //     });
-	   
-	   // if(confirm('Semua sub modul akan terhapus!, anda yakin?'))
-    // 		$.ajax({
-    // 			type: "GET",
-    // 			url: base_url+"dtest/m_mapel/hapus/"+id,
-    // 			success: function(response) {
-    // 				if (response.status == "ok") {
-    // 					window.location.assign(base_url+"dtest/m_mapel"); 
-    // 				} else {
-    // 					console.log('gagal');
-    // 				}
-    // 			}
-    // 		});
 	}
 	return false;
 }
@@ -1416,6 +1359,10 @@ function pageLoadModal(pg, url, dataObj = {}, idTable) {
 		}
 	});
 }
+
+/*
+* Untuk get file materi via ajax
+*/
 function getListFiles(data, url) {
     $.ajax({
         type: 'post',

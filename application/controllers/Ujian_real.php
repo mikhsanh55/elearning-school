@@ -1,49 +1,31 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
- defined('BASEPATH') OR exit('No direct script access allowed');
+class Ujian_real extends MY_Controller 
+{
 
-
-
-class Ujian_real extends MY_Controller {
-
-
-
-    function __construct() {
-    	
+    function __construct() 
+    {
         parent::__construct();
-
         $this->load->model('m_ujian');
-
         $this->load->model('m_instansi');
-
         $this->load->model('m_mapel_cs');
-
         $this->load->model('m_guru');
-
         $this->load->model('m_soal_ujian');
         $this->load->model('m_soal_ujian_essay');
-
 		$this->load->model('m_ikut_ujian');
 		$this->load->model('m_ikut_ujian_essay');
 		$this->load->model('m_jurusan');
-
 		$this->load->model('m_detail_mapel');
-		
 		$this->load->model('m_kelas_ujian');
-		
-
 		$this->load->model('m_kelas');
-
-		
 
         $this->opsi = array("a","b","c","d","e");
         $this->jml_opsi = 5;
-
 	}
 
-
-
-	public function index(){
+	public function index()
+	{
 
 		$data = array(
 
@@ -57,7 +39,8 @@ class Ujian_real extends MY_Controller {
 
 	}
 
-	public function data_soal($id_ujian=null){
+	public function data_soal($id_ujian=null)
+	{
 
 
 
@@ -82,7 +65,8 @@ class Ujian_real extends MY_Controller {
 		$this->render('ujian/list_soal',$data);
 	}
 
-	public function add(){
+	public function add()
+	{
 
 
 
@@ -114,7 +98,8 @@ class Ujian_real extends MY_Controller {
 
 
 
-	public function edit($id=0){
+	public function edit($id=0)
+	{
 
 
 
@@ -163,7 +148,8 @@ class Ujian_real extends MY_Controller {
 
 
 
-	public function form_import($id_ujian){
+	public function form_import($id_ujian)
+	{
 
 
 
@@ -181,7 +167,8 @@ class Ujian_real extends MY_Controller {
 
 
 
-	public function get_mp(){
+	public function get_mp()
+	{
 
 		$post = $this->input->post();
 
@@ -217,7 +204,8 @@ class Ujian_real extends MY_Controller {
 
 
 
-	public function get_trainer(){
+	public function get_trainer()
+	{
 
 		$post = $this->input->post();
 
@@ -253,7 +241,8 @@ class Ujian_real extends MY_Controller {
 
 
 
-	public function insert(){
+	public function insert()
+	{
 
 		$post = $this->input->post();
 
@@ -309,7 +298,8 @@ class Ujian_real extends MY_Controller {
 
 
 
-	public function update(){
+	public function update()
+	{
 
 		$post = $this->input->post();
 		$maxSize = 3072;//3 Mb
@@ -375,7 +365,8 @@ class Ujian_real extends MY_Controller {
 
 
 
-	public function page_load($pg = 1){
+	public function page_load($pg = 1)
+	{
 
 		$post = $this->input->post();
 
@@ -467,7 +458,8 @@ class Ujian_real extends MY_Controller {
 
 
 
-	public function page_load_soal($pg = 1){
+	public function page_load_soal($pg = 1)
+	{
 
 		$post = $this->input->post();
 
@@ -2264,7 +2256,6 @@ class Ujian_real extends MY_Controller {
 		$kelasSiswa = $this->m_kelas->get_by(['kls.id' => $kelasSiswa->id_kelas]);
 		$dataMapel = $this->m_ujian->get_by(['uji.id' => $id_ujian]);
 		
-
 		$result = $this->m_ikut_ujian->get_by([
 			'id_ujian' => $id_ujian,
 			'id_user' => $id_siswa
