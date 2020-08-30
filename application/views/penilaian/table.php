@@ -6,10 +6,7 @@
 			<th class="frist">No</th>
 			<th>Nama Penilaian</th>
 			<th>Kelas</th>
-			<th><?=$this->transTheme->guru;?></th>
-			<th>Modul Pelatihan</th>
-			<th>NRP</th>
-			<th>Pangkat</th>
+			<th>Guru</th>
 			<th>Waktu Mulai</th>
 			<th class="frist">Opsi</th>
 		</tr>
@@ -24,22 +21,20 @@
 			}else{
 				$date = NULL;
 			}
+			$guru = $this->m_guru->get_by(['id' => $rows->id_guru]);
 		?>
 			<tr>
 				<td><input type="checkbox" name="checklist[]" class="checklist" data-id= "<?=encrypt_url($rows->id);?>" value="<?=$rows->id;?>"></td>
 				<td align="center" class="frist"><?=$i;?></td>
 				<td><?=strtoupper($rows->nama_ujian);?></td>
 				<td><?=$rows->kelas;?></td>
-				<td><?=$rows->nama_guru;?></td>
-				<td><?=$rows->nama_mapel;?></td>
-				<td><?=$rows->pangkat;?></td>
-				<td><?=$rows->nrp;?></td>
+				<td><?= !empty($guru) ? $guru->nama : 'Kosong';?></td>
 				<td><?=$date;?></td>
 				<td class="frist">
 					<?php if ($this->log_lvl != 'siswa'): ?>
 
 						<?php if(!empty($penilaian)):?>
-						<a href="<?=base_url('penilaian/result_chart/'.encrypt_url($rows->id));?>" class="btn btn-primary btn-sm ml-2 mr-2">
+						<a href="<?=base_url('penilaian/hasil-penilaian/'.encrypt_url($rows->id));?>" class="btn btn-primary btn-sm ml-2 mr-2">
 							Hasil
 						</a>
 						<?php endif;?>
@@ -84,14 +79,16 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
+		let conf;
 		$('[data-toggle="tooltip"]').tooltip();   
 	});
 
-	$(document).on('click','.izinkan',function(){
+	$('.izinkan').on('click', function(e){
+		e.preventDefault();
 
-		var y = confirm('Apakah anda yakin akan mengizinkan ujian ?');
+		conf = confirm('Apakah anda yakin akan mengizinkan ujian ?');
 
-		if (y == true) {
+		if (conf) {
 
 			$.ajax({
 				type:'post',
@@ -106,15 +103,9 @@
 					// alert(response.message);
 					pageLoad(1,'penilaian/page_load');
 				}
-			})
-
-
-		}else{
-			return false;
+			});
 		}
-
-		
-	})
+	});
 
 </script>
 

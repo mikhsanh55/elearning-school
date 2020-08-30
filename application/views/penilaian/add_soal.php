@@ -18,12 +18,23 @@
                 <?= $this->backButton; ?>
             </div>
         </div>
-		
-		<?php echo form_open_multipart(base_url() . "penilaian/simpan_soal", "class='form-horizontal'"); ?>
+		<section class="m-2">
+			<?php if(!empty($this->session->flashdata('error')) ) { ?>
+			<p class="alert alert-danger"> <?= $this->session->flashdata('error'); ?></p>
+			<?php } ?>
+
+			<?php if(!empty($this->session->flashdata('success')) ) { ?>
+			<p class="alert alert-success"> <?= $this->session->flashdata('success'); ?></p>
+			<?php } ?>
+
+		</section>
+		<?php echo form_open_multipart($targetUrl, "class='form-horizontal'"); ?>
 			<input type="hidden" name="id" id="id" value="<?php echo $d['id']; ?>">
 			<div id="konfirmasi"></div>
 
 			<div class="form-group fgsoal">
+				<input type="hidden" name="url" value="<?= $url; ?>">
+				<input type="hidden" name="from_url" value="<?= $from_url; ?>">
 				<input type="hidden" name="mode" id="mode" value="<?php echo $d['mode']; ?>">
 				<input type="hidden" name="id_paket" id="id_paket" value="<?php echo $id_paket; ?>">
 			</div>
@@ -33,10 +44,10 @@
 				<div class="col-md-30">
 					<input type="file" name="file_ujian_soal" id="file_ujian_soal" class="btn btn-info upload">
 					<?php
-					if (is_file('./upload/file_ujian_soal/' . $d['file'])) {
-						echo tampil_media('./upload/file_ujian_soal/' . $d['file'], "100%");
+					if (is_file($soalPath . $d['file'])) {
+						echo tampil_media($soalPath . $d['file'], "100%");
 						$number = 1;
-						echo '<a href="#" onclick="return hapus_file_ujian('.$d['id'].','.$number.');" class="btn btn-danger btn-sm mr-2"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
+						echo '<a href="#" data-id="'.$d['id'].'" class="btn btn-danger btn-sm mr-2 hapus-soal-file"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
 					}
 					?>
 				</div>
@@ -53,23 +64,23 @@
 				<div class="form-group fgsoal">
 					<div class="col-md-2"><label>Jawaban <?php echo $huruf_opsi[$j]; ?></label></div>
 					<div class="col-md-3">
-						<input type="file" name="gj<?php echo $huruf_opsi[$j]; ?>" id="gambar_soal" class="btn btn-success upload"><br>
+						<input type="file" name="opsi_<?php echo $huruf_opsi[$j]; ?>" id="gambar_soal" class="btn btn-success upload"><br>
 						<?php
 						
-						if (is_file('./upload/file_ujian_opsi/' . $data_pc[$idx]['gambar'])) {
-							echo tampil_media('./upload/file_ujian_opsi/' . $data_pc[$idx]['gambar'], "100%");
+						if (is_file($opsiPath . $data_pc[$idx]['gambar'])) {
+							echo tampil_media($opsiPath . $data_pc[$idx]['gambar'], "100%");	
 							$number1 = 2;$number2 = 3;$number3 = 4;$number4 = 5;$number5 = 6;
 							
 							if($huruf_opsi[$j] == "a"){
-								echo '<a href="#" onclick="return hapus_file_ujian('.$d['id'].','.$number1.');" class="btn btn-danger btn-sm mr-2"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
+								echo '<a href="#" data-opsi="a" data-id="'.$d['id'].'" class="btn btn-danger btn-sm mr-2 hapus-opsi-file"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
 							}else if($huruf_opsi[$j] == "b"){
-								echo '<a href="#" onclick="return hapus_file_ujian('.$d['id'].','.$number2.');" class="btn btn-danger btn-sm mr-2"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
+								echo '<a href="#" data-opsi="b" data-id="'.$d['id'].'" class="btn btn-danger btn-sm mr-2 hapus-opsi-file"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
 							}else if($huruf_opsi[$j] == "c"){
-								echo '<a href="#" onclick="return hapus_file_ujian('.$d['id'].','.$number3.');" class="btn btn-danger btn-sm mr-2"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
+								echo '<a href="#" data-opsi="c" data-id="'.$d['id'].'" class="btn btn-danger btn-sm mr-2 hapus-opsi-file"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
 							}else if($huruf_opsi[$j] == "d"){
-								echo '<a href="#" onclick="return hapus_file_ujian('.$d['id'].','.$number4.');" class="btn btn-danger btn-sm mr-2"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
+								echo '<a href="#" data-opsi="d" data-id="'.$d['id'].'" class="btn btn-danger btn-sm mr-2 hapus-opsi-file"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
 							}else if($huruf_opsi[$j] == "e"){
-								echo '<a href="#" onclick="return hapus_file_ujian('.$d['id'].','.$number5.');" class="btn btn-danger btn-sm mr-2"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
+								echo '<a href="#" data-opsi="e" data-id="'.$d['id'].'" class="btn btn-danger btn-sm mr-2 hapus-opsi-file"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
 							}
 							
 							
@@ -83,7 +94,7 @@
 
 			<?php } ?>
 			<br><br>
-			<div class="form-group">
+			<!-- <div class="form-group">
 				<label for="">Pilih Dimensi</label>
 				<select name="dimensi" id="dimensi" required class="form-control">
 					<?php 
@@ -99,9 +110,9 @@
 						
 					<?php endforeach; ?>
 				</select>
-			</div>
+			</div> -->
 			<div class="form-group">
-				<label for="">Bobot Indikator</label>
+				<label for="">Bobot </label>
 				<input type="text" class="form-control" name="bobot" value="<?= isset($d['bobot']) ? $d['bobot'] : ''; ?>" required>
 			</div>
 			<div class="form-group" style="margin-top: 20px">
@@ -123,22 +134,63 @@
 <script src="<?php echo base_url(); ?>assets/plugin/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
+		let self, conf;
 		if (editor_style == "inline") {
-				CKEDITOR.inline('editornya');
-				CKEDITOR.inline('editornya_a');
-				CKEDITOR.inline('editornya_b');
-				CKEDITOR.inline('editornya_c');
-				CKEDITOR.inline('editornya_d');
-				CKEDITOR.inline('editornya_e');
-			} else if (editor_style == "replace") {
-				CKEDITOR.replace('editornya');
-				CKEDITOR.replace('editornya_a');
-				CKEDITOR.replace('editornya_b');
-				CKEDITOR.replace('editornya_c');
-				CKEDITOR.replace('editornya_d');
-				CKEDITOR.replace('editornya_e');
+			CKEDITOR.inline('editornya');
+			CKEDITOR.inline('editornya_a');
+			CKEDITOR.inline('editornya_b');
+			CKEDITOR.inline('editornya_c');
+			CKEDITOR.inline('editornya_d');
+			CKEDITOR.inline('editornya_e');
+		} else if (editor_style == "replace") {
+			CKEDITOR.replace('editornya');
+			CKEDITOR.replace('editornya_a');
+			CKEDITOR.replace('editornya_b');
+			CKEDITOR.replace('editornya_c');
+			CKEDITOR.replace('editornya_d');
+			CKEDITOR.replace('editornya_e');
+		}
+
+		
+		$('.hapus-opsi-file').click(function(e) {
+			e.preventDefault();
+			self = this;
+			conf = confirm('Anda yakin akan menghapus file ini?');
+			if(conf) {
+				$.ajax({
+					type: 'post',
+					url: "<?= base_url('penilaian/hapus-opsi-file') ?>",
+					data: {
+						opsi: $(self).data('opsi'),
+						id: $(self).data('id')
+					},
+					dataType: 'json',
+					success: function(res) {
+						window.location.reload();
+					}
+				});
 			}
-	})
+		});
+
+		$('.hapus-soal-file').click(function(e) {
+			e.preventDefault();
+			self = this;
+			conf = confirm('Anda yakin akan menghapus file ini?');
+			if(conf) {
+				$.ajax({
+					type: 'post',
+					url: "<?= base_url('penilaian/hapus-soal-file') ?>",
+					data: {
+						id: $(self).data('id')
+					},
+					dataType: 'json',
+					success: function(res) {
+						window.location.reload();
+					}
+				});
+			}
+		})
+	});
 </script>
 
 

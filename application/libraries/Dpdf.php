@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php 
+use Dompdf\Dompdf;
+defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * CodeIgniter DomPDF Library
  *
@@ -11,10 +13,6 @@
  * @license        MIT License
  * @link        https://github.com/ardianta/codeigniter-dompdf
  */
-
-require_once APPPATH."third_party/dompdf/autoload.inc.php";
-
-use Dompdf\Dompdf;
 
 class Dpdf extends Dompdf{
     /**

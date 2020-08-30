@@ -167,7 +167,35 @@ class Mapel extends MY_Controller {
 		
 	}
 
-	public function get_mapel() {
+	public function get_mapel_penilaian()
+	{
+		$this->load->model('m_detail_kelas_mapel');
+		$post = $this->input->post();
+		$idKelas = $post['id_kelas'];
+		$idGuru = $post['id_guru'];
+		$res = $this->m_detail_kelas_mapel->get_many_by(['id_kelas' => $idKelas, 'guru.id' => $idGuru]);
+
+		if(count($res) > 0) {
+			$html = '<option disabled="disabled" value="0" selected="selected">Pilih</option>';
+
+			foreach($res as $row) {
+				$mapel = $this->m_mapel->get_by(['id' => $row->id_mapel]);
+				$nama_mapel = !empty($mapel->nama) ? $mapel->nama : '';
+				$html .= '<option value="'. $row->id_mapel .'" >'.$nama_mapel.'</option>';
+			}
+		}
+		else {
+			$html = '<option disabled="disabled" value="0" selected="selected">Data Kosong</option>';
+		}
+
+		$this->sendAjaxResponse([
+			'status' => TRUE,
+			'data' => $html
+		], 200);
+	}
+
+	public function get_mapel() 
+	{
 		$this->load->model('m_detail_kelas_mapel');
 		$post = $this->input->post();
 		$id_kelas = $post['id_kelas'];
@@ -187,7 +215,9 @@ class Mapel extends MY_Controller {
 				$nama_mapel = !empty($mapel->nama) ? $mapel->nama : '';
 				$html .= '<option value="'. $row->id_mapel .'" >'.$nama_mapel.'</option>';
 			}
-
+		}
+		else {
+			$html = '<option disabled="disabled" value="null" selected="selected">Data Kosong</option>';			
 		}
 
 		echo $html;

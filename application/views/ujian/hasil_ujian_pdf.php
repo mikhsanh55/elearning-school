@@ -1,8 +1,9 @@
 <h3>
 	Data Hasil Ujian Kelas : <?= $nama_kelas; ?>
-	Guru : <?= $nama_guru; ?>
-	Mata Pelajaran : <?= $nama_mapel; ?>
 </h3>
+	<h3>Guru : <?= $nama_guru; ?></h3>
+	<h3>Mata Pelajaran : <?= $nama_mapel; ?></h3>
+
 <br>
 <style>
 	table {
@@ -59,8 +60,8 @@
 							<td><?=$rows->jml_benar;?></td>
 							<td><?=$keterangan;?></td>
 							<td><?=$ujian->min_nilai;?></td>
-							<td><?=$rows->tgl_mulai;?></td>
-							<td><?=$rows->tgl_selesai;?></td>
+							<td><?= date('d-m-Y H:i:s', strtotime($rows->tgl_mulai));?></td>
+							<td><?= date('d-m-Y H:i:s', strtotime($rows->tgl_selesai));?></td>
 						</tr>
 					<?php $i++; endforeach; ?>
 				<?php } else { ?>

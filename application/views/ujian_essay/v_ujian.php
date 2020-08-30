@@ -125,10 +125,17 @@
 <script src="<?php echo base_url(); ?>assets/plugin/jquery_zoom/jquery.zoom.min.js"></script>
 
 <script type="text/javascript">
-    var base_url = "<?php echo base_url(); ?>";
+    var base_url = "<?php echo base_url(); ?>", file = undefined, activeForm = '.sub-form-1';
     id_tes = "<?php echo $id_tes; ?>";
     $(window).load(function() {
         $(".se-pre-con").fadeOut("slow");
+    });
+
+    $('.file_essay').on('change', function(e) {
+        e.preventDefault();
+        file = this.files[0];
+        console.warn(file)
+
     });
 
     function getFormData($form){
@@ -167,12 +174,11 @@
 
     //jawaban dan nomer
     simpan_sementara_ujian = function() {
-        var f_asal  = $("#_form");
+        var f_asal  = $(activeForm);
         var form  = getFormData(f_asal);
         //form = JSON.stringify(form);
         var jml_soal = form.jml_soal;
         jml_soal = parseInt(jml_soal);
-
         var hasil_jawaban = "";
 
         for (var i = 1; i < jml_soal; i++) {
@@ -204,15 +210,23 @@
     }
 
     simpan = function() {
-        var f_asal  = $("#_form");
+        var f_asal  = $(activeForm);
         var form  = getFormData(f_asal);
+        var formData = new FormData();
+        for(var prop in form) {
+            formData.append(prop, form[prop]);
+        }
+        if(file != undefined) {
+            formData.append('file', file);
+        }
         var id_penggunaan = $("#url3").val();
         $.ajax({    
             type: "POST",
             url: base_url+"ujian_essay/simpan_satu_ujian/"+id_tes+"/"+id_penggunaan,
-            data: JSON.stringify(form),
+            data: formData,
             dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
+            processData: false,
+            contentType: false,
             beforeSend: function() {
                 $('.ajax-loading').show();    
             }

@@ -39,9 +39,6 @@ class Import extends MY_Controller {
     }
 
     public function siswa() {
-        print_r(get_loaded_extensions());
-        phpinfo();
-        exit;
         include APPPATH.'third_party/PHPExcel/PHPExcel.php';
 
         $config['upload_path'] = realpath('./upload/temp');
@@ -60,9 +57,20 @@ class Import extends MY_Controller {
         } else {
 
             $data_upload = $this->upload->data();
+            $extension = pathinfo($data_upload['file_name'], PATHINFO_EXTENSION);
 
-            $excelreader     = new PHPExcel_Reader_Excel2007();
-            $loadexcel         = $excelreader->load('./upload/temp/'.$data_upload['file_name']); // Load file yang telah diupload ke folder excel
+            switch($extension) {
+                case 'csv':
+                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+                break;
+                case 'xlsx':
+                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+                break;
+                default :
+                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+                break;
+            }
+            $loadexcel         = $this->_reader->load('./upload/temp/'.$data_upload['file_name']); // Load file yang telah diupload ke folder excel
             $sheet             = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
           
 
@@ -104,7 +112,7 @@ class Import extends MY_Controller {
 
                         $this->db->insert('m_siswa', $data);
                         $inserted_id = $this->db->insert_id();
-                        $password = (!empty($row['I']) && $row['I'] != '') ? $this->encryption->encrypt($row['I']) : $this->encryption->encrypt($username);
+                        $password = (!empty($row['I']) && $row['I'] != '') ? password_hash($row['I'], PASSWORD_BCRYPT) : password_hash($username, PASSWORD_BCRYPT);
                         $data_admin = [
                             // 'user_id'  => $username,
                             'user_id' => $row['C'],
@@ -155,9 +163,6 @@ class Import extends MY_Controller {
 
 
     public function guru() {
-
-        include APPPATH.'third_party/PHPExcel/PHPExcel.php';
-
         $config['upload_path'] = realpath('./upload/temp');
         $config['allowed_types'] = 'xlsx|xls|csv';
         $config['max_size'] = '10000';
@@ -175,9 +180,20 @@ class Import extends MY_Controller {
         } else {
 
             $data_upload = $this->upload->data();
+            $extension = pathinfo($data_upload['file_name'], PATHINFO_EXTENSION);
 
-            $excelreader     = new PHPExcel_Reader_Excel2007();
-            $loadexcel         = $excelreader->load('./upload/temp/'.$data_upload['file_name']); // Load file yang telah diupload ke folder excel
+            switch($extension) {
+                case 'csv':
+                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+                break;
+                case 'xlsx':
+                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+                break;
+                default :
+                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+                break;
+            }
+            $loadexcel         = $this->_reader->load('./upload/temp/'.$data_upload['file_name']); // Load file yang telah diupload ke folder excel
             $sheet             = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
 
             $data = array(); $data_admin = [];
@@ -211,7 +227,7 @@ class Import extends MY_Controller {
                     $data_admin = [
                         'user_id'  => $row['E'],
                         'username' => $row['F'],
-                        'password'  => $this->encryption->encrypt($row['E']),
+                        'password'  => password_hash($row['E'], PASSWORD_BCRYPT),
                         'level'    => 'guru',
                         'kon_id'   => $inserted_id,
                         'login_at' => date('Y-m-d H:i:s')
@@ -274,9 +290,6 @@ class Import extends MY_Controller {
     }
 
     public function soal() {
-        
-        include APPPATH.'third_party/PHPExcel/PHPExcel.php';
-
         $config['upload_path'] = realpath('./upload/temp');
         $config['allowed_types'] = 'xlsx|xls|csv';
         $config['max_size'] = '10000';
@@ -295,9 +308,20 @@ class Import extends MY_Controller {
         } else {
 
             $data_upload = $this->upload->data();
+            $extension = pathinfo($data_upload['file_name'], PATHINFO_EXTENSION);
 
-            $excelreader     = new PHPExcel_Reader_Excel2007();
-            $loadexcel         = $excelreader->load('./upload/temp/'.$data_upload['file_name']); // Load file yang telah diupload ke folder excel
+            switch($extension) {
+                case 'csv':
+                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+                break;
+                case 'xlsx':
+                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+                break;
+                default :
+                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+                break;
+            }
+            $loadexcel         = $this->_reader->load('./upload/temp/'.$data_upload['file_name']); // Load file yang telah diupload ke folder excel
             $sheet             = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
 
             $data = array();

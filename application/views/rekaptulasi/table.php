@@ -18,10 +18,6 @@
 	<tbody>
 	    <?php if(count($paginate['data']) > 0) { ?>
 	<?php $i= $page_start; foreach ($paginate['data'] as $rows): 
-
-		// Nilai Keaktifan
-		$sumKeaktifan = 4;
-		$nilaiKeaktifan = ($rows->active_login + $rows->active_video + $rows->active_materi + $rows->active_diskusi + $rows->active_tugas) / $sumKeaktifan;
 			?>
 				<tr>
 					<td align="center" class="frist"><?=$i;?></td>
@@ -40,14 +36,40 @@
 					<td class="text-center">
 					<a href="<?= base_url('tugas/detail-nilai-siswa/') . encrypt_url($rows->id_mapel) . '/' .encrypt_url($rows->id_siswa); ; ?>" class="btn btn-sm btn-primary">Detail</a>
 				</td>
-					<td><?=$nilaiKeaktifan <= 0 ? 0 : (int)$nilaiKeaktifan;?></td>
+					<td>
+						<button data-siswa="<?= ($rows->id_siswa); ?>" data-mapel="<?= $rows->id_mapel; ?>" class="btn btn-sm btn-primary detail-keaktifan">Lihat</button>
+					</td>
 				</tr>
 			<?php $i++;endforeach ?>
 	<?php } else { ?>		
 	    <tr>
-	        <td colspan="10" rowspan="2" class="text-center">Data Not Found</td>
+	        <td colspan="10" rowspan="2" class="text-center">Data Kosong</td>
 	    </tr>
 	    
 	<?php } ?>
 	</tbody>
 </table>
+<script>
+	$('.detail-keaktifan').click(function(e) {
+			e.preventDefault();
+			self = this;
+			$.ajax({
+				type: 'post',
+				url: "<?= base_url('aktivitas/detail-keaktifan-siswa'); ?>",
+				data: {
+					siswa: $(self).data('siswa'),
+					mapel: $(self).data('mapel')
+				},
+				dataType: 'json',
+				success: function(res) {
+					$('#keaktifanModal .modal-body').html(res.data);
+					$('#keaktifanModal').modal('show');
+				},
+				error: function(e) {
+					alert('Terjadi kesalahan saat mengambil data!');
+					console.error(e.responseText);
+					return false;
+				}
+			});
+		});
+</script>
