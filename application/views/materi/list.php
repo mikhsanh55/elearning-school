@@ -163,7 +163,7 @@
 				}
 			})
 		});
-
+		
 		$(document).on('click', '.read-ppt', function(e) {
 			e.preventDefault();
 			self = this;

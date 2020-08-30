@@ -32,12 +32,6 @@ class M_penilaian extends MY_Model {
 
 							kls.nama as kelas,
 
-							gr.nama as nama_guru,
-
-							gr.nrp,
-
-							gr.pangkat,
-
 							mp.nama as nama_mapel,
 
 							ins.instansi as nama_instansi
@@ -47,8 +41,6 @@ class M_penilaian extends MY_Model {
 		->from('tb_penilaian pen')
 
 		->join('tb_kelas kls','kls.id=pen.id_kelas','left')
-
-		->join('m_guru gr','gr.id=kls.id_trainer','left')
 
 		->join('m_mapel mp','mp.id=kls.id_mapel','left')
 
@@ -480,7 +472,25 @@ class M_penilaian extends MY_Model {
 
     }
 
+    public function get_join_by($where = [], $returnedType = 'object')
+    {
+        $get = $this->db->select('pen.*, kelas.nama as nama_kelas, guru.nama as nama_guru, mapel.nama as nama_mapel, 
+            (case
+                when (now() < pen.tgl_mulai) then 0
+                when (now() >= pen.tgl_mulai and now() <= pen.terlambat) then 1
+                else 2
+            end) statuse
+            ')
+                        ->from('tb_penilaian pen')
+                        ->join('tb_kelas kelas', 'pen.id_kelas = kelas.id', 'inner')
+                        ->join('m_guru guru', 'pen.id_guru = guru.id', 'left')
+                        ->join('m_mapel mapel', 'pen.id_mapel = mapel.id', 'left')
+                        ->where($where)
+                        ->get();
 
+        $result = $returnedType === 'object' ? $get->row() : $get->row_array();
+        return $result;
+    }
 
 	public function get_by($where=array()){
 
@@ -490,38 +500,17 @@ class M_penilaian extends MY_Model {
 
 							kls.nama as kelas,
 
-							gr.nama as nama_guru,
-
-							mp.nama as nama_mapel,
-
 							ins.instansi as nama_instansi
 
 						')
-
 		->from('tb_penilaian pen')
-
 		->join('tb_kelas kls','kls.id=pen.id_kelas','left')
-
-		->join('m_guru gr','gr.id=kls.id_trainer','left')
-
-		->join('m_mapel mp','mp.id=kls.id_mapel','left')
-
-		->join('tb_instansi ins','ins.id=kls.id_instansi','left')
-
+		->join('tb_instansi ins','ins.id=kls.id_instansi','inner')
 		->order_by('pen.id','asc')
-
 		->where($where)
-
 		->get()
-
 		->row();
-
-	
-
-      
-
-		return $get;
-
+	   return $get;
     }
 
     
@@ -1506,15 +1495,6 @@ class M_penilaian extends MY_Model {
           return $data;
 
      }
-
-    
-
-    
-
-
-
-
-
 }
 
 

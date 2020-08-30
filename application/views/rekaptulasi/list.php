@@ -114,8 +114,8 @@
 				<a target="_blank" href="<?= base_url('export/pdf_rekapitulasi') ?>" class="btn btn-sm btn-danger">
 					<i class="fas fa-file-pdf-o">&nbsp;Export PDF</i>
 				</a> -->
-				<button data-href="<?=base_url('export/rekapitulasi') ?>" class="btn btn-sm btn-success export-nilai-excel"><i class="fas fa-file-excel-o" ></i>&nbsp;Export Excel</button>
-				<button data-target="_blank" href="<?= base_url('export/pdf_rekapitulasi') ?>" class="btn btn-sm btn-danger" disabled>
+				<button data-href="<?=base_url('export/rekapitulasi') ?>" class="btn btn-sm btn-success export-nilai" data-type="excel"><i class="fas fa-file-excel-o" ></i>&nbsp;Export Excel</button>
+				<button data-target="_blank" data-href="<?= base_url('export/pdf_rekapitulasi') ?>" class="btn btn-sm btn-danger export-nilai" data-type="pdf">
 					<i class="fas fa-file-pdf-o">&nbsp;Export PDF</i>
 				</button>
 				<?php endif; ?>
@@ -169,11 +169,30 @@
   </div>
 </div>
 
+<!-- Modal Keaktifan -->
+<div class="modal fade" id="keaktifanModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+  	
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">Nilai Keaktifan Siswa</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        
+	      </div>
+	    </div>
+    
+  </div>
+</div>
+
 <!--/.row-box End-->
 <script src="<?= base_url(); ?>assets/js/jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
-		let self;
+		let self, typeExport = 'pdf', formData;
 		pageLoad(1,'rekaptulasi/page_load');
 
 		$('#limit').change(function(){
@@ -195,11 +214,18 @@
 			};
 		}
 
-		$('.export-nilai-excel').click(function(e) {
+		$('.export-nilai').click(function(e) {
 			e.preventDefault();
+			if($(this).data('type') === 'pdf') {
+				typeExport = 'pdf';
+			}
+			else {
+				typeExport = 'excel';
+			}
 			$('#nilaiModal').modal('show');
-
 		});
+
+		
 
 		// kategori event
 		$('#kategori-nilai').change(function(e) {
@@ -215,6 +241,7 @@
 				$('#kelas').removeClass('d-none');		
 			}
 			self = this;
+
 			$.ajax({
 				type: 'post',
 				url: "<?= base_url('rekaptulasi/get-data-by-kategori'); ?>",
@@ -254,17 +281,26 @@
 				alert('Harap pilih semua opsi');
 				return false;
 			}
-
+			var kategori = $('#kategori-nilai').val(),
+				kelas = $('#kelas-nilai').val(),
+				data = $('#data-nilai').val();
+			formData = new FormData();
+			formData.append('kategori', kategori);
+			formData.append('kelas', kelas);
+			formData.append('data', data);
+			formData.append('type', typeExport);
 			$.ajax({
 				type: 'post',
 				url: "<?= base_url('export/rekaptulasi'); ?>",
-				data: $(self).serialize(),
+				data: formData,
 				dataType: 'json',
+				processData: false,
+				contentType: false,
 				success: function(res) {
 					$('#nilaiModal').modal('hide');
 					window.location.href = res.url;
 				}
-			})
+			});
 
 		});
 	})

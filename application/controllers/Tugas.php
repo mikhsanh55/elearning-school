@@ -107,6 +107,7 @@ class Tugas extends MY_Controller {
 
 
 	public function insert(){
+		$this->load->model('m_keaktifan_siswa');
 		try {
 			$post = $this->input->post();
 			$files = $_FILES;
@@ -138,7 +139,7 @@ class Tugas extends MY_Controller {
 
 						$config['upload_path']   = 'assets/tugas/attach/';
 						$config['allowed_types'] = 'xlsx|xls|pdf|pdfx|doc|docx|jpeg|jpg|png|zip|rar|ppt|pptx';
-						$config['max_size']      = 222220480;
+						$config['max_size']      = 10240; // 10 MB
 						$config['file_name']     = $namafile;
 
 						$this->load->library('upload', $config);
@@ -172,6 +173,14 @@ class Tugas extends MY_Controller {
 					// }
 
 					$this->db->insert('tb_tugas_attachment',$attach);
+	                $pointTugas = 1;
+	                $this->m_keaktifan_siswa->insert([
+	                    'id_siswa' => $this->akun->id,
+	                    'id_mapel' => $post['mapel'],
+	                    'type' => 'tugas',
+	                    'value' => $pointTugas
+	                ]); 
+		            
 				// }
 
 				$this->db->trans_complete();
@@ -227,7 +236,7 @@ class Tugas extends MY_Controller {
 
 					$config['upload_path']   = 'assets/tugas/attach/';
 					$config['allowed_types'] = 'pdf|pdfx|doc|docx|jpeg|jpg|png|zip|rar|ppt|pptx|xlsx|xls';
-					$config['max_size']      = 22222220480;
+					$config['max_size']      = 10240; // 10 MB
 					$config['file_name']     = $namafile;
 
 					$this->load->library('upload', $config);
@@ -268,6 +277,7 @@ class Tugas extends MY_Controller {
 				$update = $this->m_tugas->update($data,array('id'=>$post['id']));
 
 				if($update) {
+
 					$this->sendAjaxResponse([
 						'status' => FALSE,
 						'msg' => 'Tugas berhasil update'
@@ -597,6 +607,7 @@ class Tugas extends MY_Controller {
 	}
 
 	public function insert_attach_siswa(){
+		$this->load->model('m_keaktifan_siswa');
 		$post = $this->input->post();
 		$files = $_FILES;
 		$qty_attach = $_FILES['attach']['name'];
@@ -615,7 +626,7 @@ class Tugas extends MY_Controller {
 
 				$config['upload_path']   = 'assets/tugas/attach_siswa/';
 				$config['allowed_types'] = 'pdf|pdfx|doc|docx|jpeg|jpg|png|zip|rar|ppt|pptx|xlsx|xls';
-				$config['max_size']      = 20480; // 20 MB
+				$config['max_size']      = 10240; // 10 MB
 				$config['file_name']     = $namafile;
 
 				$this->load->library('upload', $config);
@@ -654,7 +665,21 @@ class Tugas extends MY_Controller {
 		}
 
 		$this->db->trans_complete();
-		$this->updateActiveUser($this->log_lvl, 'active_tugas');
+		// $this->updateActiveUser($this->log_lvl, 'active_tugas');
+		$id_mapel = $this->m_tugas->get_by(['tgs.id' => $post['id_tugas']]);
+		$id_mapel = $id_mapel->id_mapel;
+		$pointTugas = 1;
+        $this->m_keaktifan_siswa->insert([
+            'id_siswa' => $this->akun->id,
+            'id_mapel' => $id_mapel,
+            'type' => 'tugas',
+            'value' => $pointTugas
+        ]);
+
+        $this->sendAjaxResponse([
+        	'status' => TRUE,
+        	'msg' => 'Tugas berhasil diupload'
+        ], 200);
 		exit;
 
 	}

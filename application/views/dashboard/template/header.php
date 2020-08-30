@@ -13,12 +13,13 @@
   <link rel="apple-touch-icon-precomposed" href="<?= base_url(); ?>assets/ico/apple-touch-icon-57-precomposed.png">
   <link rel="shortcut icon" href="<?=$this->logo;?>">
   <title><?=$this->title;?></title>
-  <script src="<?php echo base_url(); ?>assets/js/aplikasi.js"></script>
+  
   <!-- Bootstrap core CSS --> 
   <link href="<?= base_url(); ?>assets/bootstrap/css/bootstrap.css" rel="stylesheet">
   <link href="<?= base_url(); ?>assets/css/style.css" rel="stylesheet">
   <!-- Light Slider -->
   <script src="<?=base_url();?>assets/js/jquery/jquery-3.3.1.min.js"></script>
+  <script src="<?php echo base_url(); ?>assets/js/aplikasi.js"></script>
   <link rel="stylesheet" href="<?= base_url('assets/css/lightslider.css'); ?>">
   <script src="<?= base_url('assets/js/lightslider.js'); ?>"></script>
   <!-- Chart JS -->

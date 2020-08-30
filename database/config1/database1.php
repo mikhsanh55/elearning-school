@@ -7,9 +7,9 @@ $query_builder = TRUE;
 $db['production'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	'username' => 'globaltech',
-	'password' => 'Dw1Sur@2020-sql=root&J4nG4nd18uk4nt4rd1C1dUk+password>Gl0bp-sql',
-	'database' => 'elearning',
+	'username' => 'belink',
+	'password' => '83l1n@2020-sql=root&J4nG4nd18uk4nt4rd1C1dUk+password>3l34rn1n9-user',
+	'database' => 'elearning_belajar',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

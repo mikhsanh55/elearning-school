@@ -13,6 +13,7 @@
 			<th>KKM</th>
 			<th>Waktu Mulai</th>
 			<th>Waktu Selesai</th>
+			<th>Hasil</th>
 		</tr>
 		<?php if(count($paginate['data']) > 0) { $i= $page_start; foreach ($paginate['data'] as $rows):
 			$ujian = $this->m_ujian->get_by(['uji.id'=>$rows->id_ujian]);
@@ -44,6 +45,9 @@
 				<td><?=$ujian->min_nilai;?></td>
 				<td><?=$rows->tgl_mulai;?></td>
 				<td><?=$rows->tgl_selesai;?></td>
+				<td>
+					<a href="<?= base_url('ujian/hasil-pg/') . encrypt_url($rows->id_ujian) . '/' . encrypt_url($rows->id_user); ?>" class="btn btn-sm btn-primary">Lihat Jawaban</a>
+				</td>
 			</tr>
 		<?php $i++;endforeach; } else { ?>
 			<tr>

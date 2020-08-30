@@ -12,4 +12,5 @@ class M_paket_soal extends MY_Model {
     parent::__construct();
   }
 
+
 }

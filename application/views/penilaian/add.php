@@ -30,7 +30,6 @@
             </div>
         </div>	
 		
-
 		<form id="form" method="post">
 
 				<div class="form-group">
@@ -41,11 +40,11 @@
 
 						<select name="id_kelas" id="id_kelas" style="width: 100%;" required>
 
-							<option disabled="disabled" selected="selected">Pilih</option>
+							<option disabled="disabled" selected="selected" value="0">Pilih</option>
 
 								<?php foreach ($kelas as $rows): ?>
 
-								<option value="<?=$rows->id;?>"><?=$rows->nama.' ( '.$rows->nama_guru.' - '.$rows->nama_mapel.' )';?></option>
+								<option value="<?=$rows->id;?>"><?=$rows->nama;?></option>
 
 							<?php endforeach ?>
 
@@ -56,6 +55,33 @@
 					</div>
 
 				</div>
+
+			<div class="form-group">
+				<label for="nama-guru">Guru</label>
+				<div class="rs-select2 js-select-simple select--no-search">
+					<select name="id_guru" id="id_guru" style="width: 100%;" required>
+						<option disabled="disabled" selected="selected" value="0">Pilih</option>
+							<?php foreach ($guru as $rows): ?>
+								<?php if ($edit->id_guru == $rows->id): ?>
+									<option value="<?=$rows->id;?>" selected><?=$rows->nama;?></option>
+								<?php else: ?>
+									<option value="<?=$rows->id;?>"><?=$rows->nama;?></option>
+								<?php endif ?>
+						<?php endforeach ?>
+					</select>
+					<div class="select-dropdown"></div>
+				</div>				
+			</div>
+
+			<div class="form-group">
+				<label for="nama-guru">Mata Pelajaran</label>
+				<div class="rs-select2 js-select-simple select--no-search">
+					<select name="id_mapel" id="id_mapel" style="width: 100%;" required>
+						<option disabled="disabled" selected="selected">Pilih</option>
+					</select>
+					<div class="select-dropdown"></div>
+				</div>				
+			</div>
 
 				<div class="form-group">
 
@@ -80,10 +106,6 @@
 					</div>
 
 				</div>
-
-	
-
-
 
 			<div class="form-group">
 
@@ -170,72 +192,60 @@
 <script src="<?= base_url(); ?>assets/js/jquery/jquery-3.3.1.min.js"></script>
 
 <script type="text/javascript">
-
 	$(document).ready(function(){
-
-
-
-	})
-
-
-
-
-
-	$(document).on('submit','#form',function(event){
-
-		event.preventDefault();
-
-		var valid = false;
-
-		var error = 0;
-
-
-
-		if (error == 0) {
-
+		let self;
+		$('#id_guru').on('change', function(e) {
+			self = this;
 			$.ajax({
-
-				type : 'post',
-
-				url  : '<?=base_url('penilaian/insert');?>',
-
-				dataType : 'json',
-
-				data : $(this).serialize(),
-
-				success:function(response) {
-
-					if(response.status == 0){
-
-						alert(response.message);
-
-					}else{
-
-						// alert(response.message);
-
-						window.location = '<?=base_url('penilaian');?>'
-
-					}
-
+				type: 'post',
+				url: "<?= base_url('mapel/get_mapel_penilaian'); ?>",
+				data: {
+					id_kelas: $('#id_kelas').val(),
+					id_guru: $(self).val()
+				},
+				dataType: 'json',
+				success: function(res) {
+					$('#id_mapel').html(res.data);
 				}
+			});
+		});
 
-			})
+		$(document).on('submit','#form',function(event){
+			event.preventDefault();
 
-		}
+			if($('#id_kelas').val() == 0 || $('#id_kelas').val() == null) {
+				alert('Harap pilih kelas');
+				return false;
+			}
 
+			if($('#id_guru').val() == 0 || $('#id_guru').val() == null) {
+				alert('Harap pilih guru');
+				return false;
+			}
 
+			if($('#id_mapel').val() == 0 || $('#id_mapel').val() == null) {
+				alert('Harap pilih mapel');
+				return false;
+			}
 
-	})
+			var valid = false;
+			var error = 0;
 
+			if (error == 0) {
+				$.ajax({
+					type : 'post',
+					url  : '<?=base_url('penilaian/insert');?>',
+					dataType : 'json',
+					data : $(this).serialize(),
+					success:function(response) {
+						if(response.status == 0){
+							alert(response.message);
+						}else{
+							window.location = '<?=base_url('penilaian');?>'
+						}
+					}
+				});
+			}
+		});
+	});
 </script>
-
-
-
-
-
-
-
-
-
-
-

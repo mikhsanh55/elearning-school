@@ -172,7 +172,7 @@
         //form = JSON.stringify(form);
         var jml_soal = form.jml_soal;
         jml_soal = parseInt(jml_soal);
-
+        console.warn(f_asal.serialize());
         var hasil_jawaban = "";
 
         for (var i = 1; i < jml_soal; i++) {
