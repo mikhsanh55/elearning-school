@@ -17,6 +17,7 @@
 		<?php if(count($paginate['data']) > 0) { 
 			$i = 1;
 			foreach($paginate['data'] as $rows) :
+				$guru = $this->m_guru->get_by(['id' => $rows->id_guru]);
 		?>
 			<tr>
 				<td><?= $i++; ?></td>

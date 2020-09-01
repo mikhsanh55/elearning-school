@@ -356,8 +356,7 @@ class Materi extends MY_Controller
 
         if(isset($post['video']) && count($post['video']) > 0) {
             $this->m_materi_attach->delete([
-                'id_materi' => $post['imateri'], 
-                'type_file' => $post['type-video']
+                'id_materi' => $post['imateri']
             ]);
             $x = 1;
             $chunk = '';$modifiedUrl = '';

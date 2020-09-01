@@ -625,7 +625,7 @@ class Tugas extends MY_Controller {
 				$namafile = 'tugas-'.$nama.'-'.DATE('d-m-Y')."-".time().'-'.$i;
 
 				$config['upload_path']   = 'assets/tugas/attach_siswa/';
-				$config['allowed_types'] = 'pdf|pdfx|doc|docx|jpeg|jpg|png|zip|rar|ppt|pptx|xlsx|xls';
+				$config['allowed_types'] = 'pdf|pdfx|doc|docx|jpeg|jpg|png|zip|rar|xls|ppt|pptx|xlsx';
 				$config['max_size']      = 10240; // 10 MB
 				$config['file_name']     = $namafile;
 
@@ -644,7 +644,8 @@ class Tugas extends MY_Controller {
 					$json = [
 						'status' => 0,
 						'msg'    => 'Upload file gagal!',
-						'info' => $this->upload->display_errors()
+						'info' => $this->upload->display_errors(),
+						'files' => $_FILES['attach']
 					];
 					echo json_encode($json);
 					exit;
