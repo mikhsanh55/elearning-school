@@ -16,12 +16,12 @@ development_branch:
         - development
     script:
         - cd /var/www/html/globaltech-codeigniter
-        - git reset --hard
-        - git pull origin development
+        - sudo git reset --hard
+        - sudo git pull origin development
         - sudo rm /var/www/html/globaltech-codeigniter/application/config/database.php
-        - cp /var/www/html/globaltech-codeigniter/database/config1/database.php /var/www/html/globaltech-codeigniter/application/config/database.php
+        - sudo cp /var/www/html/globaltech-codeigniter/database/config1/database.php /var/www/html/globaltech-codeigniter/application/config/database.php
         - sudo rm /var/www/html/globaltech-codeigniter/application/config/config.php
-        - cp /var/www/html/globaltech-codeigniter/database/config1/config.php /var/www/html/globaltech-codeigniter/application/config/config.php
+        - sudo cp /var/www/html/globaltech-codeigniter/database/config1/config.php /var/www/html/globaltech-codeigniter/application/config/config.php
         
 production_icommits:
     stage: production_icommits
@@ -29,8 +29,8 @@ production_icommits:
         - production_icommits
     script:
         - cd /var/www/icommits/globaltech-codeigniter
-        - git reset --hard
-        - git pull origin production_icommits
+        - sudo git reset --hard
+        - sudo git pull origin production_icommits
         - sudo rm /var/www/icommits/globaltech-codeigniter/application/config/database.php
         - sudo cp /var/www/icommits/globaltech-codeigniter/database/config1/database1.php /var/www/icommits/globaltech-codeigniter/application/config/database.php
         - sudo rm /var/www/icommits/globaltech-codeigniter/application/config/config.php
@@ -42,8 +42,8 @@ production_sman21:
         - production_sman21bdg
     script:
         - cd /var/www/sman21bdg/globaltech-codeigniter
-        - git reset --hard
-        - git pull origin production_sman21bdg
+        - sudo git reset --hard
+        - sudo git pull origin production_sman21bdg
         - sudo rm /var/www/sman21bdg/globaltech-codeigniter/application/config/database.php
         - sudo cp /var/www/sman21bdg/globaltech-codeigniter/database/config1/database2.php /var/www/sman21bdg/globaltech-codeigniter/application/config/database.php
         - sudo rm /var/www/sman21bdg/globaltech-codeigniter/application/config/config.php
@@ -55,8 +55,8 @@ production_sman5:
         - production_sman5bdg
     script:
         - cd /var/www/sman5bdg/globaltech-codeigniter
-        - git reset --hard
-        - git pull origin production_sman5bdg
+        - sudo git reset --hard
+        - sudo git pull origin production_sman5bdg
         - sudo rm /var/www/sman5bdg/globaltech-codeigniter/application/config/database.php
         - sudo cp /var/www/sman5bdg/globaltech-codeigniter/database/config1/database3.php /var/www/sman5bdg/globaltech-codeigniter/application/config/database.php
         - sudo rm /var/www/sman5bdg/globaltech-codeigniter/application/config/config.php
