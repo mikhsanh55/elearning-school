@@ -25,6 +25,7 @@
 				
 			}else{
 				$status = '<button class="btn btn-danger btn-sm" data-id_tugas ="'.encrypt_url($id_tugas).'" data-id_siswa="'.encrypt_url($rows->id_peserta).'"><i class="fa fa-close"></i>Belum</button>';
+				$status .= '<button class="btn-ingatkan mt-2 btn btn-warning btn-sm" data-id_tugas="'.encrypt_url($id_tugas).'" data-siswa="'.encrypt_url($rows->id_peserta).'"><i class="fas fa-bell mr-2"></i>Ingatkan</button>';
 				$textNilai = NULL;
 			}
 		?>
@@ -49,5 +50,3 @@
 <tbody>
 </tbody>
 </table>
-
-

@@ -1,5 +1,3 @@
-
-
 <style type="text/css">
 	h1{
 		font-family: sans-serif;
@@ -74,7 +72,6 @@
 
 <div class="col-md-9 page-content">
 	<div class="inner-box">
-
 		<div id="accordion" class="panel-group">
 			<div class="row">
 				<div class="col-md-12">
@@ -111,7 +108,6 @@
 					<option value="50">50</option>
 					<option value="100">100</option>
 				</select>
-
 				<div id="content-view"></div>
 			</div>
 		</div>

@@ -581,7 +581,15 @@ class Tugas extends MY_Controller {
 		$where['detail_kls.id_peserta'] = $this->akun->id;
 
 		$paginate = $this->m_tugas->paginate_tugas($pg,$where,$limit);
-		
+		$now = date('Y-m-d H:i:s');
+		foreach($paginate['data'] as $i => $row) :
+			if($now <= $row->end_date) {
+				$paginate['data'][$i]->in_jadwal = TRUE;
+			}
+			else {
+				$paginate['data'][$i]->in_jadwal = FALSE;
+			}
+		endforeach;
 		$data['paginate'] = $paginate;
 		$data['paginate']['url']	= 'tugas/page_load_list_tugas';
 		$data['paginate']['search'] = 'lookup_key';
@@ -592,9 +600,7 @@ class Tugas extends MY_Controller {
 	}
 
 	public function lampiran_siswa($id=0){
-
 		$id = decrypt_url($id);
-
 
 		$data = array(
 			'detail' => $this->m_tugas->get_by(array('tgs.id'=>$id)),
@@ -603,6 +609,7 @@ class Tugas extends MY_Controller {
 			'color' => $this->color
 		);
 
+		// print_r($data['detail']);exit;
 		$this->render('tugas/lampiran_siswa',$data);
 	}
 
@@ -644,8 +651,7 @@ class Tugas extends MY_Controller {
 					$json = [
 						'status' => 0,
 						'msg'    => 'Upload file gagal!',
-						'info' => $this->upload->display_errors(),
-						'files' => $_FILES['attach']
+						'info' => $this->upload->display_errors()
 					];
 					echo json_encode($json);
 					exit;

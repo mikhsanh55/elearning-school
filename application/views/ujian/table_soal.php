@@ -6,35 +6,39 @@
 			<th class="frist">No</th>
 			<th>Gambar</th>
 			<th>Soal</th>
-			<!-- <th>Analisa</th> -->
-		
 		</tr>
 		<?php 
 			if (count($paginate['data']) > 0) {
 			$i= $page_start; foreach ($paginate['data'] as $rows):
 			$opsi_a = explode('#####', $rows->opsi_a);
 			$gambar_a = !empty($opsi_a[0]) ? $opsi_a[0] : NULL;
+			$mediaOpsiA = getMediaOpsiFile($gambar_a, $this->_fileOpsiPath);
 
 			$opsi_b = explode('#####', $rows->opsi_b);
 			$gambar_b = !empty($opsi_b[0]) ? $opsi_b[0] : NULL;
+			$mediaOpsiB = getMediaOpsiFile($gambar_b, $this->_fileOpsiPath);
 
 			$opsi_c = explode('#####', $rows->opsi_c);
 			$gambar_c = !empty($opsi_c[0]) ? $opsi_c[0] : NULL;
+			$mediaOpsiC = getMediaOpsiFile($gambar_c, $this->_fileOpsiPath);			
 
 			$opsi_d = explode('#####', $rows->opsi_d);
 			$gambar_d = !empty($opsi_d[0]) ? $opsi_d[0] : NULL;
+			$mediaOpsiD = getMediaOpsiFile($gambar_d, $this->_fileOpsiPath);
 
 			$opsi_e = explode('#####', $rows->opsi_e);
 			$gambar_e = !empty($opsi_e[0]) ? $opsi_e[0] : NULL;
+			$mediaOpsiE = getMediaOpsiFile($gambar_e, $this->_fileOpsiPath);
 
+			$mediaSoal = '';
 		?>
 			<tr>
 				<td><input type="checkbox" name="checklist[]" class="checklist" data-id= "<?=$rows->id;?>" value="<?=$rows->id;?>"></td>
 				<td align="center" class="frist"><?=$i;?></td>
 				<td>
-					<?php if(!empty($rows->file)) : ?>
-						<img src="<?= base_url('upload/file_ujian_soal/') . $rows->file; ?>" alt="" class="img-thumbnail" width="80" height="80">
-					<?php endif; ?>
+					<?php $mediaSoal = getMediaSoalFile($rows->file, $this->_fileSoalPath, $rows->tipe_file);
+						echo $mediaSoal;
+					?>
 				</td>
 				<td><?=$rows->soal;?></td>
 			</tr>
@@ -49,14 +53,14 @@
 								<li class="d-flex flex-row ">
 									<div>A. </div><?= end($opsi_a); ?>
 										<?php if(!is_null($gambar_a)) { ?> 
-											<img src="<?= base_url('upload/file_ujian_opsi/') . $gambar_a;?>" alt="" width="100" height="100">
+											<?= $mediaOpsiA; ?>
 										<?php } ?> 
 									 
 								</li>
 								<li class="d-flex flex-row ">
 									<div>B. </div><?= end($opsi_b); ?>
 										<?php if(!is_null($gambar_b)) { ?> 
-											<img src="<?= base_url('upload/file_ujian_opsi/') . $gambar_b;?>" alt="" width="100" height="100">
+											<?= $mediaOpsiB; ?>
 										<?php } ?> 
 									 
 								</li>
@@ -64,23 +68,22 @@
 								<li class="d-flex flex-row ">
 									<div>C. </div><?= end($opsi_c); ?>
 										<?php if(!is_null($gambar_c)) { ?> 
-											<img src="<?= base_url('upload/file_ujian_opsi/') . $gambar_c;?>" alt="" width="100" height="100">
+											<?= $mediaOpsiC; ?>
 										<?php } ?> 
 									 
 								</li>
 								<li class="d-flex flex-row ">
 									<div>D. </div><?= end($opsi_d); ?>
 										<?php if(!is_null($gambar_d)) { ?> 
-											<img src="<?= base_url('upload/file_ujian_opsi/') . $gambar_d;?>" alt="" width="100" height="100">
+											<?= $mediaOpsiD; ?>
 										<?php } ?> 
 									 
 								</li>
 								<li class="d-flex flex-row ">
 									<div>E. </div><?= end($opsi_e); ?>
 										<?php if(!is_null($gambar_e)) { ?> 
-											<img src="<?= base_url('upload/file_ujian_opsi/') . $gambar_e;?>" alt="" width="100" height="100">
+											<?= $mediaOpsiE; ?>
 										<?php } ?> 
-									 
 								</li>
 							</ul>
 						</div>
@@ -96,7 +99,5 @@
 	$('.btn-opsi').on('click', function(e) {
 		e.preventDefault();
 		$(this).find('i').toggleClass('fa-angle-double-right').toggleClass('fa-angle-double-down')
-	})
+	});
 </script>
-
-

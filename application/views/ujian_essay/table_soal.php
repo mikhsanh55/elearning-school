@@ -5,9 +5,7 @@
 			<th class="frist"><input type="checkbox" name="checkall" id="checkall"></th>
 			<th class="frist">No</th>
 			<th>Gambar</th>
-			<th>Soal</th>
-			<!-- <th>Analisa</th> -->
-		
+			<th>Soal</th>		
 		</tr>
 		<?php 
 			if (count($paginate['data']) > 0) {
@@ -19,7 +17,9 @@
 				<td align="center" class="frist"><?=$i;?></td>
 				<td>
 					<?php if(!empty($rows->file)) : ?>
-						<img src="<?= base_url('upload/file_ujian_soal_essay/') . $rows->file; ?>" alt="" class="img-thumbnail" width="80" height="80">
+						<?php $mediaSoal = getMediaSoalFile($rows->file, $this->_fileSoalPath, $rows->tipe_file);
+							echo $mediaSoal;
+						?>
 					<?php endif; ?>
 				</td>
 				<td><?=$rows->soal;?></td>

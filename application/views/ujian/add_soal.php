@@ -99,11 +99,13 @@
 						?>
 					</select>
 				</div>
-				<?php if($bobot->bobot === 1) : ?>
+				<?php if($bobot->bobot === 1) {?>
 				
 				<div class="col-md-12"><label>Bobot Nilai Soal</label></div>
 				<div class="col-md-5"><input type="text" name="bobot" class="form-control" required value="<?php echo $d['bobot']; ?>"></div>
-				<?php endif; ?>
+				<?php } else { ?>
+					<input type="hidden" name="bobot" value="1">
+				<?php } ?>
 			</div>
 			<div class="form-group" style="margin-top: 20px">
 				<div class="col-md-12">

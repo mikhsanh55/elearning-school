@@ -97,6 +97,11 @@ class MY_Controller extends CI_Controller
 	{
 		parent::__construct();
 		date_default_timezone_set('Asia/Jakarta');
+
+		if($this->session->userdata('admin_valid') == TRUE) {
+			// Create new table
+			$this->checkDBTables('tb_tugas_alert');
+		}
 		
 		$this->load->model('m_instansi');
 		$this->backButton = '<button class="btn btn-light text-right" onclick="history.back()">Kembali</button>';
@@ -279,8 +284,6 @@ class MY_Controller extends CI_Controller
 
 		$this->page_title = (!empty($this->sub_menu->nama_menu)) ? $this->sub_menu->nama_menu : NULL;
 		
-		// print_r($this->menu);exit;
-		
 	}
 
 	public function generateCSRFToken() {
@@ -442,7 +445,7 @@ class MY_Controller extends CI_Controller
 		$data['menu'] = $this->menu;
 
 		$data['header'] 	= $this->load->view('dashboard/template/header', $data, TRUE);
-		$data['navbar'] 	= $this->load->view('dashboard/content/navbar', $data, TRUE);
+		$data['navbar'] 	= $this->load->view('dashboard/template/navbar', $data, TRUE);
 		$data['content'] 	= $this->load->view($content, $data, TRUE);
 		$data['foot_new'] 	= $this->load->view('dashboard/foot_new', $data, TRUE);
 		$data['footer'] 	= $this->load->view('dashboard/template/footer', $data, TRUE);
@@ -574,18 +577,29 @@ class MY_Controller extends CI_Controller
 
 		return $page;
 	}
-	public function cek_aktif() {
-
+	public function cek_aktif() 
+	{
 		if ($this->session->userdata('admin_valid') == false && $this->session->userdata('admin_id') == "") {
-
 			redirect('login');
-
 		} 
-
 	}
 	
-	public function sendAjaxResponse($data, $responseCode = 200) {
+	public function sendAjaxResponse($data, $responseCode = 200) 
+	{
 		echo json_encode($data);
 		http_response_code($responseCode);
+	}
+
+	private function checkDBTables($tableName)
+	{
+		$this->db->query("
+			CREATE TABLE IF NOT EXISTS `" . $tableName . "`(
+				id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+				id_tugas INT(11) NOT NULL,
+				id_siswa INT(11) NOT NULL,
+				message TEXT,
+				create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
+			)
+		");
 	}
 }

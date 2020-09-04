@@ -12,10 +12,14 @@
 		</tr>
 		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows):
+
 			$count = $this->m_tugas_attach_siswa->count_by(array('id_tugas'=>$rows->id,'id_siswa'=>$this->akun->id));
-			if ($count > 0) {
+			if ($rows->in_jadwal == FALSE && $count < 1) { // Jika melebihi tanggal deadline
+				$status = '<button class="btn btn-dark btn-sm" disabled>Waktu Habis</button>';
+			}
+			else if ($count > 0) { // Jika sudah mengerjakan
 				$status = '<button class="btn btn-success btn-sm kirim-tugas" data-id_tugas="'.encrypt_url($rows->id).'"><i class="fa fa-check"></i> Sudah</button>';
-			}else{
+			}else if($count < 1 && $rows->in_jadwal == TRUE) { // Jika belum
 				$status = '<button class="btn btn-danger btn-sm kirim-tugas" data-id_tugas="'.encrypt_url($rows->id).'"> Kerjakan</button>';
 			}
 

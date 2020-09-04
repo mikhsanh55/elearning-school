@@ -139,12 +139,7 @@ class Materi extends MY_Controller
             'id_guru' => $id_guru,
             'id_kelas' => $id_kelas
         ];
-        // print_r($data);exit;
-        // print_r($this->m_mapel->get_by(['md5(id)' => $id_mapel]));exit;
-
         $this->render('materi/list', $data);
-      
-
     }
 
     public function page_load($pg = 1){

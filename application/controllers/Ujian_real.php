@@ -3,8 +3,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Ujian_real extends MY_Controller 
 {
+	/*
+	* path untuk file soal
+	*/
+	public $_fileSoalPath = 'upload/file_ujian_soal/';
 
-    function __construct() 
+	/*
+	* path untuk file opsi (a, b, c, d, e)
+	*/
+	public $_fileOpsiPath = 'upload/file_ujian_opsi/';
+
+    public function __construct() 
     {
         parent::__construct();
         $this->load->model('m_ujian');
@@ -19,6 +28,7 @@ class Ujian_real extends MY_Controller
 		$this->load->model('m_detail_mapel');
 		$this->load->model('m_kelas_ujian');
 		$this->load->model('m_kelas');
+		$this->load->model('m_jawaban_essay');
 
         $this->opsi = array("a","b","c","d","e");
         $this->jml_opsi = 5;
@@ -41,13 +51,7 @@ class Ujian_real extends MY_Controller
 
 	public function data_soal($id_ujian=null)
 	{
-
-
-
 		$url = base_url('ujian_real/form_soal/'.$id_ujian);
-
-
-
 		$data = array(
 
 			'searchFilter' => array('Mata Pelajaran','Guru'),
@@ -67,9 +71,6 @@ class Ujian_real extends MY_Controller
 
 	public function add()
 	{
-
-
-
 		$tipe_ujian = array('uts'=>'UTS','uas'=>'UAS', 'harian' => 'Ulangan Harian');
 
 		if($this->log_lvl == 'admin' || $this->log_lvl == 'instansi' || $this->log_lvl == 'admin_instansi') {
@@ -634,35 +635,32 @@ class Ujian_real extends MY_Controller
 	}
 
 	// Method untuk menyimpan soal di add soal dan edit soal
-	function simpan_soal(){
+	public function simpan_soal(){
 			$p = $this->input->post();
 			$pembuat_soal = ($this->log_lvl == "admin") ? $p['id_guru'] : $this->log_id;
 			$pembuat_soal_u = ($this->log_lvl == "admin") ? ", id_guru = '".$p['id_guru']."'" : "";
-
-			//etok2nya config
 			$folder_gb_soal = "./upload/file_ujian_soal/";
 			$folder_gb_opsi = "./upload/file_ujian_opsi/";
 			$buat_folder_gb_soal = !is_dir($folder_gb_soal) ? @mkdir("./upload/file_ujian_soal/") : false;
 			$buat_folder_gb_opsi = !is_dir($folder_gb_opsi) ? @mkdir("./upload/file_ujian_opsi/") : false;
-
-
-
-			$allowed_type 	= array("image/jpeg", "image/png", "image/gif", 
-
-			"audio/mpeg", "audio/mpg", "audio/mpeg3", "audio/mp3", "audio/x-wav", "audio/wave", "audio/wav",
-
-			"video/mp4", "application/octet-stream");
-			$maxSize = 3145728; // 3MB
-
-
-
+			$allowed_type = array(
+				"image/jpeg", 
+				"image/png", 
+				"image/gif", 
+				"audio/mpeg",
+				"audio/mpg",
+				"audio/mpeg3",
+				"audio/mp3",
+				"audio/x-wav",
+				"audio/wave",
+				"audio/wav",
+				"video/mp4",
+				"application/octet-stream"
+			);
+			$maxSize = 10145728; // 10MB
 			$gagal 		= array();
-
 			$nama_file 	= array();
-
 			$tipe_file 	= array();
-
-
 
 			//get mode
 			$__mode = $p['mode'];
@@ -706,21 +704,13 @@ class Ujian_real extends MY_Controller
 
 			//lakukan perulangan sejumlah file upload yang terdeteksi
 			foreach ($_FILES as $k => $v) {
-
-				//$k = nama field di form
-
 				$file_name 		= $_FILES[$k]['name'];
-
 				$file_type		= $_FILES[$k]['type'];
-
 				$file_tmp		= $_FILES[$k]['tmp_name'];
-
 				$file_error		= $_FILES[$k]['error'];
-
 				$file_size		= $_FILES[$k]['size'];
-
+				
 				//kode ref file upload jika error
-
 				$kode_file_error = array("File berhasil diupload", "Ukuran file terlalu besar", "Ukuran file terlalu besar", "File upload error", "Tidak ada file yang diupload", "File upload error");
 
 				if ($file_error != 0) {
@@ -738,6 +728,9 @@ class Ujian_real extends MY_Controller
 					$nama_file[$k]	= "";
 
 					$tipe_file[$k]	= "";
+					$this->session->set_flashdata("error", "File yang anda upload tidak diperbolehkan");
+					redirect('ujian_real/form_soal/' . encrypt_url($p['id_ujian']));
+					exit;
 
 				} else if ($file_name == "") {
 
@@ -749,67 +742,80 @@ class Ujian_real extends MY_Controller
 
 				} else if($file_size > $maxSize) {
 
-					$gagal[$k] = "Maksimal File yang diupload sebesar 3 MB";
-
+					$gagal[$k] = "Maksimal File yang diupload sebesar 10 MB";
 					$nama_file[$k]	= "";
+					$tipe_file[$k]	= "";									
 
-					$tipe_file[$k]	= "";										
+					$this->session->set_flashdata("error", "Ukuran file melebihi batas maksimal 10 MB");
+					redirect('ujian_real/form_soal/' . encrypt_url($p['id_ujian']));
+					exit;	
 
 				} else {
 
 					$ekstensi = explode(".", $file_name);
 					$file_name = $k."_".$__id_soal.".". end($ekstensi);
 					if ($k == "file_ujian_soal") {
-
 						@move_uploaded_file($file_tmp, $folder_gb_soal.$file_name);
-
+						// Hapus file sebelumnya jika ada
+						if($__mode == 'edit') {
+							$fileSoal = $this->m_soal_ujian->get_by([
+								'id' => $p['id'],
+								'id_ujian' => $p['id_ujian']
+							]);
+							if(file_exists( $this->_fileSoalPath . $fileSoal->file)){
+								unlink($this->_fileSoalPath . $fileSoal->file);
+							}
+						}
 					} else {
-
 						@move_uploaded_file($file_tmp, $folder_gb_opsi.$file_name);
+						// Hapus file sebelumnya jika ada
+						if($__mode == 'edit') {
+							$fileOpsi = $this->m_soal_ujian->get_by([
+								'id' => $p['id'],
+								'id_ujian' => $p['id_ujian']
+							]);
+							$fileOpsiName = '';
+							switch($k) {
+								case 'gja':
+									$fileOpsiName = explode('#####', $fileOpsi->opsi_a);
+								break;
+								case 'gjb':
+									$fileOpsiName = explode('#####', $fileOpsi->opsi_b);
+								break;
+								case 'gjc':
+									$fileOpsiName = explode('#####', $fileOpsi->opsi_c);
+								break;
+								case 'gjd':
+									$fileOpsiName = explode('#####', $fileOpsi->opsi_d);
+								break;
+								case 'gje':
+									$fileOpsiName = explode('#####', $fileOpsi->opsi_e);
+								break;
+							}
 
+							// Hapus file opsi
+							if( is_array($fileOpsiName) && file_exists($this->_fileOpsiPath . $fileOpsiName[0])) {
+								unlink($this->_fileOpsiPath . $fileOpsiName[0]);
+							}
+						}
 					}
-
-
-
 					$gagal[$k]	 	= $kode_file_error[$file_error]; //kode kegagalan upload file
-
 					$nama_file[$k]	= $file_name; //ambil nama file
-
 					$tipe_file[$k]	= $file_type; //ambil tipe file
-
 				}
-
 			}
 
-
-
-
-
 			//ambil data awal
-
 			$get_opsi_awal = $this->db->query("SELECT opsi_a, opsi_b, opsi_c, opsi_d, opsi_e FROM m_soal_ujian WHERE id = '".$__id_soal."'")->row_array();
-
-
-
 			$data_simpan = array();
-
-
 
 			if (!empty($nama_file['file_ujian_soal'])) {
 
 				$data_simpan = array(
-
-								"file"=>$nama_file['file_ujian_soal'],
-
-								"tipe_file"=>$tipe_file['file_ujian_soal'],
-
-								);
-
+					"file"=>$nama_file['file_ujian_soal'],
+					"tipe_file"=>$tipe_file['file_ujian_soal'],
+				);
 			}
-
-
-
-			
 			// Masukan data opsinya a, b, ... e ke data soal yang tadi sudah di insert
 			$a['huruf_opsi'] = array("a","b","c","d","e");
 
@@ -924,6 +930,7 @@ class Ujian_real extends MY_Controller
 		private function hapusHasilUjian($modelName, $idUjian) {
 			$checkExist = $modelName->get_many_by(['id_ujian' => $idUjian]);
 			if(!is_null($checkExist)) {
+
 				$delete = $modelName->delete(['id_ujian' => $idUjian]);
 				return $delete;
 			}
@@ -950,6 +957,21 @@ class Ujian_real extends MY_Controller
 			$delLogPg = $this->db->where(['id_ujian' => $post['id']])->delete('tb_ikut_ujian_pertama');
 			$delLogEssay = $this->db->where(['id_ujian' => $post['id']])->delete('tb_ikut_ujian_essay_pertama');
 
+			// Hapus data jawaban essay + file yang siswa upload
+			$dataJawabanSiswa = $this->m_jawaban_essay->get_many_by([
+				'id_ujian' => $post['id']
+			]);
+			if(count($dataJawabanSiswa) > 0) {
+				foreach($dataJawabanSiswa as $jawaban):
+					if( !is_null($jawaban->file) && file_exists('upload/file_jawaban_essay/' . $jawaban->file)) {
+						unlink('upload/file_jawaban_essay/' . $jawaban->file);
+					}
+				endforeach;
+			}
+			$delJawabanSiswa = $this->m_jawaban_essay->delete([
+				'id_ujian' => $post['id']
+			]);
+
 			if ($this->db->trans_status() === FALSE) {
 				$this->db->trans_rollback();
 			}
@@ -957,7 +979,7 @@ class Ujian_real extends MY_Controller
 				$this->db->trans_commit();
 			}
 
-			if($updateUjian && $delHasilPg && $delHasilEssay && $delLogPg && $delLogEssay) {
+			if($updateUjian && $delHasilPg && $delHasilEssay && $delLogPg && $delLogEssay && $delJawabanSiswa) {
 				$this->sendAjaxResponse([
 					'status' => TRUE,
 					'msg' => 'Data ujian berhasil di reset'
@@ -1198,52 +1220,24 @@ class Ujian_real extends MY_Controller
 
 
 		public function ikut_ujian($id_ujian){
-
-
-
 			$id_ujian = decrypt_url($id_ujian);
 
-
-
 			if ($this->session->userdata('selesai_ujian') == 1) {
-
 				$cek = $this->db->query("
-
 					SELECT
-
 					count(ujian.id) as jmlh,
-
 					tes.id_mapel
-
 					FROM
-
 					tb_ikut_ujian ujian
-
 					INNER JOIN tb_ujian tes ON tes.id = ujian.id_ujian 
-
-					WHERE id_ujian = '$id_ujian' AND id_user = '".$this->akun->id."'
-
-					")->row();
-
-
-
+					WHERE id_ujian = '$id_ujian' AND id_user = '".$this->akun->id."'")->row();
 				redirect('ujian_real/ikuti_ujian/'.md5($cek->id_mapel));
-
 				exit;
-
 			}
-
-			
-
-			header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-
-			header("Cache-Control: post-check=0, pre-check=0", false);
-
-			header("Pragma: no-cache");
-
-			
-
 	
+			header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+			header("Cache-Control: post-check=0, pre-check=0", false);
+			header("Pragma: no-cache");
 
 			$cek_sdh_selesai = $this->m_ikut_ujian->count_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id,'status'=>'N']);
 
@@ -1405,35 +1399,13 @@ class Ujian_real extends MY_Controller
 							'banyak'	 	=> 1, 
 
 						);
-
-
-				
 						$this->m_ikut_ujian->insert($insert_data);
-
-						
-
-						
-
 					}
-
-
-
-
-
-					
-
 					$cek_ujian_pertama = $this->db->select("count(*) as total")
-
 												  ->from('tb_ikut_ujian_pertama')
-
 												  ->where(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id])
-
 												  ->get()
-
 												  ->row();
-					// print_r($list_id_soal);exit;	
-
-
 
 					if($cek_ujian_pertama->total < 1) {
 						$data = [
@@ -1446,112 +1418,63 @@ class Ujian_real extends MY_Controller
 					}
 
 					$detil_tes = $this->db->query("SELECT * FROM tb_ikut_ujian WHERE status = 'Y' AND id_ujian = '$id_ujian' AND id_user = '".$this->akun->id."'")->row();
-					// print_r($detil_tes->list_jawaban);exit;	
-	
-
-	
-
-					//echo $this->db->last_query();exit;
-
-
-
 					$soal_urut_ok= $soal_urut_ok;
-
 				} else {
 
 					$q_ambil_soal = $this->m_ikut_ujian->get_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
-
 					$urut_soal 		= explode(",", $q_ambil_soal->list_jawaban);
-
 					$soal_urut_ok	= array();
-
 					for ($i = 0; $i < sizeof($urut_soal); $i++) {
-
 						$pc_urut_soal = explode(":",$urut_soal[$i]);
-
 						$pc_urut_soal1 = empty($pc_urut_soal[1]) ? "''" : "'".$pc_urut_soal[1]."'";
-
 						$ambil_soal = $this->db->query("SELECT *, $pc_urut_soal1 AS jawaban FROM m_soal_ujian WHERE id = '".$pc_urut_soal[0]."'")->row();
-
 						$soal_urut_ok[] = $ambil_soal; 
-
 					}
 
 					$detil_tes = $q_ambil_soal;
-
 					$soal_urut_ok = $soal_urut_ok;
-
 				}
-				$pc_list_jawaban = explode(",", $detil_tes->list_jawaban);
 
+				$pc_list_jawaban = explode(",", $detil_tes->list_jawaban);
 				$arr_jawab = array();
 				// PENYEBAB UTAMA ERROR
 				foreach ($pc_list_jawaban as $v) {
-
 				  $pc_v = explode(":", $v);
-
 				  $idx = $pc_v[0];
-
 				  $val = $pc_v[1];
-
 				  $rg = $pc_v[2];
-
 				  $arr_jawab[$idx] = array("j"=>$val,"r"=>$rg);
-
 				}
 
-
-
-		
-
-
-
 				$html = '';
-
-				$no = 1;
-
-			
-
+				$no = 1;	
+				$imageExtensions = ['image/png', 'image/jpeg', 'image/gif'];
 				if (!empty($soal_urut_ok)) {
-
-					
-
 				    foreach ($soal_urut_ok as $d) { 
+				    	 // $d->id;
+				    	// Menentukan nama kelas yang nantinya akan dijadikan event JS ketika klik gambar
+				    	if(in_array($d->tipe_file, $imageExtensions)) {
+				    		$classFile = 'img-ujian';
+				    	}
+				    	else {
+				    		$classFile = '';
+				    	}
 
-				    	 $d->id;
-
-				        $tampil_media = tampil_media("upload/file_ujian_soal/".$d->file, '250px','auto');
-
+				        $mediaSoalUjian = getMediaSoalFile($d->file, $this->_fileSoalPath, $d->tipe_file, $classFile, 150, 300);
 				        $vrg = $arr_jawab[$d->id]["r"] == "" ? "N" : $arr_jawab[$d->id]["r"];
-
-
-
 				        $html .= '<input type="hidden" name="id_soal_'.$no.'" value="'.$d->id.'">';
-
 				        $html .= '<input type="hidden" name="rg_'.$no.'" id="rg_'.$no.'" value="'.$vrg.'">';
-
 				        $html .= '<div class="step" id="widget_'.$no.'">';
-
-				        $html .= $d->soal.'<br>'.$tampil_media.'<div class="funkyradio">';
-
-
-
+				        $html .= $d->soal.'<br>'.$mediaSoalUjian.'<div class="funkyradio">';
 				        for ($j = 0; $j < $this->jml_opsi; $j++) {
-
 				            $opsi = "opsi_".$this->opsi[$j];
-
 				            $checked = $arr_jawab[$d->id]["j"] == strtoupper($this->opsi[$j]) ? "checked" : "";
-
-				            $pc_pilihan_opsi = explode("#####", $d->$opsi);
-				            
+				            $pc_pilihan_opsi = explode("#####", $d->$opsi);           
 				            $gambar = !is_null($pc_pilihan_opsi[0]) ? base_url('upload/file_ujian_opsi/') . $pc_pilihan_opsi[0] : NULL;
-				            $tampil_media_opsi = (is_file('upload/file_ujian_opsi/'.$pc_pilihan_opsi[0]) || $pc_pilihan_opsi[0] != "") ? tampil_media('upload/file_ujian_opsi/'.$pc_pilihan_opsi[0],'250px','auto') : '';
-				            
+				            $tampil_media_opsi = (is_file('upload/file_ujian_opsi/'.$pc_pilihan_opsi[0]) || $pc_pilihan_opsi[0] != "") ? getMediaOpsiFile($pc_pilihan_opsi[0], $this->_fileOpsiPath)  : '';
 					    	$pilihan_opsi = empty($pc_pilihan_opsi[1]) ? "-" : $pc_pilihan_opsi[1];
 				            $html .= '<div class="funkyradio-success" onclick="return simpan_sementara_ujian();">
-
 				                <input type="radio" id="opsi_'.strtoupper($this->opsi[$j]).'_'.$d->id.'" name="opsi_'.$no.'" value="'.strtoupper($this->opsi[$j]).'" '.$checked.'> <label for="opsi_'.strtoupper($this->opsi[$j]).'_'.$d->id.'"><div class="huruf_opsi">'.$this->opsi[$j].'</div> <p>'.$pilihan_opsi.'</p><p>'.$tampil_media_opsi.'</p></label></div>';
-
 				        }
 
 				        $html .= '</div></div>';
