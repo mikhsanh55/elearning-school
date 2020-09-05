@@ -120,6 +120,14 @@
       #profile-wrapper .profile-title, .p-title {
         font-family: "Roboto Condensed", Helvetica, Arial, sans-serif;
       }
+      .notif-number {
+        position: absolute;
+        top:5px;
+        right:5px;
+      }
+      .notif-menu {
+        display: block;
+      }
       </style>
       <!-- styles needed for carousel slider -->
       <link href="<?= base_url(); ?>assets/plugins/owl-carousel/owl.carousel.css" rel="stylesheet">
@@ -196,6 +204,18 @@
                     load_notif();
                 }, 5000); // refresh setiap 10000 milliseconds
             });
+
+            function checkNotifTugas() {
+              $.ajax({
+                type: 'get',
+                url: "<?= base_url('tugas/get-message-by-siswa'); ?>",
+                dataType: 'json',
+                success: function(res)  {
+                  $('#notif-list').append(html);            
+                }
+              });
+            }
+
             function CheckingSeassion() {
                 $.ajax({
                     type: "POST",
@@ -238,29 +258,7 @@
                     dataType: "json",
                     success: function (response) {
                         $('.notif-number').text(response.notifNumber);
-                        var html = '';
-                        $.each(response.data, function(i, item) {
-                       
-                      html += `
-                            <li class="notification-box `+item.bg+` ">
-                                    <div class="row">
-                                      <div class="col-lg-3 col-sm-3 col-3 text-center">
-                                        <img src="<?=base_url('assets/ico/info.png');?>" class="w-50 rounded-circle">
-                                    </div>    
-                                    <div class="col-lg-8 col-sm-8 col-8">
-                                        <strong class="text-info">`+item.nama_pengirim+ ` - </strong>
-                                        <strong class="text-danger text-right">`+item.sender+`</strong>
-                                        <div>
-                                         <a class="link-diskusi" href="`+item.url+`">`+item.keterangan+`</a>
-                                     </div>
-                                     <small class="text-warning"><span id="notif-date"></span></small>
-                                 </div>    
-                             </div>
-                         </li>
-                        `;
-                         });
-
-                        $('#notif-list').html(html);
+                        $('#notif-list').html(response.html);
                     },
                     failure: function (msg) {
                         alert(msg);
