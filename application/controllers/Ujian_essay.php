@@ -1286,7 +1286,8 @@ class Ujian_essay extends MY_Controller {
             if(!$this->upload->do_upload('file')) {
             	$this->sendAjaxResponse([
             		'status' => FALSE,
-            		'msg' => 'Upload file gagal'
+            		'msg' => 'Upload file gagal',
+            		'info' => $this->upload->display_errors()
             	], 500);
             	exit;
             }
