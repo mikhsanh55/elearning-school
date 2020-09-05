@@ -560,6 +560,7 @@ class Tugas extends MY_Controller {
 	}
 
 	public function page_load_list_tugas($pg = 1){
+		$this->load->model('m_tugas_alert');
 		$post = $this->input->post();
 		$limit = $post['limit'];
 		$where = [];
@@ -806,6 +807,185 @@ class Tugas extends MY_Controller {
 
 		$this->load->view('tugas/table_detail_nilai',$data);
 		$this->generate_page($data);
+	}
+
+	public function updateStatusAlert()
+	{
+		$this->load->model('m_tugas_alert');
+		$post = $this->input->post();
+		$idSiswa = decrypt_url($post['idSiswa']);
+		
+		$where['id_siswa'] = $idSiswa;
+		if(!is_null($post['idTugas'])) {
+			$where['id_tugas'] = decrypt_url($post['idTugas']);
+		}
+
+		$update = $this->m_tugas_alert->update([
+			'status' => '1'
+		], $where);
+
+		if($update) {
+			$this->sendAjaxResponse([
+				'status' => TRUE,
+				'msg' => 'Status pesan berhasil diupdate'
+			]);
+		}
+		else {
+			$this->sendAjaxResponse([
+				'status' => FALSE,
+				'msg' => 'Status pesan gagal diupdate'
+			], 500);	
+		}
+	}
+
+	/*
+	* Method untk get list pesan guru untuk mengingatkan siswa 
+	* dalam pengerjaan tugas
+	* @return json
+	*/
+	public function getListAlert()
+	{
+		$this->load->model('m_tugas_alert');
+		$post = $this->input->post();
+		$idSiswa = decrypt_url($post['idSiswa']);
+		$idTugas = decrypt_url($post['idTugas']);
+		$html = '';
+		$iconClass = 'text-secondary';
+
+		// Seminggu
+		$where['id_siswa'] = $idSiswa;
+		$where['id_tugas'] = $idTugas;
+		$now = date('Y-m-d');
+		$nowPlus7day = date('Y-m-d', strtotime($now . "+7 day"));
+		$where["create_at BETWEEN '" . $now . "' AND '" . $nowPlus7day . "'"] = NULL;
+
+		$listChat = $this->m_tugas_alert->get_many_by($where);
+		$dataSiswa = $this->m_detail_kelas->get_siswa([
+			'sis.id' => $idSiswa
+		]);
+
+		if(count($listChat) > 0) {
+			foreach($listChat as $chat) :
+				$date = date('d-m-Y H:i', strtotime($chat->create_at));
+				if($chat->status == 0 || $chat->status == NULL) {
+					$iconClass = 'text-secondary';
+				}
+				else {
+					$iconClass = 'text-primary';	
+				}
+
+				// Chek login, jika guru, berkan akses hapus pesan
+				if($this->log_lvl == 'siswa') {
+					$htmlHapusPesan = '';
+				}
+				else {
+					$htmlHapusPesan = '
+						<p style="padding:0;margin:0;">
+        					<small>
+        						<a href="#" class="text-danger hapus-pesan-alert" data-id="'.$chat->id.'" data-siswa="'.encrypt_url($chat->id_siswa).'" data-tugas="'.encrypt_url($chat->id_tugas).'" onclick="deleteAlertMessage(this, event)">Hapus pesan
+        						</a>
+        					</small>
+        				</p>';
+				}
+
+				$html .= '<div class="bg-light chat-square mb-3">
+		        			<p>
+		        				'.$chat->message.'
+		        			</p>
+		        			<div style="padding:0;margin:0;" class="d-flex justify-content-between">
+		        				<p style="padding:0;margin:0;">
+			        				<i class="fas fa-check '.$iconClass.'"></i>
+			        				<small class="ml-2">'.$date.'</small>
+		        				</p>
+		        				'.$htmlHapusPesan.'	
+		        			</div>
+		        		</div>';
+		    endforeach;
+		}
+		else {
+			$html .= '<div class="mt-4 mb-4></div>';
+		}
+
+		$returnData = [
+			'status' => TRUE,
+			'html' => $html,
+			'siswa' => $dataSiswa
+		];
+
+		// Send data guru pengirim
+		if($this->log_lvl == 'siswa') {
+			$this->load->model('m_guru');
+			$detailTugas = $this->m_tugas->get_by(['tgs.id' => $idTugas]);
+			$mapel = $this->m_mapel->get_by(['id' => $detailTugas->id_mapel]);
+			$guru = $this->m_guru->get_by(['id' => $detailTugas->id_guru]);
+
+			$returnData['mapel'] = !empty($mapel) ? $mapel->nama : 'Kosong';
+			$returnData['guru'] = !empty($guru) ? $guru->nama : 'Kosong';
+		}
+
+		$this->sendAjaxResponse($returnData);
+	}
+
+	public function deleteAlertMessage()
+	{
+		$this->load->model('m_tugas_alert');
+		$post = $this->input->post();
+
+		$delete = $this->m_tugas_alert->delete([
+			'id' => $post['id']
+		]);
+
+		if($delete) {
+			$this->sendAjaxResponse([
+				'status' => TRUE,
+				'msg' => 'Pesan berhasil dihapus'
+			]);
+		}
+		else {
+			$this->sendAjaxResponse([
+				'status' => FALSE,
+				'msg' => 'Pesan gagal dihapus'
+			], 500);
+		}	
+	}
+
+	public function sendAlertMessage()
+	{
+		$this->load->model('m_detail_kelas');
+		$this->load->model('m_tugas_alert');
+
+		$post = $this->input->post();
+
+		$idSiswa = decrypt_url($post['siswa']);
+		$idTugas = decrypt_url($post['tugas']);
+
+		if(strlen(trim($post['message'])) < 1) {
+			$this->sendAjaxResponse([
+				'status' => FALSE,
+				'msg' => 'Pesan tidak boleh kosong'
+			], 500);	
+			exit;
+		}
+
+		$insert = $this->m_tugas_alert->insert([
+			'id_tugas' => $idTugas,
+			'id_siswa' => $idSiswa,
+			'message' => trim($post['message']),
+			'status' => 0
+		]);
+
+		if($insert) {
+			$this->sendAjaxResponse([
+				'status' => TRUE,
+				'msg' => 'Pesan berhasil terkirim ke siswa'
+			], 200);
+		}
+		else {
+			$this->sendAjaxResponse([
+				'status' => FALSE,
+				'msg' => 'Pesan gagal terkirim ke siswa'
+			], 500);	
+		}
 	}
 }
 

@@ -597,7 +597,8 @@ class MY_Controller extends CI_Controller
 				id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 				id_tugas INT(11) NOT NULL,
 				id_siswa INT(11) NOT NULL,
-				message TEXT,
+				message TEXT NOT NULL,
+				status ENUM('0','1') NOT NULL,
 				create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
 			)
 		");

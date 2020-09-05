@@ -75,6 +75,16 @@
     	});
     }
 
+    $('.btn-notif').click(function(e) {
+    	e.preventDefault();
+    	// JIka siswa ketika melihat notif, maka status dari notif itu diupdate dari belum terbaca => terbaca
+    	$('.notif-menu').toggleClass('d-none');
+    	setTimeout(() => {
+    		$('.notif-number').text(0);
+    		$('.notif-number').addClass('d-none');
+    	}, 3000);
+    });
+
 	$('.loading').hide();
 	// Event for Sub Menu
 	$('.parent-menu-link').click(function(e) {

@@ -54,10 +54,10 @@
                     <?php if ($this->log_lvl == 'siswa' || $this->log_lvl == 'guru'): ?>                        
                         <ul class="nav nav-pills mr-auto justify-content-end">
                             <li class="nav-item dropdown">
-                                <a class="nav-link text-blue" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="far fa-comments fa-2x"></i><span class="badge badge-danger notif-number"></span>
+                                <a class="nav-link text-blue btn-notif" href="#" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false" style="position: relative;">
+                                    <i class="fas fa-bell fa-2x text-secondary"></i><span class="badge badge-danger notif-number"></span>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-custom scrollable-menu" role="menu">
+                                <ul class="dropdown-menu dropdown-menu-custom scrollable-menu notif-menu d-none" role="menu">
                                     <li class="head text-white bg-dark">
                                         <div class="row">
                                             <div class="col-lg-12 col-sm-12 col-12">
