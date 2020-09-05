@@ -34,19 +34,20 @@
 					$status .= '<button class="btn btn-primary btn-sm lihat-pesan-alert btn-block" data-id_tugas="'.encrypt_url($rows->id).'">Ada Pesan</button>';
 				}
 			}
+			else if($count > 0 && $rows->in_jadwal == FALSE) {
+				$status = '<button class="btn btn-block btn-dark btn-sm" disabled>Sudah, terlambat</button>';
+			}
 			else if ($count > 0) { // Jika sudah mengerjakan
 				$status = '<button class="btn btn-success btn-sm kirim-tugas btn-block" data-id_tugas="'.encrypt_url($rows->id).'"><i class="fa fa-check"></i> Sudah</button>';
-			}else if($count < 1 && $rows->in_jadwal == TRUE) { // Jika belum
+			}
+			else if($count < 1 && $rows->in_jadwal == TRUE) { // Jika belum
 				$status = '<button class="btn btn-primary btn-sm kirim-tugas btn-block" data-id_tugas="'.encrypt_url($rows->id).'"> Kerjakan</button>';
 
 				if($checkPesan > 0) {
 					$status .= '<button class="btn btn-primary btn-sm lihat-pesan-alert btn-block" data-id_tugas="'.encrypt_url($rows->id).'">Ada Pesan</button>';
 				}
 			}
-			else if($count > 0 && $rows->in_jadwal == FALSE) {
-				$status = '<button class="btn btn-block btn-dark btn-sm" disabled>Sudah, terlambat</button>';
-			}
-
+			
 			if (!empty($rows->end_date) && $rows->end_date != '0000-00-00 00:00:00') {
 				$datetime1 = explode(' ', $rows->end_date);
 				$date = longdate_indo($datetime1[0]).' Pukul '.$time = time_short($datetime1[1]);

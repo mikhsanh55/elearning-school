@@ -624,9 +624,7 @@ class Tugas extends MY_Controller {
 
 		if(!empty($qty_attach[0])) {
 
-
-			for($i=0; $i < count($qty_attach); $i++)
-			{           
+			for($i=0; $i < count($qty_attach); $i++) {           
 				$nama = $this->akun->nama;
 				$nama = str_replace('.', '_', $nama);
 				$nama = str_replace('', '_', $nama);
@@ -671,6 +669,11 @@ class Tugas extends MY_Controller {
 
 			$this->db->insert_batch('tb_tugas_attachment_siswa',$attach);
 		}
+
+		// Update status notif
+		$this->m_tugas_alert->update([
+			'status' => '1'
+		], ['id_tugas' => $post['id_tugas']]);
 
 		$this->db->trans_complete();
 		// $this->updateActiveUser($this->log_lvl, 'active_tugas');

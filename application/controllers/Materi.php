@@ -1690,7 +1690,7 @@ class Materi extends MY_Controller
             // Get pesan yang belum dibaca dari tugas
             $where = [];
             $where['id_siswa'] = $this->akun->id;
-            $where['status'] = '0';
+            $where['status <>'] = '1';
 
             // Set notif pesan yang belum dibaca selama seminggu saja
             $now = date('Y-m-d');
