@@ -386,6 +386,7 @@ class Tugas extends MY_Controller {
 
 		$kirim = $this->db->where_in('id',$where)->delete('tb_tugas');
 		$kirim = $this->db->where_in('id_tugas',$where)->delete('tb_tugas_attachment');
+		$kirim = $this->db->where_in('id_tugas', $where)->delete('tb_tugas_alert');
 
 		if ($this->db->trans_status() === FALSE)
 		{
