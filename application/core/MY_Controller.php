@@ -97,6 +97,14 @@ class MY_Controller extends CI_Controller
 	{
 		parent::__construct();
 		date_default_timezone_set('Asia/Jakarta');
+		$this->load->dbforge();
+
+		// Add fields
+		$newFields = [
+			'file' => ['type' => 'VARCHAR(100)', 'after' => 'id_soal'],
+			'file_type' => ['type' => 'VARCHAR(50)']
+		];
+		$this->dbforge->add_column('tb_jawaban_essay', $newFields);
 
 		if($this->session->userdata('admin_valid') == TRUE) {
 			// Create new table
@@ -106,10 +114,6 @@ class MY_Controller extends CI_Controller
 		if(!is_dir('./upload/file_jawaban_essay/')) {
 			mkdir('./upload/file_jawaban_essay/');
 		}
-
-		$this->db->query('ALTER TABLE tb_jawaban_essay 
-			ADD'.' '.'VARCHAR(50) AFTER file_type'
-		);
 		
 		$this->load->model('m_instansi');
 		$this->backButton = '<button class="btn btn-light text-right" onclick="history.back()">Kembali</button>';
