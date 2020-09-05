@@ -106,6 +106,9 @@ class MY_Controller extends CI_Controller
 		if(!is_dir('./upload/file_jawaban_essay/')) {
 			mkdir('./upload/file_jawaban_essay/');
 		}
+
+		$this->db->query("ALTER TABLE tb_jawaban_essay ADD file_type VARCHAR(100) AFTER id_soal,
+ADD VARCHAR(50)");
 		
 		$this->load->model('m_instansi');
 		$this->backButton = '<button class="btn btn-light text-right" onclick="history.back()">Kembali</button>';
