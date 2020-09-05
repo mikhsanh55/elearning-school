@@ -107,8 +107,8 @@ class MY_Controller extends CI_Controller
 			mkdir('./upload/file_jawaban_essay/');
 		}
 
-		$this->db->query("ALTER TABLE tb_jawaban_essay 
-			ADD VARCHAR(50) AFTER file_type"
+		$this->db->query('ALTER TABLE tb_jawaban_essay 
+			ADD'.' '.'VARCHAR(50) AFTER file_type'
 		);
 		
 		$this->load->model('m_instansi');
