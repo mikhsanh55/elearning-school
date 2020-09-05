@@ -1,5 +1,3 @@
-
-
 <style type="text/css">
   h1{
     font-family: sans-serif;
@@ -71,13 +69,8 @@
   }
 
 </style>
-  <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/font-awesome/css/font-awesome.min.css'; ?>">
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/plugins/fullcalendar/fullcalendar.css'; ?>">
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css'; ?>">
-<style type="text/css">
-   
-</style>
-
+<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/plugins/fullcalendar/fullcalendar.css'; ?>">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url().'assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css'; ?>"> -->
 <div class="col-md-9 page-content">
     <div class="inner-box">
       <br>
@@ -219,8 +212,6 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="head">Jadwal Kegiatan</h5>
-          
-        </button>
       </div>
       <div class="modal-body">
         <p id="detail-kalendar">Modal body text goes here</p>

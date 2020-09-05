@@ -5,10 +5,7 @@
 	<div class="footer-content">
 		<div class="container">
 			<div class="row">
-
-
 				<div style="clear: both"></div>
-
 				<div class="col-xl-12">
 
 					<div class="copy-info text-center">

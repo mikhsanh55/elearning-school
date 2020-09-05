@@ -6,7 +6,10 @@
 
 class Ujian_essay extends MY_Controller {
 
-    function __construct() {
+	public $_fileSoalPath = 'upload/file_ujian_soal_essay/';
+	public $_fileJawabanPath = 'upload/file_jawaban_essay/';
+
+    public function __construct() {
 
         parent::__construct();
 
@@ -560,10 +563,6 @@ class Ujian_essay extends MY_Controller {
 
 		}
 
-
-
-		
-
 		$where['id_ujian'] = $post['id_ujian'];
 
 		$where['status'] = 'N';
@@ -626,274 +625,163 @@ class Ujian_essay extends MY_Controller {
 
 
 
-	function simpan_soal(){
+	public function simpan_soal(){
+		$p = $this->input->post();
+		$pembuat_soal = ($this->log_lvl == "admin") ? $p['id_guru'] : $this->log_id;
+		$pembuat_soal_u = ($this->log_lvl == "admin") ? ", id_guru = '".$p['id_guru']."'" : "";
+		$buat_folder_gb_soal = !is_dir($this->_fileSoalPath) ? @mkdir("./upload/file_ujian_soal_essay/") : false;
+		$allowed_type = array(
+			"image/jpeg",
+			"image/png",
+			"image/gif",
+			"audio/mpeg",
+			"audio/mpg",
+			"audio/mpeg3", 
+			"audio/mp3", 
+			"audio/x-wav", 
+			"audio/wave", 
+			"audio/wav",
+			"video/mp4", 
+			"application/octet-stream"
+		);
+		$maxSize = 10145728; // 10MB
+		$gagal 		= array();
+		$nama_file 	= array();
+		$tipe_file 	= array();
 
+		//get mode ( Insert or Update)
+		$__mode = $p['mode'];
+		$__id_soal = 0;
 
+		//ambil data post sementara
+		$pdata = array(
+			"bobot"=>$p['bobot'],
+			"soal"=>$p['soal'],
+			'id_ujian' => $p['id_ujian']
+		);
 
-			$p = $this->input->post();
+		if($p['bobot'] != NULL) {
+			$pdata['bobot'] = $p['bobot'];
+		}
 
-			$pembuat_soal = ($this->log_lvl == "admin") ? $p['id_guru'] : $this->log_id;
+		if ($__mode == "edit") {
+			$this->db->where("id", $p['id']);
+			$this->db->update("m_soal_ujian_essay", $pdata);
+			$__id_soal = $p['id'];
+		} else {
+			$insert = $this->db->insert("m_soal_ujian_essay", $pdata);
+			$__id_soal = $this->db->insert_id();
+		}
 
-			$pembuat_soal_u = ($this->log_lvl == "admin") ? ", id_guru = '".$p['id_guru']."'" : "";
+		//lakukan perulangan sejumlah file upload yang terdeteksi
+		foreach ($_FILES as $k => $v) {
+			//var file upload
+			//$k = nama field di form
+			$file_name 		= $_FILES[$k]['name'];
+			$file_type		= $_FILES[$k]['type'];
+			$file_tmp		= $_FILES[$k]['tmp_name'];
+			$file_error		= $_FILES[$k]['error'];
+			$file_size		= $_FILES[$k]['size'];
 
-			//etok2nya config
-
-			$folder_gb_soal = "./upload/file_ujian_soal_essay/";
-
-
-			$buat_folder_gb_soal = !is_dir($folder_gb_soal) ? @mkdir("./upload/file_ujian_soal_essay/") : false;
-
-
-
-			$allowed_type 	= array(
-				
-				"image/jpeg",
-				"image/png",
-				"image/gif",
-				"audio/mpeg",
-				"audio/mpg",
-				"audio/mpeg3", "audio/mp3", "audio/x-wav", "audio/wave", "audio/wav","video/mp4", "application/octet-stream");
-
-
-
-			$gagal 		= array();
-
-			$nama_file 	= array();
-
-			$tipe_file 	= array();
-
-
-
-			//get mode
-
-			$__mode = $p['mode'];
-
-			$__id_soal = 0;
-
-			//ambil data post sementara
-
-			$pdata = array(
-
-				"bobot"=>$p['bobot'],
-
-				"soal"=>$p['soal'],
-
-				'id_ujian' => $p['id_ujian']
-
+			//kode ref file upload jika error
+			$kode_file_error = array(
+				"File berhasil diupload",
+				"Ukuran file terlalu besar",
+				"Ukuran file terlalu besar",
+				"File upload error",
+				"Tidak ada file yang diupload",
+				"File upload error"
 			);
-
-
-
-			if ($__mode == "edit") {
-
-				$this->db->where("id", $p['id']);
-
-				$this->db->update("m_soal_ujian_essay", $pdata);
-
-				$__id_soal = $p['id'];
-
+		
+			if ($file_error != 0) {
+				$gagal[$k] = $kode_file_error[$file_error];
+				$nama_file[$k]	= "";
+				$tipe_file[$k]	= "";
+			} else if (!in_array($file_type, $allowed_type)) {
+				$gagal[$k] = "Tipe file ini tidak diperbolehkan..";
+				$nama_file[$k]	= "";
+				$tipe_file[$k]	= "";
+				$this->session->set_flashdata("msg", "<p class='alert alert-danger'>File yang anda upload tidak diperbolehkan, yang dibolehkan : ". join($allowed_type, ', ') ."</p>");
+				redirect('ujian_essay/form_soal/' . encrypt_url($p['id_ujian']));
+				exit;
+			} 
+			else if($file_size > $maxSize) {
+				$this->session->set_flashdata("msg", "<p class='alert alert-danger'>File terlalu besar, maksimal 10 MB</p>");
+				redirect('ujian_essay/form_soal/' . encrypt_url($p['id_ujian']));
+				exit;
+			}
+			else if ($file_name == "") {
+				$gagal[$k] = "Tidak ada file yang diupload";
+				$nama_file[$k]	= "";
+				$tipe_file[$k]	= "";					
 			} else {
-
-				$insert = $this->db->insert("m_soal_ujian_essay", $pdata);
-				$__id_soal = $this->db->insert_id();
-			}
-
-			
-			//lakukan perulangan sejumlah file upload yang terdeteksi
-
-			foreach ($_FILES as $k => $v) {
-
-				//var file upload
-
-				//$k = nama field di form
-
-				$file_name 		= $_FILES[$k]['name'];
-
-				$file_type		= $_FILES[$k]['type'];
-
-				$file_tmp		= $_FILES[$k]['tmp_name'];
-
-				$file_error		= $_FILES[$k]['error'];
-
-				$file_size		= $_FILES[$k]['size'];
-
-				//kode ref file upload jika error
-
-				$kode_file_error = array(
-					"File berhasil diupload",
-					"Ukuran file terlalu besar",
-					"Ukuran file terlalu besar",
-					"File upload error",
-					"Tidak ada file yang diupload",
-					"File upload error"
-				);
-
-		
-
-				if ($file_error != 0) {
-
-					$gagal[$k] = $kode_file_error[$file_error];
-
-					$nama_file[$k]	= "";
-
-					$tipe_file[$k]	= "";
-
-				} else if (!in_array($file_type, $allowed_type)) {
-
-					$gagal[$k] = "Tipe file ini tidak diperbolehkan..";
-
-					$nama_file[$k]	= "";
-
-					$tipe_file[$k]	= "";
-
-				} else if ($file_name == "") {
-
-					$gagal[$k] = "Tidak ada file yang diupload";
-
-					$nama_file[$k]	= "";
-
-					$tipe_file[$k]	= "";					
-
-				} else {
-
-					$ekstensi = explode(".", $file_name);
-
-
-
-					$file_name = $k."_".$__id_soal.".". end($ekstensi);
-					
-					@move_uploaded_file($file_tmp, $folder_gb_soal.$file_name);
-
-					$gagal[$k]	 	= $kode_file_error[$file_error]; //kode kegagalan upload file
-
-					$nama_file[$k]	= $file_name; //ambil nama file
-
-					$tipe_file[$k]	= $file_type; //ambil tipe file
-
+				$ekstensi = explode(".", $file_name);
+				$file_name = $k."_".$__id_soal.".". end($ekstensi);
+				@move_uploaded_file($file_tmp, $this->_fileSoalPath.$file_name);
+				if($__mode == 'edit') {
+					$fileSoal = $this->m_soal_ujian_essay->get_by([
+						'id' => $p['id'],
+						'id_ujian' => $p['id_ujian']
+					]);
+					if(file_exists($this->_fileSoalPath . $fileSoal->file)) {
+						unlink($this->_fileSoalPath . $fileSoal->file);
+					}
 				}
 
+				$gagal[$k]	 	= $kode_file_error[$file_error]; //kode kegagalan upload file
+				$nama_file[$k]	= $file_name; //ambil nama file
+				$tipe_file[$k]	= $file_type; //ambil tipe file
 			}
+		}
 
-
-		
-			$data_simpan = array();
-
-
-
-			if (!empty($nama_file['file_ujian_soal_essay'])) {
-
-				$data_simpan = array(
-
-								"file"=>$nama_file['file_ujian_soal_essay'],
-
-								"tipe_file"=>$tipe_file['file_ujian_soal_essay'],
-
-								);
-
-				
+		$data_simpan = array();
+		if (!empty($nama_file['file_ujian_soal_essay'])) {
+			$data_simpan = array(
+				"file"=>$nama_file['file_ujian_soal_essay'],
+				"tipe_file"=>$tipe_file['file_ujian_soal_essay'],
+			);
 			$this->db->update("m_soal_ujian_essay", $data_simpan,['id'=>$__id_soal]);
-		
-
-			}
-
-
-
-
-
-
-			$teks_gagal = "";
-
-			foreach ($gagal as $k => $v) {
-
-				$arr_nama_file_upload = array("file_ujian_soal_essay"=>"File Soal ");
-
-				$teks_gagal .= $arr_nama_file_upload[$k].': '.$v.'<br>';
-
-			}
-
-
-
-			$this->session->set_flashdata('k', '<div class="alert alert-info">'.$teks_gagal.'</div>');
-
-			redirect(base_url('ujian_essay/data_soal/'.encrypt_url($p['id_ujian']).'/'.encrypt_url($p['id_instansi']).'/'.encrypt_url($p['id_mapel']).'/'.encrypt_url($p['id_guru']).''));
-
-				
-
 		}
 
+		$teks_gagal = "";
+		foreach ($gagal as $k => $v) {
+			$arr_nama_file_upload = array("file_ujian_soal_essay"=>"File Soal ");
+			$teks_gagal .= $arr_nama_file_upload[$k].': '.$v.'<br>';
+		}
 
+		$this->session->set_flashdata('k', '<div class="alert alert-info">'.$teks_gagal.'</div>');
+		redirect(base_url('ujian_essay/data_soal/'.encrypt_url($p['id_ujian']).'/'.encrypt_url($p['id_instansi']).'/'.encrypt_url($p['id_mapel']).'/'.encrypt_url($p['id_guru']).''));				
+	}
 
+	public function file_hapus_ujian($id=0,$no){
+		$nama_gambar = $this->m_soal_ujian_essay->get_by(array('id'=>$id));
+		$num = $nama_gambar->id + $no;
+		$link1 =1 + $nama_gambar->id;
+		if($link1 == $num){
+			unlink("./upload/file_ujian_soal_essay/".$nama_gambar->file);
+			$update['file'] = NULL;
+			$update['type_file'] = NULL;
+		}
 
+		$this->m_soal_ujian_essay->update($update,['id'=>$id]);
+		exit;
+	}
 
-		public function file_hapus_ujian($id=0,$no){
+	public function hapus_soal(){
+		$post = $this->input->post();
 
-
-
+		foreach ($post['id'] as $key => $id) {
 			$nama_gambar = $this->m_soal_ujian_essay->get_by(array('id'=>$id));
-
-
-
-			$num = $nama_gambar->id + $no;
-
-
-
-			$link1 =1 + $nama_gambar->id;
-
-
-			if($link1 == $num){
-
-				unlink("./upload/file_ujian_soal_essay/".$nama_gambar->file);
-
-				$update['file'] = NULL;
-
-				$update['type_file'] = NULL;
-
+			$kirim = $this->m_soal_ujian_essay->delete(array('id'=>$id));
+			if($kirim){
+				@unlink("./upload/file_ujian_soal_essay/".$nama_gambar->file);
 			}
-
-
-
-			$this->m_soal_ujian_essay->update($update,['id'=>$id]);
-
-
-
-			exit;
-
 		}
+		echo json_encode(['result'=>true]);
+	}
 
-
-
-		public function hapus_soal(){
-
-			$post = $this->input->post();
-
-
-
-			foreach ($post['id'] as $key => $id) {
-
-
-
-				$nama_gambar = $this->m_soal_ujian_essay->get_by(array('id'=>$id));
-
-				$kirim = $this->m_soal_ujian_essay->delete(array('id'=>$id));
-
-				if($kirim){
-					@unlink("./upload/file_ujian_soal_essay/".$nama_gambar->file);
-
-				}
-
-			}
-
-
-
-			echo json_encode(['result'=>true]);
-
-		}
-
-
-
-		public function izinkan(){
-
-			$post = $this->input->post();
+	public function izinkan(){
+		$post = $this->input->post();
 
 
 
@@ -1090,278 +978,140 @@ class Ujian_essay extends MY_Controller {
 
 
 
-		public function ikut_ujian($id_ujian){
+	public function ikut_ujian($id_ujian){
+		$id_ujian = decrypt_url($id_ujian);
+		$jwb = [];
+		if ($this->session->userdata('selesai_ujian') == 1) {
+			redirect(base_url('ujian_real/'));
+			exit;
+		}
 
+		header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Pragma: no-cache");
 
+		$cek_sdh_selesai = $this->m_ikut_ujian_essay->count_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id,'status'=>'N']);
 
-			$id_ujian = decrypt_url($id_ujian);
-			$jwb = [];
-
-
-			if ($this->session->userdata('selesai_ujian') == 1) {
-
-				redirect(base_url('ujian_real/'));
-
-				exit;
-
-			}
-
+		//sekalian validasi waktu sudah berlalu...
+		if ($cek_sdh_selesai <= $this->total_ujian) {
+			$cek_detil_tes = $this->m_ujian->get_by(['uji.id'=>$id_ujian]);
+			$ikut_ujian = $this->m_ikut_ujian_essay->get_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
 			
-
-			header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-
-			header("Cache-Control: post-check=0, pre-check=0", false);
-
-			header("Pragma: no-cache");
-
+			$cek_sdh_ujian	= $this->m_ikut_ujian_essay->count_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
+			$acakan = $cek_detil_tes->jenis == "ORDER BY id ASC";
+			if ($cek_sdh_ujian <= $this->total_ujian)	{		
+				$soal_urut_ok = array();
+				$a_soal	= $this->db->query("SELECT id, file, tipe_file, soal FROM m_soal_ujian_essay WHERE id_ujian = '".$cek_detil_tes->id."' ".$acakan)->result();
 			
-
-	
-
-			$cek_sdh_selesai = $this->m_ikut_ujian_essay->count_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id,'status'=>'N']);
-
-
-
-		
-
-			//sekalian validasi waktu sudah berlalu...
-
-			if ($cek_sdh_selesai <= $this->total_ujian) {
-				$cek_detil_tes = $this->m_ujian->get_by(['uji.id'=>$id_ujian]);
-				$ikut_ujian = $this->m_ikut_ujian_essay->get_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
+				$q_soal	= $this->db->query("SELECT id, file, tipe_file, soal, '' AS jawaban  FROM m_soal_ujian_essay WHERE id_ujian = '".$cek_detil_tes->id."' ".$acakan)->result();
 			
-				$cek_sdh_ujian	= $this->m_ikut_ujian_essay->count_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
-				$acakan = $cek_detil_tes->jenis == "ORDER BY id ASC";
-				if ($cek_sdh_ujian <= $this->total_ujian)	{		
+				$i = 0;
+				foreach ($q_soal as $s) {
+					$soal_per = new stdClass();
+					$soal_per->id = $s->id;
+					$soal_per->soal = $s->soal;
+					$soal_per->file = $s->file;
+					$soal_per->tipe_file = $s->tipe_file;
+					$soal_urut_ok[$i] = $soal_per;
+					$i++;
+				}
 
-					$soal_urut_ok = array();
-
-					$a_soal	= $this->db->query("SELECT id, file, tipe_file, soal FROM m_soal_ujian_essay WHERE id_ujian = '".$cek_detil_tes->id."' ".$acakan)->result();
-
-				
-
-					$q_soal	= $this->db->query("SELECT id, file, tipe_file, soal, '' AS jawaban  FROM m_soal_ujian_essay WHERE id_ujian = '".$cek_detil_tes->id."' ".$acakan)->result();
-				
-
-
-					
-
-					$i = 0;
-
-					foreach ($q_soal as $s) {
-
-						$soal_per = new stdClass();
-
-						$soal_per->id = $s->id;
-
-						$soal_per->soal = $s->soal;
-
-						$soal_per->file = $s->file;
-
-						$soal_per->tipe_file = $s->tipe_file;
-
-
-						$soal_urut_ok[$i] = $soal_per;
-
-						$i++;
-
+				$soal_urut_ok = $soal_urut_ok;
+				$list_id_soal	= "";
+				$list_jw_soal 	= "";
+				$list_jw_benar  = "";
+				if (!empty($q_soal)) {
+					$x= 0;
+					foreach ($q_soal as $d) {
+						$list_id_soal .= $d->id.",";
+						$x++;
 					}
+				}
+	
+				$list_id_soal = substr($list_id_soal, 0, -1);
+				$waktu_selesai = tambah_jam_sql($cek_detil_tes->waktu);
+				$time_mulai		= date('Y-m-d H:i:s');
+				$time = new DateTime($time_mulai);
+				$time->add(new DateInterval('PT' . $cek_detil_tes->waktu . 'M'));
+				$tgl_selesai = $time->format('Y-m-d H:i');
 
+				if (empty($ikut_ujian->status)) {
+					$status_ = 'N';
+				}else{
+					$status_ = $ikut_ujian->status;
+				}
 
+				if ($status_ != 'Y') {
+					$insert_data = array(
+						'id_ujian' 		=> $id_ujian,
+						'id_user' 		=> $this->akun->id, 
+						'list_soal' 	=> $list_id_soal, 
+						'jml_benar' 	=> 0 , 
+						'nilai' 		=> 0, 
+						'nilai_bobot' 	=> 0, 
+						'tgl_mulai'	 	=> $time_mulai, 
+						'tgl_selesai' 	=> $tgl_selesai, 
+						'status' 		=> 'Y', 
+						'banyak'	 	=> 1, 
+					);
 
-					$soal_urut_ok = $soal_urut_ok;
-
-
-					
-					$list_id_soal	= "";
-
-					$list_jw_soal 	= "";
-
-					$list_jw_benar  = "";
-
+					$this->m_ikut_ujian_essay->insert($insert_data);
 					if (!empty($q_soal)) {
 						$x= 0;
 						foreach ($q_soal as $d) {
-
-							$list_id_soal .= $d->id.",";
+							$jwb[$x] = [
+								'id_ujian' => $id_ujian,
+								'id_user' => $this->akun->id,
+								'id_ikut_essay' => $this->db->insert_id(),
+								'id_soal'  => $d->id,
+								'jawaban'  => '',
+								'ragu'     => 'N'
+							];
 							$x++;
 						}
 					}
 
-		
-				
-					
-					
+					$this->db->insert_batch('tb_jawaban_essay',$jwb);
+				}
 
-					$list_id_soal = substr($list_id_soal, 0, -1);
-
-			
-
-
-					$waktu_selesai = tambah_jam_sql($cek_detil_tes->waktu);
-
-					$time_mulai		= date('Y-m-d H:i:s');
-
-				
-
-					$time = new DateTime($time_mulai);
-
-					$time->add(new DateInterval('PT' . $cek_detil_tes->waktu . 'M'));
-
-					$tgl_selesai = $time->format('Y-m-d H:i');
-
-					
-
-					
-
-					if (empty($ikut_ujian->status)) {
-
-						$status_ = 'N';
-
-					}else{
-
-						$status_ = $ikut_ujian->status;
-
-					}
-
-				
-
-					if ($status_ != 'Y') {
-
-
-
-						$insert_data = array(
-
-							'id_ujian' 		=> $id_ujian,
-
-							'id_user' 		=> $this->akun->id, 
-
-							'list_soal' 	=> $list_id_soal, 
-
-							'jml_benar' 	=> 0 , 
-
-							'nilai' 		=> 0, 
-
-							'nilai_bobot' 	=> 0, 
-
-							'tgl_mulai'	 	=> $time_mulai, 
-
-							'tgl_selesai' 	=> $tgl_selesai, 
-
-							'status' 		=> 'Y', 
-
-							'banyak'	 	=> 1, 
-
-						);
-
-
-
-						$this->m_ikut_ujian_essay->insert($insert_data);
-
-						if (!empty($q_soal)) {
-							$x= 0;
-							foreach ($q_soal as $d) {
-	
-								$jwb[$x] = [
-									'id_ujian' => $id_ujian,
-									'id_user' => $this->akun->id,
-									'id_ikut_essay' => $this->db->insert_id(),
-									'id_soal'  => $d->id,
-									'jawaban'  => '',
-									'ragu'     => 'N'
-								];
-	
-								$x++;
-							}
-						}
-
-						$this->db->insert_batch('tb_jawaban_essay',$jwb);
-
-						
-
-						
-
-					}
-
-
-
-
-
-					
-
-					$cek_ujian_pertama = $this->db->select("count(*) as total")
-
-												  ->from('tb_ikut_ujian_essay_pertama')
-
-												  ->where(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id])
-
-												  ->get()
-
-												  ->row();
-
-
-
-					if($cek_ujian_pertama->total < 1) {
-
-						$this->db->query("INSERT INTO tb_ikut_ujian_essay_pertama VALUES (null, '$id_ujian', NULL, '".$this->akun->id."', '$list_id_soal', 0, 0, 0, '$time_mulai', ADDTIME('$time_mulai', '$waktu_selesai'), 'N', '$list_jw_benar', 1)");
-
-					}
+				$cek_ujian_pertama = $this->db->select("count(*) as total")
+											->from('tb_ikut_ujian_essay_pertama')
+											->where(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id])
+											->get()	  
+											->row();
+				if($cek_ujian_pertama->total < 1) {
+					$this->db->query("INSERT INTO tb_ikut_ujian_essay_pertama VALUES (null, '$id_ujian', NULL, '".$this->akun->id."', '$list_id_soal', 0, 0, 0, '$time_mulai', ADDTIME('$time_mulai', '$waktu_selesai'), 'N', '$list_jw_benar', 1)");
+				}
 
 					$ikut = $this->m_ikut_ujian_essay->get_by(['status' => 'Y','id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
-
 					$jwb_essay = $this->m_jawaban_essay->get_many_by(['id_ikut_essay'=>$ikut->id]);
-
-	
-
-	
-
-
-
 					$soal_urut_ok= $soal_urut_ok;
-
 				} else {
-
-
 					$q_ambil_soal = $this->m_ikut_ujian_essay->get_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
-
-
-
-					$urut_soal 		= explode(",", $q_ambil_soal->list_jawaban);
-
-					
-
-					$soal_urut_ok	= array();
-
-					for ($i = 0; $i < sizeof($urut_soal); $i++) {
-
-						$pc_urut_soal = explode(":",$urut_soal[$i]);
-
-						$pc_urut_soal1 = empty($pc_urut_soal[1]) ? "''" : "'".$pc_urut_soal[1]."'";
-
-						$ambil_soal = $this->db->query("SELECT *, $pc_urut_soal1 AS jawaban FROM m_soal_ujian WHERE id = '".$pc_urut_soal[0]."'")->row();
-
-
-
-						$soal_urut_ok[] = $ambil_soal; 
-
-					}
-
-					
+					$ikut = $this->m_ikut_ujian_essay->get_by(['status' => 'Y','id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
+					// print_r($q_ambil_soal);exit;
+					// $urut_soal 		= explode(",", $q_ambil_soal->list_jawaban);
+					// $soal_urut_ok	= array();
+					// for ($i = 0; $i < sizeof($urut_soal); $i++) {
+					// 	$pc_urut_soal = explode(":",$urut_soal[$i]);
+					// 	$pc_urut_soal1 = empty($pc_urut_soal[1]) ? "''" : "'".$pc_urut_soal[1]."'";
+					// 	$ambil_soal = $this->db->query("SELECT *, $pc_urut_soal1 AS jawaban FROM m_soal_ujian WHERE id = '".$pc_urut_soal[0]."'")->row();
+					// 	$soal_urut_ok[] = $ambil_soal; 
+					// }
 
 					$jwb_essay = $this->m_jawaban_essay->get_many_by(['id_ikut_essay'=>$q_ambil_soal->id]);
-
-					$soal_urut_ok = $soal_urut_ok;
+					$soal_urut_ok = $this->m_soal_ujian_essay->get_many_by([
+						'id_ujian' => $id_ujian
+					]);
 
 				}
 
-
 				$html = '';
-
 				$no = 1;
-
-			
-
 				$arr_jawab = array();
+				$jumlahSoal = $this->m_soal_ujian_essay->get_many_by([
+					'id_ujian' => $id_ujian
+				]);
 
 				foreach ($jwb_essay as $rows) {
 
@@ -1374,88 +1124,320 @@ class Ujian_essay extends MY_Controller {
 				  $arr_jawab[$idx] = array("j"=>$val,"r"=>$rg);
 
 				}
-
-
-			
-
-				if (!empty($soal_urut_ok)) {
+				
+				$imageExtensions = ['image/png', 'image/jpeg', 'image/gif'];
+				if (!empty($jumlahSoal)) {
 
 					$file = NULL;
-				    foreach ($soal_urut_ok as $d) { 
 
-				    	 $d->id;
-				    	 if(is_file('upload/'))
-				        $tampil_media = tampil_media("upload/file_ujian_soal_essay/".$d->file, '250px','auto');
+				    foreach ($jumlahSoal as $d) { 
+				    	$checkJawaban = $this->m_jawaban_essay->get_by([
+				    		'id_soal' => $d->id,
+				    		'id_ujian' => $d->id_ujian
+				    	]);
+				    	$idJawaban = !empty($checkJawaban) ? $checkJawaban->id : 0;
+				    	// Menentukan nama kelas yang nantinya akan dijadikan event JS ketika klik gambar
+				    	if(in_array($d->tipe_file, $imageExtensions)) {
+				    		$classFile = 'img-ujian';
+				    	}
+				    	else {
+				    		$classFile = '';
+				    	}
+				    	if(file_exists($this->_fileSoalPath . $d->file)) {
+				    		$tampil_media = getMediaSoalFile($d->file, $this->_fileSoalPath, $d->tipe_file, $classFile, 150, 300);
+				    	}
+				    	else {
+				    		$tampil_media = '';
+				    	}
+				        // $tampil_media = tampil_media("upload/file_ujian_soal_essay/".$d->file, '250px','auto');
 
-						$vrg = $arr_jawab[$d->id]["r"] == "" ? "N" : $arr_jawab[$d->id]["r"];
-						$val = $arr_jawab[$d->id]["j"];
+						// $vrg = $arr_jawab[$d->id]["r"] == "" ? "N" : $arr_jawab[$d->id]["r"];
+						$vrg = 'N';
+						$val = '';
+						// $val = $arr_jawab[$d->id]["j"];
 
-				        $html .= '<input type="hidden" name="id_soal_'.$no.'" value="'.$d->id.'">';
+						$html .= '  <div class="step" id="widget_'.$no.'">
+										<input type="hidden" name="id_soal_'.$no.'" value="'.$d->id.'" id="id_soal_'.$no.'">
+										<input type="hidden" name="rg_'.$no.'" id="rg_'.$no.'" value="'.$vrg.'" data-no="'.$no.'">
+										'.$d->soal.'<br>'.$tampil_media.'
+										<div class="funkyradio">
+											<div id="img-place-'.$no.'"></div>
+											<input type="file" id="file_essay_'.$no.'" class="file_essay" name="file_'.$no.'" class="form-control" /><br>
+											<input type="hidden" id="id-jawaban-'.$no.'" value="'.$idJawaban.'" />
+											<textarea class="form-control" name="isi_'.$no.'">'.$val.'</textarea><br>
+										</div>
+									</div>';
 
-				        $html .= '<input type="hidden" name="rg_'.$no.'" id="rg_'.$no.'" value="'.$vrg.'">';
+				  //       $html .= '<input type="hidden" name="id_soal_'.$no.'" value="'.$d->id.'">';
 
-				        $html .= '<div class="step" id="widget_'.$no.'">';
+				  //       $html .= '<input type="hidden" name="rg_'.$no.'" id="rg_'.$no.'" value="'.$vrg.'" data-no="'.$no.'">';
 
-						$html .= $d->soal.'<br>'.$tampil_media.'<div class="funkyradio">';
-						$html .= '<textarea class="form-control" name="isi_'.$no.'">'.$val.'</textarea><br>';
-				        $html .= '</div></div>';
+				  //       $html .= '<div class="step" id="widget_'.$no.'">';
 
+						// $html .= $d->soal.'<br>'.$tampil_media.'<div class="funkyradio">';
+						// $html .= '<input type="file" class="file_essay" name="file_'.$no.'" class="form-control" /><br>';
+						// $html .= '<textarea class="form-control" name="isi_'.$no.'">'.$val.'</textarea><br>';
+				  //       $html .= '</div></div>';
+				  //       $html .= '</form>';
 				        $no++;
 
 				    }
 
 				}
 
-			
-
-
-
 				$a['jam_mulai'] = $ikut->tgl_mulai;
-
 				$a['jam_selesai'] = $ikut->tgl_selesai;
-
 				$a['id_tes'] = $cek_detil_tes->id;
-
 				$a['no'] = $no;
-
-				$a['html'] = $html;
-
-
-
+				$a['htmls'] = $html;
+				$a['jumlahSoal'] = $this->m_soal_ujian_essay->count_by([
+					'id_ujian' => $id_ujian
+				]);
+				$a['soalUjian'] = $jumlahSoal;
+				$a['idUjian'] = $id_ujian;
+				// print_r($a);exit;
 			
-
 				$this->load->view('ujian_essay/v_ujian', $a);
-
 			} else {
-
 				//redirect('ujian/sudah_selesai_ujian/'.$id_ujian);
+		}
+	}
 
+	public function checkJawabanSoal()
+	{
+		$post = $this->input->post();
+		$idSoal = $post['idSoal'];
+
+		// Get
+		$result = $this->m_jawaban_essay->get_by([
+			'id_soal' => $post['idSoal'],
+			'id_ujian' => $post['idUjian']
+		]);
+
+		$file = NULL;
+		if(!empty($result)) {
+			if(!is_null($result->file)) {
+				$file = getMediaOpsiFile($result->file, $this->_fileJawabanPath);
 			}
 
+			$this->sendAjaxResponse([
+				'status' => TRUE,
+				'data' => [
+					'jawaban' => $result->jawaban,
+					'file' => $file
+				]
+			], 200);
+		}
+		else {
+			$this->sendAjaxResponse([
+				'status' => TRUE,
+				'data' => [
+					'jawaban' => NULL,
+					'file' => $file
+				]
+			], 200);	
+		}
+	}
 
+	/*
+	* Method for use update one data when student click next on essay exercise
+	* @return json
+	*/
+	public function updateJawaban()
+	{
+		$post = $this->input->post();
+		
+		// Get id ujian
+		$soalEssay = $this->m_soal_ujian_essay->get_by(['id' => $post['idSoal']]);
+
+		// Get id soal => 1,2,34,2
+		$soals = $this->m_soal_ujian_essay->get_many_by(['id_ujian' => $soalEssay->id_ujian]);
+		$listSoal = [];
+		foreach($soals as $soal) {
+			array_push($listSoal, $soal->id);
 		}
 
+		// Get data detail ujian
+		$detailUjian = $this->m_ujian->get_by(['uji.id' => $soalEssay->id_ujian]);
 
+		// Update to table tb_jawaban_essay
+		$dataJawaban = [
+			'id_ujian' 	    => $soalEssay->id_ujian,
+			'id_user' 	    => $this->akun->id,
+			'id_soal'		=> $post['idSoal'],
+			'ragu'			=> $post['ragu'] == 'Y' ? 'Y' : 'N'
+		];
 
-		public function simpan_satu_ujian($id_ujian,$id_pengguna=NULL){
+		// Check jika siswa mengisi jawaban
+		if(!is_null($post['jawaban'])) {
+			$dataJawaban['jawaban'] = trim($post['jawaban']);
+		}
 
+		// Check jika siswa upload file untuk jawabannya
+		if(isset($_FILES['file'])) {
+			// Set Config
+			$fileName = uniqid() . $_FILES['file']['name'];
+			$config['upload_path']   = $this->_fileJawabanPath;
+            $config['allowed_types'] = 'pdf|pdfx|doc|docx|xlsx|xls|jpg|jpeg|png';
+            $config['max_size']      = 10240; // 10 MB
+            $config['file_name']     = $fileName;
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+            if(!$this->upload->do_upload('file')) {
+            	$this->sendAjaxResponse([
+            		'status' => FALSE,
+            		'msg' => 'Upload file gagal',
+            		'info' => $this->upload->display_errors()
+            	], 500);
+            	exit;
+            }
+            else {
+            	$dataJawaban['file'] = $fileName;
+            	$dataJawaban['file_type'] = $_FILES['file']['type'];
+
+            	// Hapus file sebelumnya
+            	$getData = $this->m_jawaban_essay->get_by(['id' => $post['id']]);
+            	if(file_exists( base_url($this->_fileJawabanPath . $getData->file) )) {
+            		unlink($this->_fileJawabanPath . $getData->file);
+            	}
+            }
+		}
+
+		$update = $this->m_jawaban_essay->update($dataJawaban, ['id' => $post['id']]);
+		if(!$update) {
+			$this->sendAjaxResponse([
+        		'status' => FALSE,
+        		'msg' => 'Gagal mengupdate data jawaban'
+        	], 500);
+        	exit;	
+		}
+		else {
+			$this->sendAjaxResponse([
+				'status' => TRUE,
+				'msg' => 'Jawaban berhasil di update' 
+			], 200);
+		}
+	}
+
+	/*
+	* Method for use insert one data when student click next on essay exercise
+	* @return json
+	*/
+	public function insertJawaban()
+	{
+		$post = $this->input->post();
+
+		// Get id ujian
+		$soalEssay = $this->m_soal_ujian_essay->get_by(['id' => $post['idSoal']]);
+
+		// Get id soal => 1,2,34,2
+		$soals = $this->m_soal_ujian_essay->get_many_by(['id_ujian' => $soalEssay->id_ujian]);
+		$listSoal = [];
+		foreach($soals as $soal) {
+			array_push($listSoal, $soal->id);
+		}
+
+		// Get data detail ujian
+		$detailUjian = $this->m_ujian->get_by(['uji.id' => $soalEssay->id_ujian]);
+		
+		// Insert to table m_ikut_ujian_essay
+		$data = [
+			'id_ujian' 	  => $soalEssay->id_ujian,
+			'id_user' 	  => $this->akun->id,
+			'list_soal'   => join($listSoal, ','),
+			'tgl_mulai'   => $detailUjian->tgl_mulai,
+			'tgl_selesai' => $detailUjian->terlambat,
+			'status' 	  => 'Y',
+			'banyak'	  => 1
+		];
+		$this->m_ikut_ujian_essay->insert($data);
+		$idJawabanEssay = $this->db->insert_id();
+
+		// Insert to table tb_jawaban_essay
+		$dataJawaban = [
+			'id_ujian' 	    => $soalEssay->id_ujian,
+			'id_user' 	    => $this->akun->id,
+			'id_ikut_essay' => $idJawabanEssay,
+			'id_soal'		=> $post['idSoal'],
+			'ragu'			=> $post['ragu'] == 'Y' ? 'Y' : 'N'
+		];
+
+		// Check jika siswa mengisi jawaban
+		if(!is_null($post['jawaban'])) {
+			$dataJawaban['jawaban'] = trim($post['jawaban']);
+		}
+		
+		// Check jika siswa upload file untuk jawabannya
+		if(isset($_FILES['file'])) {
+			// Set Config
+			$fileName = uniqid() . $_FILES['file']['name'];
+			$config['upload_path']   = $this->_fileJawabanPath;
+            $config['allowed_types'] = 'pdf|pdfx|doc|docx|xlsx|xls|jpg|jpeg|png';
+            $config['max_size']      = 10240; // 10 MB
+            $config['file_name']     = $fileName;
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+            if(!$this->upload->do_upload('file')) {
+            	$this->sendAjaxResponse([
+            		'status' => FALSE,
+            		'msg' => 'Upload file gagal',
+            		'info' => $this->upload->display_errors()
+            	], 500);
+            	exit;
+            }
+            else {
+            	$dataJawaban['file'] = $fileName;
+            	$dataJawaban['file_type'] = $_FILES['file']['type'];
+            }
+		}
+
+		$insert = $this->m_jawaban_essay->insert($dataJawaban);
+		if(!$insert) {
+			$this->sendAjaxResponse([
+        		'status' => FALSE,
+        		'msg' => 'Gagal memasukan data jawaban'
+        	], 500);
+        	exit;	
+		}
+		else {
+			$this->sendAjaxResponse([
+				'status' => TRUE,
+				'msg' => 'Jawaban berhasil di masukkan' 
+			], 200);
+		}
+	}
+
+	/*
+	* Jika sudah klik tombol selesai ujian atau ujian habis
+	*/
+	public function saveEndUjian()
+	{
+		$post = $this->input->post();
+
+		$this->m_ikut_ujian_essay->update([
+			'status' => 'N',
+			'tgl_selesai' => date('Y-m-d H:i:s')
+		], ['status' => 'Y', 'id_ujian' => $post['idUjian'], 'id_user' => $this->akun->id ]);
+
+		$this->sendAjaxResponse([
+			'status' => TRUE,
+			'msg' => 'Selamat anda telah menyelesaikan ujian ini, semoga mendapat hasil yang memuaskan :)'
+		], 200);
+	}
+
+	public function simpan_satu_ujian($id_ujian,$id_pengguna=NULL)
+	{
 			// $p			= json_decode(file_get_contents('php://input'));
 			$post = $this->input->post();
-
+			// print_r($_FILES);
+			// print_r($post);exit;
 			$update_ 	= "";
-
 			for ($i = 1; $i < $post['jml_soal']; $i++) {
-				// $isi = 
 				$_tjawab 	= "opsi_".$i;
-
 				$_tidsoal 	= "id_soal_".$i;
-
 				$_ragu 		= "rg_".$i;
-
 				$isi        = 'isi_'.$i;
-
 				$jawaban_ 	= empty($post[$isi]) ? "" : $post[$isi];
-
 				$update_	.= "".$post[$_tidsoal].":".$jawaban_.":".$post[$_ragu].",";
 
 				$datas = [
@@ -1463,39 +1445,44 @@ class Ujian_essay extends MY_Controller {
 					'jawaban'  => $jawaban_,
 					'ragu'     => $post[$_ragu]
 				];
-				$uploadedFile = FALSE;
+				if(isset($_FILES['file_' . $i])) {
+					$fileName = uniqid() . $_FILES['file']['name'];
+					$config['upload_path']   = $this->_fileJawabanPath;
+	                $config['allowed_types'] = 'pdf|pdfx|doc|docx|xlsx|xls|jpg|jpeg|png';
+	                $config['max_size']      = 10240; // 10 MB
+	                $config['file_name']     = $fileName;
+	                $this->load->library('upload', $config);
+	                $this->upload->initialize($config);
+	                if (!$this->upload->do_upload('file_' . $i)) {
+	                	$this->sendAjaxResponse([
+	                		'status' => FALSE,
+	                		'msg' => 'Upload error, ' . $this->upload->display_errors(),
+	                		'info' => $this->upload->display_errors()
+	                	], 500);
+	                	exit;
+	                }
+	                else {
+	                	$uploadedData = $this->upload->data();
+	                	$datas['file'] = $this->_fileJawabanPath . $fileName;
+	                	$datas['file_type'] = $_FILES['file']['type'];
+	                }
+				}
 				
 				$this->m_jawaban_essay->update($datas,['id_soal'=>$post[$_tidsoal],'id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
-
 			}
 
 			$update_		= substr($update_, 0, -1);
-
-
-
-
 			$q_ret_urn 	= $this->m_jawaban_essay->get_many_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
 
 			foreach ($q_ret_urn as $key => $value) {
-
 				$idx 		= $value->id_soal;
-
 				$val 		= $value->jawaban.'_'.$value->ragu;
-
 				$hasil[]= $val;
-
 			}
-
-
-
 			$d['data'] = $hasil;
-
 			$d['status'] = "ok";
-
 			j($d);
-
 			exit;	
-
 		}
 
 
@@ -1872,13 +1859,10 @@ class Ujian_essay extends MY_Controller {
 		$id_ujian = decrypt_url($id_ujian);
 		$id_user = decrypt_url($id_user);;
 
-		$this->cek_aktif();
-		// cek_hakakses(array("guru"), $this->session->userdata('admin_level'));
-		
-		
+		$this->cek_aktif();		
 
-			$essay = $this->m_ikut_ujian_essay->get_by(['id_ujian'=>$id_ujian,'id_user'=>$id_user,'status'=>'N']);
-			$jwb_essay = $this->m_jawaban_essay->get_many_by(['id_ikut_essay'=>$essay->id]);
+		$essay = $this->m_ikut_ujian_essay->get_by(['id_ujian'=>$id_ujian,'id_user'=>$id_user,'status'=>'N']);
+		$jwb_essay = $this->m_jawaban_essay->get_many_by(['id_ujian' => $id_ujian]);
 
 			$arr_jawab = array();
 
@@ -1896,7 +1880,7 @@ class Ujian_essay extends MY_Controller {
 
 			$no =1;
 
-		
+			// print_r($jwb_essay);exit;
 			$html = '';
 			if (!empty($jwb_essay)) {
 
@@ -1936,6 +1920,7 @@ class Ujian_essay extends MY_Controller {
 
 					$html .= '<div class="form-group" style="border:1px #000 solid; padding:10px;">';
 					$html .= '  <label>'.$no.'.'.$soal_.''.$tampil_media.' </label>';
+					$html .= !is_null($rows->file) ? '<br>'.getMediaOpsiFile($rows->file, $this->_fileJawabanPath) . '<br><br>' : '';
 					$html .= '<textarea class="form-control nilai" readonly>Jawaban : '.$val.'</textarea>';
 					$html .= '<div style=" padding:10px 0px;"><label>Nilai</label> <input type="text" value="'.$rows->nilai.'" data-soal ="'.$rows->id_soal.'"  data-ujian ="'.$rows->id_ujian.'"  data-user ="'.$rows->id_user.'" data-bobot ="'.$soal->bobot.'" maxlength="3" class="only-number nilai"> <button type="button" data-soal="'.$rows->id_soal.'" data-nilai="'.$rows->nilai.'" data-ujian="'.$rows->id_ujian.'" data-user="'.$rows->id_user.'" data-bobot="'.$soal->bobot.'" class="beri-nilai btn btn-primary">Update Nilai</button> </div>';
 					$html .= '</div>';
