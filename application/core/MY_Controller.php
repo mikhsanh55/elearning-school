@@ -97,14 +97,6 @@ class MY_Controller extends CI_Controller
 	{
 		parent::__construct();
 		date_default_timezone_set('Asia/Jakarta');
-		$this->load->dbforge();
-
-		// Add fields
-		$newFields = [
-			'file' => ['type' => 'VARCHAR(100)', 'after' => 'id_soal'],
-			'file_type' => ['type' => 'VARCHAR(50)']
-		];
-		$this->dbforge->add_column('tb_jawaban_essay', $newFields);
 
 		if($this->session->userdata('admin_valid') == TRUE) {
 			// Create new table
