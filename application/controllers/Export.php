@@ -809,12 +809,13 @@ class Export extends MY_Controller {
 		$this->excelColumnNo = 1;
 	}
 
-	public function list_tugas_siswa($encrypt_id) {
+	public function list_tugas_siswa($encrypt_id, $idTugas) {
 		$this->load->model('m_detail_kelas');
 		$this->load->model('m_tugas');
 		$this->load->model('m_tugas_nilai');
 		$this->load->model('m_tugas_attach_siswa');
 		$id = decrypt_url($encrypt_id);
+		$idTugas = decrypt_url($idTugas);
 		$this->excelDatas = $this->m_detail_kelas->get_all(['id_kelas' => $id]);
 
 		// Initialize excel object
@@ -834,12 +835,12 @@ class Export extends MY_Controller {
 		$this->excelDataStart = 2;
 
 		foreach($this->excelDatas as $data) {
-			$id_tugas = $this->m_tugas->get_by(['id_kelas' => $id])->id;
-			$count = $this->m_tugas_attach_siswa->count_by(array('id_tugas'=>$id_tugas,'id_siswa'=>$data->id_peserta));
-			$countNilai = $this->m_tugas_nilai->count_by(array('id_tugas'=>$id_tugas,'id_siswa'=>$data->id_peserta));
-			if($count > 0 && $countNilai > 0) {
+			// $idTugas = $this->m_tugas->get_by(['id_kelas' => $id])->id;
+			$count = $this->m_tugas_attach_siswa->count_by(array('id_tugas'=>$idTugas,'id_siswa'=>$data->id_peserta));
+			$countNilai = $this->m_tugas_nilai->count_by(array('id_tugas'=>$idTugas,'id_siswa'=>$data->id_peserta));
+			if($count > 0) {
 				$status = 'Sudah';
-				$nilai =  $this->m_tugas_nilai->get_by(array('id_tugas'=>$id_tugas,'id_siswa'=>$data->id_peserta))->nilai;
+				$nilai =  $this->m_tugas_nilai->get_by(array('id_tugas'=>$idTugas,'id_siswa'=>$data->id_peserta))->nilai;
 			}
 			else {
 				$status = 'Belum';
