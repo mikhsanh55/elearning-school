@@ -628,6 +628,7 @@ class Tugas extends MY_Controller {
 
 	public function insert_attach_siswa(){
 		$this->load->model('m_keaktifan_siswa');
+		$this->load->model('m_tugas_alert');
 		$post = $this->input->post();
 		$files = $_FILES;
 		$qty_attach = $_FILES['attach']['name'];
