@@ -854,14 +854,13 @@ class Export extends MY_Controller {
 
 			$this->excelDataStart++;
 			$this->excelColumnNo++;
+		}
 
-			// Create Filename and output as .xlsx
+		// Create Filename and output as .xlsx
 			$this->excelFileName = "Data Hasil Tugas Siswa - " . date('m-d-Y') . ".xlsx";
 			$this->excelDisplayOutput();
-
-			// Set No Column back to 1 for reuse
+		// Set No Column back to 1 for reuse
 			$this->excelColumnNo = 1;
-		}
 	}
 
 	/**
