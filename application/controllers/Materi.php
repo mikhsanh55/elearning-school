@@ -139,12 +139,7 @@ class Materi extends MY_Controller
             'id_guru' => $id_guru,
             'id_kelas' => $id_kelas
         ];
-        // print_r($data);exit;
-        // print_r($this->m_mapel->get_by(['md5(id)' => $id_mapel]));exit;
-
         $this->render('materi/list', $data);
-      
-
     }
 
     public function page_load($pg = 1){
@@ -1662,9 +1657,76 @@ class Materi extends MY_Controller
         }
 
         $notif['data']        = $data;
-        $notif['notifNumber'] = $notifNumber;
+        
         $notif['see_all']     = $see_all;
+        $html = '';
 
+        if(count($data) > 0) {
+            foreach($data as $d) :
+                $html .= '
+                    <li class="notification-box '.$d['bg'].' ">
+                        <div class="row">
+                            <div class="col-lg-3 col-sm-3 col-3 text-center">
+                                <img src="'.base_url('assets/ico/info.png').'" class="w-50 rounded-circle">
+                            </div>    
+                            <div class="col-lg-8 col-sm-8 col-8">
+                                <strong class="text-info">'.$d['nama_pengirim'].' - </strong>
+                                <strong class="text-danger text-right">'.$d['nama_pengirim'].'</strong>
+                                <div>
+                                    <a class="link-diskusi" href="'.$d['url'].'">'.$d['keterangan'].'</a>
+                                </div>
+                                <small class="text-warning"><span id="notif-date"></span></small>
+                            </div>    
+                        </div>
+                    </li>';
+            endforeach;
+        }
+
+        if($this->log_lvl == 'siswa') :
+            $this->load->model('m_tugas_alert');
+            $this->load->model('m_guru');
+            $this->load->model('m_tugas');
+
+            // Get pesan yang belum dibaca dari tugas
+            $where = [];
+            $where['id_siswa'] = $this->akun->id;
+            $where['status <>'] = '1';
+
+            // Set notif pesan yang belum dibaca selama seminggu saja
+            $now = date('Y-m-d');
+            $nowPlus7day = date('Y-m-d', strtotime($now . "+7 day"));
+            $where["create_at BETWEEN '" . $now . "' AND '" . $nowPlus7day . "'"] = NULL;
+            $listTugasMessage = $this->m_tugas_alert->get_many_by($where);
+
+            if(count($listTugasMessage) > 0 ) {
+                foreach($listTugasMessage as $chat) :
+                    $tugas = $this->m_tugas->get_by(['tgs.id' => $chat->id_tugas]);
+                    $guru = $this->m_guru->get_by(['id' => $tugas->id_guru]);
+                    $html .= '
+                    <li class="notification-box bg-light">
+                        <div class="row">
+                            <div class="col-lg-3 col-sm-3 col-3 text-center">
+                                <img src="'.base_url('assets/ico/info.png').'" class="w-50 rounded-circle">
+                            </div>    
+                            <div class="col-lg-8 col-sm-8 col-8">
+                                <strong class="text-info">'.$guru->nama.' - </strong>
+                                <strong class="text-danger text-right">Pesan soal tugas</strong>
+                                <div>
+                                    <a class="link-diskusi" href="'.base_url('tugas/daftar_tugas').'">
+                                        Klik untuk melihat pesan
+                                    </a>
+                                </div>
+                                <small class="text-warning"><span id="notif-date"></span></small>
+                            </div>    
+                        </div>
+                    </li>';
+                    $notifNumber++;
+                endforeach;
+            }
+        endif;
+
+        $notif['html'] = $html;
+        $notif['notifNumber'] = $notifNumber;
         echo json_encode($notif);
     }
 

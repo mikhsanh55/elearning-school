@@ -21,7 +21,9 @@
 		
 		<?php echo form_open_multipart(base_url() . "ujian_essay/simpan_soal", "class='form-horizontal'"); ?>
 			<input type="hidden" name="id" id="id" value="<?php echo $d['id']; ?>">
-			<div id="konfirmasi"></div>
+			<div id="konfirmasi" class="m-3">
+				<?= $this->session->flashdata('msg'); ?>
+			</div>
 
 			<div class="form-group fgsoal">
 				<input type="hidden" name="mode" id="mode" value="<?php echo $d['mode']; ?>">

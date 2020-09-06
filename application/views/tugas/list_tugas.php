@@ -1,5 +1,3 @@
-
-
 <style type="text/css">
 	h1{
 		font-family: sans-serif;
@@ -69,12 +67,42 @@
 		background: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#f0f0f0));
 		background: -moz-linear-gradient(top, #f2f2f2, #f0f0f0);
 	}
+	.chat-square {
+		padding: 14px 10px;
+		border-radius: 10px;
+	}
+	.chat-square::after {
 
+	}
+	.chat-modal-footer {	
+	    display: -ms-flexbox;
+	    display: flex;
+	    -ms-flex-align: center;
+	    align-items: center;
+	    -ms-flex-pack: end;
+	    justify-content: space-between;
+	    padding: 1rem;
+	    border-top: 1px solid #e9ecef;
+	}
+	@media screen and (min-width: 600px) {
+		#chat-input {
+			width: 150% !important;
+		}
+	}
+	@media screen and (min-width: 768px) {
+		#chat-input {
+			width: 350% !important;
+		}
+	}
+	@media screen  and (min-width: 1096	px) {
+		#chat-input {
+			width: 430% !important;
+		}	
+	}
 </style>
 
 <div class="col-md-9 page-content">
 	<div class="inner-box">
-
 		<div id="accordion" class="panel-group">
 			<div class="row">
 				<div class="col-md-12">
@@ -111,7 +139,6 @@
 					<option value="50">50</option>
 					<option value="100">100</option>
 				</select>
-
 				<div id="content-view"></div>
 			</div>
 		</div>
@@ -148,6 +175,33 @@ Bila suatu saat diketahui tugas saya merupakan hasil plagiarisme atau menyontek,
   </div>
 </div>
 
+<!-- Modal Chat dari guru -->
+<div class="modal" tabindex="-1" role="dialog" id="ingatkan-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      	<div>
+        <h4 class="modal-title nama-guru">Guru</h4>
+        <p class="nama-mapel">Mapel</p>
+        </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+        	<div class="col-md-6 col-sm-10 align-self-start" id="chat-place">
+        		<!-- Content of Message Here -->
+        	</div>
+        </div>
+      </div>
+      <div class="chat-modal-footer">
+      	<button class="btn btn-light btn-block" data-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!--/.row-box End-->
 <script src="<?= base_url(); ?>assets/js/jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
@@ -176,9 +230,7 @@ Bila suatu saat diketahui tugas saya merupakan hasil plagiarisme atau menyontek,
 				}, ms || 0);
 			};
 		}
-
-
-	})
+	});
 
 	function pageLoad(pg, url, search){
 		$.ajax({
@@ -193,11 +245,10 @@ Bila suatu saat diketahui tugas saya merupakan hasil plagiarisme atau menyontek,
 			success:function(response){
 				$('#content-view').html(response);
 			}
-		})
+		});
 	}
 
 	$(document).on('submit','#form-siswa',function(e){
-
 		e.preventDefault()
 		var f_asal	= $(this);
 		var form	= getFormData((f_asal));
@@ -217,7 +268,6 @@ Bila suatu saat diketahui tugas saya merupakan hasil plagiarisme atau menyontek,
 		$("#m_siswa_modif").modal('hide');
 	})
 
-
 	$(document).on('click','#checkall',function(){
 		if ($(this).is(':checked')) {
 			$('.checklist').prop('checked',true);
@@ -226,7 +276,6 @@ Bila suatu saat diketahui tugas saya merupakan hasil plagiarisme atau menyontek,
 		}
 		
 	})
-
 
 	$(document).on('click','#deleted',function(){
 		var totalChecked = $('.checklist:checked').length;
@@ -241,10 +290,7 @@ Bila suatu saat diketahui tugas saya merupakan hasil plagiarisme atau menyontek,
 			alert('Tidak ada yang dipilih!');
 		}
 
-		
-
 		if (y == true) {
-
 			$.ajax({
 				type:'post',
 				url : '<?=base_url('tugas/multi_delete');?>',
@@ -257,12 +303,9 @@ Bila suatu saat diketahui tugas saya merupakan hasil plagiarisme atau menyontek,
 						pageLoad(1,'tugas/page_load_list_tugas');
 					}else{
 						alert('Hapus Gagal');
-					}
-
-					
+					}					
 				}
-			})
-
+			});
 
 		}else{
 			return false;

@@ -5,15 +5,8 @@
 		Halo, Ada kendala mengenai E-Learning nya?
 	</header>
 	<section class="d-flex flex-column pl-3 pr-4 pt-3 pb-3" style="line-height: 20px;">
+		<h3 class="d-none">Chat</h3>
 		<p><i class="far fa-comments mr-2" style="line-height: 20px;transform: scale(1);"></i> Chat kami sekarang yuk!</p>
-		<!-- <div class="d-flex justify-content-between">
-			<p><strong> Pak Iqbal </strong></p>
-			<p><strong> Pak Fajar </strong></p>
-		</div>
-		<div class="d-flex justify-content-between">
-			<p><strong> 082216169143 </strong></p>
-			<p><strong>	087825979439 </strong></p>
-		</div> -->
 		<div class="d-flex justify-content-between">
 			<p><strong> Pak Ikhsan </strong></p>
 			<p><strong> Pak Aji </strong></p>
@@ -30,7 +23,7 @@
 		<img src="https://elearning-rds.online/assets/img/logo/wa.png" alt="whatsapp-logo" class="chat-img">
 	</div>
 	<div class="label-section mt-1">
-		<label for="" class="d-block" id="label-chat">Butuh Bantuan?</label>
+		<label class="d-block" id="label-chat">Butuh Bantuan?</label>
 	</div>
 	
 </div>
@@ -40,9 +33,9 @@
 </script>
 <script type="text/javascript">
 	$('#chat-start').click(() => {
-    	$('#popup-start').toggleClass('animate-hide')
-    	$('#popup-start').toggleClass('animate-show')
-    })
+    	$('#popup-start').toggleClass('animate-hide');
+    	$('#popup-start').toggleClass('animate-show');
+    });
     var base_url = "<?php echo base_url(); ?>";
 	var editor_style = "<?php echo $this->config->item('editor_style'); ?>";
 	var uri_js = "<?php echo $this->config->item('uri_js'); ?>";
@@ -81,6 +74,16 @@
     		}
     	});
     }
+
+    $('.btn-notif').click(function(e) {
+    	e.preventDefault();
+    	// JIka siswa ketika melihat notif, maka status dari notif itu diupdate dari belum terbaca => terbaca
+    	$('.notif-menu').toggleClass('d-none');
+    	setTimeout(() => {
+    		$('.notif-number').text(0);
+    		$('.notif-number').addClass('d-none');
+    	}, 3000);
+    });
 
 	$('.loading').hide();
 	// Event for Sub Menu
@@ -124,12 +127,10 @@ if ($this->uri->segment(2) == "m_soal" && $this->uri->segment(3) == "edit") {
 <?php
 }    
 ?> 
-
-<script src="<?php echo base_url(); ?>assets/plugin/plugin/datatables/Indonesian.json"></script>
-<script src="<?php echo base_url(); ?>assets/plugin/datatables/jquery.dataTables.min.js"></script>
+<!-- <script src="<?php echo base_url(); ?>assets/plugin/datatables/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/plugin/datatables/dataTables.bootstrap.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/plugin/jquery_zoom/jquery.zoom.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/plugin/countdown/jquery.countdownTimer.js"></script>
+<script src="<?php echo base_url(); ?>assets/plugin/countdown/jquery.countdownTimer.js"></script> -->
 
 <script src="<?=base_url();?>/assets/vendor/select2/select2.min.js"></script>
 <script src="<?=base_url();?>/assets/vendor/datepicker/moment.min.js"></script>
@@ -137,11 +138,10 @@ if ($this->uri->segment(2) == "m_soal" && $this->uri->segment(3) == "edit") {
 
 <script src="<?=base_url();?>/assets/vendor/global.js"></script>
 
-<div class="modal fade" id="img-popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="img-popup" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-body p-0">
-        <img src="" alt="">
       </div>
     </div>
   </div>
