@@ -104,7 +104,7 @@ class MY_Controller extends CI_Controller
 		}
 
 		if(!is_dir('./upload/file_jawaban_essay/')) {
-			mkdir('./upload/file_jawaban_essay/');
+			@mkdir('./upload/file_jawaban_essay/');
 		}
 		
 		$this->load->model('m_instansi');
