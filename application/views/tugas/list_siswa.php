@@ -1,5 +1,3 @@
-
-
 <style type="text/css">
 	h1{
 		font-family: sans-serif;
@@ -77,6 +75,38 @@
 		border:1px solid #e8e8e8;
 		border-radius:10px;
 	}
+	.chat-square {
+		padding: 14px 10px;
+		border-radius: 10px;
+	}
+	.chat-square::after {
+
+	}
+	.chat-modal-footer {	
+	    display: -ms-flexbox;
+	    display: flex;
+	    -ms-flex-align: center;
+	    align-items: center;
+	    -ms-flex-pack: end;
+	    justify-content: space-between;
+	    padding: 1rem;
+	    border-top: 1px solid #e9ecef;
+	}
+	@media screen and (min-width: 600px) {
+		#chat-input {
+			width: 150% !important;
+		}
+	}
+	@media screen and (min-width: 768px) {
+		#chat-input {
+			width: 350% !important;
+		}
+	}
+	@media screen  and (min-width: 1096	px) {
+		#chat-input {
+			width: 430% !important;
+		}	
+	}
 </style>
 
 <div class="col-md-9 page-content">
@@ -138,23 +168,138 @@
 				<a href="<?= base_url('export/pdf_list_tugas_siswa/') . encrypt_url($kelas->id); ?>" class="btn btn-sm btn-danger">
 					<i class="fas fa-file-pdf-o"></i>&nbsp; Export ke PDF
 				</a>
-				<a href="<?= base_url('export/list_tugas_siswa/') . encrypt_url($kelas->id); ?>" class="btn btn-sm btn-success">
+				<a href="<?= base_url('export/list_tugas_siswa/') . encrypt_url($kelas->id) . '/' . encrypt_url($tugas->id); ?>" class="btn btn-sm btn-success">
 					<i class="fas fa-file-excel-o"></i>&nbsp; Export ke Excel
 				</a>
 				<div id="content-view"></div>
 			</div>
 		</div>
 	</div>
-
 </div>
 </div>
-
+<!-- Modal -->
+<div class="modal" tabindex="-1" role="dialog" id="ingatkan-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      	<div>
+        <h4 class="modal-title nama-siswa">Siswa</h4>
+        <p class="kelas-siswa">XII MIPA 1</p>
+        </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+        	<div class="col-md-6 col-sm-10 align-self-start" id="chat-place">
+        		<!-- Content of Message Here -->
+        	</div>
+        </div>
+      </div>
+      <div class="chat-modal-footer">
+      	<form action="" class="d-flex justify-content-between w-100 align-items-center" id="form-send-alert">
+      		<div class="form-group">
+      			<!-- <textarea class="form-control" name="message" style="width: 450%;"></textarea> -->
+      			<input type="hidden" name="siswa" value="">
+      			<input type="hidden" name="tugas" value="">
+      			<input type="text" name="message" class="form-control" placeholder="Ketik pesan" id="chat-input" required>
+      		</div>
+	      	<div class="form-group">
+		        <button type="submit" class="btn btn-primary" id="btn-send">
+		        	Kirim
+		        </button>
+	        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!--/.row-box End-->
 <script src="<?= base_url(); ?>assets/js/jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
+		let self, conf;
+
+		function getListAlert(data = {}) {
+			$('#chat-place').empty();
+			$.ajax({
+				type: 'post',
+				url: "<?= base_url('tugas/get-list-alert'); ?>",
+				data,
+				dataType: 'json',
+				success: function(res) {
+					$('#chat-place').html(res.html);
+					$('.nama-siswa').html(res.siswa.nama_siswa);
+					$('.kelas-siswa').html(res.siswa.nama_kelas);
+					$('#ingatkan-modal').modal('show');
+				},
+				error: function(e) {
+					alert('Tidak bisa mengambil data');
+					console.error(e.responseText);
+					return false;
+				}
+			});
+		}
+
+		function deleteAlertMessage(self, e) {
+			e.preventDefault();
+			conf = confirm('Anda yakin akan menghapus pesan ini?');
+			if(conf) {
+				$.ajax({
+					type: 'post',
+					url: "<?= base_url('tugas/delete-alert-message'); ?>",
+					data: {
+						id: $(self).data('id')
+					},
+					dataType: 'json',
+					success: () => getListAlert({
+						idSiswa: $(self).data('siswa'),
+						idTugas: $(self).data('tugas')
+					}),
+					error: function(e) {
+						alert(e.responseText.msg);
+						console.error(e.responseText);
+						return false;
+					}
+				});
+			}
+		}
+
 		pageLoad(1,'tugas/page_load_kelas');
+
+		$('#form-send-alert').on('submit', function(e) {
+			e.preventDefault();
+			self = this;
+			$.ajax({
+				type: 'post',
+				url: "<?= base_url('tugas/send-alert-message'); ?>",
+				data: $(this).serialize(),
+				dataType: 'json',
+				beforeSend: () => {
+					$('#btn-send').prop('disabled', true);
+					$('#btn-send').html('<i class="fas fa-spinner spin-icon"></i>');
+				},
+				success: () => {
+					$('#chat-input').val('');
+					$('#btn-send').prop('disabled', false);
+					$('#btn-send').html('Kirim');
+					getListAlert({
+						idSiswa: $('input[type=hidden][name=siswa]').val(), 
+						idTugas: $('input[type=hidden][name=tugas]').val()
+					});
+					
+				},
+				error: function(e) {
+					$('#btn-send').prop('disabled', false);
+					$('#btn-send').html('Kirim');
+					alert(e.responseText.msg);
+					console.error(e.responseText);
+					return false;
+				}
+			});
+		});
 
 		$('#limit').change(function(){
 			pageLoad(1,'tugas/page_load_kelas');

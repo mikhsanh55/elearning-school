@@ -93,21 +93,22 @@
                 </div>
 
                 <div class="panel-body" style="overflow: auto">
-                <?php echo $html; ?>
+                    <input type="hidden" id="idUjian" value="<?= $idUjian; ?>">
+                <?= $htmls; ?>
                 </div>
 
                 <div class="panel-footer text-center">
-                    <a class="action back btn btn-info" rel="0" onclick="return back();"><i class="fa fa-step-backward"></i> Back</a>
+                    <a class="action back btn btn-info" id="back-btn" rel="0" data-form="1"><i class="fa fa-step-backward"></i> Back</a>
 
-                    <a class="action next btn btn-info" rel="2" onclick="return next();"><i class="fa fa-step-forward"></i> Next</a>
+                    <a class="action next btn btn-info" id="next-btn" rel="2" data-form="1"><i class="fa fa-step-forward"></i> Next</a>
 
-                    <a class="ragu_ragu btn btn-warning" rel="1" onclick="return tidak_jawab();">Ragu-ragu</a>
+                    <!-- <a class="ragu_ragu btn btn-warning" rel="1" data-form="1" >Ragu-ragu</a> -->
                     
-                    <a class="selesai action submit btn btn-danger" onclick="return simpan_akhir();"><i class="fa fa-ban"></i> Selesai</a>
-
+                    <a class="selesai action submit btn btn-danger" id="selesai-ujian"><i class="fa fa-ban"></i> Selesai</a>
+<!-- 
                     <input type="hidden" name="jml_soal" id="jml_soal" value="<?php echo $no; ?>">
                     <?php $uri5 = $this->uri->segment(5); ?>
-                    <input type="hidden" name="url3" id="url3" value="<?php echo $uri5; ?>">
+                    <input type="hidden" name="url3" id="url3" value="<?php echo $uri5; ?>"> -->
                 </div>
             </div>
         </form>
@@ -125,52 +126,353 @@
 <script src="<?php echo base_url(); ?>assets/plugin/jquery_zoom/jquery.zoom.min.js"></script>
 
 <script type="text/javascript">
-    var base_url = "<?php echo base_url(); ?>", file = undefined, activeForm = '.sub-form-1';
-    id_tes = "<?php echo $id_tes; ?>";
-    $(window).load(function() {
-        $(".se-pre-con").fadeOut("slow");
-    });
+    $(document).ready(function() {
+        /* Deklarasi global vars */
+        var base_url = "<?php echo base_url(); ?>", 
+            file = undefined, // useless
+            activeForm = 'form-soal-1', // useless
+            jumlahSoal = "<?= $jumlahSoal; ?>",
+            formData = '', // untuk FormData object
+            conf = '',
+            url = ''; // var untuk url pas input jawaban & file siswa
+        
+        id_tes = "<?php echo $id_tes; ?>";
 
-    $('.file_essay').on('change', function(e) {
-        e.preventDefault();
-        file = this.files[0];
-        console.warn(file)
+        // Set label soal ke 1
+        $('#soalke').text(1);
 
-    });
+        // Get jawaban dan gambar siswa di soal pertama, kalo ada
+        getJawaban({
+            idSoal: $('#id_soal_1').val(),
+            idUjian: $('#idUjian').val()
+        }, 1);    
 
-    function getFormData($form){
-        var unindexed_array = $form.serializeArray();
-        var indexed_array = {};
-        $.map(unindexed_array, function(n, i){
-            indexed_array[n['name']] = n['value'];
+        function getFormData($form)
+        {
+            var unindexed_array = $form.serializeArray();
+            var indexed_array = {};
+            $.map(unindexed_array, function(n, i){
+                indexed_array[n['name']] = n['value'];
+            });
+            return indexed_array;
+        }
+
+        function getJawaban(data = {}, pageSoal = 1)
+        {
+            $.ajax({
+                type: 'post',
+                url: '<?= base_url('ujian_essay/check-jawaban-soal'); ?>',
+                data,
+                dataType: 'json',
+                success:function(res) {
+                    $('textarea[name=isi_' + pageSoal + ']').val(res.data.jawaban);
+                    if(res.data.file != null) {
+                        $('#img-place-' + pageSoal).html(res.data.file); 
+                    }
+                },
+                error: function(e) {
+                    console.error(e.responseText);
+                    return false;
+                }
+            });
+        }
+
+        // Animasi loading
+        $(window).load(function() {
+            $(".se-pre-con").fadeOut("slow");
         });
-        return indexed_array;
-    }
-    
-    $(document).on("ready", function(){
-        $('.gambar').each(function(){
-            var url = $(this).attr("src");
-            $(this).zoom({url: url});
+
+        // Useless
+        $('.file_essay').on('change', function(e) {
+            e.preventDefault();
+            file = this.files[0];
         });
+
+        // Event back button
+        $('#back-btn').on('click', function() {
+            /*
+            * var currentSoal buat acuan get data seperti id soal, id *file,dari soal yang sedang tampil
+            * sedangkan pageSoal hanya berfungsi untuk memindahkan
+            * page ke soal sebelumnya
+            */
+            var currentSoal = parseInt($(this).data('form')),
+                pageSoal = parseInt($(this).data('form')) > jumlahSoal ? jumlahSoal : parseInt($(this).data('form')) - 1,
+                jawaban = $('textarea[name=isi_' + currentSoal + ']'),
+                file = $('#file_essay_' + currentSoal),
+                idSoal = $('#id_soal_' + currentSoal),
+                ragu = $('#rg_' + currentSoal),
+                id = $('#id-jawaban-' + currentSoal);
+
+            // Set page untuk pagination
+            $(this).data('form', pageSoal);
+            $('#next-btn').data('form', pageSoal);
+
+            // Set label soal ke
+            $('#soalke').text(pageSoal);
+
+            if(file.prop('files').length > 0 || jawaban.val() != '') {
+
+                /* tentukan url berdasarkan id jawaban 
+                * Kalo 0, berarti aksinya Insert, kalo selain itu Update
+                */
+                var idJawaban = $('#id-jawaban-' + currentSoal).val();
+                if(idJawaban == 0 || idJawaban < 1) {
+                    url = "<?= base_url('ujian_essay/insert-jawaban') ?>";
+                }
+                else {
+                    url = "<?= base_url('ujian_essay/update-jawaban') ?>";
+                }
+
+                formData = new FormData();
+                formData.append('idSoal', idSoal.val());
+                formData.append('ragu', ragu.val());
+                formData.append('id', $('#id-jawaban-' + currentSoal).val())
+                if(file.prop('files').length > 0) {
+                    formData.append('file', file.prop('files')[0]);    
+                }
+
+                if(jawaban.val() != '') {
+                    formData.append('jawaban', jawaban.val());
+                }
+                
+                $.ajax({
+                    type: 'post',
+                    url,
+                    data: formData,
+                    dataType: 'json',
+                    processData: false,
+                    contentType: false,
+                    beforeSend: () => $('.ajax-loading').show(),    
+                    success: function(res) {
+                        $('.ajax-loading').hide();
+                    },
+                    error: function(e) {
+                        $('.ajax-loading').hide();
+                        alert(e.responseText.msg);
+                        console.error(e.responseText);
+                        return false;
+                    }
+                });
+            }
+
+
+            // Pindahkan page
+            $(".step").hide();
+            $("#widget_" + pageSoal).show();
+
+            // Get jawaban dan file 
+            var nextIdSoal = $('#id_soal_' + pageSoal).val();
+            getJawaban({
+                idSoal: nextIdSoal,
+                idUjian: $('#idUjian').val()
+            }, pageSoal);
+
+            if(pageSoal == 1) {
+                $('#back-btn').hide();
+                $('#next-btn').show();
+            }
+            else if(pageSoal < jumlahSoal) {
+                $('#back-btn').show();
+                $('#next-btn').show();
+            }
+            else if(pageSoal >= jumlahSoal) {
+                $('#back-btn').show();
+                $('#next-btn').hide();
+            }
+        });
+
+        // Event next button
+        $('#next-btn').on('click', function() {
+            /*
+            * var currentSoal buat acuan get data seperti id soal, id *file,dari soal yang sedang tampil
+            * sedangkan pageSoal hanya berfungsi untuk memindahkan
+            * page ke soal berikutnya
+            */
+
+            var currentSoal = parseInt($(this).data('form')),
+                pageSoal = parseInt($(this).data('form')) > jumlahSoal ? jumlahSoal : parseInt($(this).data('form')) + 1,
+                jawaban = $('textarea[name=isi_' + currentSoal + ']'),
+                file = $('#file_essay_' + currentSoal),
+                idSoal = $('#id_soal_' + currentSoal),
+                ragu = $('#rg_' + currentSoal);
             
-        hitung();
-        simpan_sementara_ujian();
-        buka(1);
+            // Set page untuk pagination
+            $(this).data('form', pageSoal);
+            $('#back-btn').data('form', pageSoal);
 
-        widget      = $(".step");
-        btnnext     = $(".next");
-        btnback     = $(".back"); 
-        btnsubmit   = $(".submit");
+            // Set label soal ke
+            $('#soalke').text(pageSoal);
+            
+            if(file.prop('files').length > 0 || jawaban.val() != '') {
 
-        $(".step").hide();
-        $(".back").hide();
-        $("#widget_1").show();
+                /* tentukan url berdasarkan id jawaban 
+                * Kalo 0, berarti aksinya Insert, kalo selain itu Update
+                */
+                var idJawaban = $('#id-jawaban-' + currentSoal).val();
+                if(idJawaban == 0 || idJawaban < 1) {
+                    url = "<?= base_url('ujian_essay/insert-jawaban') ?>";
+                }
+                else {
+                    url = "<?= base_url('ujian_essay/update-jawaban') ?>";
+                }
+
+                formData = new FormData();
+                formData.append('idSoal', idSoal.val());
+                formData.append('ragu', ragu.val());
+                formData.append('id', $('#id-jawaban-' + currentSoal).val())
+                if(file.prop('files').length > 0) {
+                    formData.append('file', file.prop('files')[0]);
+                }
+
+                if(jawaban.val() != '') {
+                    formData.append('jawaban', jawaban.val());
+                }
+                
+                $.ajax({
+                    type: 'post',
+                    url,
+                    data: formData,
+                    dataType: 'json',
+                    processData: false,
+                    contentType: false,
+                    beforeSend: () => $('.ajax-loading').show(),    
+                    success: function(res) {
+                        $('.ajax-loading').hide();
+                    },
+                    error: function(e) {
+                        $('.ajax-loading').hide();
+                        alert(e.responseText.msg);
+                        console.error(e.responseText);
+                        return false;
+                    }
+                });
+            }
+
+            // Pindahkan page
+            $(".step").hide();
+            $("#widget_" + pageSoal).show();
+
+            // Get jawaban dan file 
+            var nextIdSoal = $('#id_soal_' + pageSoal).val();
+            getJawaban({
+                idSoal: nextIdSoal,
+                idUjian: $('#idUjian').val()
+            }, pageSoal);
+
+            if(pageSoal == 1) {
+                $('#back-btn').hide();
+                $('#next-btn').show();
+            }
+            else if(pageSoal < jumlahSoal) {
+                $('#back-btn').show();
+                $('#next-btn').show();
+            }
+            else if(pageSoal >= jumlahSoal) {
+                $('#back-btn').show();
+                $('#next-btn').hide();
+            }
+        });
+
+        // Hide semua soal dan tampilkan soal pertama
+        $('.step').hide();
+        $('#widget_1').show();
+        $('#back-btn').hide();
+
+        $('#selesai-ujian').click(function() {
+            
+            conf = confirm('Anda yakin sudah mengisi semua soal dengan benar?');
+
+            if(conf) {
+                
+                // Insert atau update soal terakhir
+                var jawaban = $('textarea[name=isi_' + jumlahSoal + ']'),
+                    file = $('#file_essay_' + jumlahSoal),
+                    idSoal = $('#id_soal_' + jumlahSoal),
+                    ragu = $('#rg_' + jumlahSoal);
+                
+                // Set page untuk pagination
+                $(this).data('form', jumlahSoal);
+                $('#back-btn').data('form', jumlahSoal);
+
+                // Set label soal ke
+                $('#soalke').text(jumlahSoal);
+                
+                if(file.prop('files').length > 0 || jawaban.val() != '') {
+
+                    /* tentukan url berdasarkan id jawaban 
+                    * Kalo 0, berarti aksinya Insert, kalo selain itu Update
+                    */
+                    var idJawaban = $('#id-jawaban-' + jumlahSoal).val();
+                    if(idJawaban == 0 || idJawaban < 1) {
+                        url = "<?= base_url('ujian_essay/insert-jawaban') ?>";
+                    }
+                    else {
+                        url = "<?= base_url('ujian_essay/update-jawaban') ?>";
+                    }
+
+                    formData = new FormData();
+                    formData.append('idSoal', idSoal.val());
+                    formData.append('ragu', ragu.val());
+                    formData.append('id', $('#id-jawaban-' + jumlahSoal).val())
+                    if(file.prop('files').length > 0) {
+                        formData.append('file', file.prop('files')[0]);
+                    }
+
+                    if(jawaban.val() != '') {
+                        formData.append('jawaban', jawaban.val());
+                    }
+                    
+                    $.ajax({
+                        type: 'post',
+                        url,
+                        data: formData,
+                        dataType: 'json',
+                        processData: false,
+                        contentType: false,
+                        beforeSend: () => $('.ajax-loading').show(),    
+                        success: function(res) {
+                            $('.ajax-loading').hide();
+                        },
+                        error: function(e) {
+                            $('.ajax-loading').hide();
+                            alert(e.responseText.msg);
+                            console.error(e.responseText);
+                            return false;
+                        }
+                    });
+                }
+
+                // Get jawaban dan file 
+                var nextIdSoal = $('#id_soal_' + jumlahSoal).val();
+                getJawaban({
+                    idSoal: nextIdSoal,
+                    idUjian: $('#idUjian').val()
+                }, jumlahSoal);
+
+                // Update data ujian terakhir
+                $.ajax({
+                    type: 'post',
+                    url: "<?= base_url('ujian_essay/selesai-ujian'); ?>",
+                    data: {
+                        idUjian:$('#idUjian').val()
+                    },
+                    dataType: 'json',
+                    beforeSend: () => $('.ajax-loading').show(),
+                    success: function(res) {
+                        $('.ajax-loading').hide();
+                        alert(res.msg);
+                        window.location.href = "<?= base_url('ujian_real'); ?>"
+                    },
+                    error: function(e) {
+                        alert(e.responseText.msg);
+                        console.error(e.responseText);
+                        return false;
+                    }
+                });
+            }
+        });
     });
-      
-    widget      = $(".step");
-    total_widget = widget.length;
     
-
 
     //jawaban dan nomer
     simpan_sementara_ujian = function() {
@@ -216,48 +518,57 @@
         for(var prop in form) {
             formData.append(prop, form[prop]);
         }
-        if(file != undefined) {
-            formData.append('file', file);
-        }
+        // if(file != undefined) {
+        //     formData.append('file', file);
+        // }
         var id_penggunaan = $("#url3").val();
         $.ajax({    
             type: "POST",
-            url: base_url+"ujian_essay/simpan_satu_ujian/"+id_tes+"/"+id_penggunaan,
+            url: base_url+"ujian_essay/insertOneData/"+id_tes+"/"+id_penggunaan,
             data: formData,
             dataType: 'json',
             processData: false,
             contentType: false,
             beforeSend: function() {
                 $('.ajax-loading').show();    
-            }
-        }).done(function(response) {
-            $('.ajax-loading').hide(); 
+            },
+            success: function(response) {
+                $('.ajax-loading').hide(); 
             
-            var hasil_jawaban = "";
-            var panjang       = response.data.length;
-            
-            for (var i = 0; i < panjang; i++) {
-                if (response.data[i] != "_N") {
-                    var getjwb = response.data[i];
-                    var pc_getjwb = getjwb.split('_');
+                var hasil_jawaban = "";
+                var panjang       = response.data.length;
+                
+                for (var i = 0; i < panjang; i++) {
+                    if (response.data[i] != "_N") {
+                        var getjwb = response.data[i];
+                        var pc_getjwb = getjwb.split('_');
 
-                    if (pc_getjwb[1] == "Y") {
-                        if (pc_getjwb[0] == "-") {
-                            hasil_jawaban += '<a id="btn_soal_'+(i+1)+'" class="btn btn-default btn_soal btn-sm" onclick="return buka('+(i+1)+');">'+(i+1)+". "+pc_getjwb[0]+"</a>";
+                        if (pc_getjwb[1] == "Y") {
+                            if (pc_getjwb[0] == "-") {
+                                hasil_jawaban += '<a id="btn_soal_'+(i+1)+'" class="btn btn-default btn_soal btn-sm" onclick="return buka('+(i+1)+');">'+(i+1)+". "+pc_getjwb[0]+"</a>";
+                            } else {
+                                hasil_jawaban += '<a id="btn_soal_'+(i+1)+'" class="btn btn-warning btn_soal btn-sm" onclick="return buka('+(i+1)+');">'+(i+1)+". "+pc_getjwb[0]+"</a>";
+                            }
                         } else {
-                            hasil_jawaban += '<a id="btn_soal_'+(i+1)+'" class="btn btn-warning btn_soal btn-sm" onclick="return buka('+(i+1)+');">'+(i+1)+". "+pc_getjwb[0]+"</a>";
+                            if (pc_getjwb[0] == "-") {
+                                hasil_jawaban += '<a id="btn_soal_'+(i+1)+'" class="btn btn-default btn_soal btn-sm" onclick="return buka('+(i+1)+');">'+(i+1)+". "+pc_getjwb[0]+"</a>";
+                            } else {
+                                hasil_jawaban += '<a id="btn_soal_'+(i+1)+'" class="btn btn-success btn_soal btn-sm" onclick="return buka('+(i+1)+');">'+(i+1)+". "+pc_getjwb[0]+"</a>";
+                            }
                         }
                     } else {
-                        if (pc_getjwb[0] == "-") {
-                            hasil_jawaban += '<a id="btn_soal_'+(i+1)+'" class="btn btn-default btn_soal btn-sm" onclick="return buka('+(i+1)+');">'+(i+1)+". "+pc_getjwb[0]+"</a>";
-                        } else {
-                            hasil_jawaban += '<a id="btn_soal_'+(i+1)+'" class="btn btn-success btn_soal btn-sm" onclick="return buka('+(i+1)+');">'+(i+1)+". "+pc_getjwb[0]+"</a>";
-                        }
+                        hasil_jawaban += '<a id="btn_soal_'+(i+1)+'" class="btn btn-default btn_soal btn-sm" onclick="return buka('+(i+1)+');">'+(i+1)+". -</a>";
                     }
-                } else {
-                    hasil_jawaban += '<a id="btn_soal_'+(i+1)+'" class="btn btn-default btn_soal btn-sm" onclick="return buka('+(i+1)+');">'+(i+1)+". -</a>";
                 }
+            },
+            error: function(e) {
+                alert('Kesalahan terjadi');
+                $('.ajax-loading').hide(); 
+                var dataError = e.responseText;
+                console.error(dataError);
             }
+        }).done(function(response) {
+            
 
             //$("#tampil_jawaban").html('<div id="yes"></div>'+hasil_jawaban);
         });

@@ -262,3 +262,86 @@ function translate_theme($opsi='sekolah'){
 
 }		
 
+/*
+* Function untuk menentukan format media soal ujian
+*/
+function getMediaSoalFile($file, $filePath, $fileType, $class = '', $width = 80, $height = 80, $imgOnClick = NULL)
+{
+	$html = '';
+	if(!empty($file)) {
+		switch($fileType) {
+			case 'image/jpeg':
+			case 'image/png':
+			case 'image/gif':
+				$html = '<img src="'. base_url($filePath . $file) .'" class="img-thumbnail '.$class.'" alt="'.$file.'" width="'.$width.'" height="'.$height.'" />';
+			break;
+			case 'audio/mpeg':
+			case 'audio/mpg':
+			case 'audio/mpeg3':
+			case 'audio/mp3':
+			case 'audio/x-wav':
+			case 'audio/wave':
+			case 'audio/wav':
+				$html = '<audio controls>
+					<source src="'.base_url($filePath . $file).'" type="'.$fileType.'" />
+					Browser anda tidak mendukung file audio ini.
+				</audio>';
+			break;
+
+			case 'video/mp4':
+				$html = '<video width="300" height="200" controls>
+					<source src="'.base_url($filePath . $file).'" type="'.$fileType.'" />
+					Browser anda tidak mendukung file video ini.
+				</video>';
+			break;
+
+			case 'application/octet-stream':
+				$html = '<a href="'.base_url($filePath . $file).'" download>Download File</a>';
+			break;
+		}
+	}
+
+	return $html;
+}
+
+/*
+* Function untuk  menentukan format media opsi
+* @return html
+*/
+function getMediaOpsiFile($file, $filePath)
+{
+	$fileName = explode('.', $file);
+	$html = '';
+	if(!is_null($file)) {
+		switch(end($fileName)) {
+			case 'png':
+			case 'jpeg':
+			case 'jpg':
+			case 'gif':
+				$html = '<img src="'.base_url($filePath . $file).'" width="100" height="100" alt="'.$file.'" />';
+			break;
+
+			case 'mpeg':
+			case 'mpg':
+			case 'mpeg3':
+			case 'mp3':
+			case 'x-wav':
+			case 'wave':
+			case 'wav':
+				$html = '<audio controls>
+					<source src="'.base_url($filePath . $file).'" type="audio/'.end($fileName).'" />
+					Browser anda tidak mendukung file audio ini.
+				</audio>';
+			break;
+
+			case 'mp4': 
+				$html = '<video width="" height="" controls>
+					<source src="'.base_url($filePath . $file).'" type="video/mp4" />
+					Browser anda tidak mendukung file video ini.
+				</video>';
+			break;
+		}
+	}
+		
+	return $html;
+}

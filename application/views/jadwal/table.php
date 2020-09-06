@@ -1,28 +1,85 @@
+<style>
+	h1{
+      font-family: sans-serif;
+    }
 
+    table {
+      margin-top: 10px;
+      font-family: Arial, Helvetica, sans-serif;
 
+      font-size: 12px;
+      width: 100%;
+      color: #666;
+      background: #eaebec;
+      border: #ccc 1px solid;
+      border-radius: 25px;
+    }
+
+    table th {
+      padding: 2px 5px;
+      border:1px solid #337ab7;
+      background: #337ab7;;
+      text-align: center;
+      color: #fff;
+    }
+
+    table th:first-child{  
+      border-left:none;  
+    }
+
+    table tr {
+      padding-left: 20px;
+    }
+
+    td.frist,th.frist {
+      width: 1px;
+      white-space: nowrap;
+  }
+
+    table td {
+      padding: 5px 5px;
+      border-top: 1px solid #ffffff;
+      border-bottom: 1px solid #e0e0e0;
+      border-left: 1px solid #e0e0e0;
+      background: #fff;
+      background: -webkit-gradient(linear, left top, left bottom, from(#fbfbfb), to(#fafafa));
+      background: -moz-linear-gradient(top, #fbfbfb, #fafafa);
+    }
+
+    table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    table tr:last-child td:first-child {
+      -moz-border-radius-bottomleft: 3px;
+      -webkit-border-bottom-left-radius: 3px;
+      border-bottom-left-radius: 3px;
+    }
+
+    table tr:last-child td:last-child {
+      -moz-border-radius-bottomright: 3px;
+      -webkit-border-bottom-right-radius: 3px;
+      border-bottom-right-radius: 3px;
+    }
+
+    table tr:hover td {
+      background: #f2f2f2;
+      background: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#f0f0f0));
+      background: -moz-linear-gradient(top, #f2f2f2, #f0f0f0);
+    }
+</style>
 <table class="table table-bordered table-striped table-hovered" id="table-kalender">
-
 	<thead>
-
 		<tr>
-
 			<th class="frist">No</th>
-
 			<th>Kelas</th>
-
 			<th>Guru</th>
-
 			<th>Mata Pelajaran</th>
-
 			<th>Materi</th>
-
 			<th>Keterangan</th>
-
 			<th>Mulai</th>
-
 			<th>Selesai</th>
-				<th>Opsi</th>
-
+			<th>Opsi</th>
 		</tr>
 		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows): 
@@ -101,64 +158,35 @@
 		<td class="text-center" colspan="8">Data Kosong</td>
 		</tr>
 	<?php } ?>
-
 	</thead>
-
-<tbody>
-
-</tbody>
-
 </table>
 
 <script type="text/javascript">
-
 	$(document).on('ready',function(){
-
+		$('#table-kalender').DataTable();
 		$('[data-toggle="tooltip"]').tooltip();   
 
+		$('.deleted').click(function(){
+			var y = confirm('Apakah anda yakin ingin mengapus data ini ?');
+
+			if (y == true) {
+				$.ajax({
+					type : 'post',
+					url  : '<?=base_url('jadwal/hapus/');?>',
+					dataType : 'json',
+					data : {
+						id : $(this).data('id')
+					},
+					success:function(response){
+					    $('.notif-number').empty()
+					    $('#notif-list').empty()
+						pageLoad(1,'jadwal/page_load');
+					}
+				});
+			}else{
+				return false;
+			}
+		});
 	});
-
-	$('.deleted').click(function(){
-
-		var y = confirm('Apakah anda yakin ingin mengapus data ini ?');
-
-		if (y == true) {
-
-			$.ajax({
-
-				type : 'post',
-
-				url  : '<?=base_url('jadwal/hapus/');?>',
-
-				dataType : 'json',
-
-				data : {
-
-					id : $(this).data('id')
-
-				},
-
-				success:function(response){
-
-				    $('.notif-number').empty()
-
-				    $('#notif-list').empty()
-
-					pageLoad(1,'jadwal/page_load');
-
-				}
-
-			})
-
-		}else{
-
-			return false
-
-		}
-
-	})
-
-
-
 </script>
 

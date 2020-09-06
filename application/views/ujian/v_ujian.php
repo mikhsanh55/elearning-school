@@ -101,7 +101,7 @@
 
                     <a class="action next btn btn-info" rel="2" onclick="return next();"><i class="fa fa-step-forward"></i> Next</a>
 
-                    <a class="ragu_ragu btn btn-warning" rel="1" onclick="return tidak_jawab();">Ragu-ragu</a>
+                    <!-- <a class="ragu_ragu btn btn-warning" rel="1" onclick="return tidak_jawab();">Ragu-ragu</a> -->
                     
                     <a class="selesai action submit btn btn-danger" onclick="return simpan_akhir();"><i class="fa fa-ban"></i> Selesai</a>
 
@@ -116,7 +116,16 @@
 </div>
 
 <div class="ajax-loading"><i class="fa fa-spin fa-spinner"></i> Loading ...</div>
-
+<!-- Modal for zoomed image -->
+<div class="modal fade" id="sliderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="background: transparent;border:none;">
+      <div class="modal-body" style="background: transparent;padding: 0;">
+        
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <script src="<?php echo base_url(); ?>assets/js/jquery-1.11.3.min.js"></script> 
@@ -129,6 +138,15 @@
     id_tes = "<?php echo $id_tes; ?>";
     $(window).load(function() {
         $(".se-pre-con").fadeOut("slow");
+    });
+
+    $('.img-ujian').on('click', function(e) {
+        e.preventDefault();
+        var src = $(this).attr('src');
+        $('#sliderModal .modal-body').html(`
+            <img src="${src}" class="img-thumbnail mx-auto d-block img-zoom" />
+        `);
+        $('#sliderModal').modal('show');
     });
 
     function getFormData($form){
