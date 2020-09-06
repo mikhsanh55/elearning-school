@@ -100,7 +100,7 @@ class MY_Controller extends CI_Controller
 
 		if($this->session->userdata('admin_valid') == TRUE) {
 			// Create new table
-			$this->checkDBTables('tb_tugas_alert');
+			$this->checkDBTables('tb_keaktifan_siswa');
 		}
 
 		if(!is_dir('./upload/file_jawaban_essay/')) {
@@ -597,14 +597,14 @@ class MY_Controller extends CI_Controller
 	private function checkDBTables($tableName)
 	{
 		$this->db->query("
-			CREATE TABLE IF NOT EXISTS `" . $tableName . "`(
-				id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-				id_tugas INT(11) NOT NULL,
-				id_siswa INT(11) NOT NULL,
-				message TEXT NOT NULL,
-				status ENUM('0','1') NOT NULL,
-				create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
-			)
+			CREATE TABLE IF NOT EXISTS `".$tableName."`(
+				id INT AUTO_INCREMENT PRIMARY KEY,
+			    id_siswa INT NOT NULL,
+			    id_mapel BIGINT(20) DEFAULT NULL,
+			    type ENUM('login','video','read','diskusi','tugas'),
+			    value TINYINT(4),
+			    create_at TIMESTAMP  DEFAULT CURRENT_TIMESTAMP
+			);
 		");
 	}
 }
