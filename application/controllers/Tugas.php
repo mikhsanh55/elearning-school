@@ -383,10 +383,21 @@ class Tugas extends MY_Controller {
 		}
 
 		$this->db->trans_begin();
+		$deleteFileSiswa = $this->m_tugas_attach_siswa->get_many_where('id_tugas', $where);
+
+		if(count($deleteFileSiswa) > 0) {
+			foreach($deleteFileSiswa as $file):
+				if(file_exists('./assets/tugas/attach_siswa/' . $file->file)) {
+					unlink('./assets/tugas/attach_siswa/' . $file->file);
+				}
+			endforeach;
+		}
 
 		$kirim = $this->db->where_in('id',$where)->delete('tb_tugas');
 		$kirim = $this->db->where_in('id_tugas',$where)->delete('tb_tugas_attachment');
 		$kirim = $this->db->where_in('id_tugas', $where)->delete('tb_tugas_alert');
+		$kirim = $this->db->where_in('id_tugas', $where)->delete('tb_tugas_attachment_siswa');
+		$kirim = $this->db->where_in('id',$where)->delete('tb_tugas_nilai');
 
 		if ($this->db->trans_status() === FALSE)
 		{

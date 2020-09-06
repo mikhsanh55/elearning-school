@@ -168,7 +168,7 @@
 				<a href="<?= base_url('export/pdf_list_tugas_siswa/') . encrypt_url($kelas->id); ?>" class="btn btn-sm btn-danger">
 					<i class="fas fa-file-pdf-o"></i>&nbsp; Export ke PDF
 				</a>
-				<a href="<?= base_url('export/list_tugas_siswa/') . encrypt_url($kelas->id); ?>" class="btn btn-sm btn-success">
+				<a href="<?= base_url('export/list_tugas_siswa/') . encrypt_url($kelas->id) . '/' . encrypt_url($tugas->id); ?>" class="btn btn-sm btn-success">
 					<i class="fas fa-file-excel-o"></i>&nbsp; Export ke Excel
 				</a>
 				<div id="content-view"></div>

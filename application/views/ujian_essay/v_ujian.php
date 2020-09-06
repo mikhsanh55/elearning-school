@@ -248,7 +248,7 @@
                     },
                     error: function(e) {
                         $('.ajax-loading').hide();
-                        alert('Kesalahan terjadi gara-gara lho!');
+                        alert(e.responseText.msg);
                         console.error(e.responseText);
                         return false;
                     }
@@ -341,7 +341,7 @@
                     },
                     error: function(e) {
                         $('.ajax-loading').hide();
-                        alert('Kesalahan terjadi gara-gara lho!');
+                        alert(e.responseText.msg);
                         console.error(e.responseText);
                         return false;
                     }
@@ -435,7 +435,7 @@
                         },
                         error: function(e) {
                             $('.ajax-loading').hide();
-                            alert('Kesalahan terjadi gara-gara lho!');
+                            alert(e.responseText.msg);
                             console.error(e.responseText);
                             return false;
                         }
@@ -464,7 +464,7 @@
                         window.location.href = "<?= base_url('ujian_real'); ?>"
                     },
                     error: function(e) {
-                        alert('Kesalahan terjadi saat mengakhiri ujian!');
+                        alert(e.responseText.msg);
                         console.error(e.responseText);
                         return false;
                     }
