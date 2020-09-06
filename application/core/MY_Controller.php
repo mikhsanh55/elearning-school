@@ -103,9 +103,9 @@ class MY_Controller extends CI_Controller
 			$this->checkDBTables('tb_tugas_alert');
 		}
 
-		// if(!is_dir('./upload/file_jawaban_essay/')) {
-		// 	mkdir('./upload/file_jawaban_essay/');
-		// }
+		if(!is_dir('./upload/file_jawaban_essay/')) {
+			mkdir('./upload/file_jawaban_essay/');
+		}
 		
 		$this->load->model('m_instansi');
 		$this->backButton = '<button class="btn btn-light text-right" onclick="history.back()">Kembali</button>';
