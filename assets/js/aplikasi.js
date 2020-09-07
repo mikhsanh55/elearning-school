@@ -492,7 +492,7 @@ function hapus_file_ujian(id,no) {
 	if (confirm('Anda yakin mau menghapus file ini..?')) {
 		$.ajax({
 			type: "GET",
-			url: base_url+"ujian/file_hapus_ujian/"+id+"/"+no,
+			url: base_url+"ujian_real/file_hapus_ujian/"+id+"/"+no,
 			success: function(response) {
 				if (response.status == "ok") {
 					// pageLoad(1,'soal/m_soal/edit/'+id);

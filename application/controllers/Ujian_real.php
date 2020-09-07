@@ -2207,4 +2207,115 @@ class Ujian_real extends MY_Controller
 		// print_r($datas);exit;
 		$this->load->view('ujian/v_periksa_ujian', $datas);
 	}
+
+	public function hapusSoalFile()
+	{
+		$post = $this->input->post();
+
+		$idSoal = $post['id'];
+		$data = $this->m_soal_ujian->get_by(['id' => $idSoal]);
+
+		$update = $this->m_soal_ujian->update([
+			'file' => NULL,
+			'tipe_file' => NULL
+		], ['id' => $idSoal]);
+
+		if($update) {
+			if(file_exists($this->_fileSoalPath . $data->file)) {
+				unlink($this->_fileSoalPath . $data->file);
+			}
+
+			$this->sendAjaxResponse([
+				'status' => TRUE,
+				'msg' => 'File berhasil dihapus'
+			]);			
+		}
+		else {
+			$this->sendAjaxResponse([
+				'status' => FALSE,
+				'msg' => 'File gagal dihapus'
+			], 500);
+		}
+	}
+
+	public function hapusOpsiFile()
+	{
+		$post = $this->input->post();
+		$idSoal = $post['id'];
+		$opsi = $post['opsi'];
+
+		$data = $this->m_soal_ujian->get_by(['id' => $idSoal]);
+		$opsiKey = ''; // opsi_a
+		
+		$newOpsi = '';
+		switch ($opsi) {
+			case 'a':
+				$opsi = explode('#####', $data->opsi_a);
+				$opsi[0] = NULL;
+				$newOpsi = implode('#####', $opsi);
+				$opsiKey = 'opsi_a';
+				if(file_exists($this->_fileOpsiPath . $post['file'])) {
+					unlink($this->_fileOpsiPath . $post['file']);
+				}		
+			break;
+
+			case 'b':
+				$opsi = explode('#####', $data->opsi_b);
+				$opsi[0] = NULL;
+				$newOpsi = implode('#####', $opsi);
+				$opsiKey = 'opsi_b';
+				if(file_exists($this->_fileOpsiPath . $post['file'])) {
+					unlink($this->_fileOpsiPath . $post['file']);
+				}
+			break;
+
+			case 'c':
+				$opsi = explode('#####', $data->opsi_c);
+				$opsi[0] = NULL;
+				$newOpsi = implode('#####', $opsi);
+				$opsiKey = 'opsi_c';
+				if(file_exists($this->_fileOpsiPath . $post['file'])) {
+					unlink($this->_fileOpsiPath . $post['file']);
+				}
+			break;
+
+			case 'd':
+				$opsi = explode('#####', $data->opsi_d);
+				$opsi[0] = NULL;
+				$newOpsi = implode('#####', $opsi);
+				$opsiKey = 'opsi_d';
+				if(file_exists($this->_fileOpsiPath . $post['file'])) {
+					unlink($this->_fileOpsiPath . $post['file']);
+				}
+			break;
+
+			case 'e':
+				$opsi = explode('#####', $data->opsi_e);
+				$opsi[0] = NULL;
+				$newOpsi = implode('#####', $opsi);
+				$opsiKey = 'opsi_e';
+				if(file_exists($this->_fileOpsiPath . $post['file'])) {
+					unlink($this->_fileOpsiPath . $post['file']);
+				}
+			break;
+		}
+		
+
+		$update = $this->m_soal_ujian->update([
+			$opsiKey => $newOpsi
+		], ['id' => $idSoal]);
+
+		if($update) {
+			$this->sendAjaxResponse([
+				'status' => TRUE,
+				'msg' => 'File berhasil dihapus'
+			]);
+		}
+		else {
+			$this->sendAjaxResponse([
+				'status' => FALSE,
+				'msg' => 'File gagal dihapus'
+			], 500);
+		}
+	}
 }
