@@ -6,12 +6,12 @@ class Ujian_real extends MY_Controller
 	/*
 	* path untuk file soal
 	*/
-	public $_fileSoalPath = 'upload/file_ujian_soal/';
+	public $_fileSoalPath = './upload/file_ujian_soal/';
 
 	/*
 	* path untuk file opsi (a, b, c, d, e)
 	*/
-	public $_fileOpsiPath = 'upload/file_ujian_opsi/';
+	public $_fileOpsiPath = './upload/file_ujian_opsi/';
 
     public function __construct() 
     {
