@@ -36,7 +36,7 @@
 					if (is_file('./upload/file_ujian_soal/' . $d['file'])) {
 						echo tampil_media('./upload/file_ujian_soal/' . $d['file'], "100%");
 						$number = 1;
-						echo '<a href="#" onclick="return hapus_file_ujian('.$d['id'].','.$number.');" class="btn btn-danger btn-sm mr-2"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
+						echo '<a href="#" data-id="'.$d['id'].'" onclick="hapusSoalFile(this, event)" class="btn btn-danger btn-sm mr-2"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
 					}
 					?>
 				</div>
@@ -61,18 +61,16 @@
 							$number1 = 2;$number2 = 3;$number3 = 4;$number4 = 5;$number5 = 6;
 							
 							if($huruf_opsi[$j] == "a"){
-								echo '<a href="#" onclick="return hapus_file_ujian('.$d['id'].','.$number1.');" class="btn btn-danger btn-sm mr-2"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
+								echo '<a href="#" data-id="'.$d['id'].'" data-opsi="a" data-file="'.$data_pc[$idx]['gambar'].'" class="btn btn-danger btn-sm mr-2 hapus-file-opsi" onclick="hapusOpsiFile(this)"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
 							}else if($huruf_opsi[$j] == "b"){
-								echo '<a href="#" onclick="return hapus_file_ujian('.$d['id'].','.$number2.');" class="btn btn-danger btn-sm mr-2"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
+								echo '<a href="#" data-id="'.$d['id'].'" data-opsi="b" data-file="'.$data_pc[$idx]['gambar'].'" class="btn btn-danger btn-sm mr-2 hapus-file-opsi" onclick="hapusOpsiFile(this, event)"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
 							}else if($huruf_opsi[$j] == "c"){
-								echo '<a href="#" onclick="return hapus_file_ujian('.$d['id'].','.$number3.');" class="btn btn-danger btn-sm mr-2"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
+								echo '<a href="#" data-id="'.$d['id'].'" data-opsi="c" data-file="'.$data_pc[$idx]['gambar'].'" class="btn btn-danger btn-sm mr-2 hapus-file-opsi" onclick="hapusOpsiFile(this, event)"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
 							}else if($huruf_opsi[$j] == "d"){
-								echo '<a href="#" onclick="return hapus_file_ujian('.$d['id'].','.$number4.');" class="btn btn-danger btn-sm mr-2"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
+								echo '<a href="#" data-id="'.$d['id'].'" data-opsi="d" data-file="'.$data_pc[$idx]['gambar'].'" class="btn btn-danger btn-sm mr-2 hapus-file-opsi" onclick="hapusOpsiFile(this, event)"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
 							}else if($huruf_opsi[$j] == "e"){
-								echo '<a href="#" onclick="return hapus_file_ujian('.$d['id'].','.$number5.');" class="btn btn-danger btn-sm mr-2"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
+								echo '<a href="#" data-id="'.$d['id'].'" data-opsi="e" data-file="'.$data_pc[$idx]['gambar'].'" class="btn btn-danger btn-sm mr-2 hapus-file-opsi" onclick="hapusOpsiFile(this, event)"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Hapus File</a>';
 							}
-							
-							
 						}
 						?>
 					</div>
@@ -126,25 +124,71 @@
 <script src="<?php echo base_url(); ?>assets/plugin/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
+		let id, opsi, file, conf;
 		if (editor_style == "inline") {
-				CKEDITOR.inline('editornya');
-				CKEDITOR.inline('editornya_a');
-				CKEDITOR.inline('editornya_b');
-				CKEDITOR.inline('editornya_c');
-				CKEDITOR.inline('editornya_d');
-				CKEDITOR.inline('editornya_e');
-			} else if (editor_style == "replace") {
-				CKEDITOR.replace('editornya');
-				CKEDITOR.replace('editornya_a');
-				CKEDITOR.replace('editornya_b');
-				CKEDITOR.replace('editornya_c');
-				CKEDITOR.replace('editornya_d');
-				CKEDITOR.replace('editornya_e');
-			}
-	})
-</script>
+			CKEDITOR.inline('editornya');
+			CKEDITOR.inline('editornya_a');
+			CKEDITOR.inline('editornya_b');
+			CKEDITOR.inline('editornya_c');
+			CKEDITOR.inline('editornya_d');
+			CKEDITOR.inline('editornya_e');
+		} else if (editor_style == "replace") {
+			CKEDITOR.replace('editornya');
+			CKEDITOR.replace('editornya_a');
+			CKEDITOR.replace('editornya_b');
+			CKEDITOR.replace('editornya_c');
+			CKEDITOR.replace('editornya_d');
+			CKEDITOR.replace('editornya_e');
+		}
 
+		
+	});
 
+	function hapusOpsiFile(self, event) {
+		
+		conf = confirm('Anda yakin?');
+		if(conf) {
+			id = $(self).data('id');
+			opsi = $(self).data('opsi');
+			file = $(self).data('file');
+			$.ajax({
+				type: 'post',
+				url: "<?= base_url('ujian/hapus-opsi-file') ?>",
+				data: {
+					id,
+					opsi,
+					file
+				},
+				dataType: 'json',
+				success: () => window.location.reload(),
+				error: (e) => {
+					alert(e.responseText.msg);
+					console.error(e.responseText);
+					return false;
+				}
+			});
+		}
+	}
 
+	function hapusSoalFile(self, event) {
+		conf = confirm('Anda yakin?');
+		if(conf) {
+			id = $(self).data('id');
 
-
+			$.ajax({
+				type: 'post',
+				url: "<?= base_url('ujian/hapus-soal-file'); ?>",
+				data: {
+					id
+				},
+				dataType: 'json',
+				success: () => window.location.reload(),
+				error: (e) => {
+					alert(e.responseText.msg);
+					console.error(e.responseText);
+					return false;
+				}
+			});
+		}
+	}
+</script>	
