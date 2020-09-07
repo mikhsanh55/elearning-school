@@ -509,7 +509,7 @@ class Ujian_real extends MY_Controller
 
 
 		$paginate = $this->m_soal_ujian->paginate($pg,$where,$limit);
-		// print_r($this->db->last_query());exit;
+		print_r($paginate);exit;
 
 		$data['paginate'] = $paginate;
 
