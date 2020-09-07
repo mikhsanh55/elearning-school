@@ -1089,15 +1089,6 @@ class Ujian_essay extends MY_Controller {
 				} else {
 					$q_ambil_soal = $this->m_ikut_ujian_essay->get_by(['id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
 					$ikut = $this->m_ikut_ujian_essay->get_by(['status' => 'Y','id_ujian'=>$id_ujian,'id_user'=>$this->akun->id]);
-					// print_r($q_ambil_soal);exit;
-					// $urut_soal 		= explode(",", $q_ambil_soal->list_jawaban);
-					// $soal_urut_ok	= array();
-					// for ($i = 0; $i < sizeof($urut_soal); $i++) {
-					// 	$pc_urut_soal = explode(":",$urut_soal[$i]);
-					// 	$pc_urut_soal1 = empty($pc_urut_soal[1]) ? "''" : "'".$pc_urut_soal[1]."'";
-					// 	$ambil_soal = $this->db->query("SELECT *, $pc_urut_soal1 AS jawaban FROM m_soal_ujian WHERE id = '".$pc_urut_soal[0]."'")->row();
-					// 	$soal_urut_ok[] = $ambil_soal; 
-					// }
 
 					$jwb_essay = $this->m_jawaban_essay->get_many_by(['id_ikut_essay'=>$q_ambil_soal->id]);
 					$soal_urut_ok = $this->m_soal_ujian_essay->get_many_by([
@@ -1106,7 +1097,8 @@ class Ujian_essay extends MY_Controller {
 
 				}
 
-				$html = '';
+				$html = ''; // untuk input dan soal
+				$navigasiSoal = '<div id="yes"></div>'; // untuk navigasi soal
 				$no = 1;
 				$arr_jawab = array();
 				$jumlahSoal = $this->m_soal_ujian_essay->get_many_by([
@@ -1155,34 +1147,24 @@ class Ujian_essay extends MY_Controller {
 						$vrg = 'N';
 						$val = '';
 						// $val = $arr_jawab[$d->id]["j"];
+						$html .= '  
+							<div class="step" id="widget_'.$no.'">
+								<input type="hidden" name="id_soal_'.$no.'" value="'.$d->id.'" id="id_soal_'.$no.'">
+								<input type="hidden" name="rg_'.$no.'" id="rg_'.$no.'" value="'.$vrg.'" data-no="'.$no.'">
+								'.$d->soal.'<br>'.$tampil_media.'
+								<div class="funkyradio">
+									<div id="img-place-'.$no.'"></div>
+									<input type="file" id="file_essay_'.$no.'" class="file_essay" name="file_'.$no.'" class="form-control" /><br>
+									<input type="hidden" id="id-jawaban-'.$no.'" value="'.$idJawaban.'" />
+									<textarea class="form-control" name="isi_'.$no.'">'.$val.'</textarea><br>
+								</div>
+							</div>';
 
-						$html .= '  <div class="step" id="widget_'.$no.'">
-										<input type="hidden" name="id_soal_'.$no.'" value="'.$d->id.'" id="id_soal_'.$no.'">
-										<input type="hidden" name="rg_'.$no.'" id="rg_'.$no.'" value="'.$vrg.'" data-no="'.$no.'">
-										'.$d->soal.'<br>'.$tampil_media.'
-										<div class="funkyradio">
-											<div id="img-place-'.$no.'"></div>
-											<input type="file" id="file_essay_'.$no.'" class="file_essay" name="file_'.$no.'" class="form-control" /><br>
-											<input type="hidden" id="id-jawaban-'.$no.'" value="'.$idJawaban.'" />
-											<textarea class="form-control" name="isi_'.$no.'">'.$val.'</textarea><br>
-										</div>
-									</div>';
-
-				  //       $html .= '<input type="hidden" name="id_soal_'.$no.'" value="'.$d->id.'">';
-
-				  //       $html .= '<input type="hidden" name="rg_'.$no.'" id="rg_'.$no.'" value="'.$vrg.'" data-no="'.$no.'">';
-
-				  //       $html .= '<div class="step" id="widget_'.$no.'">';
-
-						// $html .= $d->soal.'<br>'.$tampil_media.'<div class="funkyradio">';
-						// $html .= '<input type="file" class="file_essay" name="file_'.$no.'" class="form-control" /><br>';
-						// $html .= '<textarea class="form-control" name="isi_'.$no.'">'.$val.'</textarea><br>';
-				  //       $html .= '</div></div>';
-				  //       $html .= '</form>';
+						$navigasiSoal .= '
+							<a class="btn btn-default btn-sm m-2 link-navigasi-soal" href="#" data-soal="'.$d->id.'" data-no="'.$no.'">'.$no.'. </a>
+						';
 				        $no++;
-
 				    }
-
 				}
 
 				$a['jam_mulai'] = $ikut->tgl_mulai;
@@ -1195,7 +1177,8 @@ class Ujian_essay extends MY_Controller {
 				]);
 				$a['soalUjian'] = $jumlahSoal;
 				$a['idUjian'] = $id_ujian;
-				// print_r($a);exit;
+				$a['navigasiSoal'] = $navigasiSoal;
+				// print_r($a);exit;				
 			
 				$this->load->view('ujian_essay/v_ujian', $a);
 			} else {

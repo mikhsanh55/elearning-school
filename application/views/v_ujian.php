@@ -259,7 +259,6 @@ function hide() {
     x.style.display = "none";
   }
 }
-
     
     hitung = function() {
         var tgl_mulai = '<?php echo date('Y-m-d H:i:s'); ?>';

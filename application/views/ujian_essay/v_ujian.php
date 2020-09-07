@@ -74,7 +74,9 @@
                 <div class="btn btn-default col-md-12"><i class="fa fa-search"></i> Navigasi Soal</div>
             </div>
             <div class="panel-body" style="overflow: auto;  height: 450px; padding: 10px">
-                <div id="tampil_jawaban" class="text-center"></div>
+                <div id="tampil_jawaban" class="text-center">
+                    <?= $navigasiSoal; ?>
+                </div>
             </div>
         </div>
     </div>
@@ -85,10 +87,14 @@
                 <div class="panel-heading">Soal Ke <div class="btn btn-info" id="soalke"></div>
         
                     <div class="tbl-kanan-soal">
-                        <div id="clock" style="font-weight: bold" class="btn btn-danger"></div>
+                        <div id="clock" style="font-weight: bold" class="btn btn-danger "></div>
                     </div>
-                    <div class="tbl-kanan-soal">
-                    <div onclick="return hide();" style="font-size: 18px;" class="btn btn-primary fa fa-eye"></div>
+                    <div class="tbl-kanan-soal" style="margin-right: 10px;">
+                        <!-- <div onclick="return hide();" style="font-size: 18px;" class="">Sembunyikan timer</div> -->
+                        
+                        <button id="hide-timer" class="btn btn-primary" data-hide="0">
+                            Sembunyikan timer
+                        </button>
                     </div>
                 </div>
 
@@ -186,6 +192,32 @@
         $('.file_essay').on('change', function(e) {
             e.preventDefault();
             file = this.files[0];
+        });
+
+        // Hide timer button
+        $('#hide-timer').click(function(e) {
+            e.preventDefault();
+            if($(this).data('hide') == 1) {
+                $(this).data('hide', 0);
+                $(this).text('Sembunyikan timer');
+                $('#clock').css('display', 'block');       
+            }
+            else {
+                $(this).data('hide', 1);   
+                $(this).text('Munculkan');
+                $('#clock').css('display', 'none');       
+            }
+        });
+
+        // Event Navigasi soal
+        $('.link-navigasi-soal').on('click', function(e) {
+            e.preventDefault();
+            var idSoal = $(this).data('soal'),
+                noSoal = $(this).data('no');
+            
+            // Pindahkan page
+            $(".step").hide();
+            $("#widget_" + noSoal).show();
         });
 
         // Event back button
@@ -471,6 +503,37 @@
                 });
             }
         });
+    });
+
+    // Start clock timer
+    $('#clock').countdowntimer({
+        startDate: "<?= date('Y-m-d H:i:s'); ?>",
+        dateAndTime: "<?= $jam_selesai; ?>",
+        size: 'lg',
+        displayFormat: 'HMS',
+        timeUp: () => {
+            // Update data ujian terakhir
+            $.ajax({
+                type: 'post',
+                url: "<?= base_url('ujian_essay/selesai-ujian'); ?>",
+                data: {
+                    idUjian:$('#idUjian').val()
+                },
+                dataType: 'json',
+                beforeSend: () => $('.ajax-loading').show(),
+                success: function(res) {
+                    $('.ajax-loading').hide();
+                    alert(res.msg);
+                    window.location.href = "<?= base_url('ujian_real'); ?>"
+                },
+                error: function(e) {
+                    alert(e.responseText.msg);
+                    console.error(e.responseText);
+                    return false;
+                }
+            });                        
+        }
+
     });
     
 

@@ -4,7 +4,7 @@
 		<tr>
 			<th class="frist"><input type="checkbox" name="checkall" id="checkall"></th>
 			<th class="frist">No</th>
-			<th>Gambar</th>
+			<th>Media</th>
 			<th>Soal</th>
 		</tr>
 		<?php 
