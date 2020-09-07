@@ -266,38 +266,29 @@ class Ujian_real extends MY_Controller
 		if($post['type_ujian'] == 'harian') {
 			$data['izin'] = 1;
 		}
+
 		if ($this->log_lvl == 'guru') {
-
 			$data['id_guru'] = $this->akun->id;
-
 		}
 
-
-
 		$kirim = $this->m_ujian->insert($data);
-
 		if ($kirim) {
-
-			$json['status']  = 1;
-
-			$json['message'] = 'Tambah ujian berhasil';
-
 			if($this->log_lvl === 'guru') {
 				$this->updateActiveUser($this->log_lvl, 'sum_upload_ujian');
 			}
-
+			else {
+				$this->sendAjaxResponse([
+					'status' => TRUE,
+					'msg' => 'Tambah ujian berhasil'
+				]);
+			}
 		}else{
-
-			$json['status']  = 1;
-
-			$json['message'] = 'Tambah ujian gagal';
-			echo json_encode($json);
-
+			$this->sendAjaxResponse([
+				'status' => FALSE,
+				'msg' => 'Tambah ujian gagal'
+			], 500);
 		}
-
 	}
-
-
 
 	public function update()
 	{
