@@ -229,6 +229,7 @@ class Kelas extends MY_Controller
   public function page_load_guru($pg = 1) {
   	$post = $this->input->post();
   	$limit = $post['limit'];
+  	$pg = $post['pg'];
   	$where = [];
 
   	$where['dmapel.id_guru'] = $this->session->admin_konid;
