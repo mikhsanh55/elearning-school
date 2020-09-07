@@ -95,6 +95,12 @@
 							else {
 								echo $noSoal;
 							}
+							echo $tambahKelasBtn;
+							echo $soalPg;
+							echo $soalEssay;
+							echo $cekHasilPg;
+							echo $cekHasilEssay;
+							echo $ulangUjianBtn;
 						break;
 
 						case 'siswa':
