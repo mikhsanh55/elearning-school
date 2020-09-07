@@ -668,21 +668,14 @@ class Ujian_real extends MY_Controller
 
 			// Insert Data Soal : Bobot, Soalnya, Jawaban, sama Id Ujian
 			$pdata = array(
-
-
 				"soal"=>$p['soal'],
-
 				"jawaban"=>$p['jawaban'],
-
 				'id_ujian' => $p['id_ujian']
-
 			);
 
 			if($p['bobot'] != NULL) {
 				$pdata['bobot'] = $p['bobot'];
 			}
-
-
 
 			if ($__mode == "edit") {
 
@@ -794,9 +787,9 @@ class Ujian_real extends MY_Controller
 							}
 
 							// Hapus file opsi
-							if( is_array($fileOpsiName) && file_exists($this->_fileOpsiPath . $fileOpsiName[0])) {
-								unlink($this->_fileOpsiPath . $fileOpsiName[0]);
-							}
+							// if( is_array($fileOpsiName) && file_exists($this->_fileOpsiPath . $fileOpsiName[0])) {
+							// 	unlink($this->_fileOpsiPath . $fileOpsiName[0]);
+							// }
 						}
 					}
 					$gagal[$k]	 	= $kode_file_error[$file_error]; //kode kegagalan upload file
