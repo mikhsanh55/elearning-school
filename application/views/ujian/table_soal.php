@@ -59,31 +59,31 @@
 								</li>
 								<li class="d-flex flex-row ">
 									<div>B. </div><?= end($opsi_b); ?>
-										<?php if(!is_null($gambar_b)) { ?> 
+										<!-- <?php if(!is_null($gambar_b)) { ?>  -->
 											<?= $mediaOpsiB; ?>
-										<?php } ?> 
+										<!-- <?php } ?>  -->
 									 
 								</li>
 								
 								<li class="d-flex flex-row ">
 									<div>C. </div><?= end($opsi_c); ?>
-										<?php if(!is_null($gambar_c)) { ?> 
+										<!-- <?php if(!is_null($gambar_c)) { ?>  -->
 											<?= $mediaOpsiC; ?>
-										<?php } ?> 
+										<!-- <?php } ?>  -->
 									 
 								</li>
 								<li class="d-flex flex-row ">
 									<div>D. </div><?= end($opsi_d); ?>
-										<?php if(!is_null($gambar_d)) { ?> 
+										<!-- <?php if(!is_null($gambar_d)) { ?>  -->
 											<?= $mediaOpsiD; ?>
-										<?php } ?> 
+										<!-- <?php } ?>  -->
 									 
 								</li>
 								<li class="d-flex flex-row ">
 									<div>E. </div><?= end($opsi_e); ?>
-										<?php if(!is_null($gambar_e)) { ?> 
+										<!-- <?php if(!is_null($gambar_e)) { ?>  -->
 											<?= $mediaOpsiE; ?>
-										<?php } ?> 
+										<!-- <?php } ?>  -->
 								</li>
 							</ul>
 						</div>
