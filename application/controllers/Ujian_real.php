@@ -755,7 +755,7 @@ class Ujian_real extends MY_Controller
 					$ekstensi = explode(".", $file_name);
 					$file_name = $k."_".$__id_soal.".". end($ekstensi);
 					if ($k == "file_ujian_soal") {
-						@move_uploaded_file($file_tmp, $folder_gb_soal.$file_name);
+						@move_uploaded_file($file_tmp, $this->_fileSoalPath.$file_name);
 						// Hapus file sebelumnya jika ada
 						if($__mode == 'edit') {
 							$fileSoal = $this->m_soal_ujian->get_by([
@@ -767,7 +767,7 @@ class Ujian_real extends MY_Controller
 							}
 						}
 					} else {
-						@move_uploaded_file($file_tmp, $folder_gb_opsi.$file_name);
+						@move_uploaded_file($file_tmp, $this->_fileOpsiPath.$file_name);
 						// Hapus file sebelumnya jika ada
 						if($__mode == 'edit') {
 							$fileOpsi = $this->m_soal_ujian->get_by([
