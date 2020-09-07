@@ -794,7 +794,7 @@ class Ujian_real extends MY_Controller
 								$previousFileExt = end($previousFile);
 
 								if($ekstensiUploadedFile != $previousFileExt) {
-									unlink($this->_fileOpsiPath . $previousFile);
+									unlink($this->_fileOpsiPath . $fileOpsiName[0]);
 								}
 							}
 							// if( is_array($fileOpsiName) && file_exists($this->_fileOpsiPath . $fileOpsiName[0])) {
