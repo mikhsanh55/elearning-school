@@ -787,6 +787,16 @@ class Ujian_real extends MY_Controller
 							}
 
 							// Hapus file opsi
+							$ekstensiUploadedFile = end($ekstensi);
+							// Jika file sebelumnya tidak sama ekstensinya dengan file yang diupload, maka hapus file sebelumnya
+							if(is_array($fileOpsiName) && !empty($fileOpsiName[0])) {
+								$previousFile = explode('.', $fileOpsiName[0]);
+								$previousFileExt = end($previousFile);
+
+								if($ekstensiUploadedFile != $previousFileExt) {
+									unlink($this->_fileOpsiPath . $previousFile);
+								}
+							}
 							// if( is_array($fileOpsiName) && file_exists($this->_fileOpsiPath . $fileOpsiName[0])) {
 							// 	unlink($this->_fileOpsiPath . $fileOpsiName[0]);
 							// }
