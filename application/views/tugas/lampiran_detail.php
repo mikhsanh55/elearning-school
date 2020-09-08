@@ -34,7 +34,7 @@
 										
 									?>
 									<i class="mr-2 <?=$type[strtolower($val->format)];?>" style="color: <?=$color[strtolower($val->format)];?>; font-size: 20px;"></i>
-									<a <?=$style;?> href="<?=base_url('tugas/get_file/?file='.encrypt_url('assets/tugas/attach_siswa/'.$val->file));?>">
+									<a <?=$style;?> href="<?= base_url('assets/tugas/attach_siswa/' . $val->file); ?>" download>
 									<?=$val->file;?>
 									</a>
 			                        <br />
