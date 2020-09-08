@@ -178,7 +178,7 @@
 </div>
 </div>
 <!-- Modal -->
-<div class="modal" tabindex="-1" role="dialog" id="ingatkan-modal">
+<!-- <div class="modal" tabindex="-1" role="dialog" id="ingatkan-modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -193,14 +193,14 @@
       <div class="modal-body">
         <div class="row">
         	<div class="col-md-6 col-sm-10 align-self-start" id="chat-place">
-        		<!-- Content of Message Here -->
+        		
         	</div>
         </div>
       </div>
       <div class="chat-modal-footer">
       	<form action="" class="d-flex justify-content-between w-100 align-items-center" id="form-send-alert">
       		<div class="form-group">
-      			<!-- <textarea class="form-control" name="message" style="width: 450%;"></textarea> -->
+      			 <textarea class="form-control" name="message" style="width: 450%;"></textarea> 
       			<input type="hidden" name="siswa" value="">
       			<input type="hidden" name="tugas" value="">
       			<input type="text" name="message" class="form-control" placeholder="Ketik pesan" id="chat-input" required>
@@ -215,7 +215,7 @@
     </div>
   </div>
 </div>
-
+ -->
 <!--/.row-box End-->
 <script src="<?= base_url(); ?>assets/js/jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
