@@ -1211,10 +1211,19 @@ class Ujian_real extends MY_Controller
 
 		}
 
-
-
 		public function ikut_ujian($id_ujian){
 			$id_ujian = decrypt_url($id_ujian);
+
+			if($this->log_lvl != 'siswa') {
+				redirect('ujian_real');
+			}
+
+			// Check apakah siswa sudah ujian
+			$checkSudahPG = $this->sudahUjian('pg', $id_ujian);
+
+			if($checkSudahPG == TRUE || $checkSudahPG == 1) {
+				redirect('ujian_real');
+			}
 
 			if ($this->session->userdata('selesai_ujian') == 1) {
 				$cek = $this->db->query("
@@ -1680,18 +1689,14 @@ class Ujian_real extends MY_Controller
 				if($cek->num_rows() > 0) {
 
 					$this->db->query("UPDATE tb_ikut_ujian_pertama SET jml_benar = '.$jumlah_benar.', nilai = '.$nilai.', nilai_bobot = '.$nilai_bobot.', status = 'N' WHERE status = 'Y' AND id_ujian = '$id_ujian' AND id_user = '".$this->akun->id."'");
-
 				}
-
-
-
 				$this->session->set_userdata(array('selesai_ujian'=>1));
-
-
-
-
-
 			}
+
+			// Set hasil ujian siswa to end so that siswa can't akses this page again cause she/he was exercised
+			$this->m_ikut_ujian->update([
+				'status_ujian' => 1
+			], ['id_user' => $this->akun->id, 'id_ujian' => $id_ujian]);
 
 			$a['status'] = "ok";
 

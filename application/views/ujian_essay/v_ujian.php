@@ -75,7 +75,7 @@
             </div>
             <div class="panel-body" style="overflow: auto;  height: 450px; padding: 10px">
                 <div id="tampil_jawaban" class="text-center">
-                    <?= $navigasiSoal; ?>
+                    
                 </div>
             </div>
         </div>
@@ -213,8 +213,61 @@
         $('.link-navigasi-soal').on('click', function(e) {
             e.preventDefault();
             var idSoal = $(this).data('soal'),
-                noSoal = $(this).data('no');
-            
+                noSoal = $(this).data('no'),
+                jawaban = $('textarea[name=isi_' + noSoal + ']'),
+                file = $('#file_essay_' + noSoal),
+                ragu = $('#rg_' + noSoal),
+                idJawaban = $('id-jawaban-' + noSoal);
+            console.warn(noSoal)
+            console.warn(jawaban)
+
+            // Set label soal ke
+            $('#soalke').text(noSoal);
+
+            if(file.prop('files').length > 0 || jawaban.val() != '') {
+                
+
+                if(idJawaban == 0 || idJawaban < 1) {
+                    url = "<?= base_url('ujian_essay/insert-jawaban') ?>";
+                }
+                else {
+                    url = "<?= base_url('ujian_essay/update-jawaban') ?>";
+                }
+
+                
+                formData = new FormData();
+                formData.append('idSoal', idSoal);
+                formData.append('ragu', ragu.val());
+                formData.append('id', $('#id-jawaban-' + noSoal).val())
+                if(file.prop('files').length > 0) {
+                    formData.append('file', file.prop('files')[0]);    
+                }
+
+                if(jawaban.val() != '') {
+                    formData.append('jawaban', jawaban.val());
+                }
+                
+                $.ajax({
+                    type: 'post',
+                    url,
+                    data: formData,
+                    dataType: 'json',
+                    processData: false,
+                    contentType: false,
+                    beforeSend: () => $('.ajax-loading').show(),    
+                    success: function(res) {
+                        $('.ajax-loading').hide();
+                    },
+                    error: function(e) {
+                        $('.ajax-loading').hide();
+                        alert(e.responseText.msg);
+                        console.error(e.responseText);
+                        return false;
+                    }
+                });                
+            }
+
+
             // Pindahkan page
             $(".step").hide();
             $("#widget_" + noSoal).show();

@@ -97,11 +97,19 @@ class MY_Controller extends CI_Controller
 	{
 		parent::__construct();
 		date_default_timezone_set('Asia/Jakarta');
+		$this->load->dbforge();
+		// Alter table
+		// $fields = [
+		// 	'status_ujian' => ['type' => 'TINYINT']
+		// ];
+		// $this->dbforge->add_column('tb_ikut_ujian', $fields);
 
-		if($this->session->userdata('admin_valid') == TRUE) {
-			// Create new table
-			$this->checkDBTables('tb_keaktifan_siswa');
-		}
+		// $fields = [
+		// 	'status_ujian' => ['type' => 'TINYINT']
+		// ];
+		// $this->dbforge->add_column('tb_ikut_ujian_essay', $fields);
+
+
 
 		if(!is_dir('./upload/file_jawaban_essay/')) {
 			@mkdir('./upload/file_jawaban_essay/');
@@ -598,13 +606,50 @@ class MY_Controller extends CI_Controller
 	{
 		$this->db->query("
 			CREATE TABLE IF NOT EXISTS `".$tableName."`(
-				id INT AUTO_INCREMENT PRIMARY KEY,
-			    id_siswa INT NOT NULL,
-			    id_mapel BIGINT(20) DEFAULT NULL,
-			    type ENUM('login','video','read','diskusi','tugas'),
-			    value TINYINT(4),
-			    create_at TIMESTAMP  DEFAULT CURRENT_TIMESTAMP
+				id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+			    id_ujian INT NOT NULL,
+			    id_user INT NOT NULL,
+			    status TINYINT(3) DEFAULT 0
 			);
 		");
+	}
+
+	/*
+	* Function untuk mengecek apakah sudah ujian atau belum
+	*/
+	protected function sudahUjian($typeUjian = 'pg', $id_ujian)
+	{
+		$checkSoal = NULL;
+		$jawabanUjian = NULL;
+		switch ($typeUjian) {
+			case 'pg':
+				$checkSoal = $this->m_soal_ujian->count_by([
+					'id_ujian'
+				]);
+				$jawabanUjian = $this->m_ikut_ujian->count_by([
+					'id_ujian' => $id_ujian,
+					'id_user' => $this->akun->id,
+					'status_ujian' => 1
+				]);
+			break;
+			case 'essay':
+				$checkSoal = $this->m_soal_ujian_essay->count_by([
+					'id_ujian'
+				]);
+				$jawabanUjian = $this->m_ikut_ujian_essay->count_by([
+					'id_ujian' => $id_ujian,
+					'id_user' => $this->akun->id,
+					'status_ujian' => 1
+				]);
+			break;
+		}
+
+		// Jika siswa sudah ujian maka redirect ke halaman ujian
+		if($checkSoal > 0 && $jawabanUjian > 0) {
+			return TRUE;
+		}
+		else {
+			return FALSE;
+		}
 	}
 }

@@ -980,10 +980,21 @@ class Ujian_essay extends MY_Controller {
 
 	public function ikut_ujian($id_ujian){
 		$id_ujian = decrypt_url($id_ujian);
+
+		if($this->log_lvl != 'siswa') {
+			redirect('ujian_real');
+		}
+		
 		$jwb = [];
 		if ($this->session->userdata('selesai_ujian') == 1) {
 			redirect(base_url('ujian_real/'));
 			exit;
+		}
+
+		// Check apakah siswa udah ujian essay
+		$checkSudahEssay = $this->sudahUjian('essay', $id_ujian);
+		if($checkSudahEssay == TRUE || $checkSudahEssay == 1) {
+			redirect('ujian_real');
 		}
 
 		header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
@@ -1398,7 +1409,8 @@ class Ujian_essay extends MY_Controller {
 
 		$this->m_ikut_ujian_essay->update([
 			'status' => 'N',
-			'tgl_selesai' => date('Y-m-d H:i:s')
+			'tgl_selesai' => date('Y-m-d H:i:s'),
+			'status_ujian' => 1
 		], ['status' => 'Y', 'id_ujian' => $post['idUjian'], 'id_user' => $this->akun->id ]);
 
 		$this->sendAjaxResponse([
