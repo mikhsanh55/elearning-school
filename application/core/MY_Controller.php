@@ -99,15 +99,15 @@ class MY_Controller extends CI_Controller
 		date_default_timezone_set('Asia/Jakarta');
 		$this->load->dbforge();
 		// Alter table
-		$fields = [
-			'status_ujian' => ['type' => 'TINYINT']
-		];
-		$this->dbforge->add_column('tb_ikut_ujian', $fields);
+		// $fields = [
+		// 	'status_ujian' => ['type' => 'TINYINT']
+		// ];
+		// $this->dbforge->add_column('tb_ikut_ujian', $fields);
 
-		$fields = [
-			'status_ujian' => ['type' => 'TINYINT']
-		];
-		$this->dbforge->add_column('tb_ikut_ujian_essay', $fields);
+		// $fields = [
+		// 	'status_ujian' => ['type' => 'TINYINT']
+		// ];
+		// $this->dbforge->add_column('tb_ikut_ujian_essay', $fields);
 
 
 
