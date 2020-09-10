@@ -25,44 +25,23 @@ class M_penilaian extends MY_Model {
 
 
 	public function get_all($where=array()){
-
 		$get = $this->db->select('
-
 							pen.*,
-
 							kls.nama as kelas,
-
 							mp.nama as nama_mapel,
-
 							ins.instansi as nama_instansi
-
 						')
-
 		->from('tb_penilaian pen')
-
 		->join('tb_kelas kls','kls.id=pen.id_kelas','left')
-
 		->join('m_mapel mp','mp.id=kls.id_mapel','left')
-
 		->join('tb_instansi ins','ins.id=kls.id_instansi','left')
-
 		->order_by('pen.id','asc')
-
 		->where($where)
-
 		->get()
-
 		->result();
 
-	
-
-      
-
 		return $get;
-
 	}
-
-
 
 	public function get_all_siswa($where=array()){
 
