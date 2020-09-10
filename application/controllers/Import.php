@@ -289,6 +289,91 @@ class Import extends MY_Controller {
 
     }
 
+    /* Import Soal Penilaian */
+    public function soalPenilaian($encryptedIdPaketSoal) {
+        $this->load->model('m_penilaian');
+        $config['upload_path'] = realpath('./upload/temp');
+        $config['allowed_types'] = 'xlsx|xls|csv';
+        $config['max_size'] = '10000';
+        $config['encrypt_name'] = true;
+
+        $p = $this->input->post();
+
+        $this->load->library('upload', $config);
+
+        if (!$this->upload->do_upload()) {
+            //upload gagal
+            $this->session->set_flashdata('notif', '<div class="alert alert-danger"><b>PROSES IMPORT GAGAL!</b> '.$this->upload->display_errors().'</div>');
+            //redirect halaman
+            redirect(base_url('soal/m_soal/import/'.$uri3));
+        } else {
+
+            $data_upload = $this->upload->data();
+            $extension = pathinfo($data_upload['file_name'], PATHINFO_EXTENSION);
+
+            switch($extension) {
+                case 'csv':
+                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+                break;
+                case 'xlsx':
+                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+                break;
+                default :
+                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+                break;
+            }
+            $loadexcel         = $this->_reader->load('./upload/temp/'.$data_upload['file_name']); // Load file yang telah diupload ke folder excel
+            $sheet             = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
+            $jumlahData = count($sheet) > 1 ? count($sheet) - 1 : count($sheet);
+
+            $data = array();
+
+            $last_id = $this->db->order_by('id','desc')->limit(1)->get('m_soal')->row();
+
+            if (!empty($last_id->id)) {
+                $last_id = $last_id->id;
+            }else{
+                $last_id = 1;
+            }
+            $x = 1;
+            foreach($sheet as $index => $row){
+
+                if($index > 1){
+                    $bobot = (empty($row['H']) || $row['H'] == '') ? 1 : $row['H'];
+                    $data[$index] = array(
+                        'id_paket' => decrypt_url($encryptedIdPaketSoal),
+                        'bobot' => $bobot,
+                        'soal'      => '<p>'.$row['B'].'</p>',
+                        'opsi_a'    => '#####<p>'.$row['C'].'</p>',
+                        'opsi_b'    => '#####<p>'.$row['D'].'</p>',
+                        'opsi_c'    => '#####<p>'.$row['E'].'</p>',
+                        'opsi_d'    => '#####<p>'.$row['F'].'</p>',
+                        'opsi_e'    => '#####<p>'.$row['G'].'</p>',
+                        'jawaban'   => NULL,
+                        'tgl_input' => date('Y-m-d H:i:s'),
+                        'jml_benar' => 0,
+                        'jml_salah' => 0
+                    );
+
+                    
+                    $x++;
+                }
+                
+            }
+            $this->db->insert_batch('m_soal_penilaian', $data);
+
+            //delete file from server
+            unlink(realpath('./upload/temp/'.$data_upload['file_name']));
+
+            //upload success
+            $this->session->set_flashdata('notif', '<div class="alert alert-success"><b>PROSES IMPORT BERHASIL!</b> Data berhasil diimport!</div>');
+            //redirect halaman
+            redirect(base_url('penilaian/import-soal/'.$encryptedIdPaketSoal));
+        }
+
+    }
+
+    /* Import Soal ujian PG */
     public function soal() {
         $config['upload_path'] = realpath('./upload/temp');
         $config['allowed_types'] = 'xlsx|xls|csv';
@@ -337,11 +422,11 @@ class Import extends MY_Controller {
             foreach($sheet as $index => $row){
 
                 if($index > 1){
+                    $bobot = (empty($row['I']) || $row['I'] == '') ? 1 : $row['I'];
                     $data[$index] = array(
                         'id_guru'   => $p['id_guru'],
                         'id_mapel'  => $p['id_mapel'],
-                        // 'bobot'     => (int)$row['A'],
-                        'bobot'     => 1,
+                        'bobot'     => $bobot,
                         'soal'      => '<p>'.$row['B'].'</p>',
                         'opsi_a'    => '#####<p>'.$row['C'].'</p>',
                         'opsi_b'    => '#####<p>'.$row['D'].'</p>',
@@ -377,6 +462,90 @@ class Import extends MY_Controller {
         }
 
     }
+
+    /* Import Soal ujian Essay */
+        public function soal_ujian_essay() {
+        $post = $this->input->post();
+        $id_ujian = $post['id_ujian'];
+        $back_url = base_url('ujian_essay/data_soal/') . $id_ujian;
+
+        $config['upload_path'] = realpath('./upload/temp');
+        $config['allowed_types'] = 'xlsx|xls|csv';
+        $config['max_size'] = '10000';
+        $config['encrypt_name'] = true;
+
+        $p = $this->input->post();
+        $uri3 = $this->uri->segment(3);
+
+        $this->load->library('upload', $config);
+
+        if (!$this->upload->do_upload()) {
+            //upload gagal
+            $this->session->set_flashdata('notif', '<div class="alert alert-danger"><b>PROSES IMPORT GAGAL!</b> '.$this->upload->display_errors().'</div>');
+                //redirect halaman
+            redirect($back_url);
+        } else {
+            $data_upload = $this->upload->data();
+            $extension = pathinfo($data_upload['file_name'], PATHINFO_EXTENSION);
+
+            switch($extension) {
+                case 'csv':
+                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+                break;
+                case 'xlsx':
+                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+                break;
+                default :
+                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+                break;
+            }
+
+            $loadexcel         = $this->_reader->load('./upload/temp/'.$data_upload['file_name']); // Load file yang telah diupload ke folder excel
+            $sheet             = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
+
+            $data = array();
+
+            $last_id = $this->db->order_by('id','desc')->limit(1)->get('m_soal_ujian_essay')->row();
+
+            if (!empty($last_id->id)) {
+                $last_id = $last_id->id;
+            }else{
+                $last_id = 1;
+            }
+
+            foreach($sheet as $index => $row){
+
+                if($index > 1){
+                    $data[$index] = array(
+                        'id_ujian'  => decrypt_url($post['id_ujian']),
+                        'bobot'     => (int)$row['C'],
+                        'soal'      => '<p>'.$row['B'].'</p>'
+                    );
+                }
+            }
+
+            $this->db->insert_batch('m_soal_ujian_essay', $data);
+
+            // Update jumlah soal di tb_ujian
+            $data_ujian = $this->m_ujian->get_by(['uji.id' => decrypt_url($id_ujian)] );
+            $jumlah_soal = count( $this->m_soal_ujian_essay->get_many_by(['id_ujian' => decrypt_url($id_ujian)]) );
+            
+            $this->m_ujian->update([
+                'jumlah_soal' => $data_ujian->jumlah_soal + count($data)
+            ], ['id' => decrypt_url($id_ujian)]);
+
+            //delete file from server
+            unlink(realpath('./upload/temp/'.$data_upload['file_name']));
+
+            //upload success
+            $this->session->set_flashdata('notif', '<div class="alert alert-success"><b>PROSES IMPORT BERHASIL!</b> Data berhasil diimport!</div>');
+            //redirect halaman
+            redirect($back_url);
+
+        }
+   
+    }
+
 
     public function ujian($id_ujian) 
     {
@@ -466,88 +635,5 @@ class Import extends MY_Controller {
 
         }
 
-    }
-
-    public function soal_ujian_essay() {
-        $post = $this->input->post();
-        $id_ujian = $post['id_ujian'];
-        $back_url = base_url('ujian_essay/data_soal/') . $id_ujian;
-
-        $config['upload_path'] = realpath('./upload/temp');
-        $config['allowed_types'] = 'xlsx|xls|csv';
-        $config['max_size'] = '10000';
-        $config['encrypt_name'] = true;
-
-        $p = $this->input->post();
-        $uri3 = $this->uri->segment(3);
-
-        $this->load->library('upload', $config);
-
-        if (!$this->upload->do_upload()) {
-            //upload gagal
-            $this->session->set_flashdata('notif', '<div class="alert alert-danger"><b>PROSES IMPORT GAGAL!</b> '.$this->upload->display_errors().'</div>');
-                //redirect halaman
-            redirect($back_url);
-        } else {
-            $data_upload = $this->upload->data();
-            $extension = pathinfo($data_upload['file_name'], PATHINFO_EXTENSION);
-
-            switch($extension) {
-                case 'csv':
-                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
-                break;
-                case 'xlsx':
-                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-                break;
-                default :
-                    $this->_reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
-                break;
-            }
-
-            $loadexcel         = $this->_reader->load('./upload/temp/'.$data_upload['file_name']); // Load file yang telah diupload ke folder excel
-            $sheet             = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
-
-            $data = array();
-
-            $last_id = $this->db->order_by('id','desc')->limit(1)->get('m_soal_ujian_essay')->row();
-
-            if (!empty($last_id->id)) {
-                $last_id = $last_id->id;
-            }else{
-                $last_id = 1;
-            }
-
-            foreach($sheet as $index => $row){
-
-                if($index > 1){
-                    $data[$index] = array(
-                        'id_ujian'  => decrypt_url($post['id_ujian']),
-                        'bobot'     => (int)$row['C'],
-                        'soal'      => '<p>'.$row['B'].'</p>'
-                    );
-                }
-            }
-
-            $this->db->insert_batch('m_soal_ujian_essay', $data);
-
-            // Update jumlah soal di tb_ujian
-            $data_ujian = $this->m_ujian->get_by(['uji.id' => decrypt_url($id_ujian)] );
-            $jumlah_soal = count( $this->m_soal_ujian_essay->get_many_by(['id_ujian' => decrypt_url($id_ujian)]) );
-            
-            $this->m_ujian->update([
-                'jumlah_soal' => $data_ujian->jumlah_soal + count($data)
-            ], ['id' => decrypt_url($id_ujian)]);
-
-            //delete file from server
-            unlink(realpath('./upload/temp/'.$data_upload['file_name']));
-
-            //upload success
-            $this->session->set_flashdata('notif', '<div class="alert alert-success"><b>PROSES IMPORT BERHASIL!</b> Data berhasil diimport!</div>');
-            //redirect halaman
-            redirect($back_url);
-
-        }
-   
-    }
-    
+    }    
 }

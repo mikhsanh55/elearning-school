@@ -350,8 +350,6 @@ class Penilaian extends MY_Controller {
 
 	public function data_soal($id=null){
 
-
-
 		$url = base_url('penilaian/form_soal/'.$id);
 
 
@@ -444,61 +442,32 @@ class Penilaian extends MY_Controller {
 		$this->render('penilaian/edit',$data);
 	}
 
-	public function form_import($id_ujian){
-
-
-
+	public function form_import($id_paket_soal){
 		$data = array(
-
-			'back_url' => base_url('ujian_real/data_soal/'.$id_ujian.''),
-
-			'url_import' => base_url('import/ujian/'.$id_ujian.''),
-
+			'back_url' => base_url('penilaian/data_soal/'.$id_paket_soal.''),
+			'url_import' => base_url('import/soal-penilaian/'.$id_paket_soal.''),
+			'id_paket_soal' => decrypt_url($id_paket_soal)
 		);
 
-
-
 		$this->render('penilaian/form_import',$data);
-
 	}
-
-
 
 	public function get_mp(){
 
 		$post = $this->input->post();
-
-
-
 		$select = '<option disabled="disabled" selected="selected">Pilih</option>';
-
 		$mp = $this->m_mapel->get_many_by(array('id_instansi'=>$post['id_instansi']));
-
 		$post['id_mp'] = empty($post['id_mp']) ? NULL : $post['id_mp'];
-
-
-
 		foreach ($mp as $key => $rows) {
-
 			if ($post['id_mp'] == $rows->id) {
-
 				$select .= '<option value="'.$rows->id.'" selected="selected">'.$rows->nama.'</option>';
-
-			}else{
-
+			} else {
 				$select .= '<option value="'.$rows->id.'">'.$rows->nama.'</option>';
-
 			}
-
 		}
 
-
-
 		echo json_encode(['data'=>$select]);
-
 	}
-
-
 
 	public function get_trainer(){
 
@@ -1797,14 +1766,7 @@ class Penilaian extends MY_Controller {
 
 						);
 
-
-
 						$this->m_ikut_penilaian->insert($insert_data);
-
-						
-
-						
-
 					}
 
 
