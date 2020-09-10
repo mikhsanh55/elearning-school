@@ -3080,7 +3080,7 @@ class Penilaian extends MY_Controller {
 		$update = NULL;
 		if(!empty($data)) {
 			$dataOpsi = explode('#####', $data['opsi_' . $post['opsi']]);
-			if(!empty($dataOpsi[0]) && file_exists($this->_fileOpsiPath . end($dataOpsi))) {
+			if(!empty($dataOpsi[0]) && file_exists($this->_fileOpsiPath . $dataOpsi[0])) {
 				unlink($this->_fileOpsiPath . end($dataOpsi));
 			}
 

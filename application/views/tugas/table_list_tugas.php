@@ -43,9 +43,9 @@
 			else if($count < 1 && $rows->in_jadwal == TRUE) { // Jika belum
 				$status = '<button class="btn btn-primary btn-sm kirim-tugas btn-block" data-id_tugas="'.encrypt_url($rows->id).'"> Kerjakan</button>';
 
-				if($checkPesan > 0) {
-					$status .= '<button class="btn btn-primary btn-sm lihat-pesan-alert btn-block" data-id_tugas="'.encrypt_url($rows->id).'">Ada Pesan</button>';
-				}
+				// if($checkPesan > 0) {
+				// 	$status .= '<button class="btn btn-primary btn-sm lihat-pesan-alert btn-block" data-id_tugas="'.encrypt_url($rows->id).'">Ada Pesan</button>';
+				// }
 			}
 			
 			if (!empty($rows->end_date) && $rows->end_date != '0000-00-00 00:00:00') {

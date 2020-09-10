@@ -2,7 +2,6 @@
 	h1{
       font-family: sans-serif;
     }
-
     table {
       margin-top: 10px;
       font-family: Arial, Helvetica, sans-serif;
@@ -71,6 +70,7 @@
 <table class="table table-bordered table-striped table-hovered" id="table-kalender">
 	<thead>
 		<tr>
+			<th class="frist"><input type="checkbox" name="checkall" id="checkall"></th>
 			<th class="frist">No</th>
 			<th>Kelas</th>
 			<th>Guru</th>
@@ -79,7 +79,7 @@
 			<th>Keterangan</th>
 			<th>Mulai</th>
 			<th>Selesai</th>
-			<th>Opsi</th>
+			<!-- <th>Opsi</th> -->
 		</tr>
 		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows): 
@@ -124,32 +124,21 @@
 			$nama_mapel = $this->m_mapel->get_by(['id' => $rows->mt_id_mapel]);
 			$nama_mapel = !empty($nama_mapel) ? $nama_mapel->nama : '';
 		?>
-
 			<tr>
-
+				<td><input type="checkbox" name="checklist[]" class="checklist" value="<?=$rows->id;?>" data-id="<?=md5($rows->id);?>"></td>
 				<td align="center" class="frist"><?=$i;?></td>
-
 				<td><?= $nama_kelas; ?></td>
-
 				<td><?=$nama_guru;?></td>
-
 				<td><?=$nama_mapel;?></td>
-
 				<td><?=$rows->nama_materi;?></td>
-
 				<td><?=$rows->keterangan;?></td>
-
 				<td><?=$date.' '.$time;?></td>
-
 				<td><?=$date2.' '.$time2;?></td>
-
-				<td class="d-flex justify-content-around">
+				<!-- <td class="d-flex justify-content-around">
 					<a href="<?=base_url('jadwal/edit/'.md5($rows->id));?>" data-toggle="tooltip" data-id="<?=$rows->id;?>" title="Edit" class="btn btn-default btn-sm aktif_non"><i class="fas fa-edit"></i></a>
 
 					<a href="javascript:void(0);" data-toggle="tooltip" data-id="<?=$rows->id;?>" title="Edit" class="btn btn-default btn-sm aktif_non deleted"><i class="fas fa-trash-alt"></i></a>
-				</td>	
-				
-
+				</td>	 -->
 			</tr>
 
 		<?php $i++;endforeach ?>

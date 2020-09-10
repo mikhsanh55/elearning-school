@@ -61,8 +61,16 @@
 					 ?>
 					 	<?php if ($ujian > 0): ?>
 					 		<button type="button" class="btn btn-block btn-success btn-sm mr-2" onclick="window.location = '<?=base_url('penilaian/ikuti_ujian/'.encrypt_url($rows->id));?>'"  data-toggle="tooltip" title="" disabled>Sudah Penilaian</button>
-					 	<?php else: ?>
-					 		<button type="button" class="btn btn-primary btn-block btn-sm mr-2" onclick="window.location = '<?=base_url('penilaian/ikuti_ujian/'.encrypt_url($rows->id));?>'"  data-toggle="tooltip" title="">Mulai Penilaian</button>
+					 	<?php else: 
+					 		if($rows->izin == 0) {
+					 	?>
+					 		<button class="btn btn-sm btn-block btn-info" disabled>Belum ada Izin</button>
+
+						 <?php } else { ?>
+						 	<button type="button" class="btn btn-primary btn-block btn-sm mr-2" onclick="window.location = '<?=base_url('penilaian/ikuti_ujian/'.encrypt_url($rows->id));?>'"  data-toggle="tooltip" title="">Mulai Penilaian</button>
+						 <?php } ?>
+					 		
+					 
 					 	<?php endif ?>
 					<?php endif ?>
 					</div>				

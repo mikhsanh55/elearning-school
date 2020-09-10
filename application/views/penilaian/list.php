@@ -371,21 +371,20 @@
 					},
 
 					success:function(response){
-
-						if (response.result == true) {
-
-							pageLoad(1,'penilaian/page_load');
-
-						}else{
-
-							alert('Hapus Gagal');
-
+						if(response.status) {
+							pageLoad(1,'penilaian/page_load');	
 						}
-
-
-
-						pageLoad(1,'penilaian/page_load');
-
+						else {
+							alert('Gagal menghapus data penilaian');
+							console.error(response)
+							return false;
+						}
+						
+					},
+					error: function(e) {
+						alert(e.responseText.msg);
+						console.error(e.responseText);
+						return false;
 					}
 
 				})
