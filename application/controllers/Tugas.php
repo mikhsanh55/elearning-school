@@ -987,7 +987,8 @@ class Tugas extends MY_Controller {
 			'id_tugas' => $idTugas,
 			'id_siswa' => $idSiswa,
 			'message' => trim($post['message']),
-			'status' => 0
+			'status' => 0,
+			'create_at' => date('Y-m-d H:i:s')
 		]);
 
 		if($insert) {
