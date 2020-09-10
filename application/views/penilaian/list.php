@@ -5,53 +5,27 @@
 		font-family: sans-serif;
 
 	}
-
-
-
 	table {
-
 		margin-top: 10px;
-
 		font-family: Arial, Helvetica, sans-serif;
-
-
-
 		font-size: 12px;
-
 		width: 100%;
-
 		color: #666;
-
 		background: #eaebec;
-
 		border: #ccc 1px solid;
-
 		border-radius: 25px;
-
 	}
-
-
 
 	table th {
-
 		padding: 2px 5px;
-
 		border:1px solid #337ab7;
-
 		background: #337ab7;;
-
 		text-align: center;
-
 		color: #fff;
-
 	}
 
-
-
 	table th:first-child{  
-
 		border-left:none;  
-
 	}
 
 
@@ -240,75 +214,26 @@
 
 					<a href="javascript:void(0);" id="deleted" title="Hapus" class="btn btn-danger btn-sm ml-2"><i class="fas fa-trash-alt"></i> &nbsp;Hapus</a>
 					
-					<a href="<?= base_url('ranking') ?>" title="Ranking & Grafik" class="btn btn-primary btn-sm ml-2"><i class="fa fa-line-chart"></i> &nbsp;Ranking & Grafik</a>
-					<!-- <div class="dropdown d-inline-block ml-2">
-					  <button class="btn btn-sm btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					    Download Laporan EDOPM
-					  </button>
-					  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-					    <a class="dropdown-item" href="<?= base_url('penilaian/output1') ?>">Output 1</a>
-					    <a class="dropdown-item" href="<?= base_url('penilaian/output2') ?>">Output 2</a>
-					    <a class="dropdown-item" href="#">Output 3</a>
-					  </div>
-					</div> -->
-					<!-- <a href="<?= base_url('penilaian/laporan') ?>" title="Download Laporan EDOPM" class="btn btn-success btn-sm ml-2"><i class="fas fa-file-excel-o"></i> &nbsp;Laporan EDOPM</a> -->
-
+					<!-- <a href="<?= base_url('ranking') ?>" title="Ranking & Grafik" class="btn btn-primary btn-sm ml-2"><i class="fa fa-line-chart"></i> &nbsp;Ranking & Grafik</a> -->
 				<?php endif;?>
-
-
-
-		<!-- 		<a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url(); ?>upload/format_siswa.xlsx"><i class="fa fa-cloud-download" aria-hidden="true"></i> &nbsp;Download Format Import</a>
-
-				<a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url(); ?>pengusaha/import"><i class="fa fa-cloud-upload" aria-hidden="true"></i> &nbsp;Import</a> -->
-
-	
-
-			
-
-			
-
 				<div id="content-view"></div>
-
 			</div>
-
 		</div>
-
 	</div>
-
-
-
 </div>
-
 </div>
-
-
-
-
-
 <!--/.row-box End-->
 
 <script src="<?= base_url(); ?>assets/js/jquery/jquery-3.3.1.min.js"></script>
-
 <script type="text/javascript">
-
 	$(document).ready(function(){
-
 		pageLoad(1,'penilaian/page_load');
-
-
-
 		$('#limit,#tipe_penilaian').change(function(){
-
 			pageLoad(1,'penilaian/page_load');
-
 		});
 
-
-
 		$('#search').keyup(delay(function (e) {
-
 			pageLoad(1,'penilaian/page_load');
-
 		}, 500));
 
 
@@ -333,13 +258,157 @@
 
 		}
 
+		$(document).on('submit','#form-siswa',function(e){
+
+
+
+			e.preventDefault()
+
+			var f_asal	= $(this);
+
+			var form	= getFormData((f_asal));
+
+			$.ajax({		
+
+				type: "POST",
+
+				url: base_url+"pengusaha/m_siswa/simpan",
+
+				data: JSON.stringify(form),
+
+				dataType: 'json',
+
+				contentType: 'application/json; charset=utf-8'
+
+			}).done(function(response) {
+
+				if (response.status == "ok") {
+
+					pageLoad(1,'penilaian/page_load');
+
+				} else {
+
+					alert(response.caption);
+
+				}
+
+			});
+
+			$("#m_siswa_modif").modal('hide');
+
+		})
 
 
 
 
-	})
+
+		$(document).on('click','#checkall',function(){
+
+			if ($(this).is(':checked')) {
+
+				$('.checklist').prop('checked',true);
+
+			}else{
+
+				$('.checklist').prop('checked',false);
+
+			}
+
+			
+
+		})
 
 
+
+
+
+		$(document).on('click','#deleted',function(){
+
+			var totalChecked = $('.checklist:checked').length;
+
+			var opsi = [];
+
+
+
+			if (totalChecked > 0) {
+
+				var y = confirm('Apakah anda yakin untuk menghapus data ?');
+
+				$(".checklist:checked").each(function(){
+
+					opsi.push($(this).val());
+
+				});
+
+			}else{
+
+				alert('Tidak ada yang dipilih!');
+
+			}
+
+
+
+			
+
+
+
+			if (y == true) {
+
+
+
+				$.ajax({
+
+					type:'post',
+
+					url : '<?=base_url('penilaian/multi_delete');?>',
+
+					dataType : 'json',
+
+					data : {
+
+						id : opsi,
+
+					},
+
+					success:function(response){
+
+						if (response.result == true) {
+
+							pageLoad(1,'penilaian/page_load');
+
+						}else{
+
+							alert('Hapus Gagal');
+
+						}
+
+
+
+						pageLoad(1,'penilaian/page_load');
+
+					}
+
+				})
+			}else{
+				return false;
+			}
+		});
+
+		$(document).on('click','#edited',function(){
+			var totalChecked = $('.checklist:checked').length;
+			var opsi = [];
+
+			if (totalChecked > 1) {
+				alert('Pilih satu untuk edit  !');
+				return false;
+			}else if(totalChecked < 1){
+				alert('Tidak ada yang dipilih!');
+				return false;
+			}else{
+				window.location = base_url + 'penilaian/edit/' + $('.checklist:checked').data('id');			
+			}
+		});
+	});
 
 	function pageLoad(pg, url, search){
 
@@ -372,382 +441,4 @@
 		})
 
 	}
-
-
-
-	$(document).on('submit','#form-siswa',function(e){
-
-
-
-		e.preventDefault()
-
-		var f_asal	= $(this);
-
-		var form	= getFormData((f_asal));
-
-		$.ajax({		
-
-			type: "POST",
-
-			url: base_url+"pengusaha/m_siswa/simpan",
-
-			data: JSON.stringify(form),
-
-			dataType: 'json',
-
-			contentType: 'application/json; charset=utf-8'
-
-		}).done(function(response) {
-
-			if (response.status == "ok") {
-
-				pageLoad(1,'penilaian/page_load');
-
-			} else {
-
-				alert(response.caption);
-
-			}
-
-		});
-
-		$("#m_siswa_modif").modal('hide');
-
-	})
-
-
-
-
-
-	$(document).on('click','#checkall',function(){
-
-		if ($(this).is(':checked')) {
-
-			$('.checklist').prop('checked',true);
-
-		}else{
-
-			$('.checklist').prop('checked',false);
-
-		}
-
-		
-
-	})
-
-
-
-
-
-	$(document).on('click','#deleted',function(){
-
-		var totalChecked = $('.checklist:checked').length;
-
-		var opsi = [];
-
-
-
-		if (totalChecked > 0) {
-
-			var y = confirm('Apakah anda yakin untuk menghapus data ?');
-
-			$(".checklist:checked").each(function(){
-
-				opsi.push($(this).val());
-
-			});
-
-		}else{
-
-			alert('Tidak ada yang dipilih!');
-
-		}
-
-
-
-		
-
-
-
-		if (y == true) {
-
-
-
-			$.ajax({
-
-				type:'post',
-
-				url : '<?=base_url('penilaian/multi_delete');?>',
-
-				dataType : 'json',
-
-				data : {
-
-					id : opsi,
-
-				},
-
-				success:function(response){
-
-					if (response.result == true) {
-
-						pageLoad(1,'penilaian/page_load');
-
-					}else{
-
-						alert('Hapus Gagal');
-
-					}
-
-
-
-					pageLoad(1,'penilaian/page_load');
-
-				}
-
-			})
-
-
-
-
-
-		}else{
-
-			return false;
-
-		}
-
-
-
-		
-
-	})
-
-
-
-	$(document).on('click','#edited',function(){
-
-		var totalChecked = $('.checklist:checked').length;
-
-		var opsi = [];
-
-
-
-		if (totalChecked > 1) {
-
-			alert('Pilih satu untuk edit  !');
-
-			return false;
-
-		}else if(totalChecked < 1){
-
-			alert('Tidak ada yang dipilih!');
-
-			return false;
-
-		}else{
-
-			window.location = base_url + 'penilaian/edit/' + $('.checklist:checked').data('id');			
-
-		}
-
-
-
-		
-
-	})
-
-
-
-	$(document).on('click','.buat-pass',function(){
-
-	
-
-		var y = confirm('Apakah anda yakin untuk membuat password untuk nama ' + $(this).data('nama') +' ?');
-
-
-
-		if (y == true) {
-
-
-
-			$.ajax({
-
-				type:'post',
-
-				url : '<?=base_url('penilaian/buatkan_password');?>',
-
-				dataType : 'json',
-
-				data : {
-
-					id : $(this).data('id'),
-
-				},
-
-				success:function(response){
-
-					if (response.status == 1) {
-
-						pageLoad(1,'penilaian/page_load');
-
-					}else{
-
-						alert(response.message);
-
-					}
-
-
-
-					
-
-				}
-
-			})
-
-
-
-
-
-		}else{
-
-			return false;
-
-		}
-
-	})
-
-
-
-	$(document).on('click','.reset-pass',function(){
-
-	
-
-		var y = confirm('Apakah anda yakin untuk membuat password untuk nama ' + $(this).data('nama') +' ?');
-
-
-
-		if (y == true) {
-
-
-
-			$.ajax({
-
-				type:'post',
-
-				url : '<?=base_url('penilaian/reset_password');?>',
-
-				dataType : 'json',
-
-				data : {
-
-					id : $(this).data('id'),
-
-				},
-
-				success:function(response){
-
-					if (response.status == 1) {
-
-						pageLoad(1,'penilaian/page_load');
-
-					}else{
-
-						alert(response.message);
-
-					}
-
-
-
-					
-
-				}
-
-			})
-
-
-
-
-
-		}else{
-
-			return false;
-
-		}
-
-	})
-
-
-
-	$(document).on('click','.aktif-non-akun',function(){
-
-	
-
-		var y = confirm('Apakah anda yakin untuk membuat password untuk nama ' + $(this).data('nama') +' ?');
-
-
-
-		if (y == true) {
-
-
-
-			$.ajax({
-
-				type:'post',
-
-				url : '<?=base_url('penilaian/aktif_non_akun');?>',
-
-				dataType : 'json',
-
-				data : {
-
-					id : $(this).data('id'),
-
-					status : $(this).data('status')
-
-				},
-
-				success:function(response){
-
-					if (response.status == 1) {
-
-						pageLoad(1,'penilaian/page_load');
-
-					}else{
-
-						alert(response.message);
-
-					}
-
-
-
-					
-
-				}
-
-			})
-
-
-
-
-
-		}else{
-
-			return false;
-
-		}
-
-	})
-
-
-
 </script>
-
-
-
-
-
-
-
-
-

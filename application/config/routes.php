@@ -86,6 +86,7 @@ $route['penilaian/hapus-opsi-file'] = 'penilaian/hapusOpsiFile';
 $route['penilaian/hapus-soal-file'] = 'penilaian/hapusSoalFile';
 $route['penilaian/hasil-penilaian/(:any)'] = 'penilaian/hasilPenilaian/$1';
 $route['penilaian/load-hasil-penilaian/(:num)'] = 'penilaian/pageLoadHasilPenilaian/$1';
+$route['penilaian/batalkan-penilaian'] = 'penilaian/batalkanPenilaian';
 $route['penilaian/hasil-penilaian-siswa/(:any)/(:any)'] = 'penilaian/hasilPenilaianSiswa/$1/$2';
 $route['ujian_essay/insert-jawaban'] = 'ujian_essay/insertJawaban';
 $route['ujian_essay/update-jawaban'] = 'ujian_essay/updateJawaban';
