@@ -8,7 +8,7 @@
 			<th>Keterangan</th>
 			<th>Waktu Pengumpulan</th>
 			<th class="frist">Status Tugas</th>
-
+				
 		</tr>
 		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $where = []; $i= $page_start; foreach ($paginate['data'] as $rows):
@@ -27,12 +27,12 @@
 			$checkPesan = $this->m_tugas_alert->count_by($where);
 
 			if ($rows->in_jadwal == FALSE && $count < 1) { // Jika melebihi tanggal deadline Khusus sman21
-				// $status = '<button class="btn btn-dark btn-sm" disabled>Waktu Habis</button>';
-				$status = '<button class="btn btn-warning btn-sm kirim-tugas mb-1 btn-block" data-id_tugas="'.encrypt_url($rows->id).'"> Kerjakan</button>';
+				$status = '<button class="btn btn-dark btn-sm" disabled>Waktu Habis</button>';
+				// $status = '<button class="btn btn-warning btn-sm kirim-tugas mb-1 btn-block" data-id_tugas="'.encrypt_url($rows->id).'"> Kerjakan</button>';
 
-				if($checkPesan > 0) {
-					$status .= '<button class="btn btn-primary btn-sm lihat-pesan-alert btn-block" data-id_tugas="'.encrypt_url($rows->id).'">Ada Pesan</button>';
-				}
+				// if($checkPesan > 0) {
+				// 	$status .= '<button class="btn btn-primary btn-sm lihat-pesan-alert btn-block" data-id_tugas="'.encrypt_url($rows->id).'">Ada Pesan</button>';
+				// }
 			}
 			else if ($count > 0) { // Jika sudah mengerjakan
 				$status = '<button class="btn btn-success btn-sm kirim-tugas btn-block" data-id_tugas="'.encrypt_url($rows->id).'"><i class="fa fa-check"></i> Sudah</button>';
