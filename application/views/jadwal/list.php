@@ -1,5 +1,3 @@
-
-
 <style type="text/css">
 	h1{
 		font-family: sans-serif;
@@ -177,12 +175,14 @@
 					<option value="100">100</option>
 				</select>
 				<button type="button" class="btn btn-sm btn-primary ml-2" onclick="return window.location = '<?=base_url('jadwal/add');?>' ">Tambah</button>
-				<a href="<?= base_url('export/jadwal') ?>" class="btn btn-sm btn-success ml-2">Export</a>
+				<a href="javascript:void(0);" title="Edit" id="edited" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> &nbsp;Edit</a>
+				<a href="javascript:void(0);" id="deleted" title="Hapus" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> &nbsp;Hapus</a>
+				<a href="<?= base_url('export/jadwal') ?>" class="btn btn-sm btn-success ml-2">
+					<i class="fas fa-file"></i> &nbsp;Export</a>
 				<div id="content-view"></div>
 			</div>
 		</div>
 	</div>
-
 </div>
 </div>
 <!--/.row-box End-->
@@ -228,8 +228,69 @@
 			}
 		})
 	}
+
+	$(document).on('click','#checkall',function(){
+		if ($(this).is(':checked')) {
+			$('.checklist').prop('checked',true);
+		} else {
+			$('.checklist').prop('checked',false);
+		}		
+	});
+
+	$(document).on('click','#deleted',function(){
+    var totalChecked = $('.checklist:checked').length;
+    var opsi = [];
+
+    if (totalChecked > 0) {
+      var y = confirm('Apakah anda yakin untuk menghapus data ?');
+      $(".checklist:checked").each(function(){
+        opsi.push($(this).val());
+      });
+    }else{
+      alert('Tidak ada yang dipilih!');
+    }
+
+    if (y == true) {
+      $.ajax({
+        type:'post',
+        url : '<?=base_url('jadwal/multi_delete');?>',
+        dataType : 'json',
+        data : {
+          id : opsi,
+        },
+        success:function(res){
+          if(res.status) {
+            pageLoad(1,'jadwal/page_load');
+          }
+          else {
+            alert(res.msg)
+            console.error(res);
+            return false;
+          }
+        },
+        error: function(e) {
+          alert(e.responseText.msg);
+          console.error(e.responseText);
+          return false;
+        }
+      });
+    } else {
+      return false;
+    }
+  });
+
+	$(document).on('click','#edited',function(){
+		var totalChecked = $('.checklist:checked').length;
+		var opsi = [];
+
+		if (totalChecked > 1) {
+			alert('Pilih satu untuk edit  !');
+			return false;
+		}else if(totalChecked < 1){
+			alert('Tidak ada yang dipilih!');
+			return false;
+		}else{
+			window.location = base_url + 'jadwal/edit/' + $('.checklist:checked').data('id');
+		}	
+	});
 </script>
-
-
-
-
