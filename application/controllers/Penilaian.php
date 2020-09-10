@@ -350,8 +350,6 @@ class Penilaian extends MY_Controller {
 
 	public function data_soal($id=null){
 
-
-
 		$url = base_url('penilaian/form_soal/'.$id);
 
 
@@ -444,61 +442,32 @@ class Penilaian extends MY_Controller {
 		$this->render('penilaian/edit',$data);
 	}
 
-	public function form_import($id_ujian){
-
-
-
+	public function form_import($id_paket_soal){
 		$data = array(
-
-			'back_url' => base_url('ujian_real/data_soal/'.$id_ujian.''),
-
-			'url_import' => base_url('import/ujian/'.$id_ujian.''),
-
+			'back_url' => base_url('penilaian/data_soal/'.$id_paket_soal.''),
+			'url_import' => base_url('import/soal-penilaian/'.$id_paket_soal.''),
+			'id_paket_soal' => decrypt_url($id_paket_soal)
 		);
 
-
-
 		$this->render('penilaian/form_import',$data);
-
 	}
-
-
 
 	public function get_mp(){
 
 		$post = $this->input->post();
-
-
-
 		$select = '<option disabled="disabled" selected="selected">Pilih</option>';
-
 		$mp = $this->m_mapel->get_many_by(array('id_instansi'=>$post['id_instansi']));
-
 		$post['id_mp'] = empty($post['id_mp']) ? NULL : $post['id_mp'];
-
-
-
 		foreach ($mp as $key => $rows) {
-
 			if ($post['id_mp'] == $rows->id) {
-
 				$select .= '<option value="'.$rows->id.'" selected="selected">'.$rows->nama.'</option>';
-
-			}else{
-
+			} else {
 				$select .= '<option value="'.$rows->id.'">'.$rows->nama.'</option>';
-
 			}
-
 		}
 
-
-
 		echo json_encode(['data'=>$select]);
-
 	}
-
-
 
 	public function get_trainer(){
 
@@ -686,47 +655,23 @@ class Penilaian extends MY_Controller {
 			}
 
 		}
-
-
-
 		$where['kls.id_instansi'] = $this->akun->instansi;
-
-
-
 		if ($this->log_lvl == 'guru') {
-
 			$where['kls.id_trainer'] = $this->akun->id;
-
 		}
-
-
-
-		
 
 		if ($this->log_lvl == 'siswa') {
-
 			$where['dekls.id_peserta'] = $this->akun->id;
-
 		}
 
-
-
 		$paginate = $this->m_penilaian->paginate($pg,$where,$limit);
-
 		$data['paginate'] = $paginate;
-
 		$data['paginate']['url']	= 'penilaian/page_load';
-
 		$data['paginate']['search'] = 'lookup_key';
-
 		$data['page_start'] = $paginate['counts']['from_num'];
 
-
-
 		$this->load->view('penilaian/table',$data);
-
 		$this->generate_page($data);
-
 	}
 
 
@@ -1478,74 +1423,51 @@ class Penilaian extends MY_Controller {
 
 		}
 
+		public function batalkanPenilaian()
+		{
+			$post = $this->input->post();
+
+			$update = $this->m_penilaian->update([
+				'izin' => 0
+			], ['id' => $post['id']]);
+			$deleteHasil = $this->m_ikut_penilaian->delete(['id_penilaian' => $post['id']]);
+
+			if($update && $deleteHasil) {
+				$this->sendAjaxResponse([
+					'status' => TRUE,
+					'msg' => 'Penilaian berhasil dibatalkan'
+				]);
+			}
+			else {
+				$this->sendAjaxResponse([
+					'status' => FALSE,
+					'msg' => 'Penilaian gagal dibatalkan'
+				], 500);
+			}
+		}
 
 		/*
 		* Function untuk mengatur suatu penilaian diizinkan oleh admin
 		*/
 		public function izinkan(){
 
-			$post = $this->input->post();
-
-
-
-			if ($post['izin'] == 0) {
-
-
-
-				$data = [
-
-					'jumlah_soal' => $post['soal'],
-
-					'izin'		  => 1,
-
-				];
-
-
-
-				$title = 'Mengizinkan';
-
-
-
-			}else{
-
-
-
-				$data = [
-
-					'jumlah_soal' => $post['soal'],
-
-					'izin'		  => 0,
-
-				];
-
-
-
-				$title = 'Membatalkan';
-
-			}
-
-		
+			$post = $this->input->post();	
+			$data = [
+				'jumlah_soal' => $post['soal'],
+				'izin'		  => 1,
+			];
+			$title = 'Mengizinkan';
 
 			$kirim = $this->m_penilaian->update($data,['id'=>$post['id']]);
-
 			if ($kirim) {
-
 				$status = 1;
-
 				$message = 'Berhasil '.$title;
-
 			}else{
-
 				$status = 0;
-
 				$message = 'Gagal '.$title;
-
 			}
 
-
-
 			echo json_encode(['status'=>$status,'message'=>$message]);
-
 		}
 
 
@@ -1844,14 +1766,7 @@ class Penilaian extends MY_Controller {
 
 						);
 
-
-
 						$this->m_ikut_penilaian->insert($insert_data);
-
-						
-
-						
-
 					}
 
 
@@ -2016,32 +1931,16 @@ class Penilaian extends MY_Controller {
 
 				}
 
-
-
 				$a['jam_mulai'] = $detil_tes->tgl_mulai;
-
 				$a['jam_selesai'] = $detil_tes->tgl_selesai;
-
 				$a['id_tes'] = $cek_detil_tes->id;
-
 				$a['no'] = $no;
-
 				$a['html'] = $html;
 
-
-
-				
-
 				$this->load->view('penilaian/v_ujian', $a);
-
 			} else {
-
 				//redirect('ujian/sudah_selesai_ujian/'.$id_ujian);
-
 			}
-
-
-
 		}
 
 
@@ -2759,59 +2658,36 @@ class Penilaian extends MY_Controller {
 		
 
 	public function multi_delete(){
-
+		$where = [];
 		$post = $this->input->post();
-
-
-
 		foreach ($post['id'] as $val) {
-
 			$where[] = $val;
-
 		}
-
-
 
 		$this->db->trans_begin();
-
-
-
 		$kirim = $this->db->where_in('id',$where)->delete('tb_penilaian');
+		$kirim = $this->db->where_in('id_penilaian', $where)->delete('tb_ikut_penilaian');
+		$kirim = $this->db->where_in('id_penilaian', $where)->delete('tb_ikut_penilaian_pertama');
 
-	
-
-		if ($this->db->trans_status() === FALSE)
-
-		{
-
+		if ($this->db->trans_status() === FALSE) {
 			$this->db->trans_rollback();
-
 		}
-
-		else
-
-		{
-
+		else {
 			$this->db->trans_commit();
-
 		}
-
-
 
 		if ($kirim) {
-
 			$result = true;
-
-		}else{
-
-			$result = false;
-
+			$this->sendAjaxResponse([
+				'status' => TRUE,
+				'msg' => 'Penilaian berhasil dihapus'
+			]);
+		} else {
+			$this->sendAjaxResponse([
+				'status' => FALSE,
+				'msg' => 'Penilaian gagal dihapus'
+			], 500);
 		}
-
-
-
-		echo json_encode(array('result'=>$result));
-
 	}
 
 	
@@ -3204,7 +3080,7 @@ class Penilaian extends MY_Controller {
 		$update = NULL;
 		if(!empty($data)) {
 			$dataOpsi = explode('#####', $data['opsi_' . $post['opsi']]);
-			if(!empty($dataOpsi[0]) && file_exists($this->_fileOpsiPath . end($dataOpsi))) {
+			if(!empty($dataOpsi[0]) && file_exists($this->_fileOpsiPath . $dataOpsi[0])) {
 				unlink($this->_fileOpsiPath . end($dataOpsi));
 			}
 

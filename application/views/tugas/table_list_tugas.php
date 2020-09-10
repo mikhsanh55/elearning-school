@@ -8,7 +8,7 @@
 			<th>Keterangan</th>
 			<th>Waktu Pengumpulan</th>
 			<th class="frist">Status Tugas</th>
-
+				
 		</tr>
 		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $where = []; $i= $page_start; foreach ($paginate['data'] as $rows):
@@ -141,4 +141,12 @@
 			});
 		});
 	});
+
+
+	$("#button").on("click", function(e) {
+		e.preventDefault();
+		$("#dialog").dialog("open");
+	});
+
+	
 </script>
