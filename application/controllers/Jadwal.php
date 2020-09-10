@@ -271,7 +271,7 @@ class Jadwal extends MY_Controller {
 
 		$this->m_jadwal->insert($data);
 		$url = '';
-		if($this->log_lvl == 'lembaga' || $this->log_lvl == 'admin' || $this->log_lvl == 'admin_lembaga') {
+		if($this->log_lvl == 'instansi' || $this->log_lvl == 'admin' || $this->log_lvl == 'admin_instansi') {
 			$url = 'jadwal';
 		}
 		else {
