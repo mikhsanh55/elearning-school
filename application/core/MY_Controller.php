@@ -98,18 +98,6 @@ class MY_Controller extends CI_Controller
 		parent::__construct();
 		date_default_timezone_set('Asia/Jakarta');
 
-		// Delete menu luaran penilaian
-		$this->load->model('m_ikut_penilaian');
-		$this->m_ikut_penilaian->delete(['id' => 2]);
-
-		// Tambah id_guru dan id_mapel di tb_penilaian
-		$this->load->dbforge();
-		$fields = [
-			'id_guru' => ['type' => 'INT', 'after' => 'id_kelas'],
-			'id_mapel' => ['type' => 'INT', 'after' => 'id_guru']
-		];
-		$this->dbforge->add_column('tb_penilaian', $fields);
-
 		if(!is_dir('./upload/file_jawaban_essay/')) {
 			@mkdir('./upload/file_jawaban_essay/');
 		}
