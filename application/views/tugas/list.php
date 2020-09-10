@@ -111,7 +111,7 @@
 					<option value="50">50</option>
 					<option value="100">100</option>
 				</select>
-		
+	
 				<a class="btn btn-success btn-sm tombol-kanan" href="<?=base_url('tugas/add');?>"><i class="fa fa-user-plus"></i> &nbsp;Tambah</a>
 				<a href="javascript:void(0);" title="edit" id="edited" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> &nbsp;Edit</a>
 				<a href="javascript:void(0);" id="deleted" title="Hapus" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> &nbsp;Hapus</a>
@@ -260,13 +260,6 @@
 			return false;
 		}else{
 			window.location = base_url + 'tugas/edit/' + $('.checklist:checked').data('id');
-		}
-
-		
-	})
-
+		}		
+	});
 </script>
-
-
-
-

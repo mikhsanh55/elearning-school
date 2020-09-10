@@ -272,10 +272,10 @@ class Jadwal extends MY_Controller {
 		$this->m_jadwal->insert($data);
 		$url = '';
 		if($this->log_lvl == 'lembaga' || $this->log_lvl == 'admin' || $this->log_lvl == 'admin_lembaga') {
-			$url = '/jadwal';
+			$url = 'jadwal';
 		}
 		else {
-			$url = '/jadwal/kalender';
+			$url = 'jadwal/kalender';
 		}
 		echo json_encode(array('result' => true, 'url' => $url));
 	}
@@ -285,7 +285,7 @@ class Jadwal extends MY_Controller {
 		$post = $this->input->post();
 
 		$url = '';
-		if($this->log_lvl == 'lembaga' || $this->log_lvl == 'admin' || $this->log_lvl == 'admin_lembaga') {
+		if($this->log_lvl == 'instansi' || $this->log_lvl == 'admin' || $this->log_lvl == 'admin_instansi') {
 			$url = '/jadwal';
 		}
 		else {
@@ -578,12 +578,7 @@ class Jadwal extends MY_Controller {
 
 	}
 
-
-
-
-
-	 public function paginate($page = 1, $where = array(), $limit = 10)
-
+	public function paginate($page = 1, $where = array(), $limit = 10)
     {
 
         // get filtered results
@@ -628,12 +623,38 @@ class Jadwal extends MY_Controller {
 
     }
 
+    public function multi_delete()
+    {
+    	$post = $this->input->post();
+    	$where = [];
+		foreach ($post['id'] as $val) {
+			$where[] = $val;
+		}
 
+		$this->db->trans_begin();
 
+		$delete = $this->db->where_in('id',$where)->delete('tb_jadwal');
+
+		if ($this->db->trans_status() === FALSE) {
+			$this->db->trans_rollback();
+		}
+		else {
+			$this->db->trans_commit();
+		}
+
+		if ($delete) {
+			$data['status'] = TRUE;
+			$data['msg'] = 'Jadwal berhasil dihapus';
+			$responseCode = 200;
+		} else {
+			$data['status'] = FALSE;
+			$data['msg'] = 'Jadwal berhasil dihapus';
+			$responseCode = 200;
+		}
+
+		$this->sendAjaxResponse($data, $responseCode);
+    }
 }
 
-
-
 /* End of file Jadwal.php */
-
 /* Location: ./application/controllers/Jadwal.php */
