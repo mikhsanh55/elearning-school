@@ -6,21 +6,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Aktivitas extends MY_Controller {
 
-
-
-    function __construct() {
-
+    public function __construct() {
         parent::__construct();
-
         $this->db->query("SET time_zone='+7:00'");
-
         $waktu_sql = $this->db->query("SELECT NOW() AS waktu")->row_array();
-
         $this->waktu_sql = $waktu_sql['waktu'];
-
 		$this->opsi = array("a","b","c","d","e");
-		
-		$this->load->model('m_kelas');
+    	$this->load->model('m_kelas');
 		$this->load->model('m_admin');
         $this->load->model('m_mapel');
         $this->load->model('m_detail_kelas');
@@ -28,15 +20,9 @@ class Aktivitas extends MY_Controller {
 		$this->load->model('m_siswa');
 		$this->load->model('m_admin_detail');
         $this->load->model('m_keaktifan_siswa');
-
 	}
 
-	
-
-
-
 	public function cek_aktif() {
-
 		if ($this->session->userdata('admin_valid') == false && $this->session->userdata('admin_id') == "") {
 
 			redirect('login');
@@ -298,7 +284,7 @@ class Aktivitas extends MY_Controller {
 
                 $sumLogin = $this->m_keaktifan_siswa->getSumKeaktifan([
                     'id_siswa' => $d['id'],
-                    'id_mapel' => $id_mapel,
+                    'id_mapel' => NULL,
                     'type' => 'login'
                 ]);
                 
@@ -499,7 +485,6 @@ class Aktivitas extends MY_Controller {
                 ';
         $sumLogin = $this->m_keaktifan_siswa->getSumKeaktifan([
             'id_siswa' => $post['siswa'],
-            'id_mapel' => $post['mapel'],
             'type' => 'login'
         ]);
 
