@@ -298,7 +298,6 @@ class Aktivitas extends MY_Controller {
 
                 $sumLogin = $this->m_keaktifan_siswa->getSumKeaktifan([
                     'id_siswa' => $d['id'],
-                    'id_mapel' => $id_mapel,
                     'type' => 'login'
                 ]);
                 
@@ -499,7 +498,6 @@ class Aktivitas extends MY_Controller {
                 ';
         $sumLogin = $this->m_keaktifan_siswa->getSumKeaktifan([
             'id_siswa' => $post['siswa'],
-            'id_mapel' => $post['mapel'],
             'type' => 'login'
         ]);
 
