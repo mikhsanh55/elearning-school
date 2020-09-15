@@ -565,7 +565,7 @@ class Ujian_essay extends MY_Controller {
 
 		$where['id_ujian'] = $post['id_ujian'];
 
-		$where['status'] = 'N';
+		// $where['status'] = 'N';
 
 		$paginate = $this->m_ikut_ujian_essay->paginate($pg,$where,$limit);
 
