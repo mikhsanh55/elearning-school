@@ -545,7 +545,7 @@ class Ujian_real extends MY_Controller
 		}
 
 		$where['id_ujian'] = $post['id_ujian'];
-		$where['status'] = 'N';
+		// $where['status'] = 'N';
 
 		$paginate = $this->m_ikut_ujian->paginate($pg,$where,$limit);
 		$data['paginate'] = $paginate;
