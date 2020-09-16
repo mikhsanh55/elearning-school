@@ -1189,6 +1189,7 @@ class Ujian_essay extends MY_Controller {
 				$a['soalUjian'] = $jumlahSoal;
 				$a['idUjian'] = $id_ujian;
 				$a['navigasiSoal'] = $navigasiSoal;
+				$a['jamSelesai'] = $cek_detil_tes->waktu;
 				// print_r($a);exit;				
 			
 				$this->load->view('ujian_essay/v_ujian', $a);
