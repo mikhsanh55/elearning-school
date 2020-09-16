@@ -557,12 +557,12 @@
             }
         });
     });
-
-    // Start clock timer
-    $('#clock').countdowntimer({
-        var selesaiTime = parseInt("<?= $jamSelesai; ?>"),
+    
+    var selesaiTime = parseInt("<?= $jamSelesai; ?>"),
             jamMulai = new Date(),
             jamSelesai = new Date(jamMulai.getTime() + ( selesaiTime * 60 * 1000));
+    // Start clock timer
+    $('#clock').countdowntimer({
         startDate: jamMulai,
         dateAndTime: jamSelesai,
         size: 'lg',
