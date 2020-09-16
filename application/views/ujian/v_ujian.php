@@ -275,15 +275,15 @@ function hide() {
     x.style.display = "none";
   }
 }
-
     
     hitung = function() {
-        var tgl_mulai = '<?php echo date('Y-m-d H:i:s'); ?>';
-        var tgl_selesai = '<?php echo $jam_selesai; ?>';
+        var selesai = parseInt("<?= $jamSelesai; ?>"),
+            jamMulai = new Date(),
+            jamSelesai = new Date(jamMulai.getTime() + ( selesai * 60 * 1000));
 
         $("div#clock").countdowntimer({
-            startDate : tgl_mulai,
-            dateAndTime : tgl_selesai,
+            startDate : jamMulai,
+            dateAndTime : jamSelesai,
             size : "lg",
             displayFormat: "HMS",
             timeUp : selesai,

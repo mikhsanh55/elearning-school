@@ -545,7 +545,6 @@ class Ujian_real extends MY_Controller
 		}
 
 		$where['id_ujian'] = $post['id_ujian'];
-		$where['status'] = 'N';
 
 		$paginate = $this->m_ikut_ujian->paginate($pg,$where,$limit);
 		$data['paginate'] = $paginate;
@@ -1490,6 +1489,8 @@ class Ujian_real extends MY_Controller
 				$a['id_tes'] = $cek_detil_tes->id;
 				$a['no'] = $no;
 				$a['html'] = $html;
+
+				$a['jamSelesai'] = $cek_detil_tes->waktu;
 
 				$this->load->view('ujian/v_ujian', $a);
 
