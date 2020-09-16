@@ -2315,4 +2315,44 @@ class Ujian_real extends MY_Controller
 			], 500);
 		}
 	}
+
+	/*
+	* Hapus hasil ujian per siswa
+	*/
+	public function ulangUjianSiswa()
+	{
+		$post = $this->input->post();
+		$returnedData = [];
+		$responseCode = 200;
+
+		$idSiswa = decrypt_url($post['siswa']);
+		$idUjian = decrypt_url($post['ujian']);
+
+		$this->db->trans_start();
+		$delete = $this->m_ikut_ujian->delete([
+			'id_user' => $idSiswa,
+			'id_ujian' => $idUjian
+		]);
+		$this->db->trans_complete();
+
+		if($delete && $this->db->trans_status() != FALSE) {
+			$returnedData = [
+				'status' => TRUE,
+				'msg' => 'Hasil ujian siswa berhasil dihapus'
+			];
+
+			$responseCode = 200;
+		}
+		else {
+			$this->db->trans_rollback();
+			$returnedData = [
+				'status' => FALSE,
+				'msg' => 'Gagal menghapus hasil ujian siswa'
+			];
+			$responseCode = 500;
+		}
+
+		// Send response
+		$this->sendAjaxResponse($returnedData, $responseCode);
+	}
 }
