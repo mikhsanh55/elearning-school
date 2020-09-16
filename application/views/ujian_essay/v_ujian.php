@@ -557,11 +557,14 @@
             }
         });
     });
-
+    
+    var selesaiTime = parseInt("<?= $jamSelesai; ?>"),
+            jamMulai = new Date(),
+            jamSelesai = new Date(jamMulai.getTime() + ( selesaiTime * 60 * 1000));
     // Start clock timer
     $('#clock').countdowntimer({
-        startDate: "<?= date('Y-m-d H:i:s'); ?>",
-        dateAndTime: "<?= $jam_selesai; ?>",
+        startDate: jamMulai,
+        dateAndTime: jamSelesai,
         size: 'lg',
         displayFormat: 'HMS',
         timeUp: () => {
