@@ -1490,6 +1490,8 @@ class Ujian_real extends MY_Controller
 				$a['no'] = $no;
 				$a['html'] = $html;
 
+				$a['jamSelesai'] = $cek_detil_tes->waktu;
+
 				$this->load->view('ujian/v_ujian', $a);
 
 			} else {
