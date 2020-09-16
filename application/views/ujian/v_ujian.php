@@ -277,9 +277,9 @@ function hide() {
 }
     
     hitung = function() {
-        var selesai = parseInt("<?= $jamSelesai; ?>"),
+        var selesaiTime = parseInt("<?= $jamSelesai; ?>"),
             jamMulai = new Date(),
-            jamSelesai = new Date(jamMulai.getTime() + ( selesai * 60 * 1000));
+            jamSelesai = new Date(jamMulai.getTime() + ( selesaiTime * 60 * 1000));
 
         $("div#clock").countdowntimer({
             startDate : jamMulai,
