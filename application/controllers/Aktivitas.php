@@ -284,7 +284,6 @@ class Aktivitas extends MY_Controller {
 
                 $sumLogin = $this->m_keaktifan_siswa->getSumKeaktifan([
                     'id_siswa' => $d['id'],
-                    'id_mapel' => NULL,
                     'type' => 'login'
                 ]);
                 

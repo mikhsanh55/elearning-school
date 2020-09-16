@@ -46,9 +46,12 @@
 				<td><?=$rows->tgl_mulai;?></td>
 				<td><?=$rows->tgl_selesai;?></td>
 				<td class="frist">
-						<a href="<?=base_url('ujian_essay/ikut_ujian_hasil/'.encrypt_url($rows->id_ujian).'/'.encrypt_url($rows->id_user));?>" class="btn btn-primary btn-sm ml-2 mr-2">
+						<a href="<?=base_url('ujian_essay/ikut_ujian_hasil/'.encrypt_url($rows->id_ujian).'/'.encrypt_url($rows->id_user));?>" class="btn btn-primary btn-sm btn-block">
 							Lihat Jawaban
 						</a>
+						<button class="btn btn-danger btn-sm btn-block ulang-essay-siswa" data-id="<?= encrypt_url($rows->id); ?>" data-nama="<?= $rows->nama_siswa; ?>">
+							Ulang Ujian
+						</button>
 					</div>				
 				</td>	
 				<!-- <td class="text-center mx-auto">
@@ -73,39 +76,37 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
+		let conf, namaSiswa = '';
 		$('[data-toggle="tooltip"]').tooltip();   
+
+		$('.ulang-essay-siswa').on('click', function(e) {
+			e.preventDefault();
+			namaSiswa = $(this).data('nama');
+			conf = confirm(`Hasil ujian essay siswa ${namaSiswa} akan terhapus, anda yakin?`);
+
+			if(conf) {
+				$.ajax({
+					type: 'post',
+					url: "<?= base_url('ujian_essay/ulang-ujian-siswa'); ?>",
+					data: {
+						id: $(this).data('id')
+					},
+					dataType: 'json',
+					success: () => window.location.reload(),
+					error: (e) => {
+						console.error(e.responseText);
+						alert(`Tidak dapat menghapus hasil essay siswa ${namaSiswa}, terjadi kesalahan`);
+						return false;
+					}
+				});
+			}
+			else {
+				return false;
+			}
+		})
 	});
-
-	$(document).on('click','.izinkan',function(){
-
-		var y = confirm('Apakah anda yakin akan mengizinkan ujian ?');
-
-		if (y == true) {
-
-			$.ajax({
-				type:'post',
-				url : '<?=base_url('ujian_real/izinkan');?>',
-				dataType : 'json',
-				data : {
-					id   : $(this).data('id'),
-					izin : $(this).data('izin'),
-					soal : $(this).data('soal'),
-				},
-				success:function(response){
-					alert(response.message);
-					pageLoad(1,'ujian_real/page_load');
-				}
-			})
-
-
-		}else{
-			return false;
-		}
-
-		
-	})
 	function updateStatusSiswa(status, id) {
-		var conf = confirm('Anda yakin?')
+		conf = confirm('Anda yakin?')
 
 		if(conf) {
 			$.ajax({

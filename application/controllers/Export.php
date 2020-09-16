@@ -710,7 +710,6 @@ class Export extends MY_Controller {
 
 		// Set No Column back to 1 for reuse
 		$this->excelColumnNo = 1;
-
 	}
 
 	// Hasil Ujian PG
@@ -722,7 +721,6 @@ class Export extends MY_Controller {
 		$this->load->model('m_detail_kelas');
 		$id = decrypt_url($md5_id_ujian);
 		$this->excelDatas = $this->m_ikut_ujian->get_many_by(['id_ujian' => $id]);
-
 		if(count($this->excelDatas) > 0) {
 			$data_ujian = $this->m_ujian->get_by(['uji.id' => $this->excelDatas[0]->id_ujian ]);
 			$data_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $this->excelDatas[0]->id_user]);

@@ -1987,6 +1987,11 @@ class Ujian_essay extends MY_Controller {
 
 		foreach ($post['id'] as $val) {
 			$where[] = $val;
+			$data = $this->m_jawaban_essay->get_by(['id_ikut_essay' => $val]);
+
+			if(!empty($data) && !is_null($data->file) && file_exists('/upload/file_jawaban_essay/' + $data->file)) {
+				unlink('/upload/file_jawaban_essay/' . $data->file);
+			}
 		}
 
 		$this->db->trans_begin();
@@ -2012,5 +2017,45 @@ class Ujian_essay extends MY_Controller {
 				'msg' => 'Gagal menghapus data'
 			], 500);
 		}
+	}
+
+	public function ulangUjianSiswa()
+	{
+		$post = $this->input->post();
+		$returnedData = [];
+		$responseCode = 200;
+
+		$id = decrypt_url($post['id']);
+		$data  = $this->m_jawaban_essay->get_by(['id_ikut_essay' => $id]);
+
+		if(!empty($data) && !is_null($data->file) && file_exists('/upload/file_jawaban_essay/' + $data->file)) {
+			unlink('/upload/file_jawaban_essay/' . $data->file);
+		}
+
+		$delete = $this->m_ikut_ujian_essay->delete([
+			'id' => $id
+		]);
+		$deleteJawaban = $this->m_jawaban_essay->delete([
+			'id_ikut_essay' => $id
+		]);
+
+		if($delete && $deleteJawaban) {
+			$returnedData = [
+				'status' => TRUE,
+				'msg' => 'Hasil ujian essay siswa berhasil dihapus'
+			];
+
+			$responseCode = 200;
+		}
+		else {
+			$returnedData = [
+				'status' => FALSE,
+				'msg' => 'Hasil ujian essay siswa gagal dihapus'
+			];
+
+			$responseCode = 500;
+		}
+
+		$this->sendAjaxResponse($returnedData, $responseCode);
 	}
 }
