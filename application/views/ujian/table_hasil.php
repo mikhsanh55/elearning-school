@@ -13,7 +13,7 @@
 			<th>KKM</th>
 			<th>Waktu Mulai</th>
 			<th>Waktu Selesai</th>
-			<th>Hasil</th>
+			<th>Opsi</th>
 		</tr>
 		<?php if(count($paginate['data']) > 0) { $i= $page_start; foreach ($paginate['data'] as $rows):
 			$ujian = $this->m_ujian->get_by(['uji.id'=>$rows->id_ujian]);
@@ -46,7 +46,10 @@
 				<td><?=$rows->tgl_mulai;?></td>
 				<td><?=$rows->tgl_selesai;?></td>
 				<td>
-					<a href="<?= base_url('ujian/hasil-pg/') . encrypt_url($rows->id_ujian) . '/' . encrypt_url($rows->id_user); ?>" class="btn btn-sm btn-primary">Lihat Jawaban</a>
+					<a href="<?= base_url('ujian/hasil-pg/') . encrypt_url($rows->id_ujian) . '/' . encrypt_url($rows->id_user); ?>" class="btn btn-sm btn-primary btn-block">Lihat Jawaban</a>
+					<button class="btn btn-danger btn-sm btn-block ulang-ujian-siswa" data-siswa="<?= encrypt_url($rows->id_user); ?>" data-ujian="<?= encrypt_url($rows->id_ujian) ?>" data-nama="<?= $siswa->nama; ?>">
+						Ulang ujian
+					</button>
 				</td>
 			</tr>
 		<?php $i++;endforeach; } else { ?>
@@ -61,38 +64,35 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
+		let conf, namaSiswa = '';
 		$('[data-toggle="tooltip"]').tooltip();   
+		$('.ulang-ujian-siswa').on('click', function(e) {
+			e.preventDefault();
+			namaSiswa = $(this).data('nama');
+			conf = confirm(`Data siswa ${namaSiswa} di ujian ini akan terhapus, anda yakin?`);
+
+			if(conf) {
+				$.ajax({
+					type: 'post',
+					url: "<?= base_url('ujian/ulang-ujian-siswa') ?>",
+					data: {
+						siswa: $(this).data('siswa'),
+						ujian: $(this).data('ujian')
+					},
+					dataType: 'json',
+					success: () => window.location.reload(),
+					error: (e) => {
+						console.error(e.responseText);
+						alert(`Tidak dapat menghapus data ujian ${namaSiswa}, terjadi kesalahan`);
+						return false;
+					}
+				});
+			}
+			else {
+				return false;
+			}
+		});
 	});
-
-	$(document).on('click','.izinkan',function(){
-
-		var y = confirm('Apakah anda yakin akan mengizinkan ujian ?');
-
-		if (y == true) {
-
-			$.ajax({
-				type:'post',
-				url : '<?=base_url('ujian_real/izinkan');?>',
-				dataType : 'json',
-				data : {
-					id   : $(this).data('id'),
-					izin : $(this).data('izin'),
-					soal : $(this).data('soal'),
-				},
-				success:function(response){
-					alert(response.message);
-					pageLoad(1,'ujian_real/page_load');
-				}
-			})
-
-
-		}else{
-			return false;
-		}
-
-		
-	})
-
 </script>
 
 
