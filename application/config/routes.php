@@ -114,6 +114,8 @@ $route['ujian/hapus-soal-file'] = 'ujian_real/hapusSoalFile';
 $route['ujian/batalkan-ujian'] = 'ujian_real/batalkanUjian';
 $route['ujian/delete-hasil-ujian'] = 'ujian_real/delete_hasil_ujian';
 $route['ujian/delete-hasil-ujian-essay'] = 'ujian_essay/delete_hasil_ujian';
+$route['ujian/ulang-ujian-siswa'] = 'ujian_real/ulangUjianSiswa';
+$route['ujian_essay/ulang-ujian-siswa'] = 'ujian_essay/ulangUjianSiswa';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

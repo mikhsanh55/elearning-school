@@ -275,7 +275,6 @@ function hide() {
     x.style.display = "none";
   }
 }
-
     
     hitung = function() {
         var selesaiTime = parseInt("<?= $jamSelesai; ?>"),
@@ -422,23 +421,20 @@ function hide() {
  simpan_akhir = function() {
         simpan();
         var id_penggunaan = $("#url3").val();
-        if (confirm('Ujian telah selesai. Anda yakin akan mengakhiri tes ini..?')) {
-            simpan();
-            $.ajax({
-                type: "GET",
-                url: base_url+"ujian_real/simpan_akhir_ujian/"+id_tes+"/"+id_penggunaan,
-                beforeSend: function() {
-                    $('.ajax-loading').show();    
-                },
-                success: function(r) {
-                    if(r.status == "ok") {
-                        window.location.assign("<?php echo base_url(); ?>ujian_real"); 
-                    }
+        alert('Waktu ujian telah habis. Selamat anda sudah menyelesaikan ujian ini, semoga hasilnya memuaskan :)');
+        simpan();
+        $.ajax({
+            type: "GET",
+            url: base_url+"ujian_real/simpan_akhir_ujian/"+id_tes+"/"+id_penggunaan,
+            beforeSend: function() {
+                $('.ajax-loading').show();    
+            },
+            success: function(r) {
+                if(r.status == "ok") {
+                    window.location.assign("<?php echo base_url(); ?>ujian_real"); 
                 }
-            });
-
-            return false;
-        }
+            }
+        });
     }
 
     show_jawaban = function() {

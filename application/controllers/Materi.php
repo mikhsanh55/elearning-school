@@ -386,6 +386,7 @@ class Materi extends MY_Controller
         $this->db->trans_complete();
 
         if($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
             $this->sendAjaxResponse([
                 'status' => FALSE,
                 'msg' => 'Materi gagal ditambahkan'
