@@ -560,8 +560,11 @@
 
     // Start clock timer
     $('#clock').countdowntimer({
-        startDate: "<?= date('Y-m-d H:i:s'); ?>",
-        dateAndTime: "<?= $jam_selesai; ?>",
+        var selesaiTime = parseInt("<?= $jamSelesai; ?>"),
+            jamMulai = new Date(),
+            jamSelesai = new Date(jamMulai.getTime() + ( selesaiTime * 60 * 1000));
+        startDate: jamMulai,
+        dateAndTime: jamSelesai,
         size: 'lg',
         displayFormat: 'HMS',
         timeUp: () => {
