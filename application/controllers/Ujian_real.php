@@ -1495,18 +1495,10 @@ class Ujian_real extends MY_Controller
 				$a['jamSelesai'] = $cek_detil_tes->waktu;
 
 				$this->load->view('ujian/v_ujian', $a);
-
 			} else {
-
 				//redirect('ujian/sudah_selesai_ujian/'.$id_ujian);
-
 			}
-
-
-
 		}
-
-
 
 		public function simpan_satu_ujian($id_ujian,$id_pengguna=NULL){
 
@@ -1658,25 +1650,7 @@ class Ujian_real extends MY_Controller
 			else {
 				$nilai_bobot = ($nilai_bobot)  * 100;
 			}
-
 			
-
-			
-			// Update status siswa jika nilainya lulus
-			$is_graduted = $this->m_ujian->get_by(['uji.id' => $id_ujian]);
-			if(!is_null($is_graduted)) {
-				if($nilai >= $is_graduted->min_nilai) {
-					$this->db->update('m_siswa', ['is_graduated' => 0],['id' => $this->akun->id]);
-				}
-			}
-
-
-			//$a_banyak		= $this->db->query("SELECT SUM(banyak) AS jumlah FROM tb_ikut_ujian")->row();
-
-			//$this->db->query("UPDATE tb_ujian SET penggunaan = '$a_banyak->jumlah' WHERE id = '$id_ujian' ");
-
-
-
 			$this->db->query("UPDATE tb_ikut_ujian SET jml_benar = '$jumlah_benar', nilai = '$nilai', nilai_bobot = '$nilai_bobot', status = 'N',tgl_selesai= '".date('Y-m-d H:i:s')."' WHERE status = 'Y' AND id_ujian = '$id_ujian' AND id_user = '".$this->akun->id."'");
 
 			
