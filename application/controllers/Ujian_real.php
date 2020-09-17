@@ -2187,6 +2187,7 @@ class Ujian_real extends MY_Controller
 
 		$idSoal = $post['id'];
 		$data = $this->m_soal_ujian->get_by(['id' => $idSoal]);
+		$fileSoal = $this->_fileSoalPath . $data->file;
 
 		$update = $this->m_soal_ujian->update([
 			'file' => NULL,
@@ -2194,8 +2195,8 @@ class Ujian_real extends MY_Controller
 		], ['id' => $idSoal]);
 
 		if($update) {
-			if(file_exists($this->_fileSoalPath . $data->file)) {
-				unlink($this->_fileSoalPath . $data->file);
+			if(file_exists($fileSoal)) {
+				unlink($fileSoal);
 			}
 
 			$this->sendAjaxResponse([
