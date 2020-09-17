@@ -1491,61 +1491,34 @@ class Ujian_real extends MY_Controller
 				$a['no'] = $no;
 				$a['html'] = $html;
 				$a['jamSelesai'] = $cek_detil_tes->waktu;
-
 				$a['jamSelesai'] = $cek_detil_tes->waktu;
 
 				$this->load->view('ujian/v_ujian', $a);
-
 			} else {
-
 				//redirect('ujian/sudah_selesai_ujian/'.$id_ujian);
-
 			}
-
-
-
 		}
 
-
-
 		public function simpan_satu_ujian($id_ujian,$id_pengguna=NULL){
-
 			$p			= json_decode(file_get_contents('php://input'));
-
 			$update_ 	= "";
-
 			for ($i = 1; $i < $p->jml_soal; $i++) {
-
 				$_tjawab 	= "opsi_".$i;
-
 				$_tidsoal 	= "id_soal_".$i;
-
 				$_ragu 		= "rg_".$i;
-
 				$jawaban_ 	= empty($p->$_tjawab) ? "" : $p->$_tjawab;
-
 				$update_	.= "".$p->$_tidsoal.":".$jawaban_.":".$p->$_ragu.",";
-
 			}
 
 			$update_		= substr($update_, 0, -1);
-
 			$this->db->query("UPDATE tb_ikut_ujian SET list_jawaban = '".$update_."' WHERE id_ujian = '$id_ujian' AND id_user = '".$this->akun->id."'");
-
 			$cek = $this->db->query("SELECT * from tb_ikut_ujian where id_ujian = " . $id_ujian . " and id_user = " . $this->akun->id . "");
-
 			$cek_ujian_pertama = $this->db->query("SELECT * from tb_ikut_ujian_pertama where id_ujian = " . $id_ujian . " and id_user = " . $this->akun->id . "");
-
 			if($cek_ujian_pertama->num_rows() == 1 ) {
-
 				if($cek->num_rows() == 1) {
-
 					$this->db->query("UPDATE tb_ikut_ujian_pertama SET list_jawaban = '".$update_."' WHERE id_ujian = '$id_ujian' AND id_user = '".$this->akun->id."'");
 
 				}
-
-				
-
 			}
 
 			//echo $this->db->last_query();
@@ -1647,9 +1620,6 @@ class Ujian_real extends MY_Controller
 				$this->db->query($q_update_jwb);
 
 			}
-
-
-
 			$nilai = ($jumlah_benar / $jumlah_soal)  * 100;
 
 			if($total_bobot > 0) {
@@ -1658,24 +1628,6 @@ class Ujian_real extends MY_Controller
 			else {
 				$nilai_bobot = ($nilai_bobot)  * 100;
 			}
-
-			
-
-			
-			// Update status siswa jika nilainya lulus
-			$is_graduted = $this->m_ujian->get_by(['uji.id' => $id_ujian]);
-			if(!is_null($is_graduted)) {
-				if($nilai >= $is_graduted->min_nilai) {
-					$this->db->update('m_siswa', ['is_graduated' => 0],['id' => $this->akun->id]);
-				}
-			}
-
-
-			//$a_banyak		= $this->db->query("SELECT SUM(banyak) AS jumlah FROM tb_ikut_ujian")->row();
-
-			//$this->db->query("UPDATE tb_ujian SET penggunaan = '$a_banyak->jumlah' WHERE id = '$id_ujian' ");
-
-
 
 			$this->db->query("UPDATE tb_ikut_ujian SET jml_benar = '$jumlah_benar', nilai = '$nilai', nilai_bobot = '$nilai_bobot', status = 'N',tgl_selesai= '".date('Y-m-d H:i:s')."' WHERE status = 'Y' AND id_ujian = '$id_ujian' AND id_user = '".$this->akun->id."'");
 
@@ -2171,7 +2123,10 @@ class Ujian_real extends MY_Controller
 	);
 	echo json_encode($json);
 }
-
+	
+	/*
+	* Method untuk guru memeriksa jawaban siswa terhadap ujian PG
+	*/
 	public function hasil_ujian_pg($id_ujian, $id_siswa)
 	{
 		$id_ujian = decrypt_url($id_ujian);
@@ -2213,6 +2168,7 @@ class Ujian_real extends MY_Controller
 
 		$idSoal = $post['id'];
 		$data = $this->m_soal_ujian->get_by(['id' => $idSoal]);
+		$soalUjian = $this->_fileSoalPath . $data->file;
 
 		$update = $this->m_soal_ujian->update([
 			'file' => NULL,
@@ -2220,8 +2176,8 @@ class Ujian_real extends MY_Controller
 		], ['id' => $idSoal]);
 
 		if($update) {
-			if(file_exists($this->_fileSoalPath . $data->file)) {
-				unlink($this->_fileSoalPath . $data->file);
+			if(file_exists($soalUjian)) {
+				unlink($soalUjian);
 			}
 
 			$this->sendAjaxResponse([
