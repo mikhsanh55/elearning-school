@@ -1214,7 +1214,10 @@ function m_guru_matkul_s() {
 }
 //mapel
 function m_mapel_e(id) {
+	$('#kd_mp').val('');
+	$('#nama').val('');
 	$("#m_mapel").modal('show');
+
 	$.ajax({
 		type: "GET",
 		url: base_url+"dtest/m_mapel/det/"+id,

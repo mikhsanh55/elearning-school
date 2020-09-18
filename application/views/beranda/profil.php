@@ -72,183 +72,45 @@
   .spin-icon {
       animation:rot 1s linear infinite;   
   }
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    grid-gap: 15px;
+    width: 100%;
+    align-items: start;
+  }
+  .card {
+    transition: ease .2s;
+  }
+  .card:hover {
+    box-shadow: 0 0 5px 3px #ccc;
+  }
 
 </style>
 
-<div class="col-md-9 page-content">
-
-	<div class="inner-box">
-
-
-
-		<div id="accordion" class="panel-group">
-
-			<div class="row">
-
-				<div class="col-md-12">
-
-					<div class="panel panel-info">
-
-					<div class="panel-heading">
-                    Selamat datang di <?=$this->title;?> | <a href="javascript:void(0);"><i class="icon-user"></i> <?php echo $this->session->userdata('admin_nama');?> </a> - <a href="#" onclick="return rubah_password();"><i class="icon-key"></i> Ubah Password </a>
-						<a href="<?php echo base_url(); ?>login/logout" onclick="return confirm('Keluar ?');" style="float:right"> <i class=" icon-logout "></i> Log out </a>
-					</div>
-					<div class="panel-body">
-					<div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="container">
-            <ul id="lightslider">
-            <?php foreach ($slide as $rows):?>
-              <li data-thumb="<?=$patch.$rows->file;?>" data-src="<?=$patch.$rows->file;?>">
-                  <img class="img-slider img-thumbnail rounded mx-auto d-block" src="<?=$patch.$rows->file;?>" alt="">
-              </li>
-            <?php endforeach;?>
-            </ul>  
-            </div>      
-            <div class="well well-sm">
-                <div class="row">
-
-                    <div class="col-sm-12 col-md-12">
-                        <br><br>
-                            <input type="hidden" value="<?= $this->akun->id; ?>" id="id">
-                            <table class="table" id="info-user">
-                            <tr>
-                                <th colspan="3" class="text-center text-uppercase font-weight-bold">
-                                    <h3>Profil</h3>
-                                    <img class="round" src="<?= empty($siswa->photo) ? 'assets/img/avatar-default.jpg' : $siswa->photo ?>" alt="" width="90" height="90" id="avatar">
-                                </th>
-                            </tr>
-                            <tr>
-                                <th class="text-secondary text-uppercase">Nama</th>
-                                <td class="text-uppercase font-weight-bold">
-                                    <span><?= (empty($siswa->nama)) ? NULL : $siswa->nama ;?></span>
-                                    <input data-key="nama" type="text" class="d-none in-edit form-control input-sm" name="nama" value="<?= (empty($siswa->nama)) ? NULL : $siswa->nama  ?>">
-                                </td>
-                                <td class="text-right text-primary font-weight-bold">
-                                    <i class="fas fa-edit"></i>
-                                    <i class="d-none fas fa-spinner text-primary spin-icon"></i>
-                                    <button class="d-none btn btn-sm btn-outline-danger"><i class="fas  fa-times"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="text-secondary text-uppercase">Agama</th>
-                                <td class="text-uppercase font-weight-bold">
-                                    <span><?= (empty($siswa->pangkat)) ? NULL : $siswa->pangkat ;?></span>
-                                    <input data-key="pangkat" type="text" class="d-none in-edit form-control input-sm" name="pangkat" value="<?= (empty($siswa->pangkat)) ? NULL : $siswa->pangkat  ?>">
-                                </td>
-                                <td class="text-right text-primary font-weight-bold">
-                                    <i class="fas fa-edit"></i>
-                                    <i class="d-none fas fa-spinner text-primary spin-icon"></i>
-                                    <button class="d-none btn btn-sm btn-outline-danger"><i class="fas  fa-times"></i></button>
-                                </td>
-                            </tr>
-                             <tr>
-                                <th class="text-secondary text-uppercase">Kelas</th>
-                                <td class="text-lowercase font-weight-bold">
-
-                                    <?= (isset($kelas->nama_kelas)) ? ucwords($kelas->nama_kelas) : NULL; ?>
-                                </td>
-                                <td class="text-right text-primary font-weight-bold">
-                                    <i class="fas fa-check"></i>
-                                </td>
-                            </tr>
-                           
-                            <tr>
-                                <th class="text-secondary text-uppercase">NIS</th>
-                                <td class="text-uppercase font-weight-bold">
-                                    <span><?= $siswa->nrp ;?></span>
-                                    <input data-key="nrp" type="text" class="d-none in-edit form-control input-sm" name="nrp" value="<?= (empty($siswa->nrp)) ? NULL : $siswa->nrp  ?>">
-                                </td>
-                                <td class="text-right text-primary font-weight-bold">
-                                    <i class="fas fa-edit"></i>
-                                    <i class="d-none fas fa-spinner text-primary spin-icon"></i>
-                                    <button class="d-none btn btn-sm btn-outline-danger"><i class="fas  fa-times"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="text-secondary text-uppercase">Username</th>
-                                <td class="text-lowercase font-weight-bold">
-                                    <?= (empty($this->akun->username)) ? NULL : $this->akun->username ;?>
-                                </td>
-                                <td class="text-right text-primary font-weight-bold">
-                                    <i class="fas fa-check"></i>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="text-secondary text-uppercase">Email</th>
-                                <td class="font-weight-bold">
-                                    <span><?= (empty($siswa->email)) ? NULL : $siswa->email  ?></span>
-                                    <input data-key="email" type="text" class="d-none in-edit form-control input-sm" name="email" value="<?= (empty($siswa->email)) ? NULL : $siswa->email  ?>">
-                                </td>
-                                <td class="text-right text-primary font-weight-bold">
-                                    <i class="fas fa-edit"></i>
-                                    <i class="d-none fas fa-spinner text-primary spin-icon"></i>
-                                    <button class="d-none btn btn-sm btn-outline-danger"><i class="fas  fa-times"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="text-secondary text-uppercase">Telpon</th>
-                                <td class="text-uppercase font-weight-bold">
-                                    <span><?= (empty($siswa->no_telpon)) ? NULL : $siswa->no_telpon  ?></span>
-                                    <input data-key="no_telpon" type="text" class="d-none in-edit form-control input-sm" name="no_telpon" value="<?= (empty($siswa->no_telpon)) ? NULL : $siswa->no_telpon  ?>">
-
-                                </td>
-                                <td class="text-right text-primary font-weight-bold">
-                                    <i class="fas fa-edit"></i>
-                                    <i class="d-none fas fa-spinner text-primary spin-icon"></i>
-                                    <button class="d-none btn btn-sm btn-outline-danger"><i class="fas  fa-times"></i></button>
-                                </td>
-                            </tr>
-                            <tr class="m-3">
-                                <th class="text-secondary text-uppercase">
-                                    <span class="badge badge-pill badge-light d-block p-1"></span>
-                                </th>
-                                <td class="text-uppercase">
-                                    <span class="badge badge-pill badge-light d-block p-1"></span>
-                                </td>
-                                <td class="text-right text-primary font-weight-bold">
-                                    <span class="badge badge-pill badge-light d-block p-1"></span>
-                                </td>
-                            </tr>
-                            <tr class="m-3">
-                                <th class="text-secondary text-uppercase">Photo</th>
-                                <td class="text-uppercase font-weight-bold ">
-                                    <input type="file" id="photo-file" class="form-control" />
-                                    
-
-                                </td>
-                                <td class="text-right text-primary font-weight-bold">
-                                    <button class="btn btn-outline-primary" id="upload-photo" title="Update Photo">
-                                        <span id="upload">Upload</span>
-                                        <i class="fas fa-spinner spin-icon text-primary d-none" id="spinner"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </table>
-
-                    </div>
-                </div>
+<div class="col-md-9 page-content mb-4">
+    <header>
+        <h3>Semua Mata Pelajaran</h3>
+    </header>
+    <main class="grid-container">
+        <?php foreach($mapels as $mapel): ?>
+            <div class="card d-inline-block" style="width: 16rem;">
+              <a href="<?= base_url('Materi/lists/') . md5($mapel->dmapel).'/'.encrypt_url($mapel->idguru).'/'.encrypt_url($mapel->id_kelas); ?>">
+                  <img class="card-img-top" src="<?= base_url('assets/img/courses/6.png'); ?>" alt="Card image cap">
+                  <div class="card-body d-flex justify-content-between">
+                    <p class="card-text text-dark" style="font-size: 110%;">
+                        <strong><?= $mapel->nama; ?></strong>
+                    </p>
+                    <p class="text-secondary">
+                        <small>13 item</small>
+                    </p>
+                  </div>
+              </a>  
             </div>
-        </div>
-    </div>
-					</div>
-					</div>
-
-					<br>
-
-				</div>
-
-			</div>
-
-		</div>
-
-	</div>
-
-
-
+        <?php endforeach; ?>
+    </main>
 </div>
 
-</div>
 
 <script type="text/javascript">
 	$(document).ready(function(){

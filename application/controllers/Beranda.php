@@ -44,65 +44,33 @@ class Beranda extends MY_Controller {
 
 
 	public function index()
-
 	{
 
 		switch ($this->log_lvl) {
-
 			case 'instansi':
-
 					$this->view_instansi();
-
 				break;
 				
 			case 'admin_instansi':
-
 					$this->view_instansi();
-
 				break;
-
-
 
 			case 'siswa':
-
 					$this->view_siswa();
-
 				break;
-
 			
-
 			case 'guru':
-
 					$this->view_guru();
-
 				break;
-
-			
 
 			case 'admin':
-
 					$this->view_admin();
-
 				break;
-
-
-
-				
-
-			default:
-
-				# code...
-
-				break;
-
 		}
 
 	}
 
-
-
 	public function view_instansi()
-
 	{
 
 		$data = array(
@@ -122,23 +90,19 @@ class Beranda extends MY_Controller {
 
 
 	public function view_siswa()
-
 	{
-
+		$this->load->model('m_kelas');
 		$data = [
-
 			'slide' => $this->m_slide->get_many_by(['id_instansi'=>$this->akun->instansi]),
-
 			'patch'  => base_url('upload/slide/'),
-
 			'kelas' => $this->m_detail_kelas->get_siswa(['dk.id_peserta' => $this->akun->id]),
 			'csrf' => $this->generateCSRFToken(),
 			'siswa' => $this->m_siswa->get_by(['id' => $this->session->userdata('admin_konid')])
-
 		];
 
-		$this->render('beranda/profil',$data);	
+		$data['mapels'] = $this->m_kelas->get_data_mapel(['kls.id' => $data['kelas']->id_kelas]);
 
+		$this->render('beranda/profil',$data);	
 	}
 
 
