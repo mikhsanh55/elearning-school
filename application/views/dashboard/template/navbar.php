@@ -35,13 +35,19 @@
                                 <i class=" icon-down-open-big fa"></i>
                             </a>
                             <ul class="dropdown-menu user-menu dropdown-menu-right">
-                                    <?php if($this->log_lvl == 'guru') : ?>
+                                    <?php if($this->log_lvl == 'guru') { ?>
                                         <li class="dropdown-item">
                                             <a href="<?= base_url('profile/guru/') . encrypt_url($this->akun->id); ?>">
                                                 <i class="icon-user"></i> Profil
                                             </a>
                                         </li>
-                                    <?php endif; ?>
+                                    <?php } else { ?>
+                                        <li class="dropdown-item">
+                                            <a href="<?= base_url('profile'); ?>">
+                                                <i class="icon-user"></i> Profil
+                                            </a>
+                                        </li>
+                                    <?php } ?>
                                     <li class="dropdown-item"><a href="#" onclick="return rubah_password();"><i class="icon-key"></i> Ubah Password </a>
                                     </li>
 

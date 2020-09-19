@@ -79,8 +79,12 @@
         $deskripsiBtn = '<a href="'. base_url('Materi/read') . '/' . md5($materi->id).'" class="m-2 btn btn-primary btn-sm"><i class="fas fa-eye mr-2" title="Mulai Baca"></i>Deskripsi</a>';
         $hapusBtn = '<a href="#" class="m-2 btn btn-sm btn-danger hapus-materi" data-materi="'. encrypt_url($materi->id).'"><i class="fas fa-trash mr-2" title="Hapus materi"></i>Hapus</a>';
         $editBtn = '<a href="#" onclick="setSess(event, this)" data-href="'. base_url('Materi/edit') . '/' .md5($materi->id).'" class="m-2 btn btn-primary btn-sm"><i class="fas fa-pen mr-2" title="Edit materi"></i> Edit</a>';
-        $diskusiBtn = '<a href="'. base_url('Materi/diskusi') . '/'.$materi->id . '/' . $materi->id_kelas .'"  data-href="" class="m-2 btn btn-primary btn-sm"><i class="fas fa-comments" title="Edit materi"></i> Diskusi</a>';
-
+        if($materi->id_kelas == '' || is_null($materi->id_kelas)) {
+            $diskusiBtn = '<button class="m-2 btn btn-primary btn-sm" disabled><i class="fas fa-comments" title="Diskusi materi"></i> Diskusi</button>';
+        }
+        else {
+            $diskusiBtn = '<a href="'. base_url('Materi/diskusi') . '/'.$materi->id . '/' . $materi->id_kelas .'"  data-href="" class="m-2 btn btn-primary btn-sm"><i class="fas fa-comments" title="Diskusi materi"></i> Diskusi</a>';    
+        }
 	;?>
     
         <tr >

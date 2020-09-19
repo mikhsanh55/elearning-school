@@ -219,7 +219,7 @@ class Mapel extends MY_Controller {
             	$data['file'] = $uploaded['file_name'];
             	// Hapus file yang sudah ada
             	$oldData = $this->m_mapel->get_by(['id' => $id]);
-            	if(file_exists($this->_gambarSampulPath . $oldData->file)) {
+            	if(is_file($this->_gambarSampulPath . $oldData->file) && file_exists($this->_gambarSampulPath . $oldData->file)) {
             		unlink($this->_gambarSampulPath . $oldData->file);
             	}
             }

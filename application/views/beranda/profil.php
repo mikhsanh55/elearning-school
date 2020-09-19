@@ -90,19 +90,25 @@
 
 <div class="col-md-9 page-content mb-4">
     <header>
-        <h3>Semua Mata Pelajaran</h3>
+        <h3>Semua Mata Pelajaran Kelas <?= $kelas->nama_kelas; ?></h3>
     </header>
     <main class="grid-container">
-        <?php foreach($mapels as $mapel): ?>
+        <?php foreach($mapels as $mapel): 
+            $sumMateri = $this->m_materi->join_jadwal2([
+                'mt.id_mapel' => $mapel->dmapel,
+                'mt.id_trainer' => $mapel->id_guru,
+                'jdwl.id_kelas' => $mapel->id_kelas
+            ]);
+        ?>
             <div class="card d-inline-block" style="width: 16rem;">
               <a href="<?= base_url('Materi/lists/') . md5($mapel->dmapel).'/'.encrypt_url($mapel->idguru).'/'.encrypt_url($mapel->id_kelas); ?>">
-                  <img class="card-img-top" src="<?= base_url('assets/img/courses/6.png'); ?>" alt="Card image cap">
+                  <img class="card-img-top" src="<?= is_null($mapel->file) ? base_url('assets/img/courses/6.png') : base_url('upload/mapel/' . $mapel->file); ?>" alt="Card image cap">
                   <div class="card-body d-flex justify-content-between">
                     <p class="card-text text-dark" style="font-size: 110%;">
-                        <strong><?= $mapel->nama; ?></strong>
+                        <strong><?= $mapel->nama_mapel; ?></strong>
                     </p>
                     <p class="text-secondary">
-                        <small>13 item</small>
+                        <small><?= count($sumMateri); ?> item</small>
                     </p>
                   </div>
               </a>  
@@ -267,38 +273,15 @@
         });
 
         $('#video').change(function(e){
-
             var fileName = e.target.files[0].name;
-
-  	
-
             var files = e.target.files; 
-
             var name = '';
-
-
-
             for (var i = 0, file; file = files[i]; i++) {
-
             	console.log(file);
-
             	name += file.name + '';
-
             }
 
             $('.file-video').text(name)
-
-   
-
         });
-
-	})
-
+	});
 </script>
-
-
-
-
-
-
-

@@ -41,7 +41,15 @@
                         
                     </div>
 				</div>
-				<br><br>            
+				<br><br>
+				<div class="row container mx-auto">
+                    <div class="col-sm-12">
+                        <h4><label for="title" class="text-success">Gambar Sampul</label></h4>        
+                        
+                        <input type="file" id="gambar_sampul" class="form-control" name="gambar_sampul">
+                    </div>
+				</div>
+				<br><br>
                 <div class="row container mx-auto">
                     <div class="col-sm-12">
                         <h4><label for="video" class="text-success">Video</label></h4>
@@ -77,7 +85,10 @@
                 <br><br><br><br>
                 <div class="row container mx-auto">
                      <div class="col-sm-12 mx-auto">
-                         <button class="btn btn-primary btn-block mb-4 " type="submit">Tambah Materi <i class="fas fa-spinner ml-2 spin-icon d-none"></i> </button>       
+                         <button class="btn btn-primary btn-block mb-4 " type="submit">
+                         	<span id="label-materi">Tambah Materi</span>
+                         	<i class="fas fa-spinner ml-2 spin-icon d-none"></i> 
+                         </button>       
                          <br>
                          <!-- Progress Bar -->
                          <div class="progress d-none mt-4" id="progress-container">
@@ -172,101 +183,72 @@
 			data.append('title', title.val());
 			data.append('content', content);
 			data.append('mapel', mapel);
+
+			if($('#gambar_sampul').prop('files').length > 0) {
+				data.append('gambar_sampul', $('#gambar_sampul').prop('files')[0]);
+			}
 			 
 			let dataAjax = {};
 			$('.spin-icon').toggleClass('d-none');
-			if(filename != '') {
-				$.ajax({
-				    xhr:function() {
-				        let xhr = new window.XMLHttpRequest();
-				        
-				        xhr.upload.addEventListener("progress", function(e) {
-				            if(e.lengthComputable) {
-				                let percentComplete = e.loaded / e.total;
-				                console.log(percentComplete);
-				                // console.log('e.total : ' . e.total);
-				                percentComplete = parseInt(percentComplete * 100);
-				                $('#progress-container').removeClass('d-none');
-				                $('#progressBar').attr('aria-valuenow', percentComplete).css('width', percentComplete + '%').text(percentComplete + '%');
-				                if(percentComplete == 100) {
-				                    $('#progressBar').text('Complete!').addClass('bg-success');
-				                }
-				            }
-				        }, false);
-				        
-				        return xhr;
-				    },
-					type:"POST",
-					url:"<?= base_url('Materi/insert'); ?>",
-					data:data,
-					contentType:false,
-					processData:false,
-					success:function(res) {
-						res = JSON.parse(res);
-						$('.spin-icon').toggleClass('d-none');
-						
-							window.location.href = sessionStorage.getItem('url') || localStorage.getItem('url');		
-					},
-					error:function(e) {
-						console.log(e);
+			
+			// Start Insert Ajax
+			$('.spin-icon').removeClass('d-none'); // start spinner
+			$('#label-materi').addClass('d-none'); // Hide the label
+			$('button[type=submit]').prop('disabled', true);
+			$.ajax({
+			    xhr:function() {
+			        let xhr = new window.XMLHttpRequest();
+			        
+			        xhr.upload.addEventListener("progress", function(e) {
+			            if(e.lengthComputable) {
+			            	let percentComplete = e.loaded / e.total;
+			                console.log(percentComplete);
+			                // console.log('e.total : ' . e.total);
+			                percentComplete = parseInt(percentComplete * 100);
+			                $('#progress-container').removeClass('d-none');
+			                $('#progressBar').attr('aria-valuenow', percentComplete).css('width', percentComplete + '%').text(percentComplete + '%');
+			                if(percentComplete == 100) {
+			                    $('#progressBar').text('Complete!').addClass('bg-success');
+			                }
+			            }
+			        }, false);
+			        
+			        return xhr;
+			    },
+				type:"POST",
+				url:"<?= base_url('Materi/insert'); ?>",
+				data:data,
+				contentType:false,
+				processData:false,
+				dataType: 'json',
+				success:function(res) {
+					$('.spin-icon').addClass('d-none'); // start spinner
+					$('#label-materi').removeClass('d-none'); // Hide the label
+					$('button[type=submit]').prop('disabled', false);
+					if(res.status == true) {
+						// alert(res.msg);
+						window.location.href = sessionStorage.getItem('url') || localStorage.getItem('url');
+					}
+					else {
+						alert(res.msg);
+						console.error(res);
+						$('#progressBar').text('Error!').addClass('bg-danger');
+						$('#progress-container').addClass('d-none');
 						return false;
 					}
-				});
-			}
-			else {
-				// Ajax
-				$('.spin-icon').removeClass('d-none');
-				$.ajax({
-				    xhr:function() {
-				        let xhr = new window.XMLHttpRequest();
-				        
-				        xhr.upload.addEventListener("progress", function(e) {
-				            if(e.lengthComputable) {
-				            	let percentComplete = e.loaded / e.total;
-				                console.log(percentComplete);
-				                // console.log('e.total : ' . e.total);
-				                percentComplete = parseInt(percentComplete * 100);
-				                $('#progress-container').removeClass('d-none');
-				                $('#progressBar').attr('aria-valuenow', percentComplete).css('width', percentComplete + '%').text(percentComplete + '%');
-				                if(percentComplete == 100) {
-				                    $('#progressBar').text('Complete!').addClass('bg-success');
-				                }
-				                // let percentComplete = e.loaded / e.total;
-				                // console.log(percentComplete);
-				                // // console.log('e.total : ' . e.total);
-				                // percentComplete = parseInt(percentComplete * 100);
-				                // $('#progress-container').removeClass('d-none');
-				                // $('#progressBar').attr('aria-valuenow', percent).css('width', percent + '%').text(percent + '%');
-				            }
-				        }, false);
-				        
-				        return xhr;
-				    },
-					type:"POST",
-					url:"<?= base_url('Materi/insert'); ?>",
-					data:data,
-					contentType:false,
-					processData:false,
-					success:function(res) {
-						res = JSON.parse(res);
-						$('.spin-icon').addClass('d-none');
-						if(res.status == true) {
-							// alert(res.msg);
-							window.location.href = sessionStorage.getItem('url') || localStorage.getItem('url');
-						}
-						else {
-							alert(res.msg);
-							return false;
-						}
-						
-					},
-					error:function(e) {
-						alert(e.responseText.msg);
-						console.log(e);
-						return false;
-					}
-				});
-			}
+					
+				},
+				error:function(e) {
+					$('.spin-icon').addClass('d-none'); // start spinner
+					$('#label-materi').removeClass('d-none'); // Hide the label
+					$('button[type=submit]').prop('disabled', false);
+					alert(e.responseJSON.msg);
+					console.error(e.responseJSON);
+					$('#progressBar').text('Error!').addClass('bg-danger');
+					$('#progress-container').addClass('d-none');
+					return false;
+				}
+			});
 		});
     });
 </script>
