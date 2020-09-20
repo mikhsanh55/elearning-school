@@ -56,6 +56,8 @@ $route['kelas/riwayat-mengajar/(:any)'] = 'Kelas/riwayat_mengajar/$1';
 
 /* PROFIL GURU */
 $route['profile/guru/(:any)'] = 'beranda/profile/$1';
+$route['profile'] = 'beranda/profileSiswa';
+$route['profile/update'] = 'beranda/update';
 
 /* TUGAS */
 $route['tugas/delete-file-tugas'] = 'tugas/delete_file_attach';

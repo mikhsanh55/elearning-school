@@ -159,31 +159,45 @@
 					if(res.status) {
 						$('#content-file').html(res.data);
 						$('#list-materi-file').modal('show');
+						if(!$('#list-materi-file').hasClass('show')) {
+							$('#list-materi-file').addClass('show')
+						}		
+						if(!$('.modal-backdrop').hasClass('show')) {
+							$('.modal-backdrop').addClass('show')
+						}		
 					}
 				}
 			})
 		});
 		
-		$(document).on('click', '.read-ppt', function(e) {
-			e.preventDefault();
-			self = this;
-			$.ajax({
-				type: 'post', 
-				url: "<?= base_url('Materi/get-list-files') ?>",
-				data: {
-					type_file: 'ppt',
-					imateri: $(self).data('id'),
-					view: true
-				},
-				dataType: 'json',
-				success: function(res) {
-					if(res.status) {
-						$('#content-file').html(res.data);
-						$('#list-materi-file').modal('show');
-					}
-				}
-			})
-		});
+		        $(document).on('click', '.read-ppt', function(e) {
+            e.preventDefault();
+            self = this;
+            $.ajax({
+                type: 'post', 
+                url: "<?= base_url('Materi/get-list-files') ?>",
+                data: {
+                    type_file: 'ppt',
+                    imateri: $(self).data('id'),
+                    view: true
+                },
+                dataType: 'json',
+                success: function(res) {
+                    if(res.status) {
+                        $('#content-file').html(res.data);
+                        $('#list-materi-file').modal('show');
+                        if(!$('#list-materi-file').hasClass('show')) {
+                            $('#list-materi-file').addClass('show')
+                        }
+                        
+                        if(!$('.modal-backdrop').hasClass('show')) {
+                            $('.modal-backdrop').addClass('show')
+                        }  
+                        
+                    }
+                }
+            })
+        });
 
 		$(document).on('click', '.read-pdf', function(e) {
 			e.preventDefault();
@@ -201,6 +215,13 @@
 					if(res.status) {
 						$('#content-file').html(res.data);
 						$('#list-materi-file').modal('show');
+                        if(!$('#list-materi-file').hasClass('show')) {
+                            $('#list-materi-file').addClass('show')
+                        }
+                        
+                        if(!$('.modal-backdrop').hasClass('show')) {
+                            $('.modal-backdrop').addClass('show')
+                        }  	
 					}
 				}
 			})
@@ -221,7 +242,13 @@
 		        	console.log(res.data);
 		            $('#title-upload').data('mapel', res.data.id);
 		        	// $('#yt-video').modal('hide');
-		            $('#upload-materi').modal('show');        
+		            $('#upload-materi').modal('show'); 
+		            if(!$('#upload-materi').hasClass('show')) {
+						$('#upload-materi').addClass('show')
+					}		
+					if(!$('.modal-backdrop').hasClass('show')) {
+						$('.modal-backdrop').addClass('show')
+					}	       
 
 		        }
 		    });
@@ -415,6 +442,12 @@
 
     	$('#yt-video .modal-body').html(video);
     	$('#yt-video').modal({backdrop: 'static', keyboard: false});
+    	if(!$('#yt-video').hasClass('show')) {
+			$('#yt-video').addClass('show')
+		}
+    	if(!$('.modal-backdrop').hasClass('show')) {
+			$('.modal-backdrop').addClass('show')
+		}
 
     	$.ajax({
     		type:"POST",

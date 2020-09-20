@@ -324,7 +324,7 @@ class M_kelas extends MY_Model {
 
     public function get_data_mapel($where = array()) {
 
-    	$result = $this->db->select('kls.id as id_kelas, kls.nama, mapel.nama AS nama_mapel, guru.nama AS nama_guru, guru.id AS idguru, dkmapel.*, dkmapel.id_mapel AS dmapel')
+    	$result = $this->db->select('kls.id as id_kelas, kls.nama, mapel.file, mapel.nama AS nama_mapel, guru.nama AS nama_guru, guru.id AS idguru, dkmapel.*, dkmapel.id_mapel AS dmapel')
     						->from('tb_kelas kls')
     						->join('tb_detail_kelas_mapel dkmapel', 'kls.id = dkmapel.id_kelas','left')
     						->join('m_mapel mapel', 'dkmapel.id_mapel = mapel.id', 'left')

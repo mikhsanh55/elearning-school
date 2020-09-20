@@ -4,7 +4,7 @@
 		overflow: auto;
 	}
 </style>
-<table class="table table-bordered table-striped table-hovered">
+<table class="table table-bordered table-striped table-hovered" id="ujian-table">
 	<thead>
 		<tr>
 			<th class="frist"><input type="checkbox" name="checkall" id="checkall"></th>
@@ -18,6 +18,8 @@
 			<th>Waktu Mulai</th>
 			<th class="frist">Opsi</th>
 		</tr>
+	</thead>
+	<tbody>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows):
 			$soal = $this->m_soal_ujian->count_by(['id_ujian'=>$rows->id]);
 			if (!empty($rows->tgl_mulai) && $rows->tgl_mulai != '0000-00-00 00:00:00') {
@@ -118,62 +120,64 @@
 				</td>
 			</tr>
 		<?php $kelasNama = NULL; $i++;endforeach ?>
-	</thead>
-<tbody>
-</tbody>
+	</tbody>
 </table>
+<script src="<?=base_url();?>assets/js/jquery/jquery-3.3.1.min.js"></script>
+<script src="<?= base_url('assets/plugin/datatables/jquery.dataTables.min.js') ?>"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+<script src="<?= base_url('assets/js/bootstrap.min.js') ?>"></script>
+<script>
+    $(document).ready(function() {
+    	var conf = '';
+    	$('[data-toggle="tooltip"]').tooltip();   
+        $('#ujian-table').DataTable({
+            responsive: true,
+            paging: false,
+            info: false
+        });
+        $(document).on('click', '.ulang-ujian', function() {
+			conf = confirm('Seluruh data hasil ujian akan terhapus, yakin?');
+			if(conf) {
+				$.ajax({
+					type:'post',
+					url : '<?=base_url('ujian/batalkan-ujian');?>',
+					dataType : 'json',
+					data : {
+						id   : $(this).data('id'),
+						izin : $(this).data('izin'),
+						soal : $(this).data('soal'),
+					},
+					success:function(response){
+						alert(response.msg);
+						pageLoad(1,'ujian_real/page_load');
+					}
+				})
+			}
+			else {
+				return false;
+			}
+		});
 
-<script type="text/javascript">
-	var conf = '';
-	$(document).ready(function(){
-		$('[data-toggle="tooltip"]').tooltip();   
-	});
-
-	$(document).on('click', '.ulang-ujian', function() {
-		conf = confirm('Seluruh data hasil ujian akan terhapus, yakin?');
-		if(conf) {
-			$.ajax({
-				type:'post',
-				url : '<?=base_url('ujian/batalkan-ujian');?>',
-				dataType : 'json',
-				data : {
-					id   : $(this).data('id'),
-					izin : $(this).data('izin'),
-					soal : $(this).data('soal'),
-				},
-				success:function(response){
-					alert(response.msg);
-					pageLoad(1,'ujian_real/page_load');
-				}
-			})
-		}
-		else {
-			return false;
-		}
-	});
-
-	$(document).on('click','.izinkan',function(){
-		conf = confirm('Apakah anda yakin akan mengizinkan ujian ?');
-		if (conf == true) {
-			$.ajax({
-				type:'post',
-				url : '<?=base_url('ujian_real/izinkan');?>',
-				dataType : 'json',
-				data : {
-					id   : $(this).data('id'),
-					izin : $(this).data('izin'),
-					soal : $(this).data('soal'),
-				},
-				success:function(response){
-					alert(response.message);
-					pageLoad(1,'ujian_real/page_load');
-				}
-			})
-		}else{
-			return false;
-		}
-	})
-
+		$(document).on('click','.izinkan',function(){
+			conf = confirm('Apakah anda yakin akan mengizinkan ujian ?');
+			if (conf == true) {
+				$.ajax({
+					type:'post',
+					url : '<?=base_url('ujian_real/izinkan');?>',
+					dataType : 'json',
+					data : {
+						id   : $(this).data('id'),
+						izin : $(this).data('izin'),
+						soal : $(this).data('soal'),
+					},
+					success:function(response){
+						alert(response.message);
+						pageLoad(1,'ujian_real/page_load');
+					}
+				})
+			}else{
+				return false;
+			}
+		})
+    });
 </script>
-
-

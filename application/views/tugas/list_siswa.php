@@ -165,7 +165,7 @@
 					<option value="50">50</option>
 					<option value="100">100</option>
 				</select>
-				<a href="<?= base_url('export/pdf_list_tugas_siswa/') . encrypt_url($kelas->id); ?>" class="btn btn-sm btn-danger">
+				<a href="<?= base_url('export/pdf_list_tugas_siswa/') . encrypt_url($kelas->id) . '/' . encrypt_url($tugas->id); ?>" class="btn btn-sm btn-danger">
 					<i class="fas fa-file-pdf-o"></i>&nbsp; Export ke PDF
 				</a>
 				<a href="<?= base_url('export/list_tugas_siswa/') . encrypt_url($kelas->id) . '/' . encrypt_url($tugas->id); ?>" class="btn btn-sm btn-success">

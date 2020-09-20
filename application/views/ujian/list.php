@@ -206,6 +206,12 @@
 			success: function(res) {
 				$('#daftar-kelas').html(res)		;
 				$('#list_kelas').modal('show');
+				if(!$('#list_kelas').hasClass('show')) {
+					$('#list_kelas').addClass('show')
+				}
+				if(!$('.modal-backdrop').hasClass('show')) {
+					$('.modal-backdrop').addClass('show')
+				}
 			}			
 		});
 	});

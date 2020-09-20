@@ -1,73 +1,75 @@
-<style>
+<style type="text/css">
 	h1{
-      font-family: sans-serif;
-    }
-    table {
-      margin-top: 10px;
-      font-family: Arial, Helvetica, sans-serif;
+		font-family: sans-serif;
+	}
 
-      font-size: 12px;
-      width: 100%;
-      color: #666;
-      background: #eaebec;
-      border: #ccc 1px solid;
-      border-radius: 25px;
-    }
+	table {
+		margin-top: 10px;
+		font-family: Arial, Helvetica, sans-serif;
 
-    table th {
-      padding: 2px 5px;
-      border:1px solid #337ab7;
-      background: #337ab7;;
-      text-align: center;
-      color: #fff;
-    }
+		font-size: 12px;
+		width: 100%;
+		color: #666;
+		background: #eaebec;
+		border: #ccc 1px solid;
+		border-radius: 25px;
+	}
 
-    table th:first-child{  
-      border-left:none;  
-    }
+	table th {
+		padding: 2px 5px;
+		border:1px solid #337ab7;
+		background: #337ab7;;
+		text-align: center;
+		color: #fff;
+	}
 
-    table tr {
-      padding-left: 20px;
-    }
+	table th:first-child{  
+		border-left:none;  
+	}
 
-    td.frist,th.frist {
-      width: 1px;
-      white-space: nowrap;
-  }
+	table tr {
+		padding-left: 20px;
+	}
 
-    table td {
-      padding: 5px 5px;
-      border-top: 1px solid #ffffff;
-      border-bottom: 1px solid #e0e0e0;
-      border-left: 1px solid #e0e0e0;
-      background: #fff;
-      background: -webkit-gradient(linear, left top, left bottom, from(#fbfbfb), to(#fafafa));
-      background: -moz-linear-gradient(top, #fbfbfb, #fafafa);
-    }
+	td.frist,th.frist {
+    width: 1px;
+    white-space: nowrap;
+}
 
-    table tr:last-child td {
-      border-bottom: 0;
-    }
+	table td {
+		padding: 5px 5px;
+		border-top: 1px solid #ffffff;
+		border-bottom: 1px solid #e0e0e0;
+		border-left: 1px solid #e0e0e0;
+		background: #fff;
+		background: -webkit-gradient(linear, left top, left bottom, from(#fbfbfb), to(#fafafa));
+		background: -moz-linear-gradient(top, #fbfbfb, #fafafa);
+	}
 
-    table tr:last-child td:first-child {
-      -moz-border-radius-bottomleft: 3px;
-      -webkit-border-bottom-left-radius: 3px;
-      border-bottom-left-radius: 3px;
-    }
+	table tr:last-child td {
+		border-bottom: 0;
+	}
 
-    table tr:last-child td:last-child {
-      -moz-border-radius-bottomright: 3px;
-      -webkit-border-bottom-right-radius: 3px;
-      border-bottom-right-radius: 3px;
-    }
+	table tr:last-child td:first-child {
+		-moz-border-radius-bottomleft: 3px;
+		-webkit-border-bottom-left-radius: 3px;
+		border-bottom-left-radius: 3px;
+	}
 
-    table tr:hover td {
-      background: #f2f2f2;
-      background: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#f0f0f0));
-      background: -moz-linear-gradient(top, #f2f2f2, #f0f0f0);
-    }
+	table tr:last-child td:last-child {
+		-moz-border-radius-bottomright: 3px;
+		-webkit-border-bottom-right-radius: 3px;
+		border-bottom-right-radius: 3px;
+	}
+
+	table tr:hover td {
+		background: #f2f2f2;
+		background: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#f0f0f0));
+		background: -moz-linear-gradient(top, #f2f2f2, #f0f0f0);
+	}
+
 </style>
-<table class="table table-bordered table-striped table-hovered" id="table-kalender">
+<table class="table table-bordered table-striped table-hovered mt-4 mb-4" id="table-kalender">
 	<thead>
 		<tr>
 			<th class="frist"><input type="checkbox" name="checkall" id="checkall"></th>
@@ -79,8 +81,9 @@
 			<th>Keterangan</th>
 			<th>Mulai</th>
 			<th>Selesai</th>
-			<!-- <th>Opsi</th> -->
 		</tr>
+	</thead>
+	<tbody>
 		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows): 
 			$kelas = $this->m_kelas->get_by(['kls.id' => $rows->id_kelas]);
@@ -134,26 +137,25 @@
 				<td><?=$rows->keterangan;?></td>
 				<td><?=$date.' '.$time;?></td>
 				<td><?=$date2.' '.$time2;?></td>
-				<!-- <td class="d-flex justify-content-around">
-					<a href="<?=base_url('jadwal/edit/'.md5($rows->id));?>" data-toggle="tooltip" data-id="<?=$rows->id;?>" title="Edit" class="btn btn-default btn-sm aktif_non"><i class="fas fa-edit"></i></a>
-
-					<a href="javascript:void(0);" data-toggle="tooltip" data-id="<?=$rows->id;?>" title="Edit" class="btn btn-default btn-sm aktif_non deleted"><i class="fas fa-trash-alt"></i></a>
-				</td>	 -->
 			</tr>
 
 		<?php $i++;endforeach ?>
-	<?php } else { ?>
-		<tr>
-		<td class="text-center" colspan="8">Data Kosong</td>
-		</tr>
 	<?php } ?>
-	</thead>
+	</tbody>
 </table>
 
+<script src="<?=base_url();?>assets/js/jquery/jquery-3.3.1.min.js"></script>
+<script src="<?= base_url('assets/plugin/datatables/jquery.dataTables.min.js') ?>"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+
 <script type="text/javascript">
-	$(document).on('ready',function(){
-		$('#table-kalender').DataTable();
-		$('[data-toggle="tooltip"]').tooltip();   
+	
+	$(document).ready(function(){
+		$('#table-kalender').DataTable({
+			responsive: true,
+			paging: false,
+			info: false
+		});
 
 		$('.deleted').click(function(){
 			var y = confirm('Apakah anda yakin ingin mengapus data ini ?');

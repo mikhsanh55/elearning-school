@@ -59,7 +59,7 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 </style>
-<table class="table table-bordered table-striped table-hovered">
+<table class="table table-bordered table-striped table-hovered" id="kelas-table">
 	<thead>
 		<tr>
 			<th class="frist">No</th>
@@ -67,6 +67,8 @@ input:checked + .slider:before {
 			<th>Opsi</th>
 		
 		</tr>
+	</thead>
+	<tbody>
 		<?php 
 			if(count($paginate['data']) > 0) {
 			$i= $page_start; foreach ($paginate['data'] as $rows):
@@ -89,45 +91,41 @@ input:checked + .slider:before {
 			<td colspan="5" class="text-center">Data Kosong</td>
 			</tr>
 		<?php } ?>
-	</thead>
-<tbody>
-</tbody>
+	</tbody>
 </table>
-<!-- <script type="text/javascript">
-	$(document).ready(function(){
-		$('[data-toggle="tooltip"]').tooltip();   
-	});
-	$('.deleted').click(function(){
-		var y = confirm('Apakah anda yakin ingin mengapus data ini ?');
-		if (y == true) {
-
-		}else{
-			return false
-		}
-	})
-	
-</script> -->
+<script src="<?=base_url();?>assets/js/jquery/jquery-3.3.1.min.js"></script>
+<script src="<?= base_url('assets/plugin/datatables/jquery.dataTables.min.js') ?>"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+<script src="<?= base_url('assets/js/bootstrap.min.js') ?>"></script>
 <script>
-$('.aktivasi').change(function(){
-		var aktivasi = $(this);
-		if($(this).is(":checked")){
-			var aktif = 1;
-		}
-		else if($(this).is(":not(:checked)")){
-			var aktif = 0;
-		}
-		
-		$.ajax({
-			type:'post',
-			url : '<?=base_url('ujian_real/update_kelas_ikut');?>',
-			data : {
-				aktif : aktif,
-				id_kelas  : $(this).data('kelas'),
-				id_ujian : '<?=$id_ujian;?>'
-			},
-			success:function(response){
+	$(document).ready(function() {
+		$('#kelas-table').DataTable({
+			responsive: true,
+			paging: false,
+			info: false
+		});
 
+		$('.aktivasi').change(function(){
+			var aktivasi = $(this);
+			if($(this).is(":checked")){
+				var aktif = 1;
 			}
+			else if($(this).is(":not(:checked)")){
+				var aktif = 0;
+			}
+			
+			$.ajax({
+				type:'post',
+				url : '<?=base_url('ujian_real/update_kelas_ikut');?>',
+				data : {
+					aktif : aktif,
+					id_kelas  : $(this).data('kelas'),
+					id_ujian : '<?=$id_ujian;?>'
+				},
+				success:function(response){
+
+				}
+			})
 		})
 	})
 </script>

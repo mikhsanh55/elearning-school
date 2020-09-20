@@ -86,9 +86,8 @@
       })
     }
     $(document).ready(function() {
-      
-      
       pageLoad(1,'jadwal/page_load');
+      
       
       $('#limit').change(function(){
         pageLoad(1,'jadwal/page_load');

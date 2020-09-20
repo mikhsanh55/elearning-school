@@ -4,6 +4,7 @@ defined('BASEPATH') or die('No direct access script allowed!');
 class Materi extends MY_Controller
 {
     protected $root_path = FCPATH;
+    public $_pathGambarSampul = 'upload/gambar_materi/';
 
     public function __construct()
     {
@@ -253,14 +254,7 @@ class Materi extends MY_Controller
             'placeholder' => 'Isi judul materi'
         ];
 
-        // JIka user bukan instansi, set var untuk men-disable input judul materi
-        // if($this->log_lvl != 'instansi') {
-        //     $data['placeholder'] = 'Diisi oleh Lembaga';
-        //     $data['disabled'] = TRUE;
-        // }
-
         $this->render('materi/add', $data);
-
     }
 
     public function edit()
@@ -316,8 +310,132 @@ class Materi extends MY_Controller
         $this->load->view('dashboard/template/footer');
     }
 
+    public function insert($md5_id_mapel = NULL)
+    {
 
-    // Logic section
+        $this->load->model('m_materi_attach');
+        $post = $this->input->post();
+
+        $data = [
+            'id_mapel'   => $this->input->post('mapel'),
+            'id_trainer' => $this->akun->id,
+            'title'      => $this->input->post('title'),
+            'content'    => $this->input->post('content'),
+            'req_add'    => 1,
+            'is_verify'  => 1
+        ];
+
+        if(isset($_FILES['gambar_sampul']['name'])) {
+            $fileName = 'sampul-materi-'.uniqid().$_FILES['gambar_sampul']['name'];
+            
+            $config['upload_path'] = 'upload/gambar_materi';
+            $config['allowed_types'] = 'png|jpg|jpeg|JPEG|JPG|PNG|gif';
+            $config['max_size'] = 5120; // 5 MB
+            $config['file_name'] = $fileName;
+
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            if(!$this->upload->do_upload('gambar_sampul')) {
+                $this->sendAjaxResponse([
+                    'status' => FALSE,
+                    'msg' => 'Error, ' . $this->upload->display_errors()
+                ], 500);
+                exit;
+            }
+            else {
+                $uploadedData = $this->upload->data();
+                $data['image'] = $uploadedData['file_name'];
+            }
+        }
+
+        if(isset($post['video']) && count($post['video']) > 0) {
+            switch($post['type-video']) {
+                case 'video-gdrive': 
+                $data['id_type_video'] = 2;
+                break;
+                case 'video-youtube': 
+                $data['id_type_video'] = 3;
+                break;
+            }
+            
+            $this->db->trans_start();
+            $this->m_materi->insert($data);
+            $id_materi = $this->db->insert_id();
+
+            $dataMateri = [];$x = 1;
+            $modifiedUrl = '';
+
+            // Loop video and insert to tb_materi_attach
+            for($i = 0;$i < count($post['video']);$i++ ) {
+                
+                switch($post['type-video']) {
+                    case 'video-youtube' :
+                        $chunk = explode('?v=', $post['video'][$i]);
+                        $modifiedUrl = 'https://www.youtube.com/embed/' . end($chunk);
+                    break;
+                    case 'video-gdrive' :
+                        $chunk = explode('/', $post['video'][$i]);
+                        array_pop($chunk);
+                        $chunk = implode('/', $chunk);
+                        $modifiedUrl = $chunk . '/preview';
+                    break;
+                }
+
+                $dataMateri[] = [
+                    'id_materi' => $id_materi,
+                    'file_name' => 'Video ' . $x,
+                    'type_file' => $post['type-video'],
+                    'path' => $post['video'][$i],
+                    'view_path' => $modifiedUrl
+                ];
+            }
+
+            $this->db->insert_batch('tb_materi_attach', $dataMateri);
+            $this->db->trans_complete();
+
+            if($this->db->trans_status() === FALSE) {
+                $this->sendAjaxResponse([
+                    'status' => FALSE,
+                    'msg' => 'Materi gagal ditambahkan'
+                ], 500);
+                exit;
+            }
+            else {
+                $this->sendAjaxResponse([
+                    'status' => TRUE,
+                    'msg' => 'Materi berhasil ditambahkan'
+                ], 200);
+            }
+        }
+        else { // Just insert data to m_materi
+            
+            $this->db->trans_start();
+            $insert = $this->m_materi->insert($data);
+            $this->db->trans_complete();
+
+            if($this->db->trans_status() === FALSE && !$insert) {
+                $this->sendAjaxResponse([
+                    'status' => FALSE,
+                    'msg' => 'Materi gagal ditambahkan'
+                ], 500);
+                exit;
+            }
+            else {
+                $this->sendAjaxResponse([
+                    'status' => TRUE,
+                    'msg' => 'Materi berhasil ditambahkan tidak ada video'
+                ], 200);
+            }
+        }
+
+    }
+
+
+    /*
+    * Untuk mengupdate materi
+    * @return json {[]}
+    */
     public function update()
     {
         $this->load->model('m_materi_attach');
@@ -331,6 +449,38 @@ class Materi extends MY_Controller
             'req_edit'    => 1,
             'is_verify'  => 1
         ];
+
+        if(isset($_FILES['gambar_sampul']['name'])) {
+            $fileName = 'sampul-materi-'.uniqid().$_FILES['gambar_sampul']['name'];
+            
+            $config['upload_path'] = 'upload/gambar_materi';
+            $config['allowed_types'] = 'png|jpg|jpeg|JPEG|JPG|PNG|gif';
+            $config['max_size'] = 5120; // 5 MB
+            $config['file_name'] = $fileName;
+
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            if(!$this->upload->do_upload('gambar_sampul')) {
+                $this->sendAjaxResponse([
+                    'status' => FALSE,
+                    'msg' => 'Error, ' . $this->upload->display_errors()
+                ], 500);
+                exit;
+            }
+            else {
+                $uploadedData = $this->upload->data();
+                $data['image'] = $uploadedData['file_name'];
+
+                // Delete old image if exists
+                $oldData = $this->m_materi->get_by(['id' => $post['imateri']]);
+                $pathImage = $this->_pathGambarSampul . $oldData->image;
+                if(is_file($pathImage) && file_exists($pathImage)) {
+                    unlink($pathImage);
+                }
+            }
+        }
+
         $idTypeVideo = '';
         if(isset($post['video']) && count($post['video']) > 0) {
             switch($post['type-video']) {
@@ -346,7 +496,6 @@ class Materi extends MY_Controller
         }
 
         $this->db->trans_start();
-
         $this->m_materi->update($data, ['id' => $post['imateri']]);
 
         if(isset($post['video']) && count($post['video']) > 0) {
@@ -720,109 +869,6 @@ class Materi extends MY_Controller
                         die("Something wrong");
                     }
                 }
-            }
-        }
-
-    }
-
-    public function insert($md5_id_mapel = NULL)
-    {
-
-        $this->load->model('m_materi_attach');
-        $post = $this->input->post();
-
-        if(isset($post['video']) && count($post['video']) > 0) {
-            switch($post['type-video']) {
-                case 'video-gdrive': 
-                $idTypeVideo = 2;
-                break;
-                case 'video-youtube': 
-                $idTypeVideo = 3;
-                break;
-            }
-
-            $data = [
-                'id_mapel'   => $this->input->post('mapel'),
-                'id_trainer' => $this->akun->id,
-                'id_type_video' => $idTypeVideo,
-                'title'      => $this->input->post('title'),
-                'content'    => $this->input->post('content'),
-                'req_add'    => 1,
-                'is_verify'  => 1
-            ];
-            
-            $this->db->trans_start();
-            $this->m_materi->insert($data);
-            $id_materi = $this->db->insert_id();
-
-            $dataMateri = [];$x = 1;
-            $modifiedUrl = '';
-            for($i = 0;$i < count($post['video']);$i++ ) {
-                
-                switch($post['type-video']) {
-                    case 'video-youtube' :
-                        $chunk = explode('?v=', $post['video'][$i]);
-                        $modifiedUrl = 'https://www.youtube.com/embed/' . end($chunk);
-                    break;
-                    case 'video-gdrive' :
-                        $chunk = explode('/', $post['video'][$i]);
-                        array_pop($chunk);
-                        $chunk = implode('/', $chunk);
-                        $modifiedUrl = $chunk . '/preview';
-                    break;
-                }
-
-                $dataMateri[] = [
-                    'id_materi' => $id_materi,
-                    'file_name' => 'Video ' . $x,
-                    'type_file' => $post['type-video'],
-                    'path' => $post['video'][$i],
-                    'view_path' => $modifiedUrl
-                ];
-            }
-
-            $this->db->insert_batch('tb_materi_attach', $dataMateri);
-            $this->db->trans_complete();
-
-            if($this->db->trans_status() === FALSE) {
-                $this->sendAjaxResponse([
-                    'status' => FALSE,
-                    'msg' => 'Materi gagal ditambahkan'
-                ], 500);
-                exit;
-            }
-            else {
-                $this->sendAjaxResponse([
-                    'status' => TRUE,
-                    'msg' => 'Materi berhasil ditambahkan'
-                ], 200);
-            }
-        }
-        else {
-             $data = [
-                'id_mapel'   => $this->input->post('mapel'),
-                'id_trainer' => $this->akun->id,
-                'title'      => $this->input->post('title'),
-                'content'    => $this->input->post('content'),
-                'req_add'    => 1,
-                'is_verify'  => 1
-            ];
-            $this->db->trans_start();
-            $insert = $this->m_materi->insert($data);
-            $this->db->trans_complete();
-
-            if($this->db->trans_status() === FALSE && !$insert) {
-                $this->sendAjaxResponse([
-                    'status' => FALSE,
-                    'msg' => 'Materi gagal ditambahkan'
-                ], 500);
-                exit;
-            }
-            else {
-                $this->sendAjaxResponse([
-                    'status' => TRUE,
-                    'msg' => 'Materi berhasil ditambahkan tidak ada video'
-                ], 200);
             }
         }
 

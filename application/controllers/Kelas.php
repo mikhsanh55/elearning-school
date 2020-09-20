@@ -89,25 +89,61 @@ class Kelas extends MY_Controller
 
   }
 
-  
-
+  /*
+  * Method untuk menampilkan daftar mapel di menu kelas aktor Siswa (list.php)
+  */
   public function siswa(){
   		$siswa = $this->m_detail_kelas->get_by(['id_peserta' => $this->session->admin_konid]);
   		$kelas = $this->m_kelas->get_by(['kls.id' => $siswa->id_kelas]);
   		
 		$data = array(
-
 			'searchFilter' => array('Nama Guru','Mata Pelajaran'),
 			'id_kelas' => $siswa->id_kelas,
 			'nama_kelas' => $kelas->nama
-
 		);
 
 		$this->render('kelas/list_siswa',$data);
+  }
+  /*
+  * Method untuk mengambil data dari mapelnya siswa (table.php)
+  */
+   public function page_load_siswa($pg = 1){
 
-	}
+		$post = $this->input->post();
+		$limit = $post['limit'];
+		$where = [];
+		$where['kls.id'] = $post['id_kelas'];
 
+		if (!empty($post['search'])) {
 
+			switch ($post['filter']) {
+
+				case 0:
+
+					$where["(lower(guru.nama) like '%".strtolower($post['search'])."%' )"] = null;
+
+					break;
+
+				case 1:
+
+					$where["(lower(mapel.nama) like '%".strtolower($post['search'])."%' )"] = null;
+
+					break;
+
+				default:
+					break;
+			}
+		}
+
+		$paginate = $this->m_kelas->paginate_siswa($pg,$where,$limit);
+		$data['paginate'] = $paginate;
+		$data['paginate']['url']	= 'kelas/page_load_siswa';
+		$data['paginate']['search'] = 'lookup_key';
+		$data['page_start'] = $paginate['counts']['from_num'];
+		
+		$this->load->view('kelas/table_siswa',$data);
+		$this->generate_page($data);
+  }
 
   public function add(){
   		
@@ -251,17 +287,12 @@ class Kelas extends MY_Controller
 	$paginate = $this->m_kelas->paginate_guru($pg, $limit, $where);
 
 	$data['paginate'] = $paginate;
-
 	$data['paginate']['url']	= 'kelas/page_load_guru/1';
-
 	$data['paginate']['search'] = 'lookup_key';
-
-
 	$data['page_start'] = $paginate['counts']['from_num'];
 
 	$this->load->view('kelas/table_guru', $data);
 	$this->generate_page($data);
-
   }
 
   public function page_load($pg = 1){
@@ -293,23 +324,8 @@ class Kelas extends MY_Controller
 					# code...
 
 					break;
-
 			}
-
 		}
-
-		// if(!empty($post['id_jurusan'])) {
-		// 	$where['kls.id_jurusan'] = $post['id_jurusan'];
-		// }
-
-
-
-		// if($this->log_lvl == 'guru'){
-
-		// 	$where['kls.id_trainer'] = $this->akun->id;
-
-		// }
-
 
 		if($this->log_lvl != 'admin'){
 
@@ -384,52 +400,6 @@ class Kelas extends MY_Controller
 	$this->load->view('kelas/table_mapel',$data);
 
 	$this->generate_page_modal($data);
-  }
-
-  public function page_load_siswa($pg = 1){
-
-		$post = $this->input->post();
-
-		$limit = $post['limit'];
-
-		$where = [];
-
-		$where['kls.id'] = $post['id_kelas'];
-
-		if (!empty($post['search'])) {
-
-			switch ($post['filter']) {
-
-				case 0:
-
-					$where["(lower(guru.nama) like '%".strtolower($post['search'])."%' )"] = null;
-
-					break;
-
-				case 1:
-
-					$where["(lower(mapel.nama) like '%".strtolower($post['search'])."%' )"] = null;
-
-					break;
-
-				default:
-					break;
-			}
-
-		}
-
-		$paginate = $this->m_kelas->paginate_siswa($pg,$where,$limit);
-	
-		// print_r($paginate);exit;
-		$data['paginate'] = $paginate;
-
-		$data['paginate']['url']	= 'kelas/page_load_siswa';
-
-		$data['paginate']['search'] = 'lookup_key';
-
-		$data['page_start'] = $paginate['counts']['from_num'];
-		$this->load->view('kelas/table_siswa',$data);
-		$this->generate_page($data);
   }
 
   public function daftar_mapel() {

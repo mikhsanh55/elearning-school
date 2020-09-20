@@ -70,7 +70,21 @@
                             <input type="text" class="form-control" placeholder="Judul materi..." name="title" value="<?= $materi->title; ?>" >
                         </div>
                     </div>
-                      <br><br>
+                    <br><br>
+
+                    <div class="row container mx-auto">
+                        <div class="col-sm-12">
+                            <h4><label for="title" class="text-success">Gambar Sampul</label></h4>
+                            <div id="img-wrapper">
+                                <?php if(!is_null($materi->image)) : ?>
+                                    <img src="<?= base_url($this->_pathGambarSampul . $materi->image); ?>" alt="Gambar Sampul" width="130" height="130" class="img-thumbnail mb-3">
+                                <?php endif; ?>
+                            </div>        
+                            
+                            <input type="file" id="gambar_sampul" class="form-control" name="gambar_sampul">
+                        </div>
+                    </div>
+                    <br><br>
                     <div class="row container mx-auto">
                         <div class="col-sm-12">
                             <h4><label for="video" class="text-success">Video</label><span class="text-danger"></span></h4>
@@ -112,17 +126,6 @@
                                 <div id="section-video-container">
                                 </div>
                             </section>
-                            <?php if($materi->id_type_video == 2) { ?> <!-- Google Drive -->
-                                <!-- <input type="file" name="video-manual" class="form-control d-none" >
-                                <input type="text" class="form-control" placeholder="Masukan Id Video Google Drive" name="video" value="<?= $materi->video; ?>" autofocus>
-                                <input type="text" class="form-control d-none" placeholder="Masukan Link Video Youtube" name="videoYt"> -->
-
-                            <?php } else if($materi->id_type_video == 3) { ?> <!-- Youtube -->
-                               <!--  <input type="file" name="video-manual" class="form-control d-none" >
-                                <input type="text" class="form-control d-none" placeholder="Masukan Id Video Google Drive" name="video" value="" autofocus>
-                                <input type="text" class="form-control" placeholder="Masukan Link Video Youtube" name="videoYt" value="<?= $materi->path_video; ?>"> -->
-                            <?php } ?>
-                            
                         </div>
                     </div>
                     <br><br>
@@ -135,7 +138,10 @@
                     <br><br><br><br>
                     <div class="row container mx-auto">
                         <div class="col-sm-12 mx-auto">
-                            <button class="btn btn-primary bnt-block mb-4" id="update-materi-btn" type="submit">Update Materi <i id="spin-icon" class="ml-2 hide fas fa-spinner"></i></button>
+                            <button class="btn btn-primary btn-block mb-4" id="update-materi-btn" type="submit">
+                                <span id="label-materi">Update Materi </span>
+                                <i id="spin-icon" class="spin-icon ml-2 d-none fas fa-spinner"></i>
+                            </button>
                             <br>
                              <div class="progress d-none mt-4" id="progress-container">
                                  <div id="progressBar" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
@@ -236,11 +242,16 @@
 			data.append('mapel', mapel.val());
             data.append('imateri', imateri.val());
             
+            if($('#gambar_sampul').prop('files').length > 0) {
+                data.append('gambar_sampul', $('#gambar_sampul').prop('files')[0]);
+            }
+
 			let dataAjax = {};
-			$('#spin-icon').removeClass('hide');
 			
-			// Ajax
-			$('.spin-icon').removeClass('d-none');
+			// Start Insert Ajax
+            $('.spin-icon').removeClass('d-none'); // start spinner
+            $('#label-materi').addClass('d-none'); // Hide the label
+            $('button[type=submit]').prop('disabled', true);
 			$.ajax({
 			    xhr:function() {
 			        let xhr = new window.XMLHttpRequest();
@@ -264,25 +275,33 @@
 				type:"POST",
 				url:"<?= base_url('Materi/update'); ?>",
 				data:data,
+                dataType: 'json',
 				contentType:false,
 				processData:false,
 				success:function(res) {
-					res = JSON.parse(res);
-					$('.spin-icon').addClass('d-none');
+                    $('.spin-icon').addClass('d-none'); // start spinner
+                    $('#label-materi').removeClass('d-none'); // Hide the label
+                    $('button[type=submit]').prop('disabled', false);
+
 					if(res.status == true) {
-						// alert(res.msg);
-						console.log(res);
 						window.location.href = sessionStorage.getItem('url') || localStorage.getItem('url');
 					}
 					else {
 						alert(res.msg);
+                        console.error(res);
 						return false;
 					}
 					
 				},
 				error:function(e) {
-					alert(e.responseText.msg);
-					console.log(e);
+                    $('.spin-icon').addClass('d-none'); // start spinner
+                    $('#label-materi').removeClass('d-none'); // Hide the label
+                    $('button[type=submit]').prop('disabled', false);
+					alert(e.responseJSON.msg);
+					console.error(e);
+
+                    $('#progressBar').text('Error!').addClass('bg-danger');
+                    $('#progress-container').addClass('d-none');
 					return false;
 				}
 			});

@@ -866,14 +866,16 @@ class Export extends MY_Controller {
 	 * PDF Export Section
 	 */
 
-	public function pdf_list_tugas_siswa($encrypt_id) {
+	public function pdf_list_tugas_siswa($encrypt_id, $tugasid) {
 		$this->load->library('dpdf');
 		$this->load->model('m_detail_kelas');
 		$this->load->model('m_tugas');
 		$this->load->model('m_tugas_nilai');
 		$this->load->model('m_tugas_attach_siswa');
 		$id = decrypt_url($encrypt_id);
+		$idTugas = decrypt_url($tugasid);
 		$result['datas'] = $this->m_detail_kelas->get_all(['id_kelas' => $id]);
+		$result['idTugas'] = $idTugas;
 		// print_r($result);exit;
 		
 		$this->dpdf->setPaper('A4', 'potrait');

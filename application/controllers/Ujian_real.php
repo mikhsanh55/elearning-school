@@ -1628,7 +1628,6 @@ class Ujian_real extends MY_Controller
 			else {
 				$nilai_bobot = ($nilai_bobot)  * 100;
 			}
-
 			$this->db->query("UPDATE tb_ikut_ujian SET jml_benar = '$jumlah_benar', nilai = '$nilai', nilai_bobot = '$nilai_bobot', status = 'N',tgl_selesai= '".date('Y-m-d H:i:s')."' WHERE status = 'Y' AND id_ujian = '$id_ujian' AND id_user = '".$this->akun->id."'");
 
 			
@@ -2168,7 +2167,7 @@ class Ujian_real extends MY_Controller
 
 		$idSoal = $post['id'];
 		$data = $this->m_soal_ujian->get_by(['id' => $idSoal]);
-		$soalUjian = $this->_fileSoalPath . $data->file;
+		$fileSoal = $this->_fileSoalPath . $data->file;
 
 		$update = $this->m_soal_ujian->update([
 			'file' => NULL,
@@ -2176,8 +2175,8 @@ class Ujian_real extends MY_Controller
 		], ['id' => $idSoal]);
 
 		if($update) {
-			if(file_exists($soalUjian)) {
-				unlink($soalUjian);
+			if(file_exists($fileSoal)) {
+				unlink($fileSoal);
 			}
 
 			$this->sendAjaxResponse([

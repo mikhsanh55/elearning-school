@@ -115,7 +115,7 @@
 				</select>
 				<?php if ($this->log_lvl == 'admin' || $this->log_lvl == 'instansi'): ?>
 				
-			<a class="btn btn-primary btn-sm tombol-kanan ml-2" href="#" onclick="return m_mapel_e(0);"><i class="fas fa-plus"></i> &nbsp;Tambah</a>
+			<a class="btn btn-primary btn-sm tombol-kanan ml-2" href="#" id="add-btn"><i class="fas fa-plus"></i> &nbsp;Tambah</a>
 			<a href="<?= base_url('export/kurikulum'); ?>" class="tombol-kanan btn btn-success btn-sm ml-2">
 				<i class="fas fa-file-excel-o"></i>&nbsp;Export
 			</a>
@@ -136,10 +136,13 @@
 				<h4 id="myModalLabel">Data Mata Pelajaran</h4>
 			</div>
 			<div class="modal-body">
-				<form name="f_mapel" id="f_mapel" onsubmit="return m_mapel_s();">
+				<div id="gambar-sampul-wrapper"></div>
+				<form name="f_mapel" id="f_mapel">
+					<input type="hidden" name="mode" value="add" id="mode">
 					<input type="hidden" name="id" id="id" value="0">
 					<input type="hidden" name="instansi" value="<?= empty($this->akun->instansi) ? 1 : $this->akun->instansi; ?>" />
 					<table class="table table-form">
+
 						<tr>
 							<td style="width: 25%">Kode Mata Pelajaran</td>
 							<td style="width: 75%"><input type="text" class="form-control" name="kd_mp" id="kd_mp" required></td>
@@ -147,6 +150,10 @@
 						<tr>
 							<td style="width: 25%">Nama Mata Pelajaran</td>
 							<td style="width: 75%"><input type="text" class="form-control" name="nama" id="nama" required></td>
+						</tr>
+						<tr>
+							<td style="width: 25%">Gambar Sampul</td>
+							<td style="width: 75%"><input type="file" class="form-control" name="image_mp" id="image_mp"></td>
 						</tr>
 					
 					</table>
@@ -183,8 +190,10 @@
 				<h4 id="myModalLabel">List Trainer</h4>
 			</div>
 			<div class="modal-body">
+				
 				<form name="f_mapel" id="f_mapel" onsubmit="return m_mapel_s();">
 					<input type="hidden" name="id" id="id" value="0">
+					
 					<table class="table table-form">
 						<tr>
 							<td><input type="radio" name="aksi_hapus_modul" value="1"> </td>
@@ -214,53 +223,107 @@
 <script src="<?= base_url(); ?>assets/js/jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
+		let formData = '', url;
 		pageLoad(1,'dtest/page_load');
 
+		// When limit 10, 50, 100 change
 		$('#limit').change(function(){
 			pageLoad(1,'dtest/page_load');
 		});
 
+		// When user search
 		$('#search').keyup(delay(function (e) {
 			pageLoad(1,'dtest/page_load');
 		}, 500));
 
-		function delay(callback, ms) {
-			var timer = 0;
-			return function() {
-				var context = this, args = arguments;
-				clearTimeout(timer);
-				timer = setTimeout(function () {
-					callback.apply(context, args);
-				}, ms || 0);
-			};
-		}
+		// When click add button
+		$('#add-btn').on('click', function() {
+			$('#gambar-sampul-wrapper').empty(); // empty the existing image
+			$('#mode').val('add'); // Set mode to Insert mode
 
-	})
+			// Clear input fields
+			$('#kd_mp').val('');
+			$('#nama').val('');
 
+			$('#m_mapel').modal('show');
+		});
 
-	$(document).on('click','.lihat-trainer',function(){
-		var mapel_id = $(this).data('id');
-		$.ajax({
-			type : 'post',
-			url  : '<?=base_url('dtest/get_trainer_info');?>',
-			dataType : 'json',
-			data : {
-				id : mapel_id,
-			},
-			success:function(response){
-				html = '<ul class="list-group">';
-				var i = 1;
-				$.each( response.trainer, function( key, rows ) {
-					html += `<li class="list-group-item capitalize">` + i + '.' +rows.nama_guru+ `</li>`;
-					i++;
-				});
-				html += '</ul>';
+		// When admin submit this form
+		$('#f_mapel').on('submit', function(e) {
+			e.preventDefault();
+			formData = new FormData();
 
-				$('#modal_show').modal('show');
-				$('#content_modals').html(html);
+			if($('#mode').val() == 'add') {
+				url = "<?= base_url('mapel/insert'); ?>";
 			}
-		})
-	})
+			else {
+				url = "<?= base_url('mapel/update'); ?>";
+				formData.append('id', $('#id').val())
+			}
+
+
+			formData.append('kode', $('#kd_mp').val());
+			formData.append('nama', $('#nama').val());
+			if($('#image_mp').val() != null || $('#image_mp').prop('files').length > 0) {
+				formData.append('gambar_sampul', $('#image_mp').prop('files')[0]);
+			}
+
+			$.ajax({
+				type: 'post',
+				url,
+				data: formData,
+				processData: false,  // tell jQuery not to process the data
+       			contentType: false,  // tell jQuery not to set contentType
+       			dataType: 'json',
+       			success: (res) => {
+       				pageLoad(1,'dtest/page_load');
+       				$("#m_mapel").modal('hide');
+       				$('#image_mp').val('');
+       			},
+       			error: function(e) {
+       				alert(e.responseJSON.msg);
+       				console.error(e.responseJSON);
+       				$('#image_mp').val('');
+       				return false;
+       			}
+			});
+		});
+
+		$(document).on('click','.lihat-trainer',function(){
+			var mapel_id = $(this).data('id');
+			$.ajax({
+				type : 'post',
+				url  : '<?=base_url('dtest/get_trainer_info');?>',
+				dataType : 'json',
+				data : {
+					id : mapel_id,
+				},
+				success:function(response){
+					html = '<ul class="list-group">';
+					var i = 1;
+					$.each( response.trainer, function( key, rows ) {
+						html += `<li class="list-group-item capitalize">` + i + '.' +rows.nama_guru+ `</li>`;
+						i++;
+					});
+					html += '</ul>';
+
+					$('#modal_show').modal('show');
+					$('#content_modals').html(html);
+				}
+			});
+		});
+	});
+
+	function delay(callback, ms) {
+		var timer = 0;
+		return function() {
+			var context = this, args = arguments;
+			clearTimeout(timer);
+			timer = setTimeout(function () {
+				callback.apply(context, args);
+			}, ms || 0);
+		};
+	}
 
 	function pageLoad(pg, url, search){
 		$.ajax({
@@ -275,7 +338,7 @@
 			success:function(response){
 				$('#content-view').html(response);
 			}
-		})
+		});
 	}
 </script>
 

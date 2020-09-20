@@ -17,6 +17,7 @@
       <link href="<?= base_url(); ?>assets/css/style.css" rel="stylesheet">
       <!-- Light Slider -->
       <script src="<?=base_url();?>assets/js/jquery/jquery-3.3.1.min.js"></script>
+      <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
       <script src="<?php echo base_url(); ?>assets/js/aplikasi.js"></script>
       <link rel="stylesheet" href="<?= base_url('assets/css/lightslider.css'); ?>">
       <script src="<?= base_url('assets/js/lightslider.js'); ?>"></script>
