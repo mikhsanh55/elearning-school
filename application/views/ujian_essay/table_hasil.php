@@ -1,4 +1,3 @@
-
 <table class="table table-bordered table-striped table-hovered">
 	<thead>
 		<tr>
@@ -12,6 +11,8 @@
 			<th>Tanggal Selesai</th>
 			<th class="frist">Opsi</th>
 		</tr>
+	</thead>
+	<tbody>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows):
 			$ujian = $this->m_ujian->get_by(['uji.id'=>$rows->id_ujian]);
 			
@@ -46,37 +47,31 @@
 				<td><?=$rows->tgl_mulai;?></td>
 				<td><?=$rows->tgl_selesai;?></td>
 				<td class="frist">
-						<a href="<?=base_url('ujian_essay/ikut_ujian_hasil/'.encrypt_url($rows->id_ujian).'/'.encrypt_url($rows->id_user));?>" class="btn btn-primary btn-sm btn-block">
+						<a href="<?=base_url('ujian_essay/ikut_ujian_hasil/'.encrypt_url($rows->id_ujian).'/'.encrypt_url($rows->id_user));?>" class="btn btn-primary btn-sm d-block mb-2">
 							Lihat Jawaban
 						</a>
-						<button class="btn btn-danger btn-sm btn-block ulang-essay-siswa" data-id="<?= encrypt_url($rows->id); ?>" data-nama="<?= $rows->nama_siswa; ?>">
+						<button class="btn btn-danger btn-sm  ulang-essay-siswa" data-id="<?= encrypt_url($rows->id); ?>" data-nama="<?= $rows->nama_siswa; ?>">
 							Ulang Ujian
 						</button>
 					</div>				
 				</td>	
-				<!-- <td class="text-center mx-auto">
-					<div class="dropdown">
-					  <button class="btn <?= $class_status_siswa; ?> btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					    <?= $rows->status_siswa == NULL ? 'Mengulang' : ucwords($rows->status_siswa) ?>
-					  </button>
-					  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-					    <a class="dropdown-item" href="#" onclick="updateStatusSiswa('lulus', <?= $rows->id; ?>)">Lulus</a>
-					    <a class="dropdown-item" href="#" onclick="updateStatusSiswa('tidak lulus', <?= $rows->id; ?>)">Tidak Lulus</a>
-					    <a class="dropdown-item" href="#" onclick="updateStatusSiswa('mengulang', <?= $rows->id; ?>)">Mengulang</a>
-					    <a class="dropdown-item" href="#" onclick="updateStatusSiswa('remedial', <?= $rows->id; ?>)">Remedial</a>
-					  </div>
-					</div>
-				</td>  -->
 			</tr>
 		<?php $i++;endforeach ?>
-	</thead>
-<tbody>
-</tbody>
+	</tbody>
 </table>
-
+<script src="<?=base_url();?>assets/js/jquery/jquery-3.3.1.min.js"></script>
+<script src="<?= base_url('assets/plugin/datatables/jquery.dataTables.min.js') ?>"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+<script src="<?= base_url('assets/js/bootstrap.min.js') ?>"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		let conf, namaSiswa = '';
+		$('table').DataTable({
+			responsive: true,
+			paging: false,
+			info: false
+		});
+
 		$('[data-toggle="tooltip"]').tooltip();   
 
 		$('.ulang-essay-siswa').on('click', function(e) {

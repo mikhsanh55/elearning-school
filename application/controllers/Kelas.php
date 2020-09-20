@@ -287,17 +287,12 @@ class Kelas extends MY_Controller
 	$paginate = $this->m_kelas->paginate_guru($pg, $limit, $where);
 
 	$data['paginate'] = $paginate;
-
 	$data['paginate']['url']	= 'kelas/page_load_guru/1';
-
 	$data['paginate']['search'] = 'lookup_key';
-
-
 	$data['page_start'] = $paginate['counts']['from_num'];
 
 	$this->load->view('kelas/table_guru', $data);
 	$this->generate_page($data);
-
   }
 
   public function page_load($pg = 1){

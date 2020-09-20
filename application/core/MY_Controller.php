@@ -448,7 +448,6 @@ class MY_Controller extends CI_Controller
 		$data['content'] 	= $this->load->view($content, $data, TRUE);
 		$data['foot_new'] 	= $this->load->view('dashboard/foot_new', $data, TRUE);
 		$data['footer'] 	= $this->load->view('dashboard/template/footer', $data, TRUE);
-
 		$this->load->view('dashboard/index', $data);
 	}
 

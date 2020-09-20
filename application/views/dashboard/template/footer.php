@@ -1,3 +1,6 @@
+        </div> <!-- ./container -->
+    </div> <!-- ./main-container -->
+
 <!-- Chat Whatsapp -->
 <?php if($this->akun->instansi == 10) : ?> 
 <div class="popup-chat flex-column m-4 animate-hide" id="popup-start">
@@ -118,8 +121,9 @@
 	})
 	
 </script>	
+
 <script src="<?= base_url(); ?>assets/js/vendors.min.js"></script>
-<script src="<?= base_url(); ?>assets/js/main.min.js"></script>
+<!-- <script src="<?= base_url(); ?>assets/js/main.min.js"></script> -->
 <?php
 if ($this->uri->segment(2) == "m_soal" && $this->uri->segment(3) == "edit") {
 	?>
@@ -127,11 +131,6 @@ if ($this->uri->segment(2) == "m_soal" && $this->uri->segment(3) == "edit") {
 <?php
 }    
 ?> 
-<!-- <script src="<?php echo base_url(); ?>assets/plugin/datatables/jquery.dataTables.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/plugin/datatables/dataTables.bootstrap.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/plugin/jquery_zoom/jquery.zoom.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/plugin/countdown/jquery.countdownTimer.js"></script> -->
-
 <script src="<?=base_url();?>/assets/vendor/select2/select2.min.js"></script>
 <script src="<?=base_url();?>/assets/vendor/datepicker/moment.min.js"></script>
 <script src="<?=base_url();?>/assets/vendor/datepicker/daterangepicker.js"></script>
@@ -148,5 +147,4 @@ if ($this->uri->segment(2) == "m_soal" && $this->uri->segment(3) == "edit") {
 </div>
 <div id="siswa-modal"></div>
 </body>
-
 </html>

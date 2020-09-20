@@ -1,5 +1,5 @@
 
-<table class="table table-bordered table-striped table-hovered">
+<table class="table table-bordered table-striped table-hovered" id="list-siswa-table">
 	<thead>
 		<tr>
 			<th class="frist">No</th>
@@ -78,6 +78,10 @@
 <tbody>
 </tbody>
 </table>
+<script src="<?=base_url();?>assets/js/jquery/jquery-3.3.1.min.js"></script>
+<script src="<?= base_url('assets/plugin/datatables/jquery.dataTables.min.js') ?>"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+<script src="<?= base_url('assets/js/bootstrap.min.js') ?>"></script>
 <script>
 	function getListAlertSiswa(data = {}) {
 		$('#chat-place').empty();
@@ -91,6 +95,12 @@
 				$('.nama-guru').html(res.mapel);
 				$('.nama-mapel').html(res.guru);
 				$('#ingatkan-modal').modal('show');
+				if(!$('#ingatkan-modal').hasClass('show')) {
+					$('#ingatkan-modal').addClass('show')
+				}
+				if(!$('.modal-backdrop').hasClass('show')) {
+					$('.modal-backdrop').addClass('show')
+				}
 			},
 			error: function(e) {
 				alert('Tidak bisa mengambil data');
@@ -99,54 +109,65 @@
 			}
 		});
 	}
+    $(document).ready(function() {
+    
+		$('.lihat-pesan-alert').on('click', function(e) {
+			e.preventDefault();
+			var idSiswa = "<?= encrypt_url($this->akun->id); ?>",
+				idTugas = $(this).data('id_tugas');
 
-	$('.lihat-pesan-alert').on('click', function(e) {
-		e.preventDefault();
-		var idSiswa = "<?= encrypt_url($this->akun->id); ?>",
-			idTugas = $(this).data('id_tugas');
-
-		$.ajax({
-			type: 'post',
-			url: "<?= base_url('tugas/get-list-alert'); ?>",
-			data: {
-				idSiswa,
-				idTugas
-			},
-			dataType: 'json',
-			success: function(res) {
-				$('#chat-place').html(res.html);
-				$('.nama-guru').html(res.mapel);
-				$('.nama-mapel').html(res.guru);
-				$('#ingatkan-modal').modal('show');
-			},
-			error: function(e) {
-				console.error(e.responseText);
-				alert(e.responseText.msg);
-				return false;
-			}
-		}).done(() => {
-			// Update status pesan dari belum dilihat => sudah dilihat
 			$.ajax({
 				type: 'post',
-				url: "<?= base_url('tugas/update-status-alert'); ?>",
+				url: "<?= base_url('tugas/get-list-alert'); ?>",
 				data: {
 					idSiswa,
 					idTugas
 				},
 				dataType: 'json',
-				success: () => getListAlertSiswa({
-					idSiswa,
-					idTugas
-				})
+				success: function(res) {
+					$('#chat-place').html(res.html);
+					$('.nama-guru').html(res.mapel);
+					$('.nama-mapel').html(res.guru);
+					$('#ingatkan-modal').modal('show');
+					if(!$('#ingatkan-modal').hasClass('show')) {
+						$('#ingatkan-modal').addClass('show')
+					}
+					if(!$('.modal-backdrop').hasClass('show')) {
+						$('.modal-backdrop').addClass('show')
+					}
+				},
+				error: function(e) {
+					console.error(e.responseText);
+					alert(e.responseText.msg);
+					return false;
+				}
+			}).done(() => {
+				// Update status pesan dari belum dilihat => sudah dilihat
+				$.ajax({
+					type: 'post',
+					url: "<?= base_url('tugas/update-status-alert'); ?>",
+					data: {
+						idSiswa,
+						idTugas
+					},
+					dataType: 'json',
+					success: () => getListAlertSiswa({
+						idSiswa,
+						idTugas
+					})
+				});
 			});
 		});
-	});
 
+		$("#button").on("click", function(e) {
+			e.preventDefault();
+			$("#dialog").dialog("open");
+		});
 
-	$("#button").on("click", function(e) {
-		e.preventDefault();
-		$("#dialog").dialog("open");
-	});
-
-	
+        $('#list-siswa-table').DataTable({
+            responsive: true,
+            paging: false,
+            info: false
+        });
+    });
 </script>

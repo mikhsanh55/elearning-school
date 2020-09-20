@@ -1,5 +1,4 @@
-	
-<table class="table table-bordered table-striped table-hovered">
+<table class="table table-bordered table-striped table-hovered" id="tugas-table">
 	<thead>
 		<tr>
 			<th class="frist"><input type="checkbox" name="checkall" id="checkall"></th>
@@ -9,6 +8,8 @@
 			<th>Waktu Pengumpulan</th>
 			<th>Opsi</th>
 		</tr>
+	</thead>
+	<tbody>
 		<?php if(count($paginate['data']) > 0) { ?>
 		<?php  $i= $page_start; foreach ($paginate['data'] as $rows):
 			$mapel = $this->m_mapel->get_by(['id' => $rows->id_mapel]);
@@ -33,14 +34,20 @@
 				</td>
 			</tr>
 		<?php $i++;endforeach ?>
-		<?php } else { ?>
-    	    <tr>
-    	        <td colspan="6" class="text-center">Data Kosong</td>
-    	    </tr>
-    	<?php } ?>
-	</thead>
-<tbody>
-</tbody>
+		<?php } ?>
+	</tbody>
 </table>
+<script src="<?=base_url();?>assets/js/jquery/jquery-3.3.1.min.js"></script>
+<script src="<?= base_url('assets/plugin/datatables/jquery.dataTables.min.js') ?>"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+<script src="<?= base_url('assets/js/bootstrap.min.js') ?>"></script>
+<script>
+    $(document).ready(function() {
 
-
+        $('#tugas-table').DataTable({
+            responsive: true,
+            paging: false,
+            info: false
+        });
+    });
+</script>

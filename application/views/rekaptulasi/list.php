@@ -168,7 +168,6 @@
     </form>
   </div>
 </div>
-
 <!-- Modal Keaktifan -->
 <div class="modal fade" id="keaktifanModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -187,11 +186,39 @@
     
   </div>
 </div>
-
 <!--/.row-box End-->
 <script src="<?= base_url(); ?>assets/js/jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
+		$(document).on('click', '.detail-keaktifan', function(e) {
+			e.preventDefault();
+			self = this;
+			$.ajax({
+				type: 'post',
+				url: "<?= base_url('aktivitas/detail-keaktifan-siswa'); ?>",
+				data: {
+					siswa: $(self).data('siswa'),
+					mapel: $(self).data('mapel')
+				},
+				dataType: 'json',
+				success: function(res) {
+					$('#keaktifanModal .modal-body').html(res.data);
+					$('#keaktifanModal').modal('show');
+					if(!$('#keaktifanModal').hasClass('show')) {
+						$('#keaktifanModal').addClass('show');
+					}
+
+					if(!$('.modal-backdrop').hasClass('show')) {
+						$('.modal-backdrop').addClass('show')
+					}
+				},
+				error: function(e) {
+					alert('Terjadi kesalahan saat mengambil data!');
+					console.error(e.responseText);
+					return false;
+				}
+			});
+		});
 		let self, typeExport = 'pdf', formData;
 		pageLoad(1,'rekaptulasi/page_load');
 
@@ -223,6 +250,12 @@
 				typeExport = 'excel';
 			}
 			$('#nilaiModal').modal('show');
+			if(!$('#nilaiModal').hasClass('show')) {
+				$('#nilaiModal').addClass('show')
+			}
+			if(!$('.modal-backdrop').hasClass('show')) {
+				$('.modal-backdrop').addClass('show')
+			}
 		});
 
 		

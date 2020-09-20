@@ -1,4 +1,4 @@
-<table class="table table-bordered table-striped table-hovered">
+<table class="table table-bordered table-striped table-hovered" id="rekaptulasi-table">
 	<thead>
 		<tr>
 			<th class="frist" rowspan="2">No</th>
@@ -49,27 +49,20 @@
 	<?php } ?>
 	</tbody>
 </table>
+
+
+<script src="<?=base_url();?>assets/js/jquery/jquery-3.3.1.min.js"></script>
+<script src="<?= base_url('assets/plugin/datatables/jquery.dataTables.min.js') ?>"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+<script src="<?= base_url('assets/js/bootstrap.min.js') ?>"></script>
+
 <script>
-	$('.detail-keaktifan').click(function(e) {
-			e.preventDefault();
-			self = this;
-			$.ajax({
-				type: 'post',
-				url: "<?= base_url('aktivitas/detail-keaktifan-siswa'); ?>",
-				data: {
-					siswa: $(self).data('siswa'),
-					mapel: $(self).data('mapel')
-				},
-				dataType: 'json',
-				success: function(res) {
-					$('#keaktifanModal .modal-body').html(res.data);
-					$('#keaktifanModal').modal('show');
-				},
-				error: function(e) {
-					alert('Terjadi kesalahan saat mengambil data!');
-					console.error(e.responseText);
-					return false;
-				}
-			});
-		});
+	$(document).ready(function() {
+	
+
+		$('#rekaptulasi-table').DataTable({
+            paging: false,
+            info: false
+        });
+	});
 </script>

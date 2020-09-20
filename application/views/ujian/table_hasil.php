@@ -1,4 +1,3 @@
-
 <table class="table table-bordered table-striped table-hovered">
 	<thead>
 		<tr>
@@ -15,6 +14,8 @@
 			<th>Waktu Selesai</th>
 			<th>Opsi</th>
 		</tr>
+	</thead>
+	<tbody>
 		<?php if(count($paginate['data']) > 0) { $i= $page_start; foreach ($paginate['data'] as $rows):
 			$ujian = $this->m_ujian->get_by(['uji.id'=>$rows->id_ujian]);
 			$siswa = $this->m_siswa->get_by(['id'=>$rows->id_user]);
@@ -46,8 +47,8 @@
 				<td><?=$rows->tgl_mulai;?></td>
 				<td><?=$rows->tgl_selesai;?></td>
 				<td>
-					<a href="<?= base_url('ujian/hasil-pg/') . encrypt_url($rows->id_ujian) . '/' . encrypt_url($rows->id_user); ?>" class="btn btn-sm btn-primary btn-block">Lihat Jawaban</a>
-					<button class="btn btn-danger btn-sm btn-block ulang-ujian-siswa" data-siswa="<?= encrypt_url($rows->id_user); ?>" data-ujian="<?= encrypt_url($rows->id_ujian) ?>" data-nama="<?= $siswa->nama; ?>">
+					<a href="<?= base_url('ujian/hasil-pg/') . encrypt_url($rows->id_ujian) . '/' . encrypt_url($rows->id_user); ?>" class="btn btn-sm btn-primary d-block mb-2">Lihat Jawaban</a>
+					<button class="btn btn-danger btn-sm ulang-ujian-siswa" data-siswa="<?= encrypt_url($rows->id_user); ?>" data-ujian="<?= encrypt_url($rows->id_ujian) ?>" data-nama="<?= $siswa->nama; ?>">
 						Ulang ujian
 					</button>
 				</td>
@@ -57,14 +58,21 @@
 				<td colspan="11" class="text-center">Data Kosong</td>
 			</tr>
 		<?php } ?>
-	</thead>
-<tbody>
-</tbody>
+	</tbody>
 </table>
-
+<script src="<?=base_url();?>assets/js/jquery/jquery-3.3.1.min.js"></script>
+<script src="<?= base_url('assets/plugin/datatables/jquery.dataTables.min.js') ?>"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+<script src="<?= base_url('assets/js/bootstrap.min.js') ?>"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		let conf, namaSiswa = '';
+		$('table').DataTable({
+			responsive: true,
+			paging: false,
+			info: false
+		});
+
 		$('[data-toggle="tooltip"]').tooltip();   
 		$('.ulang-ujian-siswa').on('click', function(e) {
 			e.preventDefault();
@@ -94,5 +102,3 @@
 		});
 	});
 </script>
-
-
