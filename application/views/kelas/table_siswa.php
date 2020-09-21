@@ -30,7 +30,17 @@
 		<?php } ?>
 		
 	</tbody>
-	
 </table>
+<script src="<?=base_url();?>assets/js/jquery/jquery-3.3.1.min.js"></script>
+<script src="<?= base_url('assets/plugin/datatables/jquery.dataTables.min.js') ?>"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+<script src="<?= base_url('assets/js/bootstrap.min.js') ?>"></script>
 
-
+<script>
+	$(document).ready(function() {
+		$('table').DataTable({
+            paging: false,
+            info: false
+        });
+	});
+</script>

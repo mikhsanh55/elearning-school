@@ -1,5 +1,3 @@
-
-
 <style type="text/css">
 	h1{
 		font-family: sans-serif;
@@ -271,9 +269,14 @@
 		})
 
 		$('#rekrut_murid').modal('show');
-	})
+		if(!$('#rekrut_murid').hasClass('show')) {
+			$('#rekrut_murid').addClass('show')
+		}
 
-
+		if(!$('.modal-backdrop').hasClass('show')) {
+			$('.modal-backdrop').addClass('show')
+		}
+	});
 </script>
 
 

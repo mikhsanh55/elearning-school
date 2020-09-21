@@ -2,45 +2,27 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-
-
 class Kelas extends MY_Controller
-
 {
 
   public $name = 'Kelas';  
 
   public function __construct()
-
   {
 
     parent::__construct();
-
     $this->load->model('m_detail_kelas_mapel');
-
     $this->load->model('m_detail_mapel');
-
 	$this->load->model('m_instansi');
-
 	$this->load->model('m_guru');
-
     $this->load->model('m_mapel_cs');
-
     $this->load->model('m_kelas');
-
 	$this->load->model('m_detail_kelas');
-
 	$this->load->model('m_jurusan');
-
-	
 
   }
 
-
-
   public function index(){
-
-    
 
     if ($this->log_lvl == 'siswa') {
 
