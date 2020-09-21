@@ -317,8 +317,15 @@ Bila suatu saat diketahui tugas saya merupakan hasil plagiarisme atau menyontek,
 	$(document).on('click','.kirim-tugas',function(self){
 		var urlTugas = base_url + 'tugas/lampiran_siswa/' + $(this).data('id_tugas')
 		$('#link-tugas').attr('href', urlTugas)
-		$('#disclaimer-tugas').modal('show')
-	})
+		$('#disclaimer-tugas').modal('show');
+		if(!$('#disclaimer-tugas').hasClass('show')) {
+			$('#disclaimer-tugas').addClass('show')
+		}
+
+		if(!$('.modal-backdrop').hasClass('show')) {
+			$('.modal-backdrop').addClass('show')
+		}
+	});
 
 </script>
 

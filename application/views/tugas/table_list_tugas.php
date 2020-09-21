@@ -10,6 +10,8 @@
 			<th class="frist">Status Tugas</th>
 				
 		</tr>
+	</thead>
+	<tbody>
 		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $where = []; $i= $page_start; foreach ($paginate['data'] as $rows):
 
@@ -28,23 +30,23 @@
 
 			if ($rows->in_jadwal == FALSE && $count < 1) { // Jika melebihi tanggal deadline Khusus sman21
 				// $status = '<button class="btn btn-dark btn-sm" disabled>Waktu Habis</button>';
-				$status = '<button class="btn btn-warning btn-sm kirim-tugas mb-1 btn-block" data-id_tugas="'.encrypt_url($rows->id).'"> Kerjakan</button>';
+				$status = '<button class="btn btn-warning btn-sm kirim-tugas mb-1 " data-id_tugas="'.encrypt_url($rows->id).'"> Kerjakan</button>';
 
 				if($checkPesan > 0) {
-					$status .= '<button class="btn btn-primary btn-sm lihat-pesan-alert btn-block" data-id_tugas="'.encrypt_url($rows->id).'">Ada Pesan</button>';
+					$status .= '<button class="btn btn-primary btn-sm lihat-pesan-alert " data-id_tugas="'.encrypt_url($rows->id).'">Ada Pesan</button>';
 				}
 			}
 			else if ($count > 0) { // Jika sudah mengerjakan
-				$status = '<button class="btn btn-success btn-sm kirim-tugas btn-block" data-id_tugas="'.encrypt_url($rows->id).'"><i class="fa fa-check"></i> Sudah</button>';
+				$status = '<button class="btn btn-success btn-sm kirim-tugas " data-id_tugas="'.encrypt_url($rows->id).'"><i class="fa fa-check"></i> Sudah</button>';
 			}
 			// else if($count > 0 && $rows->in_jadwal == FALSE) {
-			// 	$status = '<button class="btn btn-block btn-dark btn-sm" disabled>Sudah, terlambat</button>';
+			// 	$status = '<button class="btn  btn-dark btn-sm" disabled>Sudah, terlambat</button>';
 			// }
 			else if($count < 1 && $rows->in_jadwal == TRUE) { // Jika belum
-				$status = '<button class="btn btn-primary btn-sm kirim-tugas btn-block" data-id_tugas="'.encrypt_url($rows->id).'"> Kerjakan</button>';
+				$status = '<button class="btn btn-primary btn-sm kirim-tugas " data-id_tugas="'.encrypt_url($rows->id).'"> Kerjakan</button>';
 
 				if($checkPesan > 0) {
-					$status .= '<button class="btn btn-primary btn-sm lihat-pesan-alert btn-block" data-id_tugas="'.encrypt_url($rows->id).'">Ada Pesan</button>';
+					$status .= '<button class="btn btn-primary btn-sm lihat-pesan-alert " data-id_tugas="'.encrypt_url($rows->id).'">Ada Pesan</button>';
 				}
 			}
 			
@@ -74,9 +76,7 @@
     	        <td colspan="6" class="text-center">Data Kosong</td>
     	    </tr>
     	<?php } ?>
-	</thead>
-<tbody>
-</tbody>
+	</tbody>
 </table>
 <script src="<?=base_url();?>assets/js/jquery/jquery-3.3.1.min.js"></script>
 <script src="<?= base_url('assets/plugin/datatables/jquery.dataTables.min.js') ?>"></script>
