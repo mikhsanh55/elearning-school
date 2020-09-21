@@ -62,11 +62,7 @@
 				</td>	
 			</tr>
 		<?php $i++;endforeach ?>
-	<?php } else { ?>
-		<tr>
-		<td colspan="7" class="text-center">Data Kosong</td>
-		</tr>
-	<?php }?>
+	<?php } ?>
 	</tbody>
 </table>
 <script src="<?=base_url();?>assets/js/jquery/jquery-3.3.1.min.js"></script>
