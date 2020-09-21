@@ -160,13 +160,6 @@
 					
 					<table class="table table-form w-100">
 					<input type="hidden" name="id" id="id" value="0">
-
-						
-
-						<!-- <tr>
-							<td style="width: 25%">Tahun Akademik</td>
-							<td style="width: 75%"><input type="text" class="form-control" name="ta" id="ta" required></td>
-						</tr> -->
 						<tr>
 							<td style="width: 25%">NUPTK</td>
 							<td style="width: 75%"><input type="text" class="form-control" name="nidn" id="nidn" placeholder="contoh: 1283749209287387" ></td>
@@ -183,33 +176,6 @@
 							<td style="width: 25%">Username<span class="text-danger">*</span></td>
 							<td style="width: 75%"><input type="text" class="form-control" name="username" id="username" required></td>
 						</tr>
-						<!-- <tr>
-							<td style="width: 25%">Mata Pelajaran<span class="text-danger">*</span></td>
-							<td style="width: 75%">
-								<div class="dropdown show">
-								  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width:100%;text-align: left;">
-								    Pilih Mata Pelajaran
-								  </a>
-									<div class="dropdown-menu" aria-labelledby="dropdownMenuLink" id="mapel-list-input">
-										<?php foreach($mapel as $row) : ?>
-											<div>
-											<input type="checkbox" name="mapel[]" value="<?= $row->id; ?>"
-									    	> <span class="ml-1"><?= $row->nama; ?></span>
-									    	</div>
-										<?php endforeach; ?>
-									</div>
-								</div>
-								<select name="mapel" id="mapel" required class="form-control">
-									<option value="0">Belum Ada</option>
-									<?php foreach($mapel as $row) : ?>
-										<option value="<?= $row->id; ?>"><?= ucwords($row->nama); ?></option>
-									<?php endforeach; ?>
-								</select> 
-							</td>
-						</tr>-->
-						
-						
-						
 						<tr>
 							<td style="width: 25%">Email</td>
 							<td style="width: 75%"><input type="text" class="form-control" name="email" id="email" ></td>
@@ -248,23 +214,19 @@
 				filter: 0
 			},
 			success: function(res) {
-				$(self).prop('disabled', false).text('Mata Pelajaran')
-				// html += `
-				// 	<ul class="list-group">
-				// `
-				// if(res.data.length > 0) {
-				// 	res.data.forEach((item, i) => {
-				// 		html += `<li class="list-group-item">${item.nama_mapel}</li>`
-				// 	})
-				// }
-				// else {
-				// 	html += `<li class="list-group-item text-center">Data Kosong</li>`
-				// }
-
-				// html += `</ul>`
-				$('#list-mapel').html(res)
+				$(self).prop('disabled', false).text('Mata Pelajaran');
+				$('#list-mapel').html(res);
 			}
-		}).done(() => $('#modalMapel').modal('show'))
+		}).done(() => {
+			$('#modalMapel').modal('show');
+			if(!$('#modalMapel').hasClass('show')) {
+				$('#modalMapel').addClass('show')
+			}
+
+			if(!$('.modal-backdrop').hasClass('show')) {
+				$('.modal-backdrop').addClass('show')
+			}
+		});
 	}
 	$(document).ready(function(){
 		pageLoad(1,'trainer/page_load');
@@ -427,10 +389,5 @@
 			 	}
 			 });
 		}
-
-		
-	})
-
+	});
 </script>
-
-

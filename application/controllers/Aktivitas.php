@@ -79,19 +79,13 @@ class Aktivitas extends MY_Controller {
     	//var def uri segment
 
 		$uri1 = $this->uri->segment(1);
-
 		$uri2 = $this->uri->segment(2);
-
 		$uri3 = $this->uri->segment(3);
-
 		$uri4 = $this->uri->segment(4);
 
 		$a['sess_level'] = $this->session->userdata('admin_level');
-
 		$a['sess_user'] = $this->session->userdata('admin_user');
-
 		$a['sess_konid'] = $this->session->userdata('admin_konid');
-
 		$a['menu'] = $this->menu;
 
 		$where = [];

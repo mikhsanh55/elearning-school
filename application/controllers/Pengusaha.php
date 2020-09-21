@@ -564,7 +564,8 @@ class Pengusaha extends MY_Controller {
 	}
 
 	public function arsip_lulus() {
-		$this->render('pengusaha/list_lulus');
+		$data['searchFilter'] = ['Nama', 'Username', 'NIS'];
+		$this->render('pengusaha/list_lulus', $data);
 	}
 
 	public function page_load($pg = 1){

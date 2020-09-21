@@ -246,6 +246,13 @@
 			$('#nama').val('');
 
 			$('#m_mapel').modal('show');
+			if(!$('#m_mapel').hasClass('show')) {
+				$('#m_mapel').addClass('show')
+			}
+
+			if(!$('.modal-backdrop').hasClass('show')) {
+				$('.modal-backdrop').addClass('show')
+			}
 		});
 
 		// When admin submit this form
@@ -308,6 +315,13 @@
 					html += '</ul>';
 
 					$('#modal_show').modal('show');
+					if(!$('#modal_show').hasClass('show')) {
+						$('#modal_show').addClass('show')
+					}
+
+					if(!$('.modal-backdrop').hasClass('show')) {
+						$('.modal-backdrop').addClass('show')
+					}
 					$('#content_modals').html(html);
 				}
 			});

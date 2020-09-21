@@ -1,5 +1,3 @@
-
-
 <style type="text/css">
 	.text-capitalize {
 		text-transform: capitalize;
@@ -162,23 +160,6 @@
     </div>
   </div>
 </div>
-<!-- <div class="modal fade" id="rekrut_murid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	<div class="modal-dialog modal-lg" style="max-width:80%;" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 id="myModalLabel"></h4>
-				<a href="javascripti:void(0);" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close"></i></a>
-			</div>
-			<div class="modal-body">
-				<div id="daftar-murid"></div>
-			</div>
-			<div class="modal-footer">
-				<button class="btn btn-sm" data-dismiss="modal" aria-hidden="true"><i class="fa fa-minus-circle"></i> Tutup</button>
-			</div>
-
-		</div>
-	</div>
-</div> -->
 <!--/.row-box End-->
 <script src="<?= base_url(); ?>assets/js/jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
@@ -197,9 +178,28 @@
 			success: function(res) {
 				$(self).prop('disabled', false).text('Pilih Siswa')
 				$('#daftar-siswa').html(res)		
+				$('#listSiswaModal').modal('show');
 				$('#listSiswaModal').modal('show')
+				if(!$('#listSiswaModal').hasClass('show')) {
+					$('#listSiswaModal').addClass('show')
+				}
+
+				if(!$('.modal-backdrop').hasClass('show')) {
+					$('.modal-backdrop').addClass('show')			
+				}
 			}			
-		}).done(() => $('#listSiswaModal').modal('show'))
+		}).done(() => {
+			$('#listSiswaModal').modal('show');
+			$('#listSiswaModal').modal('show')
+				if(!$('#listSiswaModal').hasClass('show')) {
+				$('#listSiswaModal').addClass('show')
+			}
+
+			if(!$('.modal-backdrop').hasClass('show')) {
+				$('.modal-backdrop').addClass('show')			
+			}
+
+		})
 	}
 
 	function displayMapel(self) {
@@ -222,6 +222,13 @@
 		}).done(() => {
 			// $('#mapel-table').DataTable()
 			$('#listSiswaModal').modal('show')
+				if(!$('#listSiswaModal').hasClass('show')) {
+				$('#listSiswaModal').addClass('show')
+			}
+
+			if(!$('.modal-backdrop').hasClass('show')) {
+				$('.modal-backdrop').addClass('show')			
+			}
 		})
 	}
 
@@ -354,11 +361,12 @@
 		})
 
 		$('#rekrut_murid').modal('show');
+		if(!$('#rekrut_murid').hasClass('show')) {
+			$('#rekrut_murid').addClass('show')
+		}
+
+		if(!$('.modal-backdrop').hasClass('show')) {
+			$('.modal-backdrop').addClass('show')			
+		}
 	})
-
-
 </script>
-
-
-
-

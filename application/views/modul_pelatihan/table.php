@@ -1,5 +1,4 @@
-
-<table class="table table-bordered table-striped table-hovered">
+<table class="table table-bordered table-striped table-hovered" id="table-mapel">
 	<thead>
 		<tr>
 			<th class="frist">No</th>
@@ -7,6 +6,8 @@
 			<th>Mata Pelajaran</th>
 			<th>Opsi</th>
 		</tr>
+	</thead>
+	<tbody>
 		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows):
 			$instansi = $this->m_instansi->get_by(['id'=>$rows->id_instansi]);
@@ -17,8 +18,6 @@
 				<td><?=$rows->nama;?></td>
 		
 				<td class="frist">
-
-
 					<?php
 	
 						echo '<div class="btn-group mx-auto d-flex justify-content-center">
@@ -32,16 +31,22 @@
 				</td>	
 			</tr>
 		<?php $i++;endforeach ?>
-		<?php } else { ?>
-			<tr>
-				<td class="text-center" colspan="3">Data Kosong</td>
-			</tr>
 		<?php } ?>
-	</thead>
-<tbody>
-</tbody>
+	</tbody>
 </table>
+<script src="<?=base_url();?>assets/js/jquery/jquery-3.3.1.min.js"></script>
+<script src="<?= base_url('assets/plugin/datatables/jquery.dataTables.min.js') ?>"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+<script src="<?= base_url('assets/js/bootstrap.min.js') ?>"></script>
 <script>
+	$(document).ready(function() {
+		$('#table-mapel').DataTable({
+			responsive: true,
+			paging: false,
+			info: false
+		});
+	});
+
 	// When click edit button
 	$('.edit-btn').on('click', function(e) {
 		e.preventDefault();
@@ -73,6 +78,13 @@
 		});
 
 		$('#m_mapel').modal('show');
+		if(!$('#m_mapel').hasClass('show')) {
+			$('#m_mapel').addClass('show')
+		}
+
+		if(!$('.modal-backdrop').hasClass('show')) {
+			$('.modal-backdrop').addClass('show')
+		}
 	});
 
 	$('.delete-mapel').on('click', function(e) {
@@ -101,5 +113,3 @@
 		}
 	});
 </script>
-
-

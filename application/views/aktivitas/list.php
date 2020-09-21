@@ -69,43 +69,23 @@
                <tr>
 
                   <th class="text-center align-middle">No</th>
-
                   <th class="text-center align-middle">Nama <?= $this->transTheme->siswa;?></th>
-
                   <th class="text-center align-middle">NIS</th>
-
                   <th class="text-center align-middle">Kelas</th>
-
                   <th class="text-center align-middle">Aktif Login</th>
-
                   <th class="text-center align-middle">Aktif Belajar</th>
-
                   <th class="text-center align-middle">Aktif Diskusi</th>
-
                   <th class="text-center align-middle">Aktif Tugas</th>
-
                   <th class="text-center align-middle">Total Nilai</th>
-
                   <!-- <th class="text-center align-middle">Detail</th> -->
 
                </tr>
-
             </thead>
-
-
-
-            <tbody></tbody>
-
+        	<tbody></tbody>
          </table>
-
-
-
       </div>
-
    </div>
-
 </div>
-
 </div>
 						</div>
 

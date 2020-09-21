@@ -26,6 +26,8 @@
 			<th>Password</th>
 			<th class="frist">Opsi</th>
 		</tr>
+	</thead>
+	<tbody>
 		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $i= $page_start; foreach ($paginate['data'] as $rows):
 			$admin = $this->m_admin->count_by(array('level'=>'admin_instansi','kon_id'=>$rows->id));
@@ -38,7 +40,7 @@
 				<td><?= $rows->no_telpon; ?></td>
 				<td>
 					<div class="password-input">
-						<input type="password" value="<?= $rows->password; ?>" data-id="<?= $this->encryption->encrypt($rows->user_id); ?>" class="form-control password-reset">
+						<input type="password" value="<?= $rows->password; ?>" data-id="<?= $this->encryption->encrypt($rows->user_id); ?>" class="password-reset">
 						<i class="fas fa-eye mata-kau" data-id="<?= $this->encryption->encrypt($rows->user_id); ?>"></i>
 						</div>
 				</td>
@@ -65,60 +67,69 @@
 		<td colspan="7" class="text-center">Data Kosong</td>
 		</tr>
 	<?php }?>
-	</thead>
-<tbody>
-</tbody>
+	</tbody>
 </table>
+<script src="<?=base_url();?>assets/js/jquery/jquery-3.3.1.min.js"></script>
+<script src="<?= base_url('assets/plugin/datatables/jquery.dataTables.min.js') ?>"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+<script src="<?= base_url('assets/js/bootstrap.min.js') ?>"></script>
 <script>
-	var encrypt_id, password
-	$('.mata-kau').on('click', function() {
-		encrypt_id = $(this).data('id')
-		console.log(encrypt_id)
-		if($(this).prev().prop('type') == 'text') {
-			$(this).prev().prop('type', 'password')	
-			$(this).removeClass('fa-eye-slash')
-			$(this).addClass('fa-eye')
-		}
-		else {
-			$(this).prev().prop('type', 'text')
-			$(this).addClass('fa-eye-slash')
-			$(this).removeClass('fa-eye')
-		}
-		
-	})
+	$(document).ready(function() {
+		var encrypt_id, password
+		$('table').DataTable({
+			responsive: true,
+			paging: false,
+			info: false
+		});
 
-	$('.password-reset').on('keypress', function(e) {
-		encrypt_id = $(this).data('id')
-		console.log(encrypt_id)
-		if(e.which == 13) {
-			if($(this).val() < 6) {
-				alert('Password minimal 6 karakter!')
-				return false
+		$('.mata-kau').on('click', function() {
+			encrypt_id = $(this).data('id')
+			console.log(encrypt_id)
+			if($(this).prev().prop('type') == 'text') {
+				$(this).prev().prop('type', 'password')	
+				$(this).removeClass('fa-eye-slash')
+				$(this).addClass('fa-eye')
 			}
-			password = $(this).val()
-			$.ajax({
-				type: 'post',
-				url: "<?= base_url('pengusaha/reset_password') ?>",
-				data: {
-					encrypt_id,
-					password
-				},
-				dataType: 'json',
-				success:function(res) {
-					if(res.status) {
-						window.location.reload()
-					}
-					else {
-						console.error(res)
-						return false
-					}
-				},
-				error: function(e) {
-					console.error(e.responseText)
+			else {
+				$(this).prev().prop('type', 'text')
+				$(this).addClass('fa-eye-slash')
+				$(this).removeClass('fa-eye')
+			}
+		});
+
+		$('.password-reset').on('keypress', function(e) {
+			encrypt_id = $(this).data('id')
+			console.log(encrypt_id)
+			if(e.which == 13) {
+				if($(this).val() < 6) {
+					alert('Password minimal 6 karakter!')
 					return false
 				}
-			})
-		}
-	})
+				password = $(this).val()
+				$.ajax({
+					type: 'post',
+					url: "<?= base_url('pengusaha/reset_password') ?>",
+					data: {
+						encrypt_id,
+						password
+					},
+					dataType: 'json',
+					success:function(res) {
+						if(res.status) {
+							window.location.reload()
+						}
+						else {
+							console.error(res)
+							return false
+						}
+					},
+					error: function(e) {
+						console.error(e.responseText)
+						return false
+					}
+				})
+			}
+		});
+	});
 </script>
 

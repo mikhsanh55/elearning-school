@@ -90,17 +90,6 @@
 							<?php endif; ?>
 						</div>
 					</div>
-					<!-- <from class="form-inline" style="display: block;">
-						<div class="form-group">
-							<label for="search">Search&nbsp;&nbsp;</label>
-							<select id="filter" class="form-control input-sm">
-								<?php foreach ($searchFilter as $key => $val): ?>
-									<option value="<?=$key;?>"><?=$val;?></option>
-								<?php endforeach ?>
-							</select>
-							<input type="text" style="width: 50%;" class="form-control input-sm" id="search" placeholder="ketikan yang anda cari" name="search">
-						</div>
-					</from> -->
 					<br>
 				</div>
 			</div>
@@ -127,6 +116,12 @@
 <?php if($this->log_lvl === 'siswa') { ?>
 	<script type="text/javascript">
 	$(document).ready(function(){
+		$('table').DataTable({
+			responsive: true,
+			paging: false,
+			info: false
+		});
+
 		pageLoad(1,'rekaptulasi/page_load_detail_keaktifan_siswa');
 
 		$('#limit').change(function(){
@@ -147,9 +142,7 @@
 				}, ms || 0);
 			};
 		}
-
-
-	})
+	});
 
 	function pageLoad(pg, url, search){
 		$.ajax({
@@ -166,7 +159,7 @@
 			success:function(response){
 				$('#content-view').html(response);
 			}
-		})
+		});
 	}
 
 </script>

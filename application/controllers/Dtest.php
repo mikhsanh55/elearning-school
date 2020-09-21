@@ -4,46 +4,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Dtest extends MY_Controller {
 
-
-
     function __construct() {
-
         parent::__construct();
-
         $this->db->query("SET time_zone='+7:00'");
-
         $waktu_sql = $this->db->query("SELECT NOW() AS waktu")->row_array();
-
         $this->waktu_sql = $waktu_sql['waktu'];
-
         $this->opsi = array("a","b","c","d","e");
-
         $this->load->model('m_detail_mapel');
-
         $this->load->model('m_kelas');
-
         $this->load->model('m_mapel');
-
         $this->load->model('m_admin');
-
         $this->load->model('m_mapel_cs');
-
         $this->load->model('m_instansi');
-
 	}
-
-	
 
 	public function get_servertime() {
 
 		$now = new DateTime(); 
-
         $dt = $now->format("M j, Y H:i:s O"); 
-
-
-
         j($dt);
-
 	}
 
 	// @here Ikhsan -> 22-03-2020
@@ -316,10 +295,7 @@ class Dtest extends MY_Controller {
 
 	}
 
-
-
 	// @here Ikhsan -> 22-03-2020 
-
 	public function data_mapel() {
 
 		$this->cek_aktif();

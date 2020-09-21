@@ -15,29 +15,22 @@
 	}
 </style>
 
-<table class="table table-bordered table-striped table-hovered" >
+<table class="table table-bordered table-striped table-hovered" id="table-guru" >
 
 	<thead>
 
 		<tr>
-
 			<th class="frist"><input type="checkbox" name="checkall" id="checkall"></th>
-
 			<th class="frist">No</th>
-
 			<th>Nama Guru</th>
-
 			<th>Username</th>
-
 			<th>Password</th>
-
 			<th>NUPTK / NIP</th>
-
-			<!-- <th>Mata Pelajaran</th> -->
-
 			<th>Opsi</th>
 
 		</tr>
+	</thead>
+	<tbody>
 
 		<?php $x = $paginate['counts']['from_num']; foreach ($paginate['data'] as $rows):
 	
@@ -45,14 +38,12 @@
 			$instansi = $this->m_instansi->get_by(['id'=>$rows->instansi]);
 			$length_pass = strlen($rows->password);
 			$pass = '';
+
 			for($i = 0;$i < $length_pass;$i++) {
 				$pass .= '*';
 			}
-
 		?>
-
 			<tr>
-
 				<td><input type="checkbox" name="checklist[]" class="checklist" value="<?=$rows->id;?>"></td>
 
 				<td align="center" class="frist"><?=$x;?></td>
@@ -62,7 +53,7 @@
 				<td><?=$rows->username;?></td>
 				<td>
 						<div class="password-input">
-						<input type="password" data-id="<?= $this->encryption->encrypt($rows->user_id); ?>" class="form-control password-reset">
+						<input type="password" data-id="<?= $this->encryption->encrypt($rows->user_id); ?>" class="password-reset">
 						<i class="fas fa-eye mata-kau" data-id="<?= $this->encryption->encrypt($rows->user_id); ?>"></i>
 						</div>
 					
@@ -70,62 +61,40 @@
 				</td>
 
 				<td><?= ($rows->nidn != '' || !empty($rows->nidn) ) ? $rows->nidn : $rows->nrp ;?></td>
-				<!-- <td class="text-center">
-					<?= $rows->nama_mapel == '' ? 'Belum Ada' : $rows->nama_mapel; ?>
-				</td> -->
 				<td class="frist">
-
 					<?php
-
-					if($this->session->userdata('admin_level') == "admin" || $this->session->userdata('admin_level') == "instansi" || $this->session->userdata('admin_level') == "admin_instansi"){
-						// <a href="#" onclick="return m_guru_matkul('.$rows->id.');" class="btn btn-primary btn-sm mr-2"><i class="glyphicon glyphicon-th-list" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Materi</a>
+					if($this->session->userdata('admin_level') == "admin" || $this->session->userdata('admin_level') == "instansi" || $this->session->userdata('admin_level') == "admin_instansi") {
 						echo '<div class="btn-group">
 
 						<button class="btn btn-sm btn-primary" data-id="'.$rows->id.'" onclick="displayMapel(this)">Mata Pelajaran</button>
 						</div>
 
 						';
-
-
-
-						// if (empty($get)) {
-
-						// 	 echo '<a href="#" onclick="return m_guru_u('.$rows->id.');" class="btn btn-success btn-sm mr-2"><i class="glyphicon glyphicon-user" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Buatkan Password</a>';
-
-						// } else {
-
-						// 	echo '<a href="#" onclick="return m_guru_ur('.$rows->id.');" class="btn btn-warning btn-sm mr-2"><i class="glyphicon glyphicon-random" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Reset Password</a>';
-
-						// }
-
-					}else{
-
+					} else {
 						echo '<a href="#" onclick="return m_guru_detail('.$rows->id.');" class="btn btn-primary btn-sm mr-2"><i class="glyphicon glyphicon-th-list" style="margin-left: 0px; color: #fff"></i> &nbsp;&nbsp;Lihat Profil</a>';
-
-					}
-
-
-
-				
-
-					;?>
-
+					}?>
 				</td>	
 
 			</tr>
 
 		<?php $x++;endforeach ?>
 
-	</thead>
-
-<tbody>
-
-</tbody>
-
+	</tbody>
 </table>
+<script src="<?=base_url();?>assets/js/jquery/jquery-3.3.1.min.js"></script>
+<script src="<?= base_url('assets/plugin/datatables/jquery.dataTables.min.js') ?>"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+<script src="<?= base_url('assets/js/bootstrap.min.js') ?>"></script>
 <script>
-	
-	var encrypt_id, password
+	$(document).ready(function() {
+		$('#table-guru').DataTable({
+			responsive: true,
+			paging: false,
+			info: false
+		});
+	});
+
+	var encrypt_id, password;
 
 	$('.mata-kau').on('click', function() {
 		encrypt_id = $(this).data('id')
@@ -140,8 +109,7 @@
 			$(this).addClass('fa-eye-slash')
 			$(this).removeClass('fa-eye')
 		}
-		
-	})
+	});
 
 	$('.password-reset').on('keypress', function(e) {
 		encrypt_id = $(this).data('id')
@@ -172,9 +140,9 @@
 					console.error(e.responseText)
 					return false
 				}
-			})
+			});
 		}
-	})
+	});
 </script>
 
 

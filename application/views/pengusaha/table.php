@@ -14,7 +14,7 @@
 		margin-right: 10px;
 	}
 </style>
-<table class="table table-bordered table-striped table-hovered" >
+<table class="table table-bordered table-striped table-hovered" id="siswa-table" >
 	<thead>
 		<tr>
 			<th><input type="checkbox" name="checkall" id="checkall"></th>
@@ -28,7 +28,8 @@
 			<th>Reset Password</th>
 			<th>Opsi</th>
 		</tr>
-		
+	</thead>
+	<tbody>
 		<?php if(count($paginate['data']) > 0) { ?>
 		<?php $x= 1; foreach ($paginate['data'] as $rows):
 			$id_kelas = $this->m_detail_kelas->get_by(['id_peserta' => $rows->id]) ?? NULL;
@@ -45,7 +46,7 @@
 				</td>
 				<td>
 					<div class="password-input">
-						<input type="password" value="" data-id="<?= $this->encryption->encrypt($rows->user_id); ?>" class="form-control password-reset">
+						<input type="password" value="" data-id="<?= $this->encryption->encrypt($rows->user_id); ?>" class=" password-reset">
 						<i class="fas fa-eye mata-kau" data-id="<?= $this->encryption->encrypt($rows->user_id); ?>"></i>
 						</div>
 				</td>
@@ -66,11 +67,21 @@
 				<td colspan="9" class="text-center">Data Kosong</td>
 			</tr>
 		<?php } ?>
-	</thead>
-<tbody>
-</tbody>
+	</tbody>
 </table>
+<script src="<?=base_url();?>assets/js/jquery/jquery-3.3.1.min.js"></script>
+<script src="<?= base_url('assets/plugin/datatables/jquery.dataTables.min.js') ?>"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+<script src="<?= base_url('assets/js/bootstrap.min.js') ?>"></script>
 <script>
+	$(document).ready(function() {
+		$('#siswa-table').DataTable({
+			responsive: true,
+			paging: false,
+			info: false
+		});
+	});
+
 	var encrypt_id, password
 	$('.mata-kau').on('click', function() {
 		encrypt_id = $(this).data('id')
@@ -85,8 +96,7 @@
 			$(this).addClass('fa-eye-slash')
 			$(this).removeClass('fa-eye')
 		}
-		
-	})
+	});
 
 	$('.password-reset').on('keypress', function(e) {
 		encrypt_id = $(this).data('id')
