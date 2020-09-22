@@ -51,6 +51,7 @@ class Ujian_real extends MY_Controller
 
 	public function data_soal($id_ujian=null)
 	{
+		$this->load->model('m_soal_opsi');
 		$url = base_url('ujian_real/form_soal/'.$id_ujian);
 		$data = array(
 
@@ -62,7 +63,8 @@ class Ujian_real extends MY_Controller
 
 			'url_import' => base_url('ujian_real/form_import/'.$id_ujian),
 
-			'ujian' => $this->m_ujian->get_by(['uji.id'=>decrypt_url($id_ujian)])
+			'ujian' => $this->m_ujian->get_by(['uji.id'=>decrypt_url($id_ujian)]),
+			'id_ujian' => $id_ujian
 
 		);
 
@@ -452,7 +454,7 @@ class Ujian_real extends MY_Controller
 
 	public function page_load_soal($pg = 1)
 	{
-
+		$this->load->model('m_soal_opsi');
 		$post = $this->input->post();
 
 		$limit = $post['limit'];
@@ -559,7 +561,48 @@ class Ujian_real extends MY_Controller
 
 	}
 
+	public function editSoal($idUjian, $idSoal)
+	{
+		if($idSoal == null || $idUjian == null) {
+			redirect('ujian_real/data_soal/' . $idUjian);
+		}
 
+		// Check Bobot Soal
+		$this->load->model('m_setting_instansi');
+		$this->load->model('m_soal_opsi');
+		$idUjian = decrypt_url($idUjian);
+		$idSoal = decrypt_url($idSoal);
+		$dataOpsi = ['a', 'b', 'c', 'd', 'e'];
+		$data = [
+			'hurufOpsi' => $dataOpsi,
+			'idUjian' => encrypt_url($idUjian),
+			'idSoal' => encrypt_url($idSoal),
+			'bobot' => $this->m_setting_instansi->get_by(['id_instansi' => $this->akun->instansi]),
+			'data' => $this->m_soal_ujian->get_by(['id' => $idSoal])
+		];
+
+		$this->render('ujian/edit_soal2', $data);
+	}
+
+	/*
+	* Untuk Add Soal
+	* @return html
+	*/
+	public function addSoal($idUjian)
+	{
+		// Check Bobot Soal
+		$this->load->model('m_setting_instansi');
+		$idUjian = decrypt_url($idUjian);
+		$dataOpsi = ['a', 'b', 'c', 'd', 'e'];
+		$data = [
+			'hurufOpsi' => $dataOpsi,
+			'sumOpsi' => count($dataOpsi),
+			'idUjian' => encrypt_url($idUjian),
+			'bobot' => $this->m_setting_instansi->get_by(['id_instansi' => $this->akun->instansi])
+		];
+
+		$this->render('ujian/add_soal2', $data);
+	}
 
 	public function form_soal($id_ujian,$id_soal=0) {
 
@@ -567,15 +610,10 @@ class Ujian_real extends MY_Controller
 
 		cek_hakakses(array("admin", "guru",'instansi'), $this->session->userdata('admin_level'));
 
-		
-
 		$a['huruf_opsi'] = array("a","b","c","d","e");
-
-		// $a['jml_opsi'] = $this->jml_opsi;
+		
 		$a['jml_opsi'] = count($a['huruf_opsi']);
 		// print_r($this->config);exit;
-
-
 		$a['opsij'] = array(""=>"Jawaban","A"=>"A","B"=>"B","C"=>"C","D"=>"D","E"=>"E");
 
 
@@ -588,7 +626,7 @@ class Ujian_real extends MY_Controller
 
 			$a['d'] = array("mode"=>"add","id"=>"0","id_guru"=>$id_guru,"id_mapel"=>"","bobot"=>"1","file"=>"","soal"=>"","opsi_a"=>"#####","opsi_b"=>"#####","opsi_c"=>"#####","opsi_d"=>"#####","opsi_e"=>"#####","jawaban"=>"","tgl_input"=>"");
 
-		}else {
+		} else {
 
 			$a['d'] = $this->db->select("ujian.*, 'edit' AS mode")->where('id',$id_soal)->get('m_soal_ujian ujian')->row_array();
 
@@ -625,8 +663,313 @@ class Ujian_real extends MY_Controller
 		$this->render('ujian/add_soal',$a);
 	}
 
-	// Method untuk menyimpan soal di add soal dan edit soal
+	/*
+	* Method baru sejak 22-09-2020 untuk update soal
+	* @return void
+	*/
+	public function updateSoal()
+	{
+		$this->load->model('m_soal_opsi');
+		$post = $this->input->post();
+		$idUjian = decrypt_url($post['id_ujian']);
+		$idSoal = decrypt_url($post['id']);
+
+		// Update Data Soal : to m_soal_ujian
+		$dataSoal = [
+			"soal"=>$post['soal'],
+			"jawaban"=>$post['jawaban'],
+			'opsi_a' => $post['opsi_a'],
+			'opsi_b' => $post['opsi_b'],
+			'opsi_c' => $post['opsi_c'],
+			'opsi_d' => $post['opsi_d'],
+			'opsi_e' => $post['opsi_e']
+		];
+
+		// Set data opsi soal jika ada user upload gambar opsi, table : m_soal_ujian_opsi
+		$dataOpsiSoal = [];
+
+		// JIka bobot tidak kosong, tambahkan ke dataSoal untuk diinsert/update
+		if(!is_null($post['bobot'])) {
+			$dataSoal['bobot'] = $post['bobot'];
+		}
+
+		// Start Transaction
+		$this->db->trans_begin();
+
+		foreach($_FILES as $name => $file) {
+			$fileName = $_FILES[$name]['name'];
+			$fileSize = $_FILES[$name]['size'];
+			$fileTmp = $_FILES[$name]['tmp_name'];
+			$fileError = $_FILES[$name]['error'];
+
+			// Akan diproses jika user upload file
+			if($fileError == 0) {
+				$newFileName = uniqid() . '_' . $fileName;
+				$config['allowed_types'] = 'jpeg|jpg|JPG|JPEG|PNG|png|gif|mpeg|mpg|mpeg3|mp3|x-wav|wav|mp4';
+				$config['max_size']      = 10240; // 10 MB
+				$config['file_name']     = $newFileName;
+
+				// Jika user mengupload gambar soal
+				if($name == 'file_ujian_soal') {
+					$config['upload_path'] = $this->_fileSoalPath;
+					
+					$this->load->library('upload', $config);
+					$this->upload->initialize($config);
+
+					if(!$this->upload->do_upload($name)) {
+						
+						// Batalkan transaction
+						$this->db->trans_rollback();
+
+						// Send error msg
+						$this->session->set_flashdata('error', 'Error upload gambar soal, ' . $this->upload->display_errors());
+						redirect('ujian_real/form_soal/' . encrypt_url($post['id_ujian']) );
+						exit;
+					}
+					else {
+						$uploadedData = $this->upload->data();
+						$dataOldSoal = $this->m_soal_ujian->get_by(['id' => $idSoal]);
+						if(is_file($this->_fileSoalPath . $dataOldSoal->file) && file_exists($this->_fileSoalPath . $dataOldSoal->file)) {
+							unlink($this->_fileSoalPath . $dataOldSoal->file);
+						}
+
+						// Update column file in table m_soal_ujian
+						$dataSoal['file'] = $uploadedData['file_name'];
+						$dataSoal['tipe_file'] = $_FILES[$name]['type'];
+					}
+				}
+				else { // Jika user mengupload gambar opsi dari a-e
+					$config['upload_path'] = $this->_fileOpsiPath;
+					
+					$this->load->library('upload', $config);
+					$this->upload->initialize($config);
+
+					if(!$this->upload->do_upload($name)) {
+						// Batalkan Transaction
+						$this->db->trans_rollback();
+
+						// Send error msg
+						$this->session->set_flashdata('error', 'Error upload gambar opsi , ' . $name . ' ' . $this->upload->display_errors());
+						redirect('ujian_real/form_soal/' . encrypt_url($post['id_ujian']) );
+					}
+					else {
+						// Tentukan nilai dari opsi column table m_soal_ujian_opsi
+						$opsi = '';
+						switch($name) {
+							case 'gja':
+							$opsi = 'opsi_a';
+							break;
+							case 'gjb':
+							$opsi = 'opsi_b';
+							break;
+							case 'gjc':
+							$opsi = 'opsi_c';
+							break;
+							case 'gjd':
+							$opsi = 'opsi_d';
+							break;
+							case 'gje':
+							$opsi = 'opsi_e';
+							break;
+						}
+
+						// Get data opsi dan hapus file lama
+						$dataOpsi = $this->m_soal_opsi->get_by([
+							'opsi' => $opsi,
+							'id_soal' => $idSoal
+						]);
+						if(is_file($this->_fileOpsiPath . $dataOpsi->file) && file_exists($this->_fileOpsiPath . $dataOpsi->file)) {
+							unlink($this->_fileOpsiPath . $dataOpsi->file);
+						}
+
+						// Delete data file dan ganti dengan yang baru
+						$this->m_soal_opsi->delete([
+							'id_soal' => $idSoal,
+							'opsi' => $opsi
+						]);
+
+						// Update file ke file path baru
+						$uploadedData = $this->upload->data();
+						$dataOpsiSoal = [
+							'id_soal' => $idSoal,
+							'file' => $uploadedData['file_name'],
+							'opsi' => $opsi
+						];
+
+						$this->m_soal_opsi->insert($dataOpsiSoal);
+					}
+				}
+
+			}
+		} // end foreach
+		$this->db->trans_commit();
+		
+		// Update data soal
+		$this->m_soal_ujian->update($dataSoal, ['id' => $idSoal]);
+
+		// print_r($this->db->last_query());exit;
+		// Update jumlah soal table tb_ujian
+		$dataUjian = $this->m_ujian->get_by(['uji.id' => $idUjian]);
+		$jumlahSoal = count( $this->m_soal_ujian->get_many_by(['id_ujian' => $idUjian]) );
+
+		// Update Jumlah Soal untuk keterangan ujian
+		$this->m_ujian->update([
+			'jumlah_soal' => $jumlahSoal
+		], ['id' => $idUjian]);
+
+		// Set success msg
+		$this->session->set_flashdata('success', 'Soal berhasil diupdate');
+		redirect('ujian_real/data_soal/' . ($post['id_ujian']));
+	}
+
+	/*
+	* Method baru sejak 22-09-2020 untuk insert soal
+	* @return void
+	*/
+	public function insertSoal()
+	{
+		$this->load->model('m_soal_opsi');
+		$post = $this->input->post();
+		$idUjian = decrypt_url($post['id_ujian']);
+		
+		// Insert Data Soal : to m_soal_ujian
+		$dataSoal = [
+			"soal"=>$post['soal'],
+			"jawaban"=>$post['jawaban'],
+			'id_ujian' => $idUjian,
+			'opsi_a' => $post['opsi_a'],
+			'opsi_b' => $post['opsi_b'],
+			'opsi_c' => $post['opsi_c'],
+			'opsi_d' => $post['opsi_d'],
+			'opsi_e' => $post['opsi_e']
+		];
+
+		// Set data opsi soal jika ada user upload gambar opsi, table : m_soal_ujian_opsi
+		$dataOpsiSoal = [];
+
+		// JIka bobot tidak kosong, tambahkan ke dataSoal untuk diinsert/update
+		if(!is_null($post['bobot'])) {
+			$dataSoal['bobot'] = $post['bobot'];
+		}
+
+		// Start Transaction
+		$this->db->trans_begin();
+
+		// Insert dulu untuk get id_soal
+		$this->m_soal_ujian->insert($dataSoal);
+		$idSoal = $this->db->insert_id();
+
+		// Check if any $_Files exists
+		foreach($_FILES as $name => $file) {
+			$fileName = $_FILES[$name]['name'];
+			$fileSize = $_FILES[$name]['size'];
+			$fileTmp = $_FILES[$name]['tmp_name'];
+			$fileError = $_FILES[$name]['error'];
+
+			// Akan diproses jika user mengupload file saja
+			if($fileError == 0) {
+				$newFileName = uniqid() . '_' . $fileName;
+				$config['allowed_types'] = 'jpeg|jpg|JPG|JPEG|PNG|png|gif|mpeg|mpg|mpeg3|mp3|x-wav|wav|mp4';
+				$config['max_size']      = 10240; // 10 MB
+				$config['file_name']     = $newFileName;
+
+				// Jika user mengupload gambar soal
+				if($name == 'file_ujian_soal') {
+					$config['upload_path'] = $this->_fileSoalPath;
+					
+					$this->load->library('upload', $config);
+					$this->upload->initialize($config);
+
+					if(!$this->upload->do_upload($name)) {
+						
+						// Batalkan transaction
+						$this->db->trans_rollback();
+
+						// Send error msg
+						$this->session->set_flashdata('error', 'Error upload gambar soal, ' . $this->upload->display_errors());
+						redirect('ujian_real/form_soal/' . encrypt_url($post['id_ujian']) );
+						exit;
+					}
+					else {
+						$uploadedData = $this->upload->data();
+
+						// Update column file in table m_soal_ujian
+						$this->m_soal_ujian->update([
+							'file' => $uploadedData['file_name'],
+							'tipe_file' => $_FILES[$name]['type']
+						], ['id' => $idSoal]);
+					}
+				}
+				else { // Jika user mengupload gambar opsi dari a-e
+					$config['upload_path'] = $this->_fileOpsiPath;
+					
+					$this->load->library('upload', $config);
+					$this->upload->initialize($config);
+
+					if(!$this->upload->do_upload($name)) {
+						// Batalkan Transaction
+						$this->db->trans_rollback();
+
+						// Send error msg
+						$this->session->set_flashdata('error', 'Error upload gambar opsi , ' . $name . ' ' . $this->upload->display_errors());
+						redirect('ujian_real/form_soal/' . encrypt_url($post['id_ujian']) );
+					}
+					else {
+						// Tentukan nilai dari opsi column table m_soal_ujian_opsi
+						$opsi = '';
+						switch($name) {
+							case 'gja':
+							$opsi = 'opsi_a';
+							break;
+							case 'gjb':
+							$opsi = 'opsi_b';
+							break;
+							case 'gjc':
+							$opsi = 'opsi_c';
+							break;
+							case 'gjd':
+							$opsi = 'opsi_d';
+							break;
+							case 'gje':
+							$opsi = 'opsi_e';
+							break;
+						}
+
+						$uploadedData = $this->upload->data();
+						$dataOpsiSoal = [
+							'id_soal' => $idSoal,
+							'file' => $uploadedData['file_name'],
+							'opsi' => $opsi
+						];
+
+						$this->m_soal_opsi->insert($dataOpsiSoal);
+					}
+				}
+
+			}
+		} // end of foreach
+		$this->db->trans_commit();
+
+		// Update jumlah soal table tb_ujian
+		$dataUjian = $this->m_ujian->get_by(['uji.id' => $post['id_ujian']]);
+		$jumlahSoal = count( $this->m_soal_ujian->get_many_by(['id_ujian' => $post['id_ujian']]) );
+
+		// Update Jumlah Soal untuk keterangan ujian
+		$this->m_ujian->update([
+			'jumlah_soal' => $jumlahSoal
+		], ['id' => $post['id_ujian']]);
+
+		// Set success msg
+		$this->session->set_flashdata('success', 'Soal berhasil ditambahkan');
+		redirect('ujian_real/data_soal/' . ($post['id_ujian']));
+	}
+
+	/*
+	* --KADALUARSA (22-09-2020) -> Gunakan method insertSoal dan updateSoal
+	* Method untuk menyimpan soal di add soal dan edit soal
+	*/
 	public function simpan_soal(){
+
 			$p = $this->input->post();
 			$pembuat_soal = ($this->log_lvl == "admin") ? $p['id_guru'] : $this->log_id;
 			$pembuat_soal_u = ($this->log_lvl == "admin") ? ", id_guru = '".$p['id_guru']."'" : "";
@@ -788,9 +1131,6 @@ class Ujian_real extends MY_Controller
 									unlink($this->_fileOpsiPath . $fileOpsiName[0]);
 								}
 							}
-							// if( is_array($fileOpsiName) && file_exists($this->_fileOpsiPath . $fileOpsiName[0])) {
-							// 	unlink($this->_fileOpsiPath . $fileOpsiName[0]);
-							// }
 						}
 					}
 					$gagal[$k]	 	= $kode_file_error[$file_error]; //kode kegagalan upload file
@@ -846,10 +1186,7 @@ class Ujian_real extends MY_Controller
 				$arr_nama_file_upload = array("file_ujian_soal"=>"File Soal ", "gja"=>"File opsi A ", "gjb"=>"File opsi B ", "gjc"=>"File opsi C ", "gjd"=>"File opsi D ", "gje"=>"File opsi E ");
 
 				$teks_gagal .= $arr_nama_file_upload[$k].': '.$v.'<br>';
-
 			}
-
-
 
 			$this->session->set_flashdata('k', '<div class="alert alert-info">'.$teks_gagal.'</div>');
 
@@ -859,62 +1196,67 @@ class Ujian_real extends MY_Controller
 
 		}
 
-
-
-		public function hapus_soal(){
-
+		/*
+		* Menghapus soal
+		*/
+		public function hapus_soal()
+		{
+			$this->load->model('m_soal_opsi');
 			$post = $this->input->post();
 
-
+			// Set returnedData and responsCode
+			$status = FALSE;
+			$msg = '';
+			$responseCode = 400;
 
 			foreach ($post['id'] as $key => $id) {
 
+				$id = decrypt_url($id);
+				$dataSoal = $this->m_soal_ujian->get_by(array('id'=>$id));
+				$dataOpsiSoal = $this->m_soal_opsi->get_many_by(['id_soal' => $id]);
 
+				// Update jumlah soal di ujian yang sesuai dengan id_ujian m_soal_ujian
+				$dataUjian = $this->m_ujian->get_by(['uji.id' => $dataSoal->id_ujian]);
+				$this->m_ujian->update([
+					'jumlah_soal' => $dataUjian->jumlah_soal - 1
+				], ['id' => $dataUjian->id]);
 
-				$nama_gambar = $this->m_soal_ujian->get_by(array('id'=>$id));
+				// Delete gambar soal
+				if($dataSoal != '' && is_file($this->_fileSoalPath . $dataSoal->file) && file_exists($this->_fileSoalPath . $dataSoal->file)) {
+					unlink($this->_fileSoalPath . $dataSoal->file);
+				}
 
-				$data_yang_dihapus = $this->m_soal_ujian->get_by(['id' => $id]);
+				// Delete gambar opsi
+				if(count($dataOpsiSoal) > 0) {
+					foreach($dataOpsiSoal as $opsi):
+						if(is_file($this->_fileOpsiPath . $opsi->file) &&
+							file_exists($this->_fileOpsiPath . $opsi->file)
+						) {
+							unlink($this->_fileOpsiPath . $opsi->file);
+						}
+					endforeach;
+				}
 
-				$pc_opsi_a = explode("#####", $nama_gambar->opsi_a);
+				// Hapus data opsi soal dan soalnya
+				$deleteOpsi = $this->m_soal_opsi->delete(['id_soal' => $id]);
+				$deleteSoal = $this->m_soal_ujian->delete(['id' => $id]);
 
-				$pc_opsi_b = explode("#####", $nama_gambar->opsi_b);
-
-				$pc_opsi_c = explode("#####", $nama_gambar->opsi_c);
-
-				$pc_opsi_d = explode("#####", $nama_gambar->opsi_d);
-
-				$pc_opsi_e = explode("#####", $nama_gambar->opsi_e);
-
-
-
-				$kirim = $this->m_soal_ujian->delete(array('id'=>$id));
-				
-				// Update Jumlah Soal
-
-				$data_ujian = $this->m_ujian->get_by(['uji.id' => $data_yang_dihapus->id_ujian] );
-	            
-	            $this->m_ujian->update([
-	                'jumlah_soal' => $data_ujian->jumlah_soal - 1
-	            ], ['id' =>$data_yang_dihapus->id_ujian]);
-
-				if($kirim){
-
-					@unlink("./upload/file_ujian_soal/".$nama_gambar->file);
-
-					@unlink("./upload/file_ujian_opsi/".$pc_opsi_a[0]);
-
-					@unlink("./upload/file_ujian_opsi/".$pc_opsi_b[0]);
-
-					@unlink("./upload/file_ujian_opsi/".$pc_opsi_c[0]);
-
-					@unlink("./upload/file_ujian_opsi/".$pc_opsi_d[0]);
-
-					@unlink("./upload/file_ujian_opsi/".$pc_opsi_e[0]);
-
+				if($deleteSoal && $deleteOpsi){
+					$status = TRUE;
+					$msg = 'Soal berhasil dihapus';
+					$responseCode = 200;
+				}
+				else {
+					$status = FALSE;
+					$msg = 'Soal gagal dihapus';
+					$responseCode = 500;
 				}
 			}
-			echo json_encode(['result'=>true]);
-
+			
+			$this->sendAjaxResponse([
+				'status' => $status,
+				'msg' => $msg
+			], $responseCode);
 		}
 
 		/*
@@ -2165,7 +2507,7 @@ class Ujian_real extends MY_Controller
 	{
 		$post = $this->input->post();
 
-		$idSoal = $post['id'];
+		$idSoal = decrypt_url($post['id']);
 		$data = $this->m_soal_ujian->get_by(['id' => $idSoal]);
 		$fileSoal = $this->_fileSoalPath . $data->file;
 
@@ -2194,72 +2536,23 @@ class Ujian_real extends MY_Controller
 
 	public function hapusOpsiFile()
 	{
+		$this->load->model('m_soal_opsi');
 		$post = $this->input->post();
-		$idSoal = $post['id'];
+		$idSoal = decrypt_url($post['id']);
 		$opsi = $post['opsi'];
 
-		$data = $this->m_soal_ujian->get_by(['id' => $idSoal]);
-		$opsiKey = ''; // opsi_a
-		
-		$newOpsi = '';
-		switch ($opsi) {
-			case 'a':
-				$opsi = explode('#####', $data->opsi_a);
-				$opsi[0] = NULL;
-				$newOpsi = implode('#####', $opsi);
-				$opsiKey = 'opsi_a';
-				if(file_exists($this->_fileOpsiPath . $post['file'])) {
-					unlink($this->_fileOpsiPath . $post['file']);
-				}		
-			break;
+		$dataOpsi = $this->m_soal_opsi->get_by([
+			'id_soal' => $idSoal,
+			'opsi' => $opsi
+		]);
 
-			case 'b':
-				$opsi = explode('#####', $data->opsi_b);
-				$opsi[0] = NULL;
-				$newOpsi = implode('#####', $opsi);
-				$opsiKey = 'opsi_b';
-				if(file_exists($this->_fileOpsiPath . $post['file'])) {
-					unlink($this->_fileOpsiPath . $post['file']);
-				}
-			break;
-
-			case 'c':
-				$opsi = explode('#####', $data->opsi_c);
-				$opsi[0] = NULL;
-				$newOpsi = implode('#####', $opsi);
-				$opsiKey = 'opsi_c';
-				if(file_exists($this->_fileOpsiPath . $post['file'])) {
-					unlink($this->_fileOpsiPath . $post['file']);
-				}
-			break;
-
-			case 'd':
-				$opsi = explode('#####', $data->opsi_d);
-				$opsi[0] = NULL;
-				$newOpsi = implode('#####', $opsi);
-				$opsiKey = 'opsi_d';
-				if(file_exists($this->_fileOpsiPath . $post['file'])) {
-					unlink($this->_fileOpsiPath . $post['file']);
-				}
-			break;
-
-			case 'e':
-				$opsi = explode('#####', $data->opsi_e);
-				$opsi[0] = NULL;
-				$newOpsi = implode('#####', $opsi);
-				$opsiKey = 'opsi_e';
-				if(file_exists($this->_fileOpsiPath . $post['file'])) {
-					unlink($this->_fileOpsiPath . $post['file']);
-				}
-			break;
+		if(!is_null($dataOpsi) && is_file($this->_fileOpsiPath . $dataOpsi->file) && file_exists($this->_fileOpsiPath . $dataOpsi->file)) {
+			unlink($this->_fileOpsiPath . $dataOpsi->file);
 		}
-		
 
-		$update = $this->m_soal_ujian->update([
-			$opsiKey => $newOpsi
-		], ['id' => $idSoal]);
+		$delete = $this->m_soal_opsi->delete(['id_soal' => $idSoal, 'opsi' => $opsi]);
 
-		if($update) {
+		if($delete) {
 			$this->sendAjaxResponse([
 				'status' => TRUE,
 				'msg' => 'File berhasil dihapus'

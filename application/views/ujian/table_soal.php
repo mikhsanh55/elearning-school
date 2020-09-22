@@ -12,29 +12,29 @@
 			if (count($paginate['data']) > 0) {
 			$i= $page_start; foreach ($paginate['data'] as $rows):
 			$opsi_a = explode('#####', $rows->opsi_a);
-			$gambar_a = !empty($opsi_a[0]) ? $opsi_a[0] : NULL;
-			$mediaOpsiA = getMediaOpsiFile($gambar_a, $this->_fileOpsiPath);
+			$gambarA = $this->m_soal_opsi->get_by(['opsi' => 'opsi_a', 'id_soal' => $rows->id]);
+			$fileA = ($gambarA) != '' ? getMediaOpsiFile($gambarA->file, $this->_fileOpsiPath) : NULL;
 
 			$opsi_b = explode('#####', $rows->opsi_b);
-			$gambar_b = !empty($opsi_b[0]) ? $opsi_b[0] : NULL;
-			$mediaOpsiB = getMediaOpsiFile($gambar_b, $this->_fileOpsiPath);
+			$gambarB = $this->m_soal_opsi->get_by(['opsi' => 'opsi_b', 'id_soal' => $rows->id]);
+			$fileB = ($gambarB) != '' ? getMediaOpsiFile($gambarB->file, $this->_fileOpsiPath) : NULL;
 
 			$opsi_c = explode('#####', $rows->opsi_c);
-			$gambar_c = !empty($opsi_c[0]) ? $opsi_c[0] : NULL;
-			$mediaOpsiC = getMediaOpsiFile($gambar_c, $this->_fileOpsiPath);			
+			$gambarC = $this->m_soal_opsi->get_by(['opsi' => 'opsi_c', 'id_soal' => $rows->id]);
+			$fileC = ($gambarC) != '' ? getMediaOpsiFile($gambarC->file, $this->_fileOpsiPath) : NULL;		
 
 			$opsi_d = explode('#####', $rows->opsi_d);
-			$gambar_d = !empty($opsi_d[0]) ? $opsi_d[0] : NULL;
-			$mediaOpsiD = getMediaOpsiFile($gambar_d, $this->_fileOpsiPath);
+			$gambarD = $this->m_soal_opsi->get_by(['opsi' => 'opsi_d', 'id_soal' => $rows->id]);
+			$fileD = ($gambarD) != '' ? getMediaOpsiFile($gambarD->file, $this->_fileOpsiPath) : NULL;
 
 			$opsi_e = explode('#####', $rows->opsi_e);
-			$gambar_e = !empty($opsi_e[0]) ? $opsi_e[0] : NULL;
-			$mediaOpsiE = getMediaOpsiFile($gambar_e, $this->_fileOpsiPath);
+			$gambarE = $this->m_soal_opsi->get_by(['opsi' => 'opsi_e', 'id_soal' => $rows->id]);
+			$fileE = ($gambarE) != '' ? getMediaOpsiFile($gambarE->file, $this->_fileOpsiPath) : NULL;
 
 			$mediaSoal = '';
 		?>
 			<tr>
-				<td><input type="checkbox" name="checklist[]" class="checklist" data-id= "<?=$rows->id;?>" value="<?=$rows->id;?>"></td>
+				<td><input type="checkbox" name="checklist[]" class="checklist" data-id= "<?= encrypt_url($rows->id); ?>" value="<?= encrypt_url($rows->id); ?>"></td>
 				<td align="center" class="frist"><?=$i;?></td>
 				<td>
 					<?php $mediaSoal = getMediaSoalFile($rows->file, $this->_fileSoalPath, $rows->tipe_file);
@@ -53,45 +53,35 @@
 							<ul>
 								<li class="d-flex flex-row ">
 									<div>A. </div><?= end($opsi_a); ?>
-										<?php if(!is_null($gambar_a)) { ?> 
-											<?= $mediaOpsiA; ?>
-										<?php } ?> 
-									 
+										<?= $fileA; ?>
 								</li>
 								<li class="d-flex flex-row ">
 									<div>B. </div><?= end($opsi_b); ?>
-										<!-- <?php if(!is_null($gambar_b)) { ?>  -->
-											<?= $mediaOpsiB; ?>
-										<!-- <?php } ?>  -->
-									 
+										<?= $fileB; ?>
 								</li>
 								
 								<li class="d-flex flex-row ">
 									<div>C. </div><?= end($opsi_c); ?>
-										<!-- <?php if(!is_null($gambar_c)) { ?>  -->
-											<?= $mediaOpsiC; ?>
-										<!-- <?php } ?>  -->
-									 
+										<?= $fileC; ?>
 								</li>
 								<li class="d-flex flex-row ">
 									<div>D. </div><?= end($opsi_d); ?>
-										<!-- <?php if(!is_null($gambar_d)) { ?>  -->
-											<?= $mediaOpsiD; ?>
-										<!-- <?php } ?>  -->
-									 
+										<?= $fileD; ?>
 								</li>
 								<li class="d-flex flex-row ">
 									<div>E. </div><?= end($opsi_e); ?>
-										<!-- <?php if(!is_null($gambar_e)) { ?>  -->
-											<?= $mediaOpsiE; ?>
-										<!-- <?php } ?>  -->
+										<?= $fileE; ?>
 								</li>
 							</ul>
 						</div>
 					</div>
 				</td>
 			</tr>
-		<?php $i++; endforeach; } ?>
+		<?php $i++; endforeach; } else { ?>
+			<tr>
+				<td colspan="4" class="text-center">Data Kosong</td>
+			</tr>
+		<?php } ?>
 	</tbody>
 </table>
 <script src="<?=base_url();?>assets/js/jquery/jquery-3.3.1.min.js"></script>

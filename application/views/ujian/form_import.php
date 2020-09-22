@@ -10,7 +10,7 @@ $uri4 = $this->uri->segment(4);
                 </h2>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-6 text-right">
-                <?= $this->backButton; ?>
+                <a href="<?= base_url('ujian_real/data_soal/') . $this->uri->segment(3); ?>" class="btn btn-light">Kembali</a>
             </div>
         </div>
 <div class="row col-md-12 ini_bodi">

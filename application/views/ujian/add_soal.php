@@ -19,7 +19,7 @@
 			</div>
 		</div>
 		
-		<?php echo form_open_multipart(base_url() . "ujian_real/simpan_soal", "class='form-horizontal'"); ?>
+		<?php echo form_open_multipart(base_url() . "ujian_real/insertSoal", "class='form-horizontal'"); ?>
 			<input type="hidden" name="id" id="id" value="<?php echo $d['id']; ?>">
 			<div id="konfirmasi"></div>
 

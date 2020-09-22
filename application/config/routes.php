@@ -118,6 +118,8 @@ $route['ujian/delete-hasil-ujian'] = 'ujian_real/delete_hasil_ujian';
 $route['ujian/delete-hasil-ujian-essay'] = 'ujian_essay/delete_hasil_ujian';
 $route['ujian/ulang-ujian-siswa'] = 'ujian_real/ulangUjianSiswa';
 $route['ujian_essay/ulang-ujian-siswa'] = 'ujian_essay/ulangUjianSiswa';
+$route['ujian_real/add-soal/(:any)'] = 'ujian_real/addSoal/$1';
+$route['ujian_real/edit-soal/(:any)/(:any)'] = 'ujian_real/editSoal/$1/$2';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

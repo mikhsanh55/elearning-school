@@ -1,5 +1,3 @@
-
-
 <style type="text/css">
 	h1{
 		font-family: sans-serif;
@@ -94,7 +92,7 @@
 						                <h2><strong>Data Soal <?=$this->page_title;?></strong></h2>
 						            </div>
 						            <div class="col-sm-12 col-md-6 col-lg-6 text-right">
-						                <?= $this->backButton; ?>
+						                <a href="<?= base_url('ujian_real'); ?>" class="btn btn-light ">Kembali</a>
 						            </div>
 					            </div>	
 								
@@ -131,7 +129,7 @@
 				</select>
 				
 				<?php if ($this->log_lvl != 'siswa'): ?>
-					<a class="btn btn-success btn-sm tombol-kanan" href="<?=$url_form;?>"><i class="fa fa-user-plus"></i> &nbsp;Tambah</a>
+					<a class="btn btn-success btn-sm tombol-kanan" href="<?= base_url('ujian_real/add-soal/' . $id_ujian); ?>"><i class="fa fa-user-plus"></i> &nbsp;Tambah</a>
 					<a href="javascript:void(0);" title="edit" id="edited" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> &nbsp;Edit</a>
 					<a href="javascript:void(0);" id="deleted" title="Hapus" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> &nbsp;Hapus</a>
 					<a class="btn btn-warning btn-sm tombol-kanan" href="<?php echo base_url(); ?>upload/format_soal_ujianpg.xlsx" ><i class="glyphicon glyphicon-download"></i> &nbsp;&nbsp;Download Format Import</a>
@@ -253,16 +251,20 @@
 					link : '<?=$url_form;?>'
 				},
 				success:function(response){
-					if (response.result == true) {
-						alert('Hapus Berhasil');
+					if (response.status == true) {
+						pageLoad(1,'ujian_real/page_load_soal');
 					}else{
 						alert('Hapus Gagal');
+						console.error(response);
+						return false;
 					}
-
-					pageLoad(1,'ujian_real/page_load_soal');
+				},
+				error: (e) => {
+					alert(e.responseJSON.msg);
+					console.error(e.responseJSON);
+					return false;
 				}
-			})
-
+			});
 
 		}else{
 			return false;
@@ -282,105 +284,8 @@
 			alert('Tidak ada yang dipilih!');
 			return false;
 		}else{
-			window.location = '<?=$url_form;?>' + '/' + $('.checklist:checked').data('id');			
+			window.location = '<?= base_url('ujian_real/edit-soal/' . $id_ujian) ;?>' + '/' + $('.checklist:checked').data('id');
 		}
-
-		
-	})
-
-	$(document).on('click','.buat-pass',function(){
-	
-		var y = confirm('Apakah anda yakin untuk membuat password untuk nama ' + $(this).data('nama') +' ?');
-
-		if (y == true) {
-
-			$.ajax({
-				type:'post',
-				url : '<?=base_url('ujian_real/buatkan_password');?>',
-				dataType : 'json',
-				data : {
-					id : $(this).data('id'),
-				},
-				success:function(response){
-					if (response.status == 1) {
-						alert(response.message);
-					}else{
-						alert(response.message);
-					}
-
-					pageLoad(1,'ujian_real/page_load_soal');
-				}
-			})
-
-
-		}else{
-			return false;
-		}
-	})
-
-	$(document).on('click','.reset-pass',function(){
-	
-		var y = confirm('Apakah anda yakin untuk membuat password untuk nama ' + $(this).data('nama') +' ?');
-
-		if (y == true) {
-
-			$.ajax({
-				type:'post',
-				url : '<?=base_url('ujian_real/reset_password');?>',
-				dataType : 'json',
-				data : {
-					id : $(this).data('id'),
-				},
-				success:function(response){
-					if (response.status == 1) {
-						alert(response.message);
-					}else{
-						alert(response.message);
-					}
-
-					pageLoad(1,'ujian_real/page_load_soal');
-				}
-			})
-
-
-		}else{
-			return false;
-		}
-	})
-
-	$(document).on('click','.aktif-non-akun',function(){
-	
-		var y = confirm('Apakah anda yakin untuk membuat password untuk nama ' + $(this).data('nama') +' ?');
-
-		if (y == true) {
-
-			$.ajax({
-				type:'post',
-				url : '<?=base_url('ujian_real/aktif_non_akun');?>',
-				dataType : 'json',
-				data : {
-					id : $(this).data('id'),
-					status : $(this).data('status')
-				},
-				success:function(response){
-					if (response.status == 1) {
-						alert(response.message);
-					}else{
-						alert(response.message);
-					}
-
-					pageLoad(1,'ujian_real/page_load_soal');
-				}
-			})
-
-
-		}else{
-			return false;
-		}
-	})
+	});
 
 </script>
-
-
-
-
