@@ -11,6 +11,17 @@ class m_materi extends MY_Model {
 		
 	}
 
+	public function get_many_by_join($where = [])
+	{
+		$get = $this->db->select('mt.*')
+						->from('m_materi mt')
+						->join('m_guru guru', 'mt.id_trainer = guru.id', 'inner')
+						->where($where)
+						->get()
+						->result();
+		return $get;
+	}
+
 	public function get_by_join($where=array()){
 		// $get = $this->db->select('*')->from('m_materi mt')->join('tr_guru_mapel grm','grm.id_mapel=mt.id_mapel','left')->where($where)->get()->row();
 		$get = $this->db->select('mt.*')

@@ -92,16 +92,16 @@
     <header>
         <h3>Semua Mata Pelajaran Kelas <?= $kelas->nama_kelas; ?></h3>
     </header>
+
     <main class="grid-container">
         <?php foreach($mapels as $mapel): 
-            $sumMateri = $this->m_materi->join_jadwal2([
+            $sumMateri = $this->m_materi->get_many_by_join([
                 'mt.id_mapel' => $mapel->dmapel,
-                'mt.id_trainer' => $mapel->id_guru,
-                'jdwl.id_kelas' => $mapel->id_kelas
+                'guru.id' => $mapel->id_guru,
             ]);
         ?>
             <div class="card d-inline-block" style="width: 16rem;">
-              <a href="<?= base_url('Materi/lists/') . md5($mapel->dmapel).'/'.encrypt_url($mapel->idguru).'/'.encrypt_url($mapel->id_kelas); ?>">
+              <a href="<?= base_url('Materi/lists/') . md5($mapel->dmapel).'/'.encrypt_url($mapel->idguru).'/'.encrypt_url($mapel->id_kelas) . '/' . 0; ?>">
                   <img class="card-img-top" src="<?= is_null($mapel->file) ? base_url('assets/img/courses/6.png') : base_url('upload/mapel/' . $mapel->file); ?>" alt="Card image cap">
                   <div class="card-body d-flex justify-content-between">
                     <p class="card-text text-dark" style="font-size: 110%;">

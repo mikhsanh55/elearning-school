@@ -487,7 +487,8 @@
 				search : $('#search').val(),
 				id_mapel : '<?=$mapel->id;?>',
 				id_guru : '<?=$id_guru;?>',
-				id_kelas : '<?=$id_kelas;?>'
+				id_kelas : '<?=$id_kelas;?>',
+				kbm: "<?= $kbm; ?>"
 			},
 			success:function(response){
 				$('#content-view').html(response);

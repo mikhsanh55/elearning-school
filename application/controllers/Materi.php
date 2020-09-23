@@ -131,14 +131,15 @@ class Materi extends MY_Controller
 
     }
 
-    public function lists($id_mapel = NULL,$id_guru=NULL,$id_kelas=NULL)
+    public function lists($id_mapel = NULL,$id_guru=NULL,$id_kelas=NULL, $kbm = 1)
     {
 
         $data = [
             'title' => 'Daftar Materi',
             'mapel' => $this->m_mapel->get_by(['md5(id)' => $id_mapel]),
             'id_guru' => $id_guru,
-            'id_kelas' => $id_kelas
+            'id_kelas' => $id_kelas,
+            'kbm' => $kbm
         ];
         $this->render('materi/list', $data);
     }
@@ -154,7 +155,9 @@ class Materi extends MY_Controller
 
         if ($this->log_lvl == 'siswa') {
             $where['mt.id_trainer'] = decrypt_url($post['id_guru']);
-            $where['jdwl.id_kelas'] = decrypt_url($post['id_kelas']);
+            if($post['kbm'] == 1) {
+                $where['jdwl.id_kelas'] = decrypt_url($post['id_kelas']);    
+            }
         }
         
 
@@ -170,7 +173,10 @@ class Materi extends MY_Controller
         // Cek keaktifan akses materi oleh siswa
         foreach($paginate['data'] as $key => $row) :
             $now = date('Y-m-d H:i:s');
-            if($now >= $row->start_date && $now <= $row->end_date) {
+            if($post['kbm'] == 0) {
+                $row->in_jadwal = TRUE;
+            }
+            else if($now >= $row->start_date && $now <= $row->end_date) {
                 $row->in_jadwal = TRUE;
             }
             else {
