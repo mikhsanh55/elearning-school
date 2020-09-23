@@ -171,7 +171,7 @@ $config['composer_autoload'] = 'vendor/autoload.php';
 */
 // $config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-@\=+';
 // $config['permitted_uri_chars'] = 'a-z 0-9~%\.\:_\-';
-$config['permitted_uri_chars'] = 'a-z 0-9~%.:\_\=+%\&';
+$config['permitted_uri_chars'] = 'a-z 0-9~%.:\_\=+%\&\-';
 
 /*
 |--------------------------------------------------------------------------
