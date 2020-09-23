@@ -26,18 +26,8 @@
 				
 			</tr>
 		<?php $i++;endforeach ?>
-		<?php } else { ?>
-			<?php if($this->log_lvl == 'admin') { ?>
-				<tr>
-					<td class="text-center" colspan="5">Data Kosong</td>
-				</tr>
-			<?php } else { ?>
-				<tr>
-					<td class="text-center" colspan="4">Data Kosong</td>
-				</tr>
-			<?php } ?>
+		<?php }?>
 			
-		<?php } ?>
 	</tbody>
 </table>
 <script src="<?=base_url();?>assets/js/jquery/jquery-3.3.1.min.js"></script>

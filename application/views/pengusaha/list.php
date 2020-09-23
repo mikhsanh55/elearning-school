@@ -377,6 +377,13 @@
 			return false;
 		}else{
 			$("#m_siswa_modif").modal('show');
+			if(!$("#m_siswa_modif").hasClass('show')) {
+				$("#m_siswa_modif").addClass('show')
+			}
+
+			if(!$('.modal-backdrop').hasClass('show')) {
+				$('.modal-backdrop').addClass('show')
+			}
 			 var id = $('.checklist:checked').val();
 				$.ajax({
 					type: "GET",
@@ -421,6 +428,14 @@
 
 	function m_siswa_add() {
 		$("#m_siswa_modif").modal('show');
+
+		if(!$('#m_siswa_modif').hasClass('show')) {
+			$('#m_siswa_modif').addClass('show')
+		}
+		
+		if(!$('.modal-backdrop').hasClass('show')) {
+			$('.modal-backdrop').addClass('show')
+		}
 
 		$("#id").val('');
 		$("#kelompok").val('');
