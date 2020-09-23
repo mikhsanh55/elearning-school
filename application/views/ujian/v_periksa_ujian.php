@@ -161,17 +161,27 @@
                                 </div>
                                 <div>
                                     <?= $data->soal; ?>
+                                    <?php if(!empty($data->file)) : 
+                                        $getMediaSoal = getMediaSoalFile($data->file, $this->_fileSoalPath, $data->tipe_file);
+
+                                        echo $getMediaSoal;
+                                    ?>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <br>
                             <?php $x = 1; foreach($allOptions as $option => $optionValue) { 
+
+                                $opsiData = $this->m_soal_opsi->get_by(['opsi' => 'opsi_' . $option, 'id_soal' => $data->id]);
+                                $mediaOpsi = !empty($opsiData) ? getMediaOpsiFile($opsiData->file, $this->_fileOpsiPath) : NULL;
                             ?>
                             <div class="funkyradio">
                                 <div class="">
                                     <input type="radio" id="opsi_<?= $data->id . '_' . $option; ?>" name="opsi_<?= $x++; ?>" value="<?= strtoupper($option); ?>" > 
                                     <label class="<?= $optionValue['class']; ?>" for="opsi_<?= $data->id . '_' . $option; ?>">
                                         <div class="huruf_opsi"><?= $option; ?></div> 
-                                        <p><p><?= $optionValue['value']; ?></p></p><p></p>
+                                        <p><p>
+                                            <?= $mediaOpsi ."<br>".$optionValue['value']; ?></p></p><p></p>
                                     </label>
                                 </div>
                             </div>

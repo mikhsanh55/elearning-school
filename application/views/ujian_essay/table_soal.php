@@ -14,7 +14,7 @@
 
 		?>
 			<tr>
-				<td><input type="checkbox" name="checklist[]" class="checklist" data-id= "<?=$rows->id;?>" value="<?=$rows->id;?>"></td>
+				<td><input type="checkbox" name="checklist[]" class="checklist" data-id= "<?= encrypt_url($rows->id);?>" value="<?= encrypt_url($rows->id); ?>"></td>
 				<td align="center" class="frist"><?=$i;?></td>
 				<td>
 					<?php if(!empty($rows->file)) : ?>

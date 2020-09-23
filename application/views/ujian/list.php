@@ -278,8 +278,6 @@
 			alert('Tidak ada yang dipilih!');
 		}
 
-		
-
 		if (y == true) {
 
 			$.ajax({

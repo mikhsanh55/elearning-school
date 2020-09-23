@@ -87,7 +87,7 @@
 						                <h2><strong>Data Hasil <?=$this->page_title;?></strong></h2>
 						            </div>
 						            <div class="col-sm-12 col-md-6 col-lg-6 text-right">
-						                <?= $this->backButton; ?>
+						                <a href="<?= base_url('ujian_real'); ?>" class="btn btn-light">Kembali</a>
 						            </div>
 					            </div>	
 								

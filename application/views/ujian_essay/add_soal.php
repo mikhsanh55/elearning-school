@@ -15,7 +15,7 @@
 				<h2>Form Tambah <?=$this->page_title;?></h2>
 			</div>
 			<div class="col-sm-12 col-md-6 col-lg-6 text-right">
-				<button class="btn btn-light" onclick="back_page('ujian')">Kembali</button>
+				<a href="<?= base_url('ujian_essay/data_soal/' . $this->uri->segment(3)); ?>" class="btn btn-light">Kembali</a>
 			</div>
 		</div>
 		

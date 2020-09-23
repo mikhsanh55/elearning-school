@@ -887,7 +887,7 @@ class Ujian_real extends MY_Controller
 
 						// Send error msg
 						$this->session->set_flashdata('error', 'Error upload gambar soal, ' . $this->upload->display_errors());
-						redirect('ujian_real/form_soal/' . encrypt_url($post['id_ujian']) );
+						redirect('ujian_real/add-soal/' . encrypt_url($post['id_ujian']) );
 						exit;
 					}
 					else {
@@ -1554,6 +1554,7 @@ class Ujian_real extends MY_Controller
 		}
 
 		public function ikut_ujian($id_ujian){
+			$this->load->model('m_soal_opsi');
 			$id_ujian = decrypt_url($id_ujian);
 
 			if($this->log_lvl != 'siswa') {
@@ -1812,14 +1813,18 @@ class Ujian_real extends MY_Controller
 				        $html .= '<div class="step" id="widget_'.$no.'">';
 				        $html .= $d->soal.'<br>'.$mediaSoalUjian.'<div class="funkyradio">';
 				        for ($j = 0; $j < $this->jml_opsi; $j++) {
+				        	// Get media from opsi if exists
 				            $opsi = "opsi_".$this->opsi[$j];
+				            $opsiData = $this->m_soal_opsi->get_by(['opsi' => $opsi, 'id_soal' => $d->id]);
+				            $mediaOpsi = !empty($opsiData) ? getMediaOpsiFile($opsiData->file, $this->_fileOpsiPath) : NULL;
+
 				            $checked = $arr_jawab[$d->id]["j"] == strtoupper($this->opsi[$j]) ? "checked" : "";
 				            $pc_pilihan_opsi = explode("#####", $d->$opsi);           
 				            $gambar = !is_null($pc_pilihan_opsi[0]) ? base_url('upload/file_ujian_opsi/') . $pc_pilihan_opsi[0] : NULL;
 				            $tampil_media_opsi = (is_file('upload/file_ujian_opsi/'.$pc_pilihan_opsi[0]) || $pc_pilihan_opsi[0] != "") ? getMediaOpsiFile($pc_pilihan_opsi[0], $this->_fileOpsiPath)  : '';
 					    	$pilihan_opsi = empty($pc_pilihan_opsi[1]) ? "-" : $pc_pilihan_opsi[1];
 				            $html .= '<div class="funkyradio-success" onclick="return simpan_sementara_ujian();">
-				                <input type="radio" id="opsi_'.strtoupper($this->opsi[$j]).'_'.$d->id.'" name="opsi_'.$no.'" value="'.strtoupper($this->opsi[$j]).'" '.$checked.'> <label for="opsi_'.strtoupper($this->opsi[$j]).'_'.$d->id.'"><div class="huruf_opsi">'.$this->opsi[$j].'</div> <p>'.$pilihan_opsi.'</p><p>'.$tampil_media_opsi.'</p></label></div>';
+				                <input type="radio" id="opsi_'.strtoupper($this->opsi[$j]).'_'.$d->id.'" name="opsi_'.$no.'" value="'.strtoupper($this->opsi[$j]).'" '.$checked.'> <label for="opsi_'.strtoupper($this->opsi[$j]).'_'.$d->id.'"><div class="huruf_opsi">'.$this->opsi[$j].'</div> <p>'.$pilihan_opsi.'</p><p>'.$mediaOpsi.'</p></label></div>';
 				        }
 
 				        $html .= '</div></div>';
@@ -2289,26 +2294,69 @@ class Ujian_real extends MY_Controller
 	}
 
 	public function multi_delete(){
-
+		$this->load->model('m_soal_opsi');
 		$post = $this->input->post();
-
-
-
 		foreach ($post['id'] as $val) {
-
 			$where[] = $val;
-
 		}
-
-
 
 		$this->db->trans_begin();
 
+		// Delete hasil ujian pg
+		$this->m_ikut_ujian->delete_wherein('id_ujian', $where);
 
+		// Delete hasil ujian essay
+		$this->m_ikut_ujian_essay->delete_wherein('id_ujian', $where);
+
+		// Delete file jawaban siswa
+		$dataEssaySiswa = $this->m_jawaban_essay->get_many_wherein('id_ujian', $where);
+		if(count($dataEssaySiswa) > 0) {
+			foreach($dataEssaySiswa as $data):
+				if(!empty($data->file) && is_file('upload/file_jawaban_essay/' . $data->file)) {
+					unlink('upload/file_jawaban_essay/' . $data->file);
+				}
+			endforeach;
+		}
+
+		// Delete data jawaban siswa
+		$this->m_jawaban_essay->delete_wherein('id_ujian', $where);
+
+		// Delete file soal dan pg 
+		$dataSoalPG = $this->m_soal_ujian->get_many_wherein('id_ujian', $where);
+		if(count($dataSoalPG) > 0) {
+			foreach($dataSoalPG as $soal) {
+				if(!empty($soal->file) && is_file($this->_fileSoalPath . $soal->file)) {
+					unlink($this->_fileSoalPath . $soal->file);
+				}
+				$dataOpsi = $this->m_soal_opsi->get_many_by(['id_soal' => $soal->id]);
+				if(count($dataOpsi) > 0) {
+					foreach($dataOpsi as $opsi):
+						if(!empty($opsi->file) && is_file($this->_fileOpsiPath . $opsi->file)) {
+							unlink($this->_fileOpsiPath . $opsi->file);
+						}
+					endforeach;
+				}
+
+				// Delete data opsi
+				$this->m_soal_opsi->delete(['id_soal' => $soal->id]);
+			}
+		}
+
+		// Delete data soal
+		$this->m_soal_ujian->delete_wherein('id_ujian', $where);
+
+		// Delete data soal dan file essay
+		$dataSoalEssay = $this->m_soal_ujian_essay->get_many_wherein('id_ujian', $where);
+		if(count($dataSoalEssay) > 0) {
+			foreach($dataSoalEssay as $essay):
+				if(!empty($essay->file) && is_file('upload/file_ujian_ujian_essay' . $essay->file)) {
+					unlink('upload/file_ujian_ujian_essay' . $essay->file);
+				}
+			endforeach;
+		}
+		$this->m_soal_ujian_essay->delete_wherein('id_ujian', $where);
 
 		$kirim = $this->db->where_in('id',$where)->delete('tb_ujian');
-
-	
 
 		if ($this->db->trans_status() === FALSE)
 
@@ -2470,6 +2518,7 @@ class Ujian_real extends MY_Controller
 	*/
 	public function hasil_ujian_pg($id_ujian, $id_siswa)
 	{
+		$this->load->model('m_soal_opsi');
 		$id_ujian = decrypt_url($id_ujian);
 		$id_siswa = decrypt_url($id_siswa);
 		$dataSiswa = $this->m_siswa->get_by(['id' => $id_siswa]);
@@ -2579,6 +2628,7 @@ class Ujian_real extends MY_Controller
 		$idUjian = decrypt_url($post['ujian']);
 
 		$this->db->trans_start();
+
 		$delete = $this->m_ikut_ujian->delete([
 			'id_user' => $idSiswa,
 			'id_ujian' => $idUjian

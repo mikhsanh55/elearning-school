@@ -4,12 +4,21 @@
 
 
 
-class Ujian_essay extends MY_Controller {
+class Ujian_essay extends MY_Controller 
+{
 
+	/*
+	* Path untuk media/gambar soal essay
+	*/
 	public $_fileSoalPath = 'upload/file_ujian_soal_essay/';
+
+	/*
+	* path untuk media/gambar file upload dari siswa/user
+	*/
 	public $_fileJawabanPath = 'upload/file_jawaban_essay/';
 
-    public function __construct() {
+    public function __construct() 
+    {
 
         parent::__construct();
 
@@ -35,15 +44,8 @@ class Ujian_essay extends MY_Controller {
 
 	}
 
-
-
-	public function index(){
-
-	}
-
-
-
-	public function data_soal($id_ujian=null){
+	public function data_soal($id_ujian=null)
+	{
 
 		$this->page_title = 'Soal Essay';
 
@@ -61,7 +63,8 @@ class Ujian_essay extends MY_Controller {
 
 			'url_import' => base_url('ujian_essay/form_import/'.$id_ujian),
 
-			'ujian' => $this->m_ujian->get_by(['uji.id'=>decrypt_url($id_ujian)])
+			'ujian' => $this->m_ujian->get_by(['uji.id'=>decrypt_url($id_ujian)]),
+			'idUjian' => $id_ujian
 
 		);
 
@@ -71,9 +74,8 @@ class Ujian_essay extends MY_Controller {
 
 
 
-	public function add(){
-
-
+	public function add()
+	{
 
 		$tipe_ujian = array('uts'=>'UTS','uas'=>'UAS');
 
@@ -582,14 +584,147 @@ class Ujian_essay extends MY_Controller {
 
 
 		$this->load->view('ujian_essay/table_hasil',$data);
-
 		$this->generate_page($data);
 
 	}
 
+	/*
+	* Method for generate page view add soal ujian essay
+	* @return html
+	*/
+	public function addSoal($idUjian)
+	{
+		$data = [
+			'id_ujian' => ($idUjian)
+		];
 
+		$this->render('ujian_essay/add_soal2', $data);
+	}
 
-	public function form_soal($id_ujian,$id_soal=0) {
+	/*
+	* Method for generate page view edit soal ujian essay
+	* @return html
+	*/
+	public function editSoal($idUjian, $idSoal)
+	{
+		$data = [
+			'id_ujian' => $idUjian,
+			'id' => $idSoal,
+			'data' => $this->m_soal_ujian_essay->get_by(['id' => decrypt_url($idSoal)])
+		];
+
+		$this->render('ujian_essay/edit_soal2', $data);
+	}
+
+	public function updateSoal()
+	{
+		$post = $this->input->post();
+		$idUjian = decrypt_url($post['id_ujian']);
+		$idSoal = decrypt_url($post['id']);
+
+		// Start Transaction
+		$this->db->trans_begin();
+
+		$dataSoal = [
+			'soal' => trim($post['soal']),
+			'bobot' => intval($post['bobot'])
+		];
+
+		// Check for uploading file
+		if( isset($_FILES['file_ujian_soal_essay']['name']) && 
+			$_FILES['file_ujian_soal_essay']['error'] == 0) {
+			$fileName = uniqid() . '_' . $_FILES['file_ujian_soal_essay']['name'];
+
+			// Initialize Upload Library
+			$config['allowed_types'] = 'jpeg|jpg|JPG|JPEG|PNG|png|gif|mpeg|mpg|mpeg3|mp3|x-wav|wav|mp4';
+			$config['max_size']      = 10240; // 10 MB
+			$config['file_name']     = $fileName;
+			$config['upload_path'] = $this->_fileSoalPath;
+
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+
+			if(!$this->upload->do_upload('file_ujian_soal_essay')) {
+				// Batalkan transaction
+				$this->db->trans_rollback();
+
+				// Send error msg
+				$this->session->set_flashdata('error', 'Error upload gambar soal, ' . $this->upload->display_errors());
+				redirect('ujian_essay/edit-soal/' . ($post['id_ujian'] . '/' . $post['id']) );
+				exit;
+			}
+			else {
+				$uploadedData = $this->upload->data();
+				$dataSoal['file'] = $uploadedData['file_name'];
+				$dataSoal['tipe_file'] = $_FILES['file_ujian_soal_essay']['type'];
+			}
+		}
+
+		// Update data
+		$this->m_soal_ujian_essay->update($dataSoal, ['id' => $idSoal]);
+		$this->db->trans_commit();
+
+		redirect('ujian_essay/data_soal/' . $post['id_ujian']);
+	}
+
+	/*
+	* Method untuk insert soal
+	* return @bool
+	*/
+	public function insertSoal()
+	{
+		$post = $this->input->post();
+		$idUjian = decrypt_url($post['id_ujian']);
+
+		// Start Transaction
+		$this->db->trans_begin();
+
+		$dataSoal = [
+			"bobot"=>$post['bobot'],
+			"soal"=>$post['soal'],
+			'id_ujian' => $idUjian
+		];
+
+		// Check for uploading file
+		if( isset($_FILES['file_ujian_soal_essay']['name']) && 
+			$_FILES['file_ujian_soal_essay']['error'] == 0) {
+
+			$fileName = uniqid() . '_' . $_FILES['file_ujian_soal_essay']['name'];
+
+			// Initialize Upload Library
+			$config['allowed_types'] = 'jpeg|jpg|JPG|JPEG|PNG|png|gif|mpeg|mpg|mpeg3|mp3|x-wav|wav|mp4';
+			$config['max_size']      = 10240; // 10 MB
+			$config['file_name']     = $fileName;
+			$config['upload_path'] = $this->_fileSoalPath;
+
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+
+			if(!$this->upload->do_upload('file_ujian_soal_essay')) {
+				// Batalkan transaction
+				$this->db->trans_rollback();
+
+				// Send error msg
+				$this->session->set_flashdata('error', 'Error upload gambar soal, ' . $this->upload->display_errors());
+				redirect('ujian_essay/add-soal/' . ($post['id_ujian']) );
+				exit;
+			}
+			else {
+				$uploadedData = $this->upload->data();
+				$dataSoal['file'] = $uploadedData['file_name'];
+				$dataSoal['tipe_file'] = $_FILES['file_ujian_soal_essay']['type'];
+			}
+		}
+
+		// Insert data
+		$this->m_soal_ujian_essay->insert($dataSoal);
+		$this->db->trans_commit();
+
+		redirect('ujian_essay/data_soal/' . $post['id_ujian']);
+	}
+
+	public function form_soal($id_ujian,$id_soal=0) 
+	{
 
 
 
@@ -623,7 +758,7 @@ class Ujian_essay extends MY_Controller {
 
 	}
 
-
+	
 
 	public function simpan_soal(){
 		$p = $this->input->post();
@@ -767,7 +902,55 @@ class Ujian_essay extends MY_Controller {
 		exit;
 	}
 
-	public function hapus_soal(){
+	/*
+	* Untuk hapus file soal ujian aja
+	* @return json
+	*/
+	public function hapus_file_soal()
+	{
+		$post = $this->input->post();
+		$id = decrypt_url($post['id']);
+
+		// Set responseCode & returnedData
+		$returnedData = [];
+		$responseCode = 400;
+
+		// Hapus file
+		$data = $this->m_soal_ujian_essay->get_by(['id' => $id]);
+		if(!empty($data->file) && is_file($this->_fileSoalPath . $data->file) && file_exists($this->_fileSoalPath . $data->file)) {
+			unlink($this->_fileSoalPath . $data->file);
+		}
+
+		// Update data in file field to NULL
+		$update = $this->m_soal_ujian_essay->update([
+			'file' => NULL,
+			'tipe_file' => NULL
+		], ['id' => $id]);
+
+		if($update) {
+			$returnedData = [
+				'status' => TRUE,
+				'msg' => 'File soal berhasil dihapus'
+			];
+			$responseCode = 200;
+		}
+		else {
+			$returnedData = [
+				'status' => FALSE,
+				'msg' => 'File soal gagal dihapus'
+			];
+			$responseCode = 500;	
+		}
+
+		$this->sendAjaxResponse($returnedData, $responseCode);
+	}
+
+	/*
+	* Untuk hapus beberapa soal essay sekaligus => list.php
+	* @return json
+	*/
+	public function hapus_soal()
+	{
 		$post = $this->input->post();
 
 		foreach ($post['id'] as $key => $id) {
@@ -1264,7 +1447,7 @@ class Ujian_essay extends MY_Controller {
 		];
 
 		// Check jika siswa mengisi jawaban
-		if(!is_null($post['jawaban'])) {
+		if(isset($post['jawaban'])) {
 			$dataJawaban['jawaban'] = trim($post['jawaban']);
 		}
 
@@ -1286,7 +1469,8 @@ class Ujian_essay extends MY_Controller {
             	exit;
             }
             else {
-            	$dataJawaban['file'] = $fileName;
+            	$uploadedData = $this->upload->data();
+            	$dataJawaban['file'] = $uploadedData['file_name'];
             	$dataJawaban['file_type'] = $_FILES['file']['type'];
 
             	// Hapus file sebelumnya
