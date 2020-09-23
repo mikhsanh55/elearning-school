@@ -383,7 +383,7 @@ class Tugas extends MY_Controller {
 		}
 
 		$this->db->trans_begin();
-		$deleteFileSiswa = $this->m_tugas_attach_siswa->get_many_where('id_tugas', $where);
+		$deleteFileSiswa = $this->m_tugas_attach_siswa->get_many_wherein('id_tugas', $where);
 
 		if(count($deleteFileSiswa) > 0) {
 			foreach($deleteFileSiswa as $file):
