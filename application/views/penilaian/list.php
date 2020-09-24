@@ -13,7 +13,6 @@
 		color: #666;
 		background: #eaebec;
 		border: #ccc 1px solid;
-		border-radius: 25px;
 	}
 
 	table th {

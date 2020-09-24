@@ -1,5 +1,3 @@
-
-
 <style type="text/css">
 	h1{
 		font-family: sans-serif;
@@ -14,7 +12,6 @@
 		color: #666;
 		background: #eaebec;
 		border: #ccc 1px solid;
-		border-radius: 25px;
 	}
 
 	table th {
@@ -116,7 +113,7 @@
 				</select>
 				
 				<?php if ($this->log_lvl != 'siswa'): ?>
-					<a class="btn btn-success btn-sm tombol-kanan" href="<?=$url_form;?>"><i class="fa fa-user-plus"></i> &nbsp;Tambah</a>
+					<a class="btn btn-success btn-sm tombol-kanan" href="<?= base_url('penilaian/add-soal/' . $this->uri->segment(3)) ;?>"><i class="fa fa-user-plus"></i> &nbsp;Tambah</a>
 					<a href="javascript:void(0);" title="edit" id="edited" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> &nbsp;Edit</a>
 					<a href="javascript:void(0);" id="deleted" title="Hapus" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> &nbsp;Hapus</a>
 
@@ -236,17 +233,15 @@
 				url : '<?=base_url('penilaian/hapus_soal');?>',
 				dataType : 'json',
 				data : {
-					id : opsi,
-					link : '<?=$url_form;?>'
+					id : opsi
 				},
 				success:function(response){
-					if (response.result == true) {
+					if (response.status) {
 						pageLoad(1,'penilaian/page_load_soal');
 					}else{
 						alert('Hapus Gagal');
+						return false;
 					}
-
-					pageLoad(1,'penilaian/page_load_soal');
 				}
 			})
 
@@ -269,105 +264,7 @@
 			alert('Tidak ada yang dipilih!');
 			return false;
 		}else{
-			window.location = '<?=$url_form;?>' + '/' + $('.checklist:checked').data('id');			
+			window.location = '<?= base_url('penilaian/edit-soal/' . $idPaket) ?>' + '/' + $('.checklist:checked').data('id');			
 		}
-
-		
-	})
-
-	$(document).on('click','.buat-pass',function(){
-	
-		var y = confirm('Apakah anda yakin untuk membuat password untuk nama ' + $(this).data('nama') +' ?');
-
-		if (y == true) {
-
-			$.ajax({
-				type:'post',
-				url : '<?=base_url('penilaian/buatkan_password');?>',
-				dataType : 'json',
-				data : {
-					id : $(this).data('id'),
-				},
-				success:function(response){
-					if (response.status == 1) {
-						pageLoad(1,'penilaian/page_load_soal');
-					}else{
-						alert(response.message);
-					}
-
-					pageLoad(1,'penilaian/page_load_soal');
-				}
-			})
-
-
-		}else{
-			return false;
-		}
-	})
-
-	$(document).on('click','.reset-pass',function(){
-	
-		var y = confirm('Apakah anda yakin untuk membuat password untuk nama ' + $(this).data('nama') +' ?');
-
-		if (y == true) {
-
-			$.ajax({
-				type:'post',
-				url : '<?=base_url('penilaian/reset_password');?>',
-				dataType : 'json',
-				data : {
-					id : $(this).data('id'),
-				},
-				success:function(response){
-					if (response.status == 1) {
-						pageLoad(1,'penilaian/page_load_soal');
-					}else{
-						alert(response.message);
-					}
-
-					pageLoad(1,'penilaian/page_load_soal');
-				}
-			})
-
-
-		}else{
-			return false;
-		}
-	})
-
-	$(document).on('click','.aktif-non-akun',function(){
-	
-		var y = confirm('Apakah anda yakin untuk membuat password untuk nama ' + $(this).data('nama') +' ?');
-
-		if (y == true) {
-
-			$.ajax({
-				type:'post',
-				url : '<?=base_url('penilaian/aktif_non_akun');?>',
-				dataType : 'json',
-				data : {
-					id : $(this).data('id'),
-					status : $(this).data('status')
-				},
-				success:function(response){
-					if (response.status == 1) {
-						pageLoad(1,'penilaian/page_load_soal');
-					}else{
-						alert(response.message);
-					}
-
-					pageLoad(1,'penilaian/page_load_soal');
-				}
-			})
-
-
-		}else{
-			return false;
-		}
-	})
-
+	});
 </script>
-
-
-
-

@@ -1,5 +1,3 @@
-
-
 <style type="text/css">
 	h1{
 		font-family: sans-serif;
@@ -14,7 +12,6 @@
 		color: #666;
 		background: #eaebec;
 		border: #ccc 1px solid;
-		border-radius: 25px;
 	}
 
 	table th {

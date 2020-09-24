@@ -69,7 +69,7 @@
 					<div class="col-md-2"><label>Jawaban <?= $opsi; ?></label></div>
 					<div class="col-md-3">
 						<?= $mediaOpsi; ?>
-						<input type="file" name="gj<?= $opsi; ?>" id="gambar_soal" class="btn btn-success upload"><br>
+						<input type="file" name="gj<?= $opsi; ?>" class="btn btn-success upload"><br>
 					</div>
 					<div class="col-md-30">
 						<textarea class="form-control" id="editornya_<?= $opsi; ?>" style="height: 30px" name="opsi_<?= $opsi; ?>" required>
@@ -169,7 +169,7 @@
 	});
 
 	function hapusOpsiFile(self, event) {
-		
+		event.preventDefault();
 		conf = confirm('Anda yakin?');
 		if(conf) {
 			id = $(self).data('id');
@@ -193,6 +193,7 @@
 	}
 
 	function hapusSoalFile(self, event) {
+		event.preventDefault();
 		conf = confirm('Anda yakin?');
 		if(conf) {
 			id = $(self).data('id');

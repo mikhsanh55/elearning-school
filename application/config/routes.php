@@ -104,6 +104,8 @@ $route['penilaian/load-hasil-penilaian/(:num)'] = 'penilaian/pageLoadHasilPenila
 $route['penilaian/batalkan-penilaian'] = 'penilaian/batalkanPenilaian';
 $route['penilaian/hasil-penilaian-siswa/(:any)/(:any)'] = 'penilaian/hasilPenilaianSiswa/$1/$2';
 $route['penilaian/import-soal/(:any)'] = 'penilaian/form_import/$1';
+$route['penilaian/add-soal/(:any)'] = 'penilaian/addSoal/$1';
+$route['penilaian/edit-soal/(:any)/(:any)'] = 'penilaian/editSoal/$1/$2';
 
 /* UJIAN */
 $route['ujian_essay/insert-jawaban'] = 'ujian_essay/insertJawaban';
