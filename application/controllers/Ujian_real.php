@@ -722,8 +722,8 @@ class Ujian_real extends MY_Controller
 						$this->db->trans_rollback();
 
 						// Send error msg
-						$this->session->set_flashdata('error', 'Error upload gambar soal, ' . $this->upload->display_errors());
-						redirect('ujian_real/form_soal/' . encrypt_url($post['id_ujian']) );
+						$this->session->set_flashdata('error', '<p class="alert alert-danger">Error upload gambar soal , ' . $name . ' ' . $this->upload->display_errors() .'</p>');
+						redirect('ujian_real/edit-soal/' . encrypt_url($post['id_ujian']) . '/' . $post['id']);
 						exit;
 					}
 					else {
@@ -749,8 +749,8 @@ class Ujian_real extends MY_Controller
 						$this->db->trans_rollback();
 
 						// Send error msg
-						$this->session->set_flashdata('error', 'Error upload gambar opsi , ' . $name . ' ' . $this->upload->display_errors());
-						redirect('ujian_real/form_soal/' . encrypt_url($post['id_ujian']) );
+						$this->session->set_flashdata('error', '<p class="alert alert-danger">Error upload gambar opsi , ' . $name . ' ' . $this->upload->display_errors() .'</p>');
+						redirect('ujian_real/edit-soal/' . encrypt_url($post['id_ujian']) . '/' . $post['id']);
 					}
 					else {
 						// Tentukan nilai dari opsi column table m_soal_ujian_opsi
@@ -1553,6 +1553,34 @@ class Ujian_real extends MY_Controller
 
 		}
 
+		public function mulaiUjian($idUjian)
+		{
+			$idUjian = decrypt_url($idUjian);
+
+			// Set Data detail ujian
+			$dataUjian = $this->m_ujian->get_by(['uji.id' => $idUjian]);
+			$soalUjian = $this->m_soal_ujian->get_many_by(['id_ujian' => $idUjian]);
+			$datas = [
+				'dataUjian' => $dataUjian,
+				'soalUjian' => $soalUjian,
+				'hasilUjian' => NULL,
+				'hurufOpsi' => ['a', 'b', 'c', 'd', 'e']
+			];
+
+			// Cek apakah sudah pernah mengerjakan 1 soal
+			$hasilUjian = $this->m_ikut_ujian->get_many_by(['id_ujian' => $idUjian, 'id_user' => $this->akun->id]);
+
+			if(count($hasilUjian) > 0) {
+				$datas['hasilUjian'] = $hasilUjian;
+			}
+
+			$this->load->view('ujian/v_ujian2', $datas);
+		}
+
+		/*
+		* Method untuk view ujian siswa
+		* @return html
+		*/ 
 		public function ikut_ujian($id_ujian){
 			$this->load->model('m_soal_opsi');
 			$id_ujian = decrypt_url($id_ujian);

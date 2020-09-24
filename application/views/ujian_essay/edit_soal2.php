@@ -21,7 +21,9 @@
 		
 		<?php echo form_open_multipart(base_url() . "ujian_essay/updateSoal", "class='form-horizontal'"); ?>
 			<div id="konfirmasi" class="m-3">
-				<?= $this->session->flashdata('msg'); ?>
+				<?php if(!empty($this->session->flashdata('error'))) : ?>
+					<p class="alert alert-danger"><?= $this->session->flashdata('error'); ?></p>
+				<?php endif; ?>
 			</div>
 
 			<div class="form-group fgsoal">

@@ -20,7 +20,11 @@
 		</div>
 		
 		<?php echo form_open_multipart(base_url() . "ujian_real/updateSoal", "class='form-horizontal'"); ?>
-			<div id="konfirmasi"></div>
+			<div id="konfirmasi">
+				<?php if(!empty($this->session->flashdata('error'))) : ?>
+					<p class="alert alert-danger"><?= $this->session->flashdata('error'); ?></p>
+				<?php endif; ?>
+			</div>
 
 			<div class="form-group fgsoal">
 				<input type="hidden" name="id_ujian" id="id_ujian" value="<?php echo $idUjian; ?>">

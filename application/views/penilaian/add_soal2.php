@@ -19,9 +19,9 @@
             </div>
         </div>
 		<section class="m-2">
-			<?php if(!empty($this->session->flashdata('error')) ) { ?>
-			<p class="alert alert-danger"> <?= $this->session->flashdata('error'); ?></p>
-			<?php } ?>
+			<?php if(!empty($this->session->flashdata('error'))) : ?>
+					<p class="alert alert-danger"><?= $this->session->flashdata('error'); ?></p>
+				<?php endif; ?>
 
 			<?php if(!empty($this->session->flashdata('success')) ) { ?>
 			<p class="alert alert-success"> <?= $this->session->flashdata('success'); ?></p>
