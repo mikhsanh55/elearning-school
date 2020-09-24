@@ -1822,7 +1822,8 @@ class Ujian_real extends MY_Controller
 				            $pc_pilihan_opsi = explode("#####", $d->$opsi);           
 				            $gambar = !is_null($pc_pilihan_opsi[0]) ? base_url('upload/file_ujian_opsi/') . $pc_pilihan_opsi[0] : NULL;
 				            $tampil_media_opsi = (is_file('upload/file_ujian_opsi/'.$pc_pilihan_opsi[0]) || $pc_pilihan_opsi[0] != "") ? getMediaOpsiFile($pc_pilihan_opsi[0], $this->_fileOpsiPath)  : '';
-					    	$pilihan_opsi = end($pc_pilihan_opsi) ? "-" : end($pc_pilihan_opsi);
+					    	// $pilihan_opsi = end($pc_pilihan_opsi) ? "-" : end($pc_pilihan_opsi);
+					    	$pilihan_opsi = $d->$opsi;
 				            $html .= '<div class="funkyradio-success" onclick="return simpan_sementara_ujian();">
 				                <input type="radio" id="opsi_'.strtoupper($this->opsi[$j]).'_'.$d->id.'" name="opsi_'.$no.'" value="'.strtoupper($this->opsi[$j]).'" '.$checked.'> <label for="opsi_'.strtoupper($this->opsi[$j]).'_'.$d->id.'"><div class="huruf_opsi">'.$this->opsi[$j].'</div> <p>'.$pilihan_opsi.'</p><p>'.$mediaOpsi.'</p></label></div>';
 				        }
