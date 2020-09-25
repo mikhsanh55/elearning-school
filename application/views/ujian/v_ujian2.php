@@ -87,8 +87,8 @@
                     <div class="tbl-kanan-soal">
                         <div id="clock" style="font-weight: bold" class="btn btn-danger"></div>
                     </div>
-                    <div class="tbl-kanan-soal">
-                    <div onclick="return hide();" style="font-size: 18px;" class="btn btn-primary fa fa-eye"></div>
+                    <div class="tbl-kanan-soal m-2">
+                        <div onclick="return hide();" style="font-size: 18px;" class="btn btn-primary fa fa-eye"></div>
                     </div>
                 </div>
 
@@ -181,10 +181,26 @@
         $(".se-pre-con").fadeOut("slow");
     });
 
+    // Set timer
+    initTimer();
+
     // Function for set timer ujian
     function initTimer()
     {
+        var waktuUjian = parseInt("<?= $dataUjian->waktu; ?>"),
+            jamMulai = new Date(),
+            jamSelesai = new Date( jamMulai.getTime() + (waktuUjian * 60 * 1000) );
 
+        // Set tiimer using countdownTimer plugin
+        $('#clock').countdowntimer({
+            startDate: jamMulai,
+            dateAndTime: jamSelesai,
+            size: "lg",
+            displayFormat: "HMS",
+            timeUp: () => {
+                alert('Selamat anda telah melaksanakan ujian, semoga hasilnya memuaskan :)');         
+            }
+        });
     }
 
     </script>

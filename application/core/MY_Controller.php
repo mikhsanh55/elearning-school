@@ -30,6 +30,19 @@ class MY_Controller extends CI_Controller
 	public $id_level;
 
 	/*
+	* Untuk pelabelan
+	*/
+	public $actors = [
+		'admin' => 'Super Admin',
+		'admin_instansi' => 'Kadep',
+		'instansi' => 'Kadep',
+		'guru' => 'Dosen',
+		'siswa' => 'Siswa',
+		'mapel' => 'Mata Kuliah',
+		'kelas' => 'Kelompok'
+	];
+
+	/*
 	* Untuk update keaktifan user
 	*/
 	public function updateActiveUser($level, $type_active) {
